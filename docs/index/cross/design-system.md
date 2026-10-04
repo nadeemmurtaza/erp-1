@@ -286,10 +286,10 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Token files | 11 (648 lines) | Token groups that exist at all — see the table below |
 | Primitives | 43 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
-| CSS `transition` | 47 | declared transitions across every stylesheet |
+| CSS `transition` | 43 | declared transitions across every stylesheet |
 | Tailwind `transition-*` classes | 129 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 26 | named animations |
-| `prefers-reduced-motion` blocks | 3 | chapter 05 and 07 both require this on every motion |
+| `prefers-reduced-motion` blocks | 4 | chapter 05 and 07 both require this on every motion |
 | `aria-*` attributes | 474 | written by hand; **no accessibility lint runs** |
 | `role=` attributes | 378 |  |
 | RTL / `dir` references | 64 | Urdu ships; chapter 07 says this is scattered, not systematic |

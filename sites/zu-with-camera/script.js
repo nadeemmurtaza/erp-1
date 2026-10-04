@@ -109,7 +109,7 @@
       img.style.borderRadius = '4px';
       img.style.objectFit = 'cover';
       img.style.boxShadow = '0 18px 40px rgba(20,19,17,.18)';
-      img.style.transition = 'transform 650ms ' + 'cubic-bezier(.16,1,.3,1)' + ', opacity 450ms';
+      img.style.transition = 'transform 650ms cubic-bezier(.16,1,.3,1), opacity 450ms cubic-bezier(.2,0,0,1)';
       deckEl.appendChild(img);
       return img;
     });
@@ -118,10 +118,11 @@
 
   function renderDeck() {
     var n = deckSlots.length;
-    var layout = { 0: { t: 'translate(-50%, 0) rotate(-2deg)', o: 1, z: 10 }, 1: { t: 'translate(-50%, 10px) rotate(4deg)', o: 1, z: 9 }, 2: { t: 'translate(-50%, 18px) rotate(-6deg)', o: 1, z: 8 } };
+    var layout = { 0: { t: 'translate(0px, 0px) rotate(-2deg)', o: 1, z: 10 }, 1: { t: 'translate(14px, 10px) rotate(4deg)', o: 1, z: 9 }, 2: { t: 'translate(-12px, 18px) rotate(-6deg)', o: 1, z: 8 } };
     deckSlots.forEach(function (img, i) {
       var pos = (i - deckIndex + n) % n;
-      var sl = layout[pos] || { t: 'translate(-50%, 24px) rotate(0deg)', o: 0, z: 1 };
+      // The card that was just dismissed flies off to the left; the rest wait underneath.
+      var sl = layout[pos] || (pos === n - 1 ? { t: 'translate(-150%, -30px) rotate(-26deg)', o: 0, z: 11 } : { t: 'translate(0px, 24px) rotate(0deg)', o: 0, z: 1 });
       img.style.transform = sl.t;
       img.style.opacity = sl.o;
       img.style.zIndex = sl.z;
@@ -141,10 +142,38 @@
     }
   }
 
+  // ---------- Motion helpers ----------
+  // Frame-rate independent easing: closes (1 - e^(-rate*dt)) of the gap each frame.
+  var damp = function (cur, target, rate, dt) { return cur + (target - cur) * (1 - Math.exp(-rate * dt)); };
+
+  // Writes a style only when it changed, so idle frames cost nothing.
+  function setStyle(el, prop, val) {
+    var k = '_s_' + prop;
+    if (el[k] === val) return;
+    el[k] = val;
+    el.style[prop] = val;
+  }
+  function setVar(el, name, val) {
+    var k = '_v_' + name;
+    if (el[k] === val) return;
+    el[k] = val;
+    el.style.setProperty(name, val);
+  }
+  function setText(el, val) {
+    if (el._t === val) return;
+    el._t = val;
+    el.textContent = val;
+  }
+  function setFlag(el, cls, on) {
+    var k = '_f_' + cls;
+    if (el[k] === on) return;
+    el[k] = on;
+    el.classList.toggle(cls, on);
+  }
+
   // ---------- Cursor trail (desktop hero) ----------
   var trailPool = [];
   var trailK = 0;
-  var trailGen = [false, false, false, false, false, false, false];
 
   function initCursorTrail() {
     var host = $('cursor-trail');
@@ -155,51 +184,59 @@
       host.appendChild(img);
       trailPool.push(img);
     }
-    var hero = $('hero');
     var lastX = null, lastY = null;
-    hero.addEventListener('mousemove', function (e) {
+    var ease = 'cubic-bezier(.16,1,.3,1)';
+    $('hero').addEventListener('mousemove', function (e) {
       if (state.reduced || !finePointer()) return;
-      var r = hero.getBoundingClientRect();
-      var x = e.clientX - r.left, y = e.clientY - r.top;
+      var x = e.clientX, y = e.clientY + (window.pageYOffset || 0);
       if (lastX != null && Math.hypot(x - lastX, y - lastY) < 110) return;
       lastX = x; lastY = y;
-      var slot = trailK % 7;
-      trailGen[slot] = !trailGen[slot];
+      var slot = trailK % trailPool.length;
       trailK++;
       var img = trailPool[slot];
-      var frameImg = ALL_FRAMES[trailK % ALL_FRAMES.length].img;
       var rot = ((trailK * 37) % 17) - 8;
-      img.src = frameImg;
-      img.style.transition = 'none';
-      img.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(.55)';
-      img.style.opacity = '0';
-      requestAnimationFrame(function () {
-        img.style.transition = 'transform 1.3s cubic-bezier(.16,1,.3,1), opacity 1.3s cubic-bezier(.16,1,.3,1)';
-        img.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(1)';
-        img.style.opacity = '1';
-        setTimeout(function () {
-          img.style.opacity = '0';
-          img.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(.9)';
-        }, 900);
-      });
+      var base = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px) rotate(' + rot + 'deg) ';
+      img.src = ALL_FRAMES[trailK % ALL_FRAMES.length].img;
+      if (img._anim) img._anim.cancel();
+      // One keyframed animation per photo: it always starts from its own pose, so a reused
+      // slot never glides in from where the previous photo was.
+      img._anim = img.animate([
+        { opacity: 0, transform: base + 'scale(.55)', offset: 0, easing: ease },
+        { opacity: 1, transform: base + 'scale(1)', offset: 0.14 },
+        { opacity: 1, transform: base + 'scale(1)', offset: 0.7, easing: ease },
+        { opacity: 0, transform: base + 'scale(.9)', offset: 1 }
+      ], { duration: 1300, fill: 'both' });
     });
   }
 
   // ---------- Custom cursor + magnetic buttons ----------
+  var cursorEl = null, cursorOn = false;
+  var cursorTarget = { x: 0, y: 0 }, cursorPos = { x: 0, y: 0 };
+
   function initCursor() {
-    var cursor = $('cursor'), label = $('cursor-label');
+    cursorEl = $('cursor');
+    var label = $('cursor-label');
     if (!finePointer()) return;
-    var moved = false;
     document.addEventListener('mousemove', function (e) {
-      moved = true;
-      cursor.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
-      cursor.classList.add('on');
+      cursorTarget.x = e.clientX; cursorTarget.y = e.clientY;
+      if (!cursorOn) {
+        cursorOn = true;
+        cursorPos.x = e.clientX; cursorPos.y = e.clientY;
+        cursorEl.classList.add('on');
+      }
     });
-    document.addEventListener('mouseleave', function () { cursor.classList.remove('on'); });
+    document.addEventListener('mouseleave', function () { cursorOn = false; cursorEl.classList.remove('on'); });
     document.querySelectorAll('[data-cursor]').forEach(function (el) {
-      el.addEventListener('mouseenter', function () { label.textContent = el.getAttribute('data-cursor'); cursor.classList.add('label'); });
-      el.addEventListener('mouseleave', function () { cursor.classList.remove('label'); label.textContent = ''; });
+      el.addEventListener('mouseenter', function () { label.textContent = el.getAttribute('data-cursor'); cursorEl.classList.add('label'); });
+      el.addEventListener('mouseleave', function () { cursorEl.classList.remove('label'); label.textContent = ''; });
     });
+  }
+
+  function renderCursor(dt) {
+    if (!cursorOn) return;
+    cursorPos.x = damp(cursorPos.x, cursorTarget.x, 26, dt);
+    cursorPos.y = damp(cursorPos.y, cursorTarget.y, 26, dt);
+    setStyle(cursorEl, 'transform', 'translate3d(' + cursorPos.x.toFixed(1) + 'px,' + cursorPos.y.toFixed(1) + 'px,0)');
   }
 
   function initMagnetic() {
@@ -216,66 +253,25 @@
     });
   }
 
-  // ---------- Marquee ----------
-  var mqVel = 0, mqPos = 0, mqDir = 1, lastScrollY = null;
-
-  function tickMarquee() {
-    var y = window.pageYOffset || document.documentElement.scrollTop;
-    var dy = lastScrollY == null ? 0 : y - lastScrollY;
-    lastScrollY = y;
-    mqVel = mqVel * 0.86 + dy * 0.14;
-    if (dy > 0.5) mqDir = 1; else if (dy < -0.5) mqDir = -1;
-    if (!state.reduced) mqPos += (0.7 + Math.min(Math.abs(mqVel), 80) * 0.14) * mqDir;
-    [['mq-1', 1], ['mq-2', -1]].forEach(function (pair) {
-      var el = $(pair[0]);
-      if (!el) return;
-      var half = el.scrollWidth / 2 || 1;
-      var v = pair[1] * (pair[0] === 'mq-2' ? mqPos * 0.8 : mqPos);
-      var x = -(((v % half) + half) % half);
-      el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
-    });
-    var title = $('hero-title');
-    if (title) {
-      var sk = state.reduced ? 0 : clamp(-mqVel * 0.22, -9, 9);
-      title.style.transform = 'skewY(' + (sk * 0.35).toFixed(2) + 'deg)';
-    }
-  }
-
   // ---------- Reel progress nav ----------
+  var reelFill, reelMarks = [], frameCounter;
+
   function initReel() {
     var marksHost = $('reel-marks');
+    reelFill = $('reel-fill');
+    frameCounter = $('frame-counter');
     SECTIONS.forEach(function (s) {
       var a = document.createElement('a');
       a.href = '#' + s[0];
-      a.id = 'mark-' + s[0];
       a.innerHTML = '<i></i><span class="mono">' + s[1] + '</span>';
       marksHost.appendChild(a);
+      reelMarks.push(a);
     });
-  }
-
-  function updateReel() {
-    var doc = document.documentElement;
-    var total = Math.max(1, doc.scrollHeight - window.innerHeight);
-    var off = window.pageYOffset || doc.scrollTop;
-    $('reel-fill').style.width = round3(Math.min(100, (off / total) * 100)) + '%';
-    var marks = SECTIONS.map(function (s) {
-      var el = $(s[0]);
-      var at = el ? el.offsetTop : 0;
-      return { id: s[0], at: at };
-    });
-    marks.forEach(function (m, i) {
-      var next = marks[i + 1];
-      var on = off + 2 >= m.at && (!next || off + 2 < next.at);
-      var a = $('mark-' + m.id);
-      if (!a) return;
-      a.classList.toggle('on', on);
-      a.style.left = round3(Math.min(100, (m.at / total) * 100)) + '%';
-    });
-    $('frame-counter').textContent = 'Frame ' + pad2(Math.floor(off / 40) % 100) + pad2(Math.floor(off / 4) % 100) + ' · Photo & film · Lahore';
   }
 
   // ---------- Contact sheet ----------
   var stripTrack = $('strip-track');
+  var stripViewport = stripTrack.parentElement;
   var frameEls = [];
 
   function renderChips() {
@@ -291,8 +287,8 @@
       btn.addEventListener('click', function () {
         state.cat = c;
         renderChips();
-        buildStrip(true);
-        if (isMobile()) { document.querySelector('.strip-viewport').scrollLeft = 0; }
+        buildStrip();
+        stripViewport.scrollLeft = 0;
       });
       host.appendChild(btn);
     });
@@ -302,7 +298,7 @@
     return state.cat === 'All' ? ALL_FRAMES : ALL_FRAMES.filter(function (f) { return f.cat === state.cat; });
   }
 
-  function buildStrip(animate) {
+  function buildStrip() {
     var list = filteredFrames();
     stripTrack.innerHTML = '';
     frameEls = list.map(function (f, i) {
@@ -319,10 +315,10 @@
         '<img src="' + f.img + '" alt="' + f.alt + '">' +
         '<div class="frame-meta"><span class="mono">' + pad2(gi + 1) + ' · ' + f.cat + '</span>' +
         '<span class="mono frame-title">' + f.title + '</span></div>';
-      btn.addEventListener('click', function (e) { openLightbox(gi, btn); });
+      btn.addEventListener('click', function () { openLightbox(gi, btn); });
       wrap.appendChild(btn);
       stripTrack.appendChild(wrap);
-      return { wrap: wrap, btn: btn };
+      return { wrap: wrap, btn: btn, img: btn.firstChild, cx: 0 };
     });
     $('work-count').textContent = 'Frame 01 / ' + pad2(list.length) + ' · click to open';
     requestAnimationFrame(function () {
@@ -330,120 +326,33 @@
         frameEls.forEach(function (fe) { fe.wrap.classList.add('in'); });
       });
     });
-    measureWork();
-  }
-
-  function measureWork() {
-    if (isMobile()) {
-      document.getElementById('work').style.minHeight = '';
-      return;
-    }
-    var pin = document.querySelector('.work-pin');
-    var pinH = pin.getBoundingClientRect().height || 700;
-    var vw = window.innerWidth;
-    var trackW = stripTrack.scrollWidth;
-    var over = Math.max(0, trackW - vw);
-    document.getElementById('work').style.minHeight = (pinH + (over > 0 ? over * 1.5 : 0)) + 'px';
-    stripTrack.parentElement.style.justifyContent = over > 0 ? '' : 'center';
-  }
-
-  function updateWork() {
-    if (isMobile()) return;
-    var workEl = document.getElementById('work');
-    var pin = document.querySelector('.work-pin');
-    var rect = workEl.getBoundingClientRect();
-    var pinH = pin.getBoundingClientRect().height || 700;
-    var over = rect.height - pinH;
-    var p = over > 2 ? cl01(-rect.top / over) : 0;
-    var vw = window.innerWidth;
-    var trackW = stripTrack.scrollWidth;
-    var overflow = Math.max(0, trackW - vw);
-    var shift = overflow > 0 ? p * overflow : 0;
-    stripTrack.style.transform = 'translate3d(' + round3(-shift) + 'px,0,0)';
-    var center = vw / 2;
-    var best = 1e9, nearest = 0;
-    frameEls.forEach(function (fe, i) {
-      var r = fe.btn.getBoundingClientRect();
-      var cx = r.left + r.width / 2;
-      var d = (cx - center) / vw;
-      if (Math.abs(d) < best) { best = Math.abs(d); nearest = i; }
-      var close = overflow > 0 ? 1 - Math.min(Math.abs(d) * 1.7, 1) : 1;
-      fe.btn.style.transform = 'scale(' + round3(0.88 + 0.12 * close) + ') rotate(' + (overflow > 0 ? round3(d * 4) : 0) + 'deg)';
-      fe.btn.querySelector('img').style.filter = 'grayscale(' + round3(1 - close) + ')';
-    });
-    $('work-count').textContent = 'Frame ' + pad2(nearest + 1) + ' / ' + pad2(frameEls.length) + ' · click to open';
+    measure();
   }
 
   // ---------- Films ----------
   var filmPlaying = false;
-
-  function updateFilms() {
-    var sec = $('films');
-    var pin = sec.querySelector('.films-pin');
-    var rect = sec.getBoundingClientRect();
-    var pinH = pin.getBoundingClientRect().height || window.innerHeight;
-    var extra = isMobile() ? Math.round(window.innerHeight * 0.85) : Math.round(window.innerHeight * 1.2);
-    sec.style.minHeight = (pinH + extra) + 'px';
-    var over = rect.height - pinH;
-    var fp = over > 2 ? cl01(-rect.top / over) : (over <= 0 ? 1 : 0);
-    var ghost = $('films-ghost');
-    var ghostRange = isMobile() ? 900 : 1600;
-    ghost.style.transform = 'translate3d(' + round3((isMobile() ? 100 : 200) - fp * ghostRange) + 'px,-50%,0)';
-    var play = $('film-play');
-    var clipPct = round3((1 - fp) * (isMobile() ? 12 : 16));
-    var clipPct2 = round3((1 - fp) * (isMobile() ? 14 : 20));
-    if (!filmPlaying) play.style.clipPath = 'inset(' + clipPct + '% ' + clipPct2 + '% round ' + round3(4 + (1 - fp) * 10) + 'px)';
-    $('film-img').style.transform = 'scale(' + round3(1.2 - 0.2 * fp) + ')';
-    $('film-link').classList.toggle('show', fp > 0.7 || over <= 0);
-  }
+  var filmOpen = 0;
 
   function initFilms() {
     var play = $('film-play');
     play.addEventListener('click', function () {
       filmPlaying = !filmPlaying;
-      play.classList.toggle('open', filmPlaying);
       play.setAttribute('aria-pressed', filmPlaying ? 'true' : 'false');
       play.setAttribute('aria-label', filmPlaying ? 'Pause showreel' : 'Play showreel');
       $('film-play-icon').hidden = filmPlaying;
       $('film-now').hidden = !filmPlaying;
       $('film-progress').classList.toggle('running', filmPlaying);
-      if (filmPlaying) play.style.clipPath = 'inset(0% 0% round 4px)';
     });
   }
 
   // ---------- Quote ----------
-  function initQuote() {
-    var text = 'Someone just captured the best angles of me. I will reach out to you every time.';
-    var words = text.split(' ');
-    var host = $('quote-text');
-    host.innerHTML = words.map(function (w) { return '<span>' + w + ' </span>'; }).join('');
-    quoteSpans = Array.prototype.slice.call(host.querySelectorAll('span'));
-  }
   var quoteSpans = [];
 
-  function updateQuote() {
-    var sec = $('words');
-    var rect = sec.getBoundingClientRect();
-    var vh = window.innerHeight;
-    var p = state.reduced ? 1 : cl01((vh * 0.9 - rect.top) / Math.max(1, vh * 0.55));
-    quoteSpans.forEach(function (span, i) {
-      span.style.opacity = round3(0.14 + 0.86 * cl01(p * quoteSpans.length * 1.15 - i));
-    });
-  }
-
-  // ---------- Services cards ----------
-  function updateCards() {
-    var c0 = $('card-0'), c1 = $('card-1'), c2 = $('card-2');
-    if (state.reduced) { c0.style.filter = ''; c1.style.filter = ''; return; }
-    var r1 = c1.getBoundingClientRect(), r2 = c2.getBoundingClientRect();
-    var top0 = parseFloat(getComputedStyle(c0).top) || 0;
-    var top1 = parseFloat(getComputedStyle(c1).top) || 0;
-    var p0 = cl01(1 - (r1.top - top0) / 460);
-    var p1 = cl01(1 - (r2.top - top1) / 460);
-    c0.style.transform = 'scale(' + round3(1 - 0.05 * p0) + ')';
-    c0.style.filter = 'brightness(' + round3(1 - 0.25 * p0) + ')';
-    c1.style.transform = 'scale(' + round3(1 - 0.05 * p1) + ')';
-    c1.style.filter = 'brightness(' + round3(1 - 0.25 * p1) + ')';
+  function initQuote() {
+    var text = 'Someone just captured the best angles of me. I will reach out to you every time.';
+    var host = $('quote-text');
+    host.innerHTML = text.split(' ').map(function (w) { return '<span>' + w + ' </span>'; }).join('');
+    quoteSpans = Array.prototype.slice.call(host.querySelectorAll('span'));
   }
 
   // ---------- About ----------
@@ -474,60 +383,298 @@
 
   var aboutRevealed = false, bookRevealed = false;
 
-  function updateAbout() {
-    var el = $('about');
-    var rect = el.getBoundingClientRect();
-    var vh = window.innerHeight;
-    if (!aboutRevealed && (state.reduced || rect.top < vh * 0.8)) {
+  // ---------- Fit headings to their column ----------
+  // The headings are sized large in CSS; this only ever shrinks them (never wraps, never clips),
+  // which also covers the fallback font used before/without the webfont.
+  function fitHeading(title) {
+    title.style.fontSize = '';
+    var avail = title.clientWidth;
+    if (!avail) return;
+    var need = 0;
+    title.querySelectorAll('.hero-line, .about-line').forEach(function (line) {
+      var ls = line.querySelectorAll('.ltr, .about-letter');
+      if (!ls.length) return;
+      var first = ls[0], last = ls[ls.length - 1];
+      need = Math.max(need, last.offsetLeft + last.offsetWidth - first.offsetLeft);
+    });
+    if (need > avail) {
+      title.style.fontSize = (parseFloat(getComputedStyle(title).fontSize) * avail / need * 0.995).toFixed(2) + 'px';
+    }
+  }
+
+  // ---------- Zoom (LET'S SHOOT) ----------
+  function fitGlassText() {
+    var glass = $('zoom-glass'), t1 = $('zoom-clip-text'), t2 = $('zoom-clip-text-2');
+    var w = glass.clientWidth, h = glass.clientHeight;
+    if (!w || !h) return;
+    var set = function (t, x, y, fs, tl) {
+      t.setAttribute('x', round3(x)); t.setAttribute('y', round3(y));
+      t.setAttribute('font-size', round3(fs)); t.setAttribute('textLength', round3(tl));
+    };
+    var hText;
+    if (isMobile()) {
+      t1.textContent = 'LET’S';
+      t2.textContent = 'SHOOT';
+      set(t1, w / 2, h * 0.433, h * 0.5, w * 0.838);
+      set(t2, w / 2, h * 0.893, h * 0.5, w * 0.95);
+      hText = t2;
+    } else {
+      t1.textContent = 'LET’S SHOOT';
+      t2.textContent = '';
+      set(t1, w / 2, h * 0.794, h * 0.818, w * 0.957);
+      hText = t1;
+    }
+    // Zoom towards the H so the viewer passes through the letter into the photo.
+    var origin = '50% 60%';
+    try {
+      var i = hText.textContent.indexOf('H');
+      var b = i >= 0 && hText.getExtentOfChar ? hText.getExtentOfChar(i) : null;
+      if (b && b.width) origin = (b.x + b.width * 0.2).toFixed(1) + 'px ' + (b.y + b.height * 0.55).toFixed(1) + 'px';
+    } catch (err) { /* keep the centred fallback */ }
+    glass.style.transformOrigin = origin;
+  }
+
+  // ---------- Layout metrics (measured once per resize, never per frame) ----------
+  var M = {
+    vw: 0, vh: 0, mobile: false, total: 1,
+    hero: { h: 0 }, mq: { top: 0, h: 0 },
+    work: { top: 0, h: 0, pinH: 0, over: 0 },
+    films: { top: 0, h: 0, pinH: 0 },
+    zoom: { top: 0, h: 0, pinH: 0 },
+    words: { top: 0, h: 0 }, services: { top: 0, h: 0 }, about: { top: 0 }, book: { top: 0 },
+    card: { top: 0, h0: 1, h1: 1, gap: 0, st0: 0, st1: 0, st2: 0 },
+    marks: []
+  };
+
+  function setMinHeight(el, px) {
+    var v = px > 0 ? Math.round(px) + 'px' : '';
+    if (el._mh === v) return;
+    el._mh = v;
+    el.style.minHeight = v;
+  }
+
+  function measure() {
+    fitHeading($('hero-title'));
+    fitHeading($('about-title'));
+    fitGlassText();
+
+    var vw = window.innerWidth, vh = window.innerHeight, mobile = isMobile();
+    var work = $('work'), films = $('films'), zoom = $('zoom');
+    var workPinH = work.firstElementChild.offsetHeight;
+    var filmsPinH = films.firstElementChild.offsetHeight;
+    var zoomPinH = zoom.firstElementChild.offsetHeight;
+
+    // Scroll runway for each pinned scene. Strip travel is 1:1 with scroll; the other two are
+    // short enough that something is always visibly moving while they are pinned.
+    var padX = 40;
+    var over = mobile ? 0 : Math.max(0, stripTrack.offsetWidth + padX * 2 - vw);
+    var filmsRun = state.reduced ? 0 : Math.round(vh * (mobile ? 0.8 : 1));
+    var zoomRun = state.reduced ? 0 : Math.round(vh * (mobile ? 1.3 : 1.5));
+    setMinHeight(work, over > 0 ? workPinH + over : 0);
+    setMinHeight(films, filmsPinH + filmsRun);
+    setMinHeight(zoom, zoomPinH + zoomRun);
+    stripViewport.classList.toggle('is-static', !mobile && over <= 0);
+
+    var y0 = window.pageYOffset || 0;
+    var topOf = function (el) { return el.getBoundingClientRect().top + y0; };
+
+    M.vw = vw; M.vh = vh; M.mobile = mobile;
+    M.total = Math.max(1, document.documentElement.scrollHeight - vh);
+    M.hero.h = $('hero').offsetHeight;
+    var mq = document.querySelector('.marquee-band');
+    M.mq.top = topOf(mq); M.mq.h = mq.offsetHeight;
+    M.work = { top: topOf(work), h: work.offsetHeight, pinH: workPinH, over: over };
+    M.films = { top: topOf(films), h: films.offsetHeight, pinH: filmsPinH };
+    M.zoom = { top: topOf(zoom), h: zoom.offsetHeight, pinH: zoomPinH };
+    var words = $('words'), services = $('services');
+    M.words = { top: topOf(words), h: words.offsetHeight };
+    M.services = { top: topOf(services), h: services.offsetHeight };
+    M.about.top = topOf($('about'));
+    M.book.top = topOf($('book'));
+
+    var cardsEl = document.querySelector('.cards');
+    var c0 = $('card-0'), c1 = $('card-1'), c2 = $('card-2');
+    M.card = {
+      top: topOf(cardsEl), h0: c0.offsetHeight, h1: c1.offsetHeight,
+      gap: parseFloat(getComputedStyle(cardsEl).rowGap) || 0,
+      st0: parseFloat(getComputedStyle(c0).top) || 0,
+      st1: parseFloat(getComputedStyle(c1).top) || 0,
+      st2: parseFloat(getComputedStyle(c2).top) || 0
+    };
+
+    frameEls.forEach(function (fe) { fe.cx = fe.wrap.offsetLeft + fe.wrap.offsetWidth / 2; });
+
+    M.marks = SECTIONS.map(function (s, i) {
+      var top = s[0] === 'hero' ? 0 : topOf($(s[0]));
+      if (reelMarks[i]) reelMarks[i].style.left = round3(Math.min(100, (top / M.total) * 100)) + '%';
+      return top;
+    });
+  }
+
+  var measureQueued = false;
+  function scheduleMeasure() {
+    if (measureQueued) return;
+    measureQueued = true;
+    requestAnimationFrame(function () { measureQueued = false; measure(); });
+  }
+
+  // ---------- Per-frame rendering ----------
+  // Everything below reads only cached metrics and the scroll offset; styles are written only
+  // when their value changes. `sy` is the scroll offset eased towards the real one, so every
+  // scroll-linked scene glides instead of stepping with the wheel.
+  var sy = window.pageYOffset || 0;
+  var lastY = null, lastT = 0;
+  var mqVel = 0, mqSpeed = 0, mqPos = 0, mqDir = 1, heroSkew = 0, activeMark = -1;
+  var lightboxOpen = false;
+
+  var inRange = function (top, h) { return sy + M.vh * 1.1 > top && sy < top + h + M.vh * 0.1; };
+
+  function renderReel(y) {
+    setStyle(reelFill, 'transform', 'scaleX(' + cl01(y / M.total).toFixed(4) + ')');
+    var idx = 0;
+    for (var i = 0; i < M.marks.length; i++) if (y + 2 >= M.marks[i]) idx = i;
+    if (idx !== activeMark) {
+      activeMark = idx;
+      reelMarks.forEach(function (a, j) { a.classList.toggle('on', j === idx); });
+    }
+    setText(frameCounter, 'Frame ' + pad2(Math.floor(y / 40) % 100) + pad2(Math.floor(y / 4) % 100) + ' · Photo & film · Lahore');
+  }
+
+  function renderMarquee(dt, y) {
+    var dy = lastY == null ? 0 : y - lastY;
+    lastY = y;
+    mqVel = damp(mqVel, dy / Math.max(dt * 60, 0.25), 9, dt);
+    if (dy > 0.5) mqDir = 1; else if (dy < -0.5) mqDir = -1;
+    var targetSpeed = state.reduced ? 0 : mqDir * (0.7 + Math.min(Math.abs(mqVel), 80) * 0.14);
+    mqSpeed = damp(mqSpeed, targetSpeed, 5, dt);
+    mqPos += mqSpeed * dt * 60;
+
+    if (y + M.vh > M.mq.top - 60 && y < M.mq.top + M.mq.h + 60) {
+      [['mq-1', 1, 1], ['mq-2', -1, 0.8]].forEach(function (m) {
+        var el = $(m[0]);
+        if (!el._half) el._half = el.scrollWidth / 2 || 1;
+        var v = m[1] * m[2] * mqPos;
+        var x = -(((v % el._half) + el._half) % el._half);
+        setStyle(el, 'transform', 'translate3d(' + x.toFixed(1) + 'px,0,0)');
+      });
+    }
+    if (y < M.hero.h) {
+      heroSkew = damp(heroSkew, state.reduced ? 0 : clamp(-mqVel * 0.22, -9, 9) * 0.35, 10, dt);
+      setStyle($('hero-title'), 'transform', 'skewY(' + heroSkew.toFixed(2) + 'deg)');
+    }
+  }
+
+  function renderWork() {
+    var w = M.work;
+    var p = w.over > 0 ? cl01((sy - w.top) / w.over) : 0;
+    var shift = p * w.over;
+    setStyle(stripTrack, 'transform', 'translate3d(' + (-shift).toFixed(1) + 'px,0,0)');
+    var center = M.vw / 2, best = 1e9, nearest = 0;
+    frameEls.forEach(function (fe, i) {
+      var d = (fe.cx - shift - center) / M.vw;
+      if (Math.abs(d) < best) { best = Math.abs(d); nearest = i; }
+      var close = w.over > 0 ? 1 - Math.min(Math.abs(d) * 1.7, 1) : 1;
+      setStyle(fe.btn, 'transform', 'scale(' + (0.88 + 0.12 * close).toFixed(3) + ') rotate(' + (w.over > 0 ? (d * 4).toFixed(2) : '0') + 'deg)');
+      setStyle(fe.img, 'filter', 'grayscale(' + (1 - close).toFixed(2) + ')');
+    });
+    setText($('work-count'), 'Frame ' + pad2(nearest + 1) + ' / ' + pad2(frameEls.length) + ' · click to open');
+  }
+
+  function renderFilms(dt) {
+    var f = M.films, mobile = M.mobile;
+    var over = f.h - f.pinH;
+    var fp = over > 2 ? cl01((sy - f.top) / over) : 1;
+    filmOpen = damp(filmOpen, filmPlaying ? 1 : 0, 7, dt);
+    if (Math.abs(filmOpen - (filmPlaying ? 1 : 0)) < 0.002) filmOpen = filmPlaying ? 1 : 0;
+    var eff = fp + (1 - fp) * filmOpen;
+    setStyle($('films-ghost'), 'transform', 'translate3d(' + ((mobile ? 100 : 200) - fp * (mobile ? 900 : 1500)).toFixed(1) + 'px,-50%,0)');
+    setStyle($('film-play'), 'clipPath', 'inset(' + ((1 - eff) * (mobile ? 12 : 16)).toFixed(2) + '% ' + ((1 - eff) * (mobile ? 14 : 20)).toFixed(2) + '% round ' + (4 + (1 - eff) * 10).toFixed(2) + 'px)');
+    setStyle($('film-img'), 'transform', 'scale(' + (1.2 - 0.2 * eff).toFixed(3) + ')');
+    setFlag($('film-link'), 'show', fp > 0.7 || over <= 2);
+  }
+
+  function renderQuote() {
+    var q = M.words;
+    var p = state.reduced ? 1 : cl01((M.vh * 0.9 - (q.top - sy)) / Math.max(1, M.vh * 0.55));
+    quoteSpans.forEach(function (span, i) {
+      setStyle(span, 'opacity', (0.14 + 0.86 * cl01(p * quoteSpans.length * 1.15 - i)).toFixed(2));
+    });
+  }
+
+  function renderCards() {
+    if (state.reduced) return;
+    var c = M.card;
+    var l1 = c.top + c.h0 + c.gap, l2 = l1 + c.h1 + c.gap;
+    var t1 = Math.max(l1 - sy, c.st1), t2 = Math.max(l2 - sy, c.st2);
+    var p0 = cl01(1 - (t1 - c.st0) / c.h0), p1 = cl01(1 - (t2 - c.st1) / c.h1);
+    var c0 = $('card-0'), c1 = $('card-1');
+    setStyle(c0, 'transform', 'scale(' + (1 - 0.05 * p0).toFixed(3) + ')');
+    setVar(c0, '--dim', (0.25 * p0).toFixed(3));
+    setStyle(c1, 'transform', 'scale(' + (1 - 0.05 * p1).toFixed(3) + ')');
+    setVar(c1, '--dim', (0.25 * p1).toFixed(3));
+  }
+
+  function renderZoom() {
+    var z = M.zoom;
+    var over = z.h - z.pinH;
+    var zp = over > 2 ? cl01((sy - z.top) / over) : 0;
+    var glass = $('zoom-glass'), img = $('zoom-img');
+    var op = zp < 0.8 ? 1 : cl01(1 - (zp - 0.8) / 0.12);
+    setStyle(glass, 'transform', 'scale(' + (1 + Math.pow(zp, 2.6) * 38).toFixed(3) + ')');
+    setStyle(glass, 'opacity', op.toFixed(3));
+    // Once invisible, a 39x backdrop-filter layer is pure cost.
+    setStyle(glass, 'visibility', op <= 0 ? 'hidden' : 'visible');
+    var reveal = cl01((zp - 0.72) / 0.22);
+    setStyle(img, 'filter', 'brightness(' + (0.48 + 0.52 * reveal).toFixed(3) + ') saturate(' + (0.85 + 0.15 * reveal).toFixed(3) + ')');
+    setStyle(img, 'transform', 'scale(' + (1.08 - 0.08 * zp).toFixed(3) + ')');
+    setStyle($('zoom-hint'), 'opacity', (state.reduced ? 0 : cl01(1 - zp * 6)).toFixed(3));
+    setFlag($('zoom-cta'), 'show', state.reduced || zp > 0.86);
+  }
+
+  function renderReveals() {
+    if (!aboutRevealed && (state.reduced || M.about.top - sy < M.vh * 0.8)) {
       aboutRevealed = true;
       $('about-title').classList.add('in');
       $('about-body').classList.add('in');
     }
-  }
-
-  function updateBookReveal() {
-    var el = $('book');
-    var rect = el.getBoundingClientRect();
-    var vh = window.innerHeight;
-    if (!bookRevealed && (state.reduced || rect.top < vh * 0.85)) {
+    if (!bookRevealed && (state.reduced || M.book.top - sy < M.vh * 0.85)) {
       bookRevealed = true;
       $('book-form').classList.add('in');
     }
   }
 
-  // ---------- Zoom ----------
-  function glassFit() { return Math.min(1, (window.innerWidth - 40) / 1400); }
-
-  function fitGlassText() {
-    var glass = $('zoom-glass'), text = $('zoom-clip-text');
-    var w = glass.clientWidth, h = glass.clientHeight;
-    if (!w || !h) return;
-    text.setAttribute('x', round3(w / 2));
-    text.setAttribute('y', round3(h * 0.64));
-    text.setAttribute('font-size', round3(h * 0.72));
-    text.setAttribute('textLength', round3(w * 0.94));
+  function renderBottomCta(y) {
+    var show = false;
+    if (M.mobile) {
+      var inBook = M.book.top - sy < M.vh * 0.7;
+      var inZoom = M.zoom.top - sy < M.vh * 0.6 && M.zoom.top + M.zoom.h - sy > M.vh * 0.4;
+      show = y > 500 && !inBook && !inZoom && !lightboxOpen;
+    }
+    setFlag($('bottom-cta'), 'show', show);
   }
 
-  function updateZoom() {
-    var sec = $('zoom');
-    var pin = sec.querySelector('.zoom-pin');
-    var rect = sec.getBoundingClientRect();
-    var pinH = pin.getBoundingClientRect().height || window.innerHeight;
-    var extra = isMobile() ? Math.round(window.innerHeight * 1.3) : Math.round(window.innerHeight * 1.8);
-    sec.style.minHeight = (pinH + extra) + 'px';
-    var over = rect.height - pinH;
-    var zp = over > 2 ? cl01(-rect.top / over) : 0;
-    var fit = glassFit();
-    var scale = round3(fit * (1 + Math.pow(zp, 2.6) * 38));
-    var glass = $('zoom-glass');
-    glass.style.transform = 'translate(-50%,-50%) scale(' + scale + ')';
-    var op = round3(zp < 0.8 ? 1 : cl01(1 - (zp - 0.8) / 0.12));
-    glass.style.opacity = op;
-    var img = $('zoom-img');
-    img.style.filter = 'brightness(' + round3(0.48 + 0.52 * cl01((zp - 0.72) / 0.22)) + ') saturate(' + round3(0.85 + 0.15 * cl01((zp - 0.72) / 0.22)) + ')';
-    img.style.transform = 'scale(' + round3(1.08 - 0.08 * zp) + ')';
-    $('zoom-hint').style.opacity = round3(state.reduced ? 0 : cl01(1 - zp * 6));
-    $('zoom-cta').classList.toggle('show', state.reduced || zp > 0.86);
+  function render(dt, instant) {
+    var y = window.pageYOffset || 0;
+    sy = (instant || state.reduced) ? y : damp(sy, y, 12, dt);
+    if (Math.abs(sy - y) < 0.1) sy = y;
+
+    renderReel(y);
+    renderMarquee(dt, y);
+    renderCursor(dt);
+    if (!M.mobile && inRange(M.work.top, M.work.h)) renderWork();
+    if (inRange(M.films.top, M.films.h)) renderFilms(dt);
+    if (inRange(M.words.top, M.words.h)) renderQuote();
+    if (inRange(M.services.top, M.services.h)) renderCards();
+    if (inRange(M.zoom.top, M.zoom.h)) renderZoom();
+    renderReveals();
+    renderBottomCta(y);
+  }
+
+  function frame(now) {
+    var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 1 / 60;
+    lastT = now;
+    render(dt, false);
+    requestAnimationFrame(frame);
   }
 
   // ---------- Booking: chips ----------
@@ -667,6 +814,7 @@
       state.sent = true;
       $('book-form').hidden = true;
       $('book-sent').hidden = false;
+      scheduleMeasure();
     });
   }
 
@@ -688,6 +836,7 @@
     renderLightbox();
     var lb = $('lightbox');
     lb.hidden = false;
+    lightboxOpen = true;
     lb.classList.remove('open');
     if (state.reduced || !triggerEl) {
       lb.style.clipPath = 'none';
@@ -714,6 +863,7 @@
     }
     setTimeout(function () {
       lb.hidden = true;
+      lightboxOpen = false;
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }, state.reduced ? 0 : 1100);
   }
@@ -723,52 +873,6 @@
     $('lightbox-next').addEventListener('click', function () { ovIndex = (ovIndex + 1) % ALL_FRAMES.length; renderLightbox(); });
     $('lightbox-book').addEventListener('click', function () { closeLightbox(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('lightbox').hidden) closeLightbox(); });
-  }
-
-  // ---------- Bottom CTA (mobile) ----------
-  function updateBottomCta() {
-    if (!isMobile()) { $('bottom-cta').classList.remove('show'); return; }
-    var y = window.pageYOffset;
-    var bookRect = $('book').getBoundingClientRect();
-    var zoomRect = $('zoom').getBoundingClientRect();
-    var inBook = bookRect.top < window.innerHeight * 0.7;
-    var inZoom = zoomRect.top < window.innerHeight * 0.6 && zoomRect.bottom > window.innerHeight * 0.4;
-    $('bottom-cta').classList.toggle('show', y > 500 && !inBook && !inZoom && $('lightbox').hidden);
-  }
-
-  // ---------- IntersectionObserver reveal for mobile strip ----------
-  function initMobileStripReveal() {
-    if (!('IntersectionObserver' in window)) return;
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) { if (entry.isIntersecting) entry.target.classList.add('in'); });
-    }, { threshold: 0.2 });
-    frameEls.forEach(function (fe) { obs.observe(fe.wrap); });
-  }
-
-  // ---------- Main loop ----------
-  var rafPending = false;
-  function scheduleUpdate() {
-    if (rafPending) return;
-    rafPending = true;
-    requestAnimationFrame(function () { rafPending = false; update(); });
-  }
-
-  function update() {
-    updateReel();
-    tickMarquee();
-    updateWork();
-    updateFilms();
-    updateQuote();
-    updateCards();
-    updateAbout();
-    updateBookReveal();
-    updateZoom();
-    updateBottomCta();
-  }
-
-  function loop() {
-    update();
-    requestAnimationFrame(loop);
   }
 
   // ---------- Boot ----------
@@ -781,8 +885,7 @@
     initMagnetic();
     initReel();
     renderChips();
-    buildStrip(false);
-    initMobileStripReveal();
+    buildStrip();
     initFilms();
     initQuote();
     initAbout();
@@ -794,15 +897,17 @@
     });
     $('film-play').setAttribute('data-cursor', 'Play');
 
-    fitGlassText();
-    window.addEventListener('resize', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', fitGlassText, { passive: true });
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    measure();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleMeasure);
+    window.addEventListener('load', scheduleMeasure);
+    window.addEventListener('resize', scheduleMeasure, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleMeasure).observe(document.documentElement);
 
+    render(1 / 60, true);
     if (state.reduced) {
-      update();
+      window.addEventListener('scroll', function () { render(1 / 60, true); }, { passive: true });
     } else {
-      requestAnimationFrame(loop);
+      requestAnimationFrame(frame);
     }
   }
 

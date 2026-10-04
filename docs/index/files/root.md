@@ -480,8 +480,8 @@ All 229 tracked files in `repository root files`, by directory.
 | `favicon-32.png` | asset | — |  |
 | `favicon.svg` | asset | — |  |
 | `index.html` | html | — |  |
-| `script.js` | script | 815 | ---------- Config / placeholders ---------- |
-| `styles.css` | stylesheet | 509 |  |
+| `script.js` | script | 920 | ---------- Config / placeholders ---------- |
+| `styles.css` | stylesheet | 543 |  |
 | `wrangler.jsonc` | jsonc | — |  |
 
 ### `sites/zu-with-camera/images` (8)

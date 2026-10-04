@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-559 files · 98,158 lines
+567 files · 101,452 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -97,7 +97,7 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 90 | 12,365 | doc |
+| `docs/implementation/decisions` | 90 | 12,368 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
@@ -111,7 +111,7 @@ has a bug.
 | `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
 | `docs/implementation/resilience-scalability` | 13 | 2,926 | doc |
 | `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
-| `docs/implementation/supply-chain-operations` | 2 | 646 | doc |
+| `docs/implementation/supply-chain-operations` | 10 | 3,937 | doc |
 | `docs/implementation/tasks-notifications-support` | 6 | 2,996 | doc |
 | `docs/implementation/tax-compliance` | 4 | 495 | doc |
 | `docs/security` | 1 | 59 | doc |

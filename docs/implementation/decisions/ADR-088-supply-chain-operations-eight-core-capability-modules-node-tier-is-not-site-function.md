@@ -124,16 +124,16 @@ inherited from older gap documents):
 
 **A — zero new packs; eight new `core`-classified capability modules.**
 
-| Module | Owns | Brief |
-|---|---|---|
-| `warehouse` | sites, zones, bins, a bin sub-ledger under `VariantLocationStock`, warehouse tasks, waves, packing, SSCC cartons, loads | 237 |
-| `orderrouting` | per-line fulfilment requests across locations, routing policy (pure `decide` / `apply`), split shipments, ship-from-store, click-and-collect handover, endless aisle | 238 |
-| `supplynetwork` | regions, lanes, sourcing rules (make / transfer / buy / subcontract / fulfil-from) as versioned policy | 239 |
-| `edi` | EDI partners, interchanges, control numbers, acknowledgements, the `EdiGateway` provider extension point | 240 |
-| `vendorcompliance` | retailer programs, versioned compliance policies with provenance, retailer PO obligations, OTIF, deductions and disputes, sell-through | 241 |
-| `manufacturing` | work centers, calendars, routings, operation execution, in-plant dispatch, subcontract operations | 242 |
-| `quality` | inspection plans and lots, holds and release through a hold `Location`, non-conformance | 243 |
-| `rfid` | reader registration, EPC decode, count sessions emitting observed-count evidence | 244 |
+| Module             | Owns                                                                                                                                                                 | Brief |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `warehouse`        | sites, zones, bins, a bin sub-ledger under `VariantLocationStock`, warehouse tasks, waves, packing, SSCC cartons, loads                                              | 237   |
+| `orderrouting`     | per-line fulfilment requests across locations, routing policy (pure `decide` / `apply`), split shipments, ship-from-store, click-and-collect handover, endless aisle | 238   |
+| `supplynetwork`    | regions, lanes, sourcing rules (make / transfer / buy / subcontract / fulfil-from) as versioned policy                                                               | 239   |
+| `edi`              | EDI partners, interchanges, control numbers, acknowledgements, the `EdiGateway` provider extension point                                                             | 240   |
+| `vendorcompliance` | retailer programs, versioned compliance policies with provenance, retailer PO obligations, OTIF, deductions and disputes, sell-through                               | 241   |
+| `manufacturing`    | work centers, calendars, routings, operation execution, in-plant dispatch, subcontract operations                                                                    | 242   |
+| `quality`          | inspection plans and lots, holds and release through a hold `Location`, non-conformance                                                                              | 243   |
+| `rfid`             | reader registration, EPC decode, count sessions emitting observed-count evidence                                                                                     | 244   |
 
 Existing modules gain additive work, each justified in its brief:
 
@@ -215,6 +215,7 @@ customer. The repository ships no retailer profile with invented values.
   The new `KNOWN_MODULE_COUPLINGS` entries are exactly the same-transaction
   writes into `inventory` the list was made for: `warehouse`,
   `orderrouting`, `quality`, and the existing pattern for `bom`.
+
 - **B.** One writer per invariant holds unchanged. `InventoryService.move()`
   remains the only writer of location stock. The `warehouse` module is the
   only writer of the bin sub-ledger. `quality` holds goods by moving them
@@ -228,6 +229,7 @@ customer. The repository ships no retailer profile with invented values.
   R26's literal text ("decrements that branch's allotment through `move()`")
   is correct in one database and would break R2 across databases. R28
   states the multi-node form before any code depends on the ambiguity.
+
 - **C.** Keeping transport and translation in `edi`, and compliance and
   money in `vendorcompliance`, lets a retail chain use EDI with its own
   suppliers without enabling any vendor-compliance code. Putting the
@@ -248,7 +250,9 @@ customer. The repository ships no retailer profile with invented values.
   - Existing single-database behaviour (R26, transfers, production runs)
     keeps working unchanged until a work order deliberately extends it.
 - **Costs.**
-  - Eight modules, ~40 tables and ~25 permissions across the program.
+  - Eight modules, 67 new tables (counted from docs 237–244's schemas; most
+    are small policy or mapping tables) and 31 new permission keys across the
+    program, each seeded to a role in its own work order.
   - One outbox row per stock movement once `StockMoved` ships. Its write
     amplification is measured in SC0.1, with a cursor-tail fallback named.
   - Multi-node DC and plant sites depend on unbuilt replication work
@@ -260,8 +264,7 @@ customer. The repository ships no retailer profile with invented values.
 - **Open decisions, each with a recommendation in doc 236 §9:**
   - OD-1: the canonical manufacturing stack. The recommendation is `bom`,
     with `production` frozen, not deleted. This touches ADR-020's posture.
-  - OD-2: the customer tax-invoice document. It is a prerequisite for EDI
-    810.
+  - OD-2: the customer tax-invoice document. It is a prerequisite for EDI 810.
   - OD-3: an `OrderIntakeRegistry` extension point versus per-channel
     couplings. It interacts with ADR-084's proposed `HospitalityOrderSink`.
   - OD-4: revenue recognition timing for EDI orders.
@@ -280,19 +283,19 @@ customer. The repository ships no retailer profile with invented values.
 Exact values with reasoning live in each brief's Parameters table. These
 are the ones that decide behaviour under load or attack:
 
-| Parameter | Value | Applies to | Brief |
-|---|---|---|---|
-| EDI outbound retry delay | `min(30 s × 2^(n−1), 900 s)` | `EdiOutboundDocument` sender | 240 |
-| EDI outbound give-up | 24 h, then `DEAD_LETTER` (replayable) | same | 240 |
-| EDI deadline alert | 60 min before a document's `dueBy` if not transport-acknowledged | same | 240 |
-| EDI inbound rate limit | 600 requests / 60 s per source IP | inbound gateway route | 240 |
-| EDI raw interchange cap | 256 MiB, stored through `StorageDriver`, parsed in 5,000-segment chunks | inbound | 240 |
-| Canonical payload inline cap on events | 256 KiB, else a storage key | `EdiDocument*` events | 240 |
-| RFID upload batch | 2,500 EPCs per request (stays under the platform's 100 KiB JSON body limit) | `rfid` ingestion | 244 |
-| RFID device rate limit | 60 requests / 60 s per device credential | same | 244 |
-| Handheld offline ceiling | 500 queued confirmations or 4 h, whichever comes first | `warehouse` offline tasks | 237 |
-| BOM depth guard | 20 levels | `bom` multi-level explode | 242 |
-| Max split shipments per order | 3 (Setting `orderrouting.max_splits`) | routing decide | 238 |
+| Parameter                              | Value                                                                       | Applies to                   | Brief |
+| -------------------------------------- | --------------------------------------------------------------------------- | ---------------------------- | ----- |
+| EDI outbound retry delay               | `min(30 s × 2^(n−1), 900 s)`                                                | `EdiOutboundDocument` sender | 240   |
+| EDI outbound give-up                   | 24 h, then `DEAD_LETTER` (replayable)                                       | same                         | 240   |
+| EDI deadline alert                     | 60 min before a document's `dueBy` if not transport-acknowledged            | same                         | 240   |
+| EDI inbound rate limit                 | 600 requests / 60 s per source IP                                           | inbound gateway route        | 240   |
+| EDI raw interchange cap                | 256 MiB, stored through `StorageDriver`, parsed in 5,000-segment chunks     | inbound                      | 240   |
+| Canonical payload inline cap on events | 256 KiB, else a storage key                                                 | `EdiDocument*` events        | 240   |
+| RFID upload batch                      | 2,500 EPCs per request (stays under the platform's 100 KiB JSON body limit) | `rfid` ingestion             | 244   |
+| RFID device rate limit                 | 60 requests / 60 s per device credential                                    | same                         | 244   |
+| Handheld offline ceiling               | 500 queued confirmations or 4 h, whichever comes first                      | `warehouse` offline tasks    | 237   |
+| BOM depth guard                        | 20 levels                                                                   | `bom` multi-level explode    | 242   |
+| Max split shipments per order          | 3 (Setting `orderrouting.max_splits`)                                       | routing decide               | 238   |
 
 ### Status
 

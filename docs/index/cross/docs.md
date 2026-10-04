@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**594** markdown documents. These explain **why**; this index only says **where**.
+**602** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3408,7 +3408,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md`  <sub>302 lines</sub>
+### `docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md`  <sub>305 lines</sub>
 
 _no second-level headings_
 
@@ -4713,7 +4713,7 @@ _no second-level headings_
 - WO-6.8 — Screens  <sub>:315</sub>
 - Phase 6 exit criteria  <sub>:325</sub>
 
-### `docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md`  <sub>603 lines</sub>
+### `docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md`  <sub>612 lines</sub>
 
 - 1. Objective and the four profiles  <sub>:13</sub>
 - 2. Existing state (verified in code, 2026-10-04)  <sub>:35</sub>
@@ -4721,14 +4721,134 @@ _no second-level headings_
 - 4. Packaging: eight capability modules, no new pack  <sub>:155</sub>
 - 5. EDI: its own module behind a gateway  <sub>:223</sub>
 - 6. How the modules talk  <sub>:265</sub>
-- 7. Profiles as `MODULES` presets  <sub>:322</sub>
-- 8. Documents this changes (proposed amendments, not made in this work)  <sub>:347</sub>
-- 9. Open decisions for the owner  <sub>:362</sub>
-- 10. Needs verification — never invented in this repository  <sub>:448</sub>
-- 11. The five pillars  <sub>:485</sub>
-- 12. Roadmap — tranches  <sub>:495</sub>
-- 13. Program acceptance (architecture-level; each brief has its own)  <sub>:568</sub>
-- 14. Out of scope (named and sequenced, not silently skipped)  <sub>:584</sub>
+- 7. Profiles as `MODULES` presets  <sub>:323</sub>
+- 8. Documents this changes (proposed amendments, not made in this work)  <sub>:348</sub>
+- 9. Open decisions for the owner  <sub>:363</sub>
+- 10. Needs verification — never invented in this repository  <sub>:449</sub>
+- 11. The five pillars  <sub>:486</sub>
+- 12. Roadmap — tranches  <sub>:496</sub>
+- 13. Program acceptance (architecture-level; each brief has its own)  <sub>:577</sub>
+- 14. Out of scope (named and sequenced, not silently skipped)  <sub>:593</sub>
+
+### `docs/implementation/supply-chain-operations/237-warehouse-management.md`  <sub>523 lines</sub>
+
+- Objective  <sub>:7</sub>
+- Existing state (verified, 2026-10-04)  <sub>:16</sub>
+- 1. The rule this module keeps  <sub>:34</sub>
+- 2. Schema — `apps/api/prisma/schema/warehouse.prisma` (new, hand-written forward-only migration)  <sub>:74</sub>
+- 3. Behaviour  <sub>:198</sub>
+- 4. Parameters (exact)  <sub>:240</sub>
+- 5. Work orders  <sub>:250</sub>
+- 6. Files likely affected  <sub>:296</sub>
+- 7. Dependencies reused  <sub>:307</sub>
+- 8. Risks  <sub>:315</sub>
+- 9. Acceptance criteria  <sub>:326</sub>
+- 10. Out of scope  <sub>:348</sub>
+- Scope lenses  <sub>:356</sub>
+
+### `docs/implementation/supply-chain-operations/238-order-routing-omnichannel-fulfilment.md`  <sub>445 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:23</sub>
+- 1. Design  <sub>:46</sub>
+- 2. Schema — `apps/api/prisma/schema/order-routing.prisma` (new)  <sub>:144</sub>
+- 3. Parameters (exact)  <sub>:211</sub>
+- 4. Work orders  <sub>:223</sub>
+- 5. Files likely affected  <sub>:259</sub>
+- 6. Dependencies reused  <sub>:269</sub>
+- 7. Risks  <sub>:276</sub>
+- 8. Acceptance criteria  <sub>:287</sub>
+- 9. Out of scope  <sub>:309</sub>
+- Scope lenses  <sub>:315</sub>
+
+### `docs/implementation/supply-chain-operations/239-supply-network-sourcing-rules.md`  <sub>231 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:24</sub>
+- 1. Design  <sub>:36</sub>
+- 2. Schema — `apps/api/prisma/schema/supply-network.prisma` (new)  <sub>:69</sub>
+- 3. Parameters (exact)  <sub>:111</sub>
+- 4. Work orders  <sub>:118</sub>
+- 5. Acceptance criteria  <sub>:132</sub>
+- Scope lenses  <sub>:144</sub>
+
+### `docs/implementation/supply-chain-operations/240-edi-gateway.md`  <sub>495 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified, 2026-10-04)  <sub>:24</sub>
+- 1. What `edi` owns, and what it does not  <sub>:39</sub>
+- 2. Canonical documents (`packages/shared/src/edi/canonical.ts`)  <sub>:57</sub>
+- 3. The extension point  <sub>:80</sub>
+- 4. Schema — `apps/api/prisma/schema/edi.prisma` (new)  <sub>:156</sub>
+- 5. Inbound: store first, apply second  <sub>:230</sub>
+- 6. Outbound: durable, acknowledged, deadline-aware  <sub>:247</sub>
+- 7. The buy side: `tradingpartners` as a consumer  <sub>:262</sub>
+- 8. Parameters (exact)  <sub>:282</sub>
+- 9. Work orders  <sub>:297</sub>
+- 10. Files likely affected  <sub>:323</sub>
+- 11. Dependencies reused  <sub>:331</sub>
+- 12. Risks  <sub>:338</sub>
+- 13. Acceptance criteria  <sub>:349</sub>
+- 14. Out of scope  <sub>:369</sub>
+- Scope lenses  <sub>:376</sub>
+
+### `docs/implementation/supply-chain-operations/241-retailer-vendor-compliance.md`  <sub>549 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified, 2026-10-04)  <sub>:27</sub>
+- 1. Who is who  <sub>:44</sub>
+- 2. The flow  <sub>:54</sub>
+- 3. Retailer requirements as versioned data  <sub>:107</sub>
+- 4. Deductions and disputes  <sub>:171</sub>
+- 5. OTIF and sell-through  <sub>:212</sub>
+- 6. Schema — `apps/api/prisma/schema/vendor-compliance.prisma` (new)  <sub>:231</sub>
+- 7. Parameters (exact)  <sub>:301</sub>
+- 8. Work orders  <sub>:311</sub>
+- 9. Files likely affected  <sub>:345</sub>
+- 10. Dependencies reused  <sub>:354</sub>
+- 11. Risks  <sub>:361</sub>
+- 12. Acceptance criteria  <sub>:375</sub>
+- 13. Needs verification against each retailer's real documents  <sub>:400</sub>
+- 14. Out of scope  <sub>:410</sub>
+- Scope lenses  <sub>:418</sub>
+
+### `docs/implementation/supply-chain-operations/242-multi-plant-manufacturing.md`  <sub>496 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified, 2026-10-04; gaps confirmed absent by grep, not inherited)  <sub>:27</sub>
+- 1. Who owns what  <sub>:43</sub>
+- 2. Design  <sub>:63</sub>
+- 3. Schema  <sub>:182</sub>
+- 4. Parameters (exact)  <sub>:240</sub>
+- 5. Work orders  <sub>:250</sub>
+- 6. Files likely affected  <sub>:293</sub>
+- 7. Dependencies reused  <sub>:302</sub>
+- 8. Risks  <sub>:310</sub>
+- 9. Acceptance criteria  <sub>:323</sub>
+- 10. Out of scope  <sub>:348</sub>
+- Scope lenses  <sub>:357</sub>
+
+### `docs/implementation/supply-chain-operations/243-quality-inspection-holds.md`  <sub>283 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:23</sub>
+- 1. Design  <sub>:35</sub>
+- 2. Schema — `apps/api/prisma/schema/quality.prisma` (new)  <sub>:81</sub>
+- 3. Work orders  <sub>:123</sub>
+- 4. Acceptance criteria  <sub>:148</sub>
+- 5. Out of scope  <sub>:167</sub>
+- Scope lenses  <sub>:175</sub>
+
+### `docs/implementation/supply-chain-operations/244-rfid-phantom-inventory.md`  <sub>260 lines</sub>
+
+- Objective  <sub>:7</sub>
+- Existing state (verified, 2026-10-04)  <sub>:18</sub>
+- 1. Design  <sub>:35</sub>
+- 2. Schema  <sub>:84</sub>
+- 3. Parameters (exact)  <sub>:111</sub>
+- 4. Work orders  <sub>:121</sub>
+- 5. Acceptance criteria  <sub>:143</sub>
+- Scope lenses  <sub>:157</sub>
 
 ### `docs/implementation/supply-chain-operations/README.md`  <sub>43 lines</sub>
 

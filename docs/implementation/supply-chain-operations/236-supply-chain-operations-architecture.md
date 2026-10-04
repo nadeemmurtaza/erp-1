@@ -16,12 +16,12 @@ The owner confirmed this session that NEWAX's retail vertical becomes a
 full-spectrum retail and supply-chain operating system, globally, on one
 Core, for these customer profiles:
 
-| # | Profile | What they need that is not built |
-|---|---|---|
-| 1 | **Retail chain** with its own branded stores | Little. See `RETAIL-VERTICAL-COVERAGE-MATRIX.md`. Click and collect and ship-from-store are named in `RETAIL-ERP.md` Part 5 (`fulfilment`) but not built. |
-| 2 | **Multi-warehouse retail chain** | A real WMS (receiving, putaway, bins, pick paths, waves, packing) and a real OMS (split shipments across DCs and stores, ship-from-store, endless aisle) |
-| 3 | **Supplier / manufacturer / distributor selling into large retailers** | EDI with retailers (850, 855, 856, 810, 820, 852, 997), OTIF windows, chargeback and deduction disputes. This company may run no stores at all. |
-| 4 | **Multi-plant manufacturer** (folded in by the owner the same day) | Routings and work centers, multi-level BOM and MRP, inter-plant transfers, quality checkpoints, plant costing, capacity planning across plants, sourcing rules, contract manufacturing |
+| #   | Profile                                                                | What they need that is not built                                                                                                                                                       |
+| --- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Retail chain** with its own branded stores                           | Little. See `RETAIL-VERTICAL-COVERAGE-MATRIX.md`. Click and collect and ship-from-store are named in `RETAIL-ERP.md` Part 5 (`fulfilment`) but not built.                              |
+| 2   | **Multi-warehouse retail chain**                                       | A real WMS (receiving, putaway, bins, pick paths, waves, packing) and a real OMS (split shipments across DCs and stores, ship-from-store, endless aisle)                               |
+| 3   | **Supplier / manufacturer / distributor selling into large retailers** | EDI with retailers (850, 855, 856, 810, 820, 852, 997), OTIF windows, chargeback and deduction disputes. This company may run no stores at all.                                        |
+| 4   | **Multi-plant manufacturer** (folded in by the owner the same day)     | Routings and work centers, multi-level BOM and MRP, inter-plant transfers, quality checkpoints, plant costing, capacity planning across plants, sourcing rules, contract manufacturing |
 
 Lower priority, same program: RFID-driven phantom-inventory detection.
 
@@ -34,33 +34,33 @@ profiles exclusive.
 
 ## 2. Existing state (verified in code, 2026-10-04)
 
-| What | Where | Finding |
-|---|---|---|
-| Pack vs capability | `apps/api/src/modules/module-packs.ts` header | "Business models … are NOT packs … They are capability modules in core." A pack exists "only where a vertical owns genuine domain data that core cannot express." |
-| Independence | `scripts/check-module-boundaries.mjs` | INDEPENDENCE applies to every pair of modules, core included. `KNOWN_MODULE_COUPLINGS` holds 24 entries: same-transaction writes, "checkout cannot commit without this number" reads, and two channels funnelling into `OrdersService` (`pos -> orders`, `accounts -> orders`). |
-| Node tier | `organization.prisma` `NodeRole { BRANCH BRAND }`; `env.validation.ts` `NODE_ROLE ∈ STANDALONE, BRANCH, BRAND, ORG` | Tier and replication topology only. `NODE_ROLE=BRANCH` requires `PARENT_URL`, and its comment assumes the parent is a brand. ADR-023 makes a node with null `retailBrandId` fail closed on `BrandPolicy`. |
-| Site function | `inventory.prisma` `LocationType { STORE WAREHOUSE IN_TRANSIT PRODUCTION }` | A DC is representable as `WAREHOUSE` and a plant as `PRODUCTION` today. `Location` has no parent, no bin concept, and `code @unique`. |
-| Stock writer | `InventoryService.move()` / `postUnconditional()` / `moveMany()` | Keyed on `(variantId, locationId)`. Recomputes `ProductVariant.stock` as a cross-location SUM inside the write transaction. Canonical Ruling 5 names that as the instance its lens was written from. |
-| Sub-ledger precedent | `Lot`/`LotStock`/`SerializedUnit`, ADR-069 | A sub-ledger beneath `VariantLocationStock`, with its own single writer called alongside `move()`, never inside it |
-| Order stock commitment | `orders.service.ts` ~L384 | Web orders decrement at `defaultLocationId()` **at placement**. `VariantLocationStock` therefore means *available*, not physical on-hand. |
-| Restock on cancel and return | `orders.service.ts` ~L996–1006, `returns.service.ts` ~L255 | Both restock at `order.locationId ?? defaultLocationId()`, so an order split across locations would restock to the wrong place |
-| R26 as built | `planning/online-stock.service.ts` | `onlineStockFor()` sums **every** `VariantLocationStock` row, `IN_TRANSIT` buckets included. `assignFulfillingBranch()` reassigns a **whole order** to **one** location inside **one** database. |
-| Shipments | `orders.prisma` `Shipment`, `fulfilment.prisma` `ShipmentItem` | Partial shipments exist (`ShipmentItem`). A shipment records no ship-from location. |
-| Domain events | `core/events/domain-events.ts` | No `StockMoved` (named in `RETAIL-ERP.md` Part 5, never built). No transfer dispatch or receive event. |
-| Replication | `core/replication/`, `replication.prisma` | Real: log, cursors, registry, quarantine, agent. Registered entities include `Order`, `Product`, `GoodsReceipt`, `BomProductionRun` and `Expense`. Several `apply()` paths still throw ("consolidation not built"). `StockMovement` and `StockTransfer` are not replicated. |
-| EDI | `18-trading-partner-network.md` WO-18.5; `tradingpartners` | Deferred "until a real partner names the standard". `tradingpartners` is a JSON fact protocol between NEWAX nodes (ADR-087), not X12 or EDIFACT, with no transport for a VAN or AS2 |
-| Customer invoice | `invoicing.prisma` `Invoice` | Keyed to `tradingPartnerId`, never posted to the GL. The AR ledger keys `Contact`/`Order` (`receivables.prisma` header) |
-| Manufacturing | `bom.prisma`, `production.prisma`, ADR-020 | Two stacks. `BomRecipe` is flat by rule ("Sub-assemblies are explicitly deferred"). `BomProductionRun` is a one-shot completion record with cost snapshots, lots genealogy, tier scope and an UP replication listener. `WorkOrder` (production) has a DRAFT/RELEASED/COMPLETED lifecycle over `BillOfMaterial`. Neither has routings, work centers, MRP, quality or capacity. |
-| Ledger coverage | `posting-rules.subscriber.ts` | No rule for `GoodsReceived` (no GRNI account), `BomProductionCompleted`, adjustments, counts or write-offs. `JournalLine` has no `locationId`. `costCentreId` has no backing model. The chart (`chart-of-accounts.ts`) has one `1200 Inventory` account and no WIP, overhead-absorbed, variance or deduction accounts. |
-| Quality | schema-wide | Absent. `planning`'s `supplierScorecard().defectRatePct` is honestly `null` because no defect field exists (ADR-066). |
-| Review-queue idiom | `MarkdownSuggestion`, `VariantForecast`, `StockVariance`, `SpotCheck` (inventory) | The shape phantom-stock suspects should copy |
+| What                         | Where                                                                                                               | Finding                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pack vs capability           | `apps/api/src/modules/module-packs.ts` header                                                                       | "Business models … are NOT packs … They are capability modules in core." A pack exists "only where a vertical owns genuine domain data that core cannot express."                                                                                                                                                                                                             |
+| Independence                 | `scripts/check-module-boundaries.mjs`                                                                               | INDEPENDENCE applies to every pair of modules, core included. `KNOWN_MODULE_COUPLINGS` holds 24 entries: same-transaction writes, "checkout cannot commit without this number" reads, and two channels funnelling into `OrdersService` (`pos -> orders`, `accounts -> orders`).                                                                                               |
+| Node tier                    | `organization.prisma` `NodeRole { BRANCH BRAND }`; `env.validation.ts` `NODE_ROLE ∈ STANDALONE, BRANCH, BRAND, ORG` | Tier and replication topology only. `NODE_ROLE=BRANCH` requires `PARENT_URL`, and its comment assumes the parent is a brand. ADR-023 makes a node with null `retailBrandId` fail closed on `BrandPolicy`.                                                                                                                                                                     |
+| Site function                | `inventory.prisma` `LocationType { STORE WAREHOUSE IN_TRANSIT PRODUCTION }`                                         | A DC is representable as `WAREHOUSE` and a plant as `PRODUCTION` today. `Location` has no parent, no bin concept, and `code @unique`.                                                                                                                                                                                                                                         |
+| Stock writer                 | `InventoryService.move()` / `postUnconditional()` / `moveMany()`                                                    | Keyed on `(variantId, locationId)`. Recomputes `ProductVariant.stock` as a cross-location SUM inside the write transaction. Canonical Ruling 5 names that as the instance its lens was written from.                                                                                                                                                                          |
+| Sub-ledger precedent         | `Lot`/`LotStock`/`SerializedUnit`, ADR-069                                                                          | A sub-ledger beneath `VariantLocationStock`, with its own single writer called alongside `move()`, never inside it                                                                                                                                                                                                                                                            |
+| Order stock commitment       | `orders.service.ts` ~L384                                                                                           | Web orders decrement at `defaultLocationId()` **at placement**. `VariantLocationStock` therefore means _available_, not physical on-hand.                                                                                                                                                                                                                                     |
+| Restock on cancel and return | `orders.service.ts` ~L996–1006, `returns.service.ts` ~L255                                                          | Both restock at `order.locationId ?? defaultLocationId()`, so an order split across locations would restock to the wrong place                                                                                                                                                                                                                                                |
+| R26 as built                 | `planning/online-stock.service.ts`                                                                                  | `onlineStockFor()` sums **every** `VariantLocationStock` row, `IN_TRANSIT` buckets included. `assignFulfillingBranch()` reassigns a **whole order** to **one** location inside **one** database.                                                                                                                                                                              |
+| Shipments                    | `orders.prisma` `Shipment`, `fulfilment.prisma` `ShipmentItem`                                                      | Partial shipments exist (`ShipmentItem`). A shipment records no ship-from location.                                                                                                                                                                                                                                                                                           |
+| Domain events                | `core/events/domain-events.ts`                                                                                      | No `StockMoved` (named in `RETAIL-ERP.md` Part 5, never built). No transfer dispatch or receive event.                                                                                                                                                                                                                                                                        |
+| Replication                  | `core/replication/`, `replication.prisma`                                                                           | Real: log, cursors, registry, quarantine, agent. Registered entities include `Order`, `Product`, `GoodsReceipt`, `BomProductionRun` and `Expense`. Several `apply()` paths still throw ("consolidation not built"). `StockMovement` and `StockTransfer` are not replicated.                                                                                                   |
+| EDI                          | `18-trading-partner-network.md` WO-18.5; `tradingpartners`                                                          | Deferred "until a real partner names the standard". `tradingpartners` is a JSON fact protocol between NEWAX nodes (ADR-087), not X12 or EDIFACT, with no transport for a VAN or AS2                                                                                                                                                                                           |
+| Customer invoice             | `invoicing.prisma` `Invoice`                                                                                        | Keyed to `tradingPartnerId`, never posted to the GL. The AR ledger keys `Contact`/`Order` (`receivables.prisma` header)                                                                                                                                                                                                                                                       |
+| Manufacturing                | `bom.prisma`, `production.prisma`, ADR-020                                                                          | Two stacks. `BomRecipe` is flat by rule ("Sub-assemblies are explicitly deferred"). `BomProductionRun` is a one-shot completion record with cost snapshots, lots genealogy, tier scope and an UP replication listener. `WorkOrder` (production) has a DRAFT/RELEASED/COMPLETED lifecycle over `BillOfMaterial`. Neither has routings, work centers, MRP, quality or capacity. |
+| Ledger coverage              | `posting-rules.subscriber.ts`                                                                                       | No rule for `GoodsReceived` (no GRNI account), `BomProductionCompleted`, adjustments, counts or write-offs. `JournalLine` has no `locationId`. `costCentreId` has no backing model. The chart (`chart-of-accounts.ts`) has one `1200 Inventory` account and no WIP, overhead-absorbed, variance or deduction accounts.                                                        |
+| Quality                      | schema-wide                                                                                                         | Absent. `planning`'s `supplierScorecard().defectRatePct` is honestly `null` because no defect field exists (ADR-066).                                                                                                                                                                                                                                                         |
+| Review-queue idiom           | `MarkdownSuggestion`, `VariantForecast`, `StockVariance`, `SpotCheck` (inventory)                                   | The shape phantom-stock suspects should copy                                                                                                                                                                                                                                                                                                                                  |
 
 ## 3. Node topology: DCs and plants, and the proposed rulings R27–R30
 
 The question was whether `R7` ("the box is a cache, the branch cloud DB is
 the record, the till has the last word") needs amending for a warehouse or
 DC node type, and, by the coordinator's addition, for a manufacturing plant.
-Both questions are one decision: *what kinds of node can a `Node` be?*
+Both questions are one decision: _what kinds of node can a `Node` be?_
 
 **Decision: `NodeRole` stays a tier, never a function. R7 is not amended.**
 
@@ -90,9 +90,9 @@ cache of policy, and pushes facts up. So:
 **Where a DC or plant lives.** Two placements, both admissible under R1, R2,
 R7 and R13 without amendment:
 
-| Placement | When | What it costs |
-|---|---|---|
-| **A. A `WAREHOUSE` or `PRODUCTION` `Location` inside an existing node** (the brand master, or the org node for central purchasing, per R13's "org warehouse `Location`") | **The default, and the only placement Tranches W, O, E and M need** | The site's operations depend on that node's availability. There is no offline box for it unless the node itself has one. |
+| Placement                                                                                                                                                                                                                       | When                                                                                                               | What it costs                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A. A `WAREHOUSE` or `PRODUCTION` `Location` inside an existing node** (the brand master, or the org node for central purchasing, per R13's "org warehouse `Location`")                                                        | **The default, and the only placement Tranches W, O, E and M need**                                                | The site's operations depend on that node's availability. There is no offline box for it unless the node itself has one.                                                                    |
 | **B. A `BRANCH`-tier site node** of its own, whose principal `Location` is `WAREHOUSE` or `PRODUCTION`, optionally with a box (R7 unchanged, read as "the device on the floor has the last word": a handheld instead of a till) | A site that must keep scanning through an internet outage, or must hold its own database for scale or jurisdiction | Depends on replication work that is not built: `StockMovement` replication (WO-20.4), cross-node transfers (R3/R4), consolidation (WO-20.6). It also needs R27 below for an org-owned site. |
 
 **The four rulings proposed for `RETAIL-ERP.md`.** This work does not edit
@@ -100,7 +100,7 @@ that file; the owner decides (OD-6). Text as it would be inserted after R26:
 
 > **R27. A node's tier is not its site's function.** `NodeRole` names a tier
 > (`BRANCH`, `BRAND`; `ORG` and `STANDALONE` by env). A store, a DC and a
-> plant that hold their own database are all `BRANCH`-tier *site nodes*.
+> plant that hold their own database are all `BRANCH`-tier _site nodes_.
 > Their function is their `Location.type` and the modules they boot. A site
 > node may be parented by the ORG node when the organization, not a brand,
 > owns it (a central DC under R13, a plant serving several brands). The
@@ -114,7 +114,7 @@ that file; the owner decides (OD-6). Text as it would be inserted after R26:
 >
 > **R28. Routing decides where; only the node holding the goods records the
 > stock fact.** R26 holds as written inside one database. Across databases,
-> the node taking an order may *allocate* a line to another node's location.
+> the node taking an order may _allocate_ a line to another node's location.
 > The allocation is a request the holding node accepts or rejects, and that
 > holding node alone records the stock movement, which flows up as a fact.
 > Available-to-promise for another node's location is derived:
@@ -169,21 +169,21 @@ passes the same three tests:
 3. Every flow into and out of it is a domain event or a read-only
    `PrismaService` read (the `reports` / `planning` precedent).
 
-| Module | Folder | Owns | Wanted alone by | Not wanted by |
-|---|---|---|---|---|
-| `warehouse` | `supply-chain/warehouse/` | `WarehouseSite`, `WarehouseZone`, `Bin`, `BinStock`, `BinMovement`, `WarehouseTask`, `PickWave`, `Carton` (SSCC), `ShipmentLoad`, `BinVariance` | a single-DC web shop; a vendor packing SSCC cartons | a store chain doing ship-from-store with no bins |
-| `orderrouting` | `sales/orderrouting/` | `RoutingPolicyVersion`, `FulfilmentRequest`, `FulfilmentRequestLine`, `PickupHandover` | a store chain doing click and collect | a single-location shop |
-| `supplynetwork` | `supply-chain/supplynetwork/` | `SupplyRegion`, `SupplyLane`, `SourcingRuleSet`, `SourcingRule` | a manufacturer planning plants (MRP); a chain routing orders | a single-location shop |
-| `edi` | `system/edi/` | `EdiPartner`, `EdiPartnerChange`, `EdiMapProfile`, `EdiInterchange`, `EdiInboundDocument`, `EdiOutboundDocument`, `EdiControlNumberCounter` | a chain exchanging EDI with its own suppliers (buy side), with no vendor-compliance code | anyone not trading by EDI |
-| `vendorcompliance` | `sales/vendorcompliance/` | `RetailerProgram`, `CompliancePolicyVersion`, `RetailerShipTo`, `RetailerItem`, `RetailerPurchaseOrder`(+lines), `OtifObservation`, `Deduction`, `DeductionDispute`, `RetailerSellThroughBatch`(+lines) | a supplier selling into large retailers | a retail chain buying by EDI |
-| `manufacturing` | `supply-chain/manufacturing/` | `WorkCenter`, `WorkCenterCalendar`, `WorkCenterRateVersion`, `Routing`, `RoutingOperation`, `OperationLog`, `SubcontractOperation` | a multi-plant or routed single plant | a bakery that only needs recipes and runs (`bom` alone) |
-| `quality` | `supply-chain/quality/` | `InspectionPlan`, `InspectionCharacteristic`, `InspectionLot`, `InspectionResult`, `QualityHoldSite`, `NonConformance` | a DC doing inbound AQL inspection; a plant | a shop with no inspection |
-| `rfid` | `supply-chain/rfid/` | `RfidReader`, `RfidZone`, `RfidCountSession`, `RfidObservedCount`, `EpcMapping` | a chain with tagged stock | everyone else |
+| Module             | Folder                        | Owns                                                                                                                                                                                                                                                                 | Wanted alone by                                                                          | Not wanted by                                           |
+| ------------------ | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `warehouse`        | `supply-chain/warehouse/`     | `WarehouseSite`, `WarehouseZone`, `Bin`, `BinStock`, `BinMovement`, `WarehouseDemandLine`, `WarehouseTask`, `PickWave`, `WarehouseRuleVersion`, `Carton`/`CartonLine` (SSCC), `SsccSerialBlock`, `ShipmentLoad`, `BinVariance`                                       | a single-DC web shop; a vendor packing SSCC cartons                                      | a store chain doing ship-from-store with no bins        |
+| `orderrouting`     | `sales/orderrouting/`         | `LocationRoutingProfile`, `RoutingPolicyVersion`, `FulfilmentRequest`, `FulfilmentRequestLine`, `PickupHandover`                                                                                                                                                     | a store chain doing click and collect                                                    | a single-location shop                                  |
+| `supplynetwork`    | `supply-chain/supplynetwork/` | `SupplyRegion`, `SupplyLane`, `SourcingRuleSet`, `SourcingRule`                                                                                                                                                                                                      | a manufacturer planning plants (MRP); a chain routing orders                             | a single-location shop                                  |
+| `edi`              | `system/edi/`                 | `EdiPartner`, `EdiPartnerChange`, `EdiMapProfile`, `EdiInterchange`, `EdiInboundDocument`, `EdiOutboundDocument`, `EdiControlNumberCounter`                                                                                                                          | a chain exchanging EDI with its own suppliers (buy side), with no vendor-compliance code | anyone not trading by EDI                               |
+| `vendorcompliance` | `sales/vendorcompliance/`     | `RetailerProgram`, `CompliancePolicyVersion`, `RetailerShipTo`, `RetailerItem`, `RetailerPurchaseOrder`(+lines), `RetailerPoChange`, `OtifObservation`, `RetailerRemittance`, `Deduction`, `DeductionEvidence`, `RetailerSellThroughBatch`(+lines, + weekly roll-up) | a supplier selling into large retailers                                                  | a retail chain buying by EDI                            |
+| `manufacturing`    | `supply-chain/manufacturing/` | `WorkCenter`, `WorkCenterCalendar`, `WorkCenterRateVersion`, `Routing`, `RoutingOperation`, `OperationLog`, `SubcontractorSite`                                                                                                                                      | a multi-plant or routed single plant                                                     | a bakery that only needs recipes and runs (`bom` alone) |
+| `quality`          | `supply-chain/quality/`       | `InspectionPlan`, `InspectionCharacteristic`, `InspectionLot`, `InspectionResult`, `QualityHoldSite`, `NonConformance`                                                                                                                                               | a DC doing inbound AQL inspection; a plant                                               | a shop with no inspection                               |
+| `rfid`             | `supply-chain/rfid/`          | `RfidReader`, `RfidZone`, `RfidCountSession`, `RfidSessionEpc`, `RfidObservedCount`                                                                                                                                                                                  | a chain with tagged stock                                                                | everyone else                                           |
 
 **Why not fewer:**
 
-- **WMS and OMS as one module.** OMS decides *where* across locations; WMS
-  decides *how* inside one. A store chain routes with no bins, and a
+- **WMS and OMS as one module.** OMS decides _where_ across locations; WMS
+  decides _how_ inside one. A store chain routes with no bins, and a
   single-DC shop bins with no routing.
 - **EDI and vendor compliance as one module.** A chain receiving ASNs from
   its own suppliers needs EDI and none of the retailer-compliance money
@@ -241,7 +241,7 @@ So:
   `EdiDocumentAcknowledged`, `EdiDocumentFailed`). Canonical types live in
   `packages/shared` so no module imports another to read them.
 - **`vendorcompliance`** owns the sell-side relationship with a retailer as a
-  *compliance program*: versioned rules with provenance, POs as obligations,
+  _compliance program_: versioned rules with provenance, POs as obligations,
   ASN deadlines, OTIF, deductions and disputes.
 - **`tradingpartners`** becomes the **buy-side** consumer. A supplier's
   inbound 856 or 810 is mapped onto the existing `PartnerFactInbox`
@@ -267,32 +267,33 @@ ships none (§10).
 **New domain events** (each both a `DomainEvent` constant and a
 `DomainEventPayloads` entry; every handler idempotent):
 
-| Event | Published by | Consumed by |
-|---|---|---|
-| `StockMoved` | `inventory` (inside the movement's transaction) | `warehouse` (reconcile non-WMS movements into the site's receiving bin), `rfid`/phantom checks |
-| `FulfilmentRequestCreated` / `…StatusChanged` | `orderrouting` | `warehouse` (pick demand at a WMS site), `notify` (pickup ready) |
-| `WarehouseShipConfirmed` | `warehouse` | `orderrouting` (request shipped), `transfers` (dispatch a `REQUESTED` transfer), `vendorcompliance` (ship time for ASN and OTIF) |
-| `ShipmentPacked` | `warehouse` | `vendorcompliance` (SSCC carton hierarchy for the 856) |
-| `BinVarianceRaised` | `warehouse` | `notify` |
-| `SourcingRulesActivated` | `supplynetwork` | `orderrouting`, `planning` (cache invalidation) |
-| `EdiDocumentReceived` / `Sent` / `Acknowledged` / `Failed` | `edi` | `vendorcompliance` (sell side), `tradingpartners` (buy side) |
-| `EdiDocumentRequested` | `vendorcompliance`, `tradingpartners` | `edi` |
-| `RetailerPurchaseOrderAccepted` | `vendorcompliance` | `orderrouting` (if on) |
-| `DeductionRecorded` / `DeductionResolved` | `vendorcompliance` | `accounting` |
-| `BomProductionOrderReleased` / `Closed` | `bom` | `manufacturing` (create operation queue), `accounting` (variance on close) |
-| `OperationCompleted` | `manufacturing` | `bom` (final operation's good quantity records a `BomProductionRun`) |
-| `QualityDecisionRecorded` / `QualityDispositionRecorded` | `quality` | `planning` (R25 defect rate), `accounting` (scrap write-off) |
-| `RfidCountObserved` | `rfid` | `inventory` (phantom-stock suspects) |
-| `PlannedOrderAccepted` | `planning` | `bom` (draft production order), `purchasing` (`PurchaseRequisition`) |
+| Event                                                                                                         | Published by                                    | Consumed by                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `StockMoved`                                                                                                  | `inventory` (inside the movement's transaction) | `warehouse` (classify every movement at a WMS site: demand, inbound, removal; doc 237 §1)                                                                                     |
+| `FulfilmentRequestCreated` / `…StatusChanged`                                                                 | `orderrouting`                                  | `warehouse` (pick demand at a WMS site), `notify` (pickup ready)                                                                                                              |
+| `WarehouseShipConfirmed`                                                                                      | `warehouse`                                     | `orderrouting` (request shipped), `transfers` (records `StockTransfer.physicallyShippedAt`, one additive column; doc 237 §3), `vendorcompliance` (ship time for ASN and OTIF) |
+| `ShipmentPacked`                                                                                              | `warehouse`                                     | `vendorcompliance` (SSCC carton hierarchy for the 856)                                                                                                                        |
+| `BinVarianceRaised`                                                                                           | `warehouse`                                     | `notify`                                                                                                                                                                      |
+| `SourcingRulesActivated`                                                                                      | `supplynetwork`                                 | `orderrouting`, `planning` (cache invalidation)                                                                                                                               |
+| `EdiDocumentReceived` / `Sent` / `Acknowledged` / `Failed`                                                    | `edi`                                           | `vendorcompliance` (sell side), `tradingpartners` (buy side)                                                                                                                  |
+| `EdiDocumentRequested`                                                                                        | `vendorcompliance`, `tradingpartners`           | `edi`                                                                                                                                                                         |
+| `RetailerPurchaseOrderAccepted`                                                                               | `vendorcompliance`                              | `orderrouting` (if on)                                                                                                                                                        |
+| `DeductionRecorded` / `DeductionResolved`                                                                     | `vendorcompliance`                              | `accounting`                                                                                                                                                                  |
+| `BomProductionOrderReleased` / `Closed`                                                                       | `bom`                                           | `manufacturing` (create operation queue), `accounting` (variance on close)                                                                                                    |
+| `OperationCompleted`                                                                                          | `manufacturing`                                 | `bom` (final operation's good quantity records a `BomProductionRun`), `quality` (in-process inspection lot)                                                                   |
+| `QualityDecisionRecorded` / `QualityDispositionRecorded`                                                      | `quality`                                       | `accounting` (scrap write-off), `notify`. `planning`'s R25 defect rate reads `InspectionLot` read-only instead (WO-243.5)                                                     |
+| `RfidCountObserved`                                                                                           | `rfid`                                          | `inventory` (phantom-stock suspects)                                                                                                                                          |
+| `PlannedOrderAccepted`                                                                                        | `planning`                                      | `bom` (draft production order), `purchasing` (`PurchaseRequisition`)                                                                                                          |
+| _Existing, newly consumed:_ `GoodsReceived`, `BomProductionCompleted`, `OrderPlaced`, `ShipmentStatusChanged` | as today                                        | `quality` (safety-net hold), `accounting` (production posting, doc 242), `orderrouting` (route on placement), `vendorcompliance` (delivery evidence for OTIF)                 |
 
 **New `KNOWN_MODULE_COUPLINGS` entries.** Each is a same-transaction write
 into `inventory`, the exact case the list exists for:
 
-| Entry | The write that must commit together |
-|---|---|
-| `warehouse -> inventory` | a bin-count correction and the location-level `COUNT` movement it implies (doc 237 WO-237.5) |
+| Entry                       | The write that must commit together                                                                                                                                  |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `warehouse -> inventory`    | a bin-count correction and the location-level `COUNT` movement it implies (doc 237 WO-237.5)                                                                         |
 | `orderrouting -> inventory` | reversing stock at a line's provisional location and committing it at the routed one, with the `FulfilmentRequestLine` write (the `planning -> inventory` precedent) |
-| `quality -> inventory` | moving goods into or out of a `QUALITY_HOLD` location, with the `InspectionLot` decision |
+| `quality -> inventory`      | moving goods into or out of a `QUALITY_HOLD` location, with the `InspectionLot` decision                                                                             |
 
 Plus one channel entry, **only if the owner rejects OD-3**:
 `vendorcompliance -> orders` (the `accounts -> orders` precedent).
@@ -346,18 +347,18 @@ data (R20's manifest-awareness).
 
 ## 8. Documents this changes (proposed amendments, not made in this work)
 
-| Document | Amendment |
-|---|---|
-| `RETAIL-ERP.md` | Insert R27–R30 (§3). Part 5: `fulfilment`'s row loses "click & collect, ship-from-store, endless aisle" to `orderrouting`; add the eight modules. R26 gains a pointer to R28. Part 7 gains a pointer to §12 below. |
-| `ENTERPRISE-SCALE.md` | L-rules: a bin is not a `Location` (R29); enforcement table gains `StockMoved` reconciliation and the promisable-location predicate. The S4 gap gains the four presets of §7 as its CI matrix. |
-| `MULTI-SECTOR.md` | Capability table gains the eight modules. "Commercial-tier module conventions" gains the four presets. `KNOWN_MODULE_COUPLINGS` list in the prose gains the three entries. |
-| `18-trading-partner-network.md` | WO-18.5's status: framework built by docs 240 and 241. `ediFormat` replaced by `TradingPartner.ediPartnerId`. |
-| `integrations-connectivity/213-partner-fact-exchange.md` | Out-of-scope line "EDI/e-invoicing translation" now points to doc 240. |
-| `resilience-scalability/144-supply-chain-resilience-planning-engine.md` | `onlineStockFor()` must use the promisable-location predicate. `assignFulfillingBranch()` is superseded for per-line routing by `orderrouting`; kept, not deleted. |
-| `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | Gains a "supply-chain operations" section scoring docs 237–244. |
-| `docs/implementation/README.md` | A "Numbers 236–244" paragraph pointing at this folder. |
-| `module-packs.ts`, `modules.registry.ts`, the four `.env*.example` files | One line per new module (`core`, `offByDefault`); `EDI_GATEWAYS`, `RFID_DRIVERS` |
-| `CLAUDE.md` | None. The three-axes table already says "a `Location` row on the movement; at chain scale, a node". R27 refines it without contradicting it. |
+| Document                                                                 | Amendment                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `RETAIL-ERP.md`                                                          | Insert R27–R30 (§3). Part 5: `fulfilment`'s row loses "click & collect, ship-from-store, endless aisle" to `orderrouting`; add the eight modules. R26 gains a pointer to R28. Part 7 gains a pointer to §12 below. |
+| `ENTERPRISE-SCALE.md`                                                    | L-rules: a bin is not a `Location` (R29); enforcement table gains `StockMoved` reconciliation and the promisable-location predicate. The S4 gap gains the four presets of §7 as its CI matrix.                     |
+| `MULTI-SECTOR.md`                                                        | Capability table gains the eight modules. "Commercial-tier module conventions" gains the four presets. `KNOWN_MODULE_COUPLINGS` list in the prose gains the three entries.                                         |
+| `18-trading-partner-network.md`                                          | WO-18.5's status: framework built by docs 240 and 241. `ediFormat` replaced by `TradingPartner.ediPartnerId`.                                                                                                      |
+| `integrations-connectivity/213-partner-fact-exchange.md`                 | Out-of-scope line "EDI/e-invoicing translation" now points to doc 240.                                                                                                                                             |
+| `resilience-scalability/144-supply-chain-resilience-planning-engine.md`  | `onlineStockFor()` must use the promisable-location predicate. `assignFulfillingBranch()` is superseded for per-line routing by `orderrouting`; kept, not deleted.                                                 |
+| `RETAIL-VERTICAL-COVERAGE-MATRIX.md`                                     | Gains a "supply-chain operations" section scoring docs 237–244.                                                                                                                                                    |
+| `docs/implementation/README.md`                                          | A "Numbers 236–244" paragraph pointing at this folder.                                                                                                                                                             |
+| `module-packs.ts`, `modules.registry.ts`, the four `.env*.example` files | One line per new module (`core`, `offByDefault`); `EDI_GATEWAYS`, `RFID_DRIVERS`                                                                                                                                   |
+| `CLAUDE.md`                                                              | None. The three-axes table already says "a `Location` row on the movement; at chain scale, a node". R27 refines it without contradicting it.                                                                       |
 
 ## 9. Open decisions for the owner
 
@@ -484,13 +485,13 @@ provenance, and no default**:
 
 ## 11. The five pillars
 
-| Pillar | How this program touches it |
-|---|---|
-| Proper architecture | Eight independent modules, three same-transaction couplings into `inventory`, everything else events and read-only reads; no pack, no conditional on profile; R27–R30 keep one writer per invariant |
-| Scalable systems | Bins as a sub-ledger, not 50,000 `Location` rows each read by every location picker. Available-to-promise is a read-time indexed query (Ruling 5). Node-local high-frequency facts. Row-count estimates per brief. Partitioning named with measured triggers. |
-| Secure by design | Every route `@RequirePermission`. Device-credential principals for handhelds and RFID readers. EDI partner credential changes need two people. Retailer data scoped by `RetailerProgram`. Pickup codes hashed and reset-guarded. |
-| Stable & reliable | Store first, apply second for every inbound EDI document. Idempotency keys on every inbound fact. Durable outbound sender with dead letters and replay. Handheld offline under a bounded ceiling (canonical Ruling 2). Reconciliation queues instead of silent drift. |
-| Observable | Structured `Logger` in every service. EDI message monitor and dead-letter screen. Deadline alerts to permission holders. Evidence-class audit on money and policy changes (canonical Ruling 9). No APM is claimed (ADR-017 stays open). |
+| Pillar              | How this program touches it                                                                                                                                                                                                                                           |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Proper architecture | Eight independent modules, three same-transaction couplings into `inventory`, everything else events and read-only reads; no pack, no conditional on profile; R27–R30 keep one writer per invariant                                                                   |
+| Scalable systems    | Bins as a sub-ledger, not 50,000 `Location` rows each read by every location picker. Available-to-promise is a read-time indexed query (Ruling 5). Node-local high-frequency facts. Row-count estimates per brief. Partitioning named with measured triggers.         |
+| Secure by design    | Every route `@RequirePermission`. Device-credential principals for handhelds and RFID readers. EDI partner credential changes need two people. Retailer data scoped by `RetailerProgram`. Pickup codes hashed and reset-guarded.                                      |
+| Stable & reliable   | Store first, apply second for every inbound EDI document. Idempotency keys on every inbound fact. Durable outbound sender with dead letters and replay. Handheld offline under a bounded ceiling (canonical Ruling 2). Reconciliation queues instead of silent drift. |
+| Observable          | Structured `Logger` in every service. EDI message monitor and dead-letter screen. Deadline alerts to permission holders. Evidence-class audit on money and policy changes (canonical Ruling 9). No APM is claimed (ADR-017 stays open).                               |
 
 ## 12. Roadmap — tranches
 
@@ -509,8 +510,8 @@ SC0 ──┬── W (warehouse) ───────────────�
       └── N (site nodes) ── needs RETAIL-ERP WO-20.4 / WO-20.6; nothing above waits for N
 ```
 
-**Tranche SC0 — the floor everything stands on.** *Cheap, and each item is
-a defect or gap already present.*
+**Tranche SC0 — the floor everything stands on.** _Cheap, and each item is
+a defect or gap already present._
 
 - `WO-236.1` `StockMoved` event from `InventoryService` inside the
   movement's transaction. **Bar:** p95 latency of `move()` measured before
@@ -518,9 +519,17 @@ a defect or gap already present.*
   not regress by more than 15%, else OD-7's fallback.
 - `WO-236.2` A promisable-location predicate in `packages/shared`
   (`isPromisableLocationType`: `STORE`, `WAREHOUSE` yes; `IN_TRANSIT`,
-  `PRODUCTION`, `QUALITY_HOLD` no). Additive `LocationType.QUALITY_HOLD`.
+  `PRODUCTION`, `QUALITY_HOLD`, `SUBCONTRACTOR` no). Additive
+  `LocationType.QUALITY_HOLD` (R30, doc 243) and `LocationType.SUBCONTRACTOR`
+  (our stock held at a contract manufacturer, doc 242), in one migration.
   `onlineStockFor()` uses the predicate. This fixes it summing in-transit
-  stock.
+  stock. Storefront availability display reads `ProductVariant.stock`
+  (`InventoryService`'s own comment: "the live number the storefront checks
+  against"), which is the sum across **all** locations. Once a deployment
+  holds non-promisable stock (in transit, held, at a contractor), that
+  display switches to the promisable read. Commits are already safe, because
+  `move()`'s guard checks the committing location. The display is what
+  overstates.
 - `WO-236.3` **Restock from the ledger.** Order cancellation and return
   inspection restock each `(variant, location)` the order's own
   `StockMovement` rows (`refType = 'Order'`) net-committed, instead of

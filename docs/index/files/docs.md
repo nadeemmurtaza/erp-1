@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 559 tracked files in `docs/*`, by directory.
+All 567 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -839,7 +839,7 @@ All 559 tracked files in `docs/*`, by directory.
 | `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
-| `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 302 |  |
+| `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
@@ -1019,11 +1019,19 @@ All 559 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
-### `docs/implementation/supply-chain-operations` (2)
+### `docs/implementation/supply-chain-operations` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `236-supply-chain-operations-architecture.md` | doc | 603 |  |
+| `236-supply-chain-operations-architecture.md` | doc | 612 |  |
+| `237-warehouse-management.md` | doc | 523 |  |
+| `238-order-routing-omnichannel-fulfilment.md` | doc | 445 |  |
+| `239-supply-network-sourcing-rules.md` | doc | 231 |  |
+| `240-edi-gateway.md` | doc | 495 |  |
+| `241-retailer-vendor-compliance.md` | doc | 549 |  |
+| `242-multi-plant-manufacturing.md` | doc | 496 |  |
+| `243-quality-inspection-holds.md` | doc | 283 |  |
+| `244-rfid-phantom-inventory.md` | doc | 260 |  |
 | `README.md` | doc | 43 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)

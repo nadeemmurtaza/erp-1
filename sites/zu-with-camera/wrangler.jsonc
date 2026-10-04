@@ -1,0 +1,8 @@
+{
+  "name": "zu-with-camera",
+  "compatibility_date": "2024-09-23",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page"
+  }
+}

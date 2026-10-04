@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 214 tracked files in `repository root files`, by directory.
+All 225 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -471,6 +471,27 @@ All 214 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `setup-env.ts` | module | 11 |  |
+
+### `sites/zu-with-camera` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `index.html` | html | — |  |
+| `script.js` | script | 803 | ---------- Config / placeholders ---------- |
+| `styles.css` | stylesheet | 508 |  |
+
+### `sites/zu-with-camera/images` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `brand-led-sign.jpg` | jpg | — |  |
+| `event-telescope.jpg` | jpg | — |  |
+| `graduation-cap.jpg` | jpg | — |  |
+| `graduation-lawn.jpg` | jpg | — |  |
+| `graduation-seated.jpg` | jpg | — |  |
+| `onset-bricks.jpg` | jpg | — |  |
+| `onset-street.jpg` | jpg | — |  |
+| `studio-lighting.jpg` | jpg | — |  |
 
 
 ---

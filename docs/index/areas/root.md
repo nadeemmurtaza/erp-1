@@ -3,7 +3,7 @@
 
 # repository root files
 
-214 files · 16,187 lines
+225 files · 17,498 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -34,6 +34,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma` | 13 | 1,947 | prisma schema, migration, toml |
 | `apps/platform/src` | 144 | 9,730 | nest module, service, config, module |
 | `apps/platform/test` | 1 | 11 | module |
+| `sites/zu-with-camera` | 3 | 1,311 | html, script, stylesheet |
+| `sites/zu-with-camera/images` | 8 | 0 | jpg |
 
 
 ## Entry points
@@ -43,6 +45,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/package.json` | json |  |
 | `apps/platform/src/app.module.ts` | nest module |  |
 | `apps/platform/src/main.ts` | module |  |
+| `sites/zu-with-camera/index.html` | html |  |
 
 
 ## Largest files (where the weight is)
@@ -51,7 +54,9 @@ Workspace manifests, Docker compose and stack files, environment templates.
 |---|---|---|---|
 | `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
+| `sites/zu-with-camera/script.js` | 803 | script | ---------- Config / placeholders ---------- |
 | `DEPLOYMENT.md` | 529 | doc |  |
+| `sites/zu-with-camera/styles.css` | 508 | stylesheet |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
@@ -62,8 +67,6 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.claude/rules/ui.md` | 217 | doc |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `README.md` | 213 | doc |  |
-| `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
-| `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 
 
 ---

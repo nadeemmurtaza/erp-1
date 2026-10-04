@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zu with Camera — Photo &amp; film, Lahore</title>
+<meta name="description" content="Zainab &quot;Zu&quot; Ijaz — graduation portraits, brand content and event coverage in Lahore. Photo and film.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="intro" class="intro" aria-hidden="true">
+  <div class="intro-half top"></div>
+  <div class="intro-half bottom"></div>
+  <div class="intro-dial">
+    <div class="intro-arm"></div>
+    <div class="intro-count"><span>3</span><span>2</span><span>1</span></div>
+  </div>
+  <div class="intro-caption mono">Zu with Camera · Reel 01 · click to skip</div>
+</div>
+
+<header class="nav">
+  <a href="#top" class="wordmark disp">Zu/with<br>camera</a>
+  <div class="nav-center mono" id="frame-counter">Frame 0000 · Photo &amp; film · Lahore</div>
+  <a class="btn-outline mag" href="#book" data-mag="nav">Book a shoot</a>
+</header>
+
+<nav class="reel" aria-label="Page progress">
+  <div class="reel-track"></div>
+  <div class="reel-fill" id="reel-fill"></div>
+  <div class="reel-marks" id="reel-marks"></div>
+</nav>
+
+<main id="top">
+
+  <section id="hero" class="hero">
+    <div class="hero-photos" id="hero-photos">
+      <div class="hero-photo photo-a" id="photo-a"><img src="images/graduation-cap.jpg" alt="Graduate saluting in cap and gown"></div>
+      <div class="hero-photo photo-b" id="photo-b"><img src="images/brand-led-sign.jpg" alt="Model under an LED sign for a streetwear reel"></div>
+      <div class="hero-photo photo-c" id="photo-c"><img src="images/onset-bricks.jpg" alt="Black and white still from a film set"></div>
+    </div>
+    <div class="hero-deck" id="hero-deck" role="button" tabindex="0" aria-label="Show next photo"></div>
+    <div class="cursor-trail" id="cursor-trail" aria-hidden="true"></div>
+    <h1 id="hero-title" class="disp hero-title" aria-label="Zu with Camera">
+      <span class="hero-line" id="hero-line-1"></span>
+      <span class="hero-line" id="hero-line-2"></span>
+    </h1>
+    <div class="hero-meta">
+      <div class="mono">Zainab Ijaz · LCWU media student</div>
+      <div class="mono">Graduation · Brands · Events · On set</div>
+      <div class="mono muted hide-touch">Move your cursor across this space</div>
+      <div class="mono hero-scroll">Scroll ↓</div>
+    </div>
+  </section>
+
+  <section class="marquee-band" aria-label="What I shoot">
+    <div class="mq-row"><div class="mq-track" id="mq-1">
+      <span class="disp">Graduation</span><span class="disp">/</span><span class="disp">Brands</span><span class="disp">/</span><span class="disp">Events</span><span class="disp">/</span><span class="disp">On set</span><span class="disp">/</span>
+      <span class="disp">Graduation</span><span class="disp">/</span><span class="disp">Brands</span><span class="disp">/</span><span class="disp">Events</span><span class="disp">/</span><span class="disp">On set</span><span class="disp">/</span>
+    </div></div>
+    <div class="mq-row"><div class="mq-track mq-outline" id="mq-2">
+      <span class="disp">Photo</span><span class="disp">+</span><span class="disp">Film</span><span class="disp">+</span><span class="disp">Lahore</span><span class="disp">+</span>
+      <span class="disp">Photo</span><span class="disp">+</span><span class="disp">Film</span><span class="disp">+</span><span class="disp">Lahore</span><span class="disp">+</span>
+    </div></div>
+  </section>
+
+  <section id="work" class="work-section">
+    <div class="work-pin">
+      <div class="work-head">
+        <div class="work-head-left">
+          <h2 class="disp">Contact sheet</h2>
+          <div class="chip-row" id="filter-chips" role="group" aria-label="Filter by kind of work"></div>
+        </div>
+        <div class="mono work-count" id="work-count">Frame 01 / 08 · click to open</div>
+      </div>
+      <div class="strip-viewport">
+        <div class="strip-track" id="strip-track"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="films" class="films-section">
+    <div class="films-pin">
+      <div class="films-ghost disp" id="films-ghost" aria-hidden="true">Films · Films · Films</div>
+      <div class="films-frame">
+        <button class="film-play" id="film-play" aria-label="Play showreel" aria-pressed="false">
+          <img src="images/studio-lighting.jpg" alt="Studio set prepared for a shoot" id="film-img">
+          <span class="film-play-icon" id="film-play-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 5.5v13l11-6.5z"></path></svg>
+          </span>
+          <span class="mono film-label">02 / Films · Showreel · [FILM TITLE]</span>
+          <span class="mono film-now" id="film-now" hidden>Now playing · [FILM TITLE]</span>
+          <span class="film-progress" id="film-progress"></span>
+        </button>
+        <a href="https://www.instagram.com/zuwithfilms" class="mono film-link" id="film-link">More on @zuwithfilms →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="words" class="words-section">
+    <div class="mono muted section-tag">03 / What clients say</div>
+    <p class="quote" id="quote-text"></p>
+    <div class="words-foot">
+      <div class="mono">[Client name] · Graduation shoot</div>
+      <div class="mono muted">&ldquo;Zainab, the pictures were so cute. Loved those.&rdquo; · [Client name], LCWU</div>
+    </div>
+  </section>
+
+  <section id="services" class="services-section">
+    <div class="services-head">
+      <h2 class="disp">What we can make</h2>
+      <p class="muted services-sub">Three ways to work together. Scroll and they stack.</p>
+    </div>
+    <div class="cards">
+      <article class="card card-0" id="card-0">
+        <div class="card-body">
+          <div class="mono">01 / Graduation &amp; portraits</div>
+          <div class="disp card-title">Your day, in frames</div>
+          <p class="card-copy">Relaxed sessions on campus or on location. Solo, with friends, or with the family who got you here.</p>
+          <div class="mono card-price">From [PRICE] · [DELIVERY TIME]</div>
+        </div>
+        <img src="images/graduation-seated.jpg" alt="Graduate seated on grass">
+      </article>
+      <article class="card card-1" id="card-1">
+        <div class="card-body">
+          <div class="mono">02 / Brand content</div>
+          <div class="disp card-title">Reels that look like you</div>
+          <p class="card-copy">Short-form video and product stills for Pakistani labels, from streetwear drops to skincare launches.</p>
+          <div class="mono card-price">From [PRICE] · [DELIVERY TIME]</div>
+        </div>
+        <img src="images/brand-led-sign.jpg" alt="Model posing under an LED sign">
+      </article>
+      <article class="card card-2" id="card-2">
+        <div class="card-body">
+          <div class="mono">03 / Events &amp; film</div>
+          <div class="disp card-title">Nights, talks, sets</div>
+          <p class="card-copy">Event coverage, aftermovies and behind-the-scenes for short films.</p>
+          <div class="mono card-price">From [PRICE] · [DELIVERY TIME]</div>
+        </div>
+        <img src="images/event-telescope.jpg" alt="Guest at a telescope during an astronomy night">
+      </article>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <h2 class="disp about-title" id="about-title">
+      <span class="about-line" id="about-line-1"></span>
+      <span class="about-line about-accent" id="about-line-2"></span>
+    </h2>
+    <div class="about-body" id="about-body">
+      <p class="about-copy">I am a media student at LCWU, a photographer and a filmmaker from Lahore. I love photography, filmmaking, mountains, business and marketing.</p>
+      <div class="about-actions">
+        <a class="btn-solid mag" href="#book" data-mag="about">Book a shoot</a>
+        <a class="btn-ghost" href="https://www.instagram.com/zuwithcamera">@zuwithcamera</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="zoom" class="zoom-section">
+    <div class="zoom-pin">
+      <img src="images/graduation-lawn.jpg" alt="Graduate on a lawn tucking a flower behind her ear" id="zoom-img" class="zoom-img">
+      <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+        <defs>
+          <clipPath id="zoom-clip" clipPathUnits="objectBoundingBox">
+            <text id="zoom-clip-text" x="0.5" y="0.62" text-anchor="middle" style="font-family:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;font-weight:900;font-size:0.42px">LET’S SHOOT</text>
+          </clipPath>
+        </defs>
+      </svg>
+      <div class="zoom-glass" id="zoom-glass" style="clip-path:url(#zoom-clip)"></div>
+      <span class="mono zoom-hint" id="zoom-hint">Keep scrolling</span>
+      <a href="#book" class="btn-solid zoom-cta" id="zoom-cta">Tell me about your shoot ↓</a>
+    </div>
+  </section>
+
+  <section id="book" class="book-section">
+    <h2 class="disp">Check my date</h2>
+
+    <form id="book-form" class="book-form" novalidate>
+      <fieldset class="shoot-fieldset">
+        <legend class="mono muted">What are we shooting?</legend>
+        <div class="chip-row" id="shoot-chips"></div>
+      </fieldset>
+
+      <div class="book-fields">
+        <div class="field" id="date-field">
+          <label id="date-label">Date</label>
+          <button type="button" class="picker" id="date-picker" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="date-label">
+            <span id="date-picker-label" class="picker-placeholder">Choose a date</span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>
+          </button>
+          <div class="popover calendar" id="calendar-pop" role="dialog" aria-label="Choose a date" hidden>
+            <div class="cal-head">
+              <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 6l-6 6 6 6"></path></svg>
+              </button>
+              <span class="mono" id="cal-month"></span>
+              <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"></path></svg>
+              </button>
+            </div>
+            <div class="cal-grid cal-dow">
+              <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+            </div>
+            <div class="cal-grid" id="cal-days"></div>
+            <div class="cal-foot">
+              <button type="button" id="cal-today">Today</button>
+              <span class="mono cal-note">Weekends in green</span>
+              <button type="button" id="cal-clear">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="need-field">
+          <label id="need-label">Photo, film or both?</label>
+          <button type="button" class="picker" id="need-picker" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="need-label">
+            <span id="need-picker-label"></span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+          </button>
+          <div class="popover dropdown" id="need-pop" role="listbox" aria-labelledby="need-label" hidden></div>
+        </div>
+
+        <div class="field">
+          <label for="name-input">Your name</label>
+          <input id="name-input" type="text" autocomplete="name">
+        </div>
+      </div>
+
+      <div class="book-submit-row">
+        <button class="btn-wa mag" type="submit" data-mag="book">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.4-4.2A8 8 0 1 1 8.4 18.7z"></path></svg>
+          Send on WhatsApp
+        </button>
+        <span class="muted book-alt">Opens WhatsApp with your details filled in. Prefer email? <a href="mailto:[EMAIL]">[EMAIL]</a></span>
+      </div>
+    </form>
+
+    <div class="book-sent" id="book-sent" hidden>
+      <div class="mono">WhatsApp opened</div>
+      <div class="disp">Thank you. Talk soon.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="disp footer-mark">Zu</div>
+  <div class="mono footer-links">
+    <a href="https://www.instagram.com/zuwithcamera">Instagram</a>
+    <a href="https://www.instagram.com/zuwithfilms">Films</a>
+    <span class="muted">[EMAIL]</span>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+<div class="bottom-cta" id="bottom-cta">
+  <a class="btn-wa" href="#book" id="bottom-cta-link">Book a shoot on WhatsApp</a>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="mono" id="cursor-label"></span></div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Frame detail" hidden>
+  <div class="lightbox-bar">
+    <span class="mono" id="lightbox-num"></span>
+    <button class="btn-outline-dark" id="lightbox-close" aria-label="Close">Close</button>
+  </div>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-body">
+    <h2 class="disp" id="lightbox-title"></h2>
+    <div class="mono muted" id="lightbox-meta"></div>
+    <div class="lightbox-actions">
+      <a class="btn-solid" href="#book" id="lightbox-book">Book something like this</a>
+      <button class="btn-ghost" id="lightbox-next">Next frame →</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

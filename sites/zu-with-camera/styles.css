@@ -352,6 +352,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .popover.up { top: auto; bottom: calc(100% + 8px); transform-origin: 50% 100%; }
 @keyframes popIn { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
 .dropdown { right: 0; display: flex; flex-direction: column; gap: 2px; }
+.dropdown[hidden] { display: none; }
 .opt {
   display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px;
   border: 0; border-radius: 5px; background: transparent; color: var(--ink); font: 15px 'Instrument Sans', sans-serif;

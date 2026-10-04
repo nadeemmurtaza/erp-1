@@ -479,8 +479,13 @@
     // for a beat, and then all three leave at the same scroll position as one block.
     var cardsEl = document.querySelector('.cards');
     var cardEls = [$('card-0'), $('card-1'), $('card-2')];
+    // All three cards share one height (the tallest natural one), so the front card always
+    // covers the ones behind it completely.
+    cardEls.forEach(function (el) { setStyle(el, 'minHeight', ''); });
+    var cardH = Math.max.apply(null, cardEls.map(function (el) { return el.offsetHeight; }));
+    cardEls.forEach(function (el) { setStyle(el, 'minHeight', cardH + 'px'); });
     var stack = {
-      h: cardEls.map(function (el) { return el.offsetHeight; }),
+      h: cardEls.map(function () { return cardH; }),
       st: cardEls.map(function (el) { return parseFloat(getComputedStyle(el).top) || 0; }),
       gap: parseFloat(getComputedStyle(cardsEl).getPropertyValue('--stack-gap')) || 0
     };

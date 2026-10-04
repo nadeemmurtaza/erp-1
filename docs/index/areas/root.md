@@ -3,7 +3,7 @@
 
 # repository root files
 
-229 files · 17,658 lines
+229 files · 17,666 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -34,7 +34,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma` | 13 | 1,947 | prisma schema, migration, toml |
 | `apps/platform/src` | 144 | 9,730 | nest module, service, config, module |
 | `apps/platform/test` | 1 | 11 | module |
-| `sites/zu-with-camera` | 7 | 1,471 | asset, html, script, stylesheet |
+| `sites/zu-with-camera` | 7 | 1,479 | asset, html, script, stylesheet |
 | `sites/zu-with-camera/images` | 8 | 0 | jpg |
 
 
@@ -52,10 +52,10 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `sites/zu-with-camera/script.js` | 926 | script | ---------- Config / placeholders ---------- |
+| `sites/zu-with-camera/script.js` | 931 | script | ---------- Config / placeholders ---------- |
 | `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
-| `sites/zu-with-camera/styles.css` | 545 | stylesheet |  |
+| `sites/zu-with-camera/styles.css` | 548 | stylesheet |  |
 | `DEPLOYMENT.md` | 529 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |

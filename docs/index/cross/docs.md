@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**602** markdown documents. These explain **why**; this index only says **where**.
+**608** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3056,7 +3056,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>132 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>134 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3412,6 +3412,14 @@ _no second-level headings_
 
 _no second-level headings_
 
+### `docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md`  <sub>276 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md`  <sub>174 lines</sub>
+
+_no second-level headings_
+
 ### `docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md`  <sub>80 lines</sub>
 
 _no second-level headings_
@@ -3490,6 +3498,39 @@ _no second-level headings_
 - Work orders  <sub>:247</sub>
 - Acceptance  <sub>:267</sub>
 - Out of scope  <sub>:281</sub>
+
+### `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md`  <sub>982 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified in code, 2026-10-04)  <sub>:24</sub>
+- 1. Where this lives: a new `treasury` module (ADR-090)  <sub>:84</sub>
+- 2. The ledger shape: treasury accounts are a subsidiary ledger of Cash & Bank  <sub>:97</sub>
+- 3. The settlement rule: who posts what  <sub>:132</sub>
+- 4. Schema: `apps/api/prisma/schema/treasury.prisma` (new, hand-written forward-only migration)  <sub>:215</sub>
+- 5. Behaviour  <sub>:441</sub>
+- 6. Printing: the existing print-page idiom, with the layout as data  <sub>:534</sub>
+- 7. Parameters (exact)  <sub>:591</sub>
+- 8. Work orders  <sub>:609</sub>
+- 9. Acceptance criteria  <sub>:681</sub>
+- 10. Out of scope (named and sequenced, not silently skipped)  <sub>:721</sub>
+- 11. Open decisions for the owner  <sub>:738</sub>
+- Scope lenses  <sub>:772</sub>
+
+### `docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md`  <sub>545 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified in code, 2026-10-04)  <sub>:40</sub>
+- 1. Decisions this brief makes  <sub>:72</sub>
+- 2. Ledger effect  <sub>:97</sub>
+- 3. Schema: added to `treasury.prisma` (doc 249), hand-written forward-only migration  <sub>:110</sub>
+- 4. Behaviour  <sub>:189</sub>
+- 5. Bands and auto-approval  <sub>:247</sub>
+- 6. Parameters (exact)  <sub>:260</sub>
+- 7. Work orders  <sub>:272</sub>
+- 8. Acceptance criteria  <sub>:309</sub>
+- 9. Out of scope (named and sequenced)  <sub>:342</sub>
+- 10. Open decisions for the owner  <sub>:360</sub>
+- Scope lenses  <sub>:373</sub>
 
 ### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
 
@@ -4522,16 +4563,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>701 lines</sub>
+### `docs/implementation/README.md`  <sub>708 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:554</sub>
-- The two module groups  <sub>:583</sub>
-- How a work order runs  <sub>:620</sub>
-- Known gaps not yet owned by a phase  <sub>:638</sub>
-- When a brief is wrong  <sub>:665</sub>
-- Scope, honestly  <sub>:678</sub>
-- Gap-analysis roadmap references  <sub>:685</sub>
+- Dependency order  <sub>:561</sub>
+- The two module groups  <sub>:590</sub>
+- How a work order runs  <sub>:627</sub>
+- Known gaps not yet owned by a phase  <sub>:645</sub>
+- When a brief is wrong  <sub>:672</sub>
+- Scope, honestly  <sub>:685</sub>
+- Gap-analysis roadmap references  <sub>:692</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 
@@ -4849,6 +4890,35 @@ _no second-level headings_
 - 4. Work orders  <sub>:121</sub>
 - 5. Acceptance criteria  <sub>:143</sub>
 - Scope lenses  <sub>:157</sub>
+
+### `docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md`  <sub>369 lines</sub>
+
+- 1. Objective and the source material  <sub>:14</sub>
+- 2. Pack or capability? The test, applied  <sub>:46</sub>
+- 3. Does this overlap `pos`? In shape, not in actor  <sub>:111</sub>
+- 4. Does the existing sync give us offline booking? Mostly, once fixed. Plus one new piece.  <sub>:148</sub>
+- 5. Profile 5 as a `MODULES` preset  <sub>:193</sub>
+- 6. Efficiency: what is measured, and how  <sub>:209</sub>
+- 7. Roadmap — Tranche F  <sub>:231</sub>
+- 8. Open decisions for the owner  <sub>:279</sub>
+- 9. Needs verification — never invented here  <sub>:337</sub>
+- 10. Documents this changes (proposed, not made)  <sub>:359</sub>
+
+### `docs/implementation/supply-chain-operations/246-field-sales.md`  <sub>760 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified, 2026-10-04)  <sub>:29</sub>
+- 1. Design  <sub>:54</sub>
+- 2. Schema — `apps/api/prisma/schema/field-sales.prisma` (new, hand-written forward-only migration)  <sub>:225</sub>
+- 3. Money  <sub>:366</sub>
+- 4. Parameters (exact)  <sub>:389</sub>
+- 5. Work orders  <sub>:408</sub>
+- 6. Files likely affected  <sub>:478</sub>
+- 7. Dependencies reused  <sub>:488</sub>
+- 8. Risks  <sub>:498</sub>
+- 9. Acceptance criteria  <sub>:519</sub>
+- 10. Out of scope  <sub>:550</sub>
+- Scope lenses  <sub>:564</sub>
 
 ### `docs/implementation/supply-chain-operations/README.md`  <sub>43 lines</sub>
 

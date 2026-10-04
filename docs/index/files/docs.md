@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 567 tracked files in `docs/*`, by directory.
+All 573 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 567 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 132 |  |
+| `DECISIONS.md` | doc | 134 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 701 |  |
+| `README.md` | doc | 708 |  |
 | `RETAIL-ERP.md` | doc | 1108 |  |
 | `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
@@ -748,7 +748,7 @@ All 567 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (90)
+### `docs/implementation/decisions` (92)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -840,10 +840,12 @@ All 567 tracked files in `docs/*`, by directory.
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
 | `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
+| `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 276 |  |
+| `ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md` | doc | 174 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
-### `docs/implementation/finance-accounting` (10)
+### `docs/implementation/finance-accounting` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -853,6 +855,8 @@ All 567 tracked files in `docs/*`, by directory.
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 253 |  |
 | `167-bank-facility-management.md` | doc | 296 |  |
+| `249-cheques-post-dated-cheques-printing.md` | doc | 982 |  |
+| `250-inter-branch-fund-transfers.md` | doc | 545 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
@@ -1019,7 +1023,7 @@ All 567 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
-### `docs/implementation/supply-chain-operations` (10)
+### `docs/implementation/supply-chain-operations` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1032,6 +1036,8 @@ All 567 tracked files in `docs/*`, by directory.
 | `242-multi-plant-manufacturing.md` | doc | 496 |  |
 | `243-quality-inspection-holds.md` | doc | 283 |  |
 | `244-rfid-phantom-inventory.md` | doc | 260 |  |
+| `245-field-sales-distribution-architecture.md` | doc | 369 |  |
+| `246-field-sales.md` | doc | 760 |  |
 | `README.md` | doc | 43 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)

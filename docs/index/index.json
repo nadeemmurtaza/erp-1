@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2805,
-    "lines": 434774,
+    "files": 2811,
+    "lines": 437889,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 567,
-      "lines": 101452,
-      "bytes": 6264648,
+      "files": 573,
+      "lines": 104567,
+      "bytes": 6447583,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -98042,8 +98042,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 132,
-      "bytes": 22435,
+      "lines": 134,
+      "bytes": 23304,
       "doc": "",
       "symbols": []
     },
@@ -98096,8 +98096,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 701,
-      "bytes": 107033,
+      "lines": 708,
+      "bytes": 108682,
       "doc": "",
       "symbols": []
     },
@@ -99947,6 +99947,24 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 276,
+      "bytes": 14012,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 174,
+      "bytes": 8128,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md",
       "area": "docs",
       "kind": "doc",
@@ -100015,6 +100033,24 @@
       "kind": "doc",
       "lines": 296,
       "bytes": 16406,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 982,
+      "bytes": 61316,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 545,
+      "bytes": 34491,
       "doc": "",
       "symbols": []
     },
@@ -101041,6 +101077,24 @@
       "kind": "doc",
       "lines": 260,
       "bytes": 14906,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 369,
+      "bytes": 21225,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/246-field-sales.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 760,
+      "bytes": 41245,
       "doc": "",
       "symbols": []
     },

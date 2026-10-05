@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**608** markdown documents. These explain **why**; this index only says **where**.
+**610** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3412,7 +3412,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md`  <sub>276 lines</sub>
+### `docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md`  <sub>304 lines</sub>
 
 _no second-level headings_
 
@@ -4891,39 +4891,71 @@ _no second-level headings_
 - 5. Acceptance criteria  <sub>:143</sub>
 - Scope lenses  <sub>:157</sub>
 
-### `docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md`  <sub>369 lines</sub>
+### `docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md`  <sub>380 lines</sub>
 
 - 1. Objective and the source material  <sub>:14</sub>
 - 2. Pack or capability? The test, applied  <sub>:46</sub>
 - 3. Does this overlap `pos`? In shape, not in actor  <sub>:111</sub>
-- 4. Does the existing sync give us offline booking? Mostly, once fixed. Plus one new piece.  <sub>:148</sub>
-- 5. Profile 5 as a `MODULES` preset  <sub>:193</sub>
-- 6. Efficiency: what is measured, and how  <sub>:209</sub>
-- 7. Roadmap — Tranche F  <sub>:231</sub>
-- 8. Open decisions for the owner  <sub>:279</sub>
-- 9. Needs verification — never invented here  <sub>:337</sub>
-- 10. Documents this changes (proposed, not made)  <sub>:359</sub>
+- 4. Does the existing sync give us offline booking? Mostly, once fixed. Plus one new piece.  <sub>:149</sub>
+- 5. Profile 5 as a `MODULES` preset  <sub>:194</sub>
+- 6. Efficiency: what is measured, and how  <sub>:210</sub>
+- 7. Roadmap — Tranche F  <sub>:232</sub>
+- 8. Open decisions for the owner  <sub>:289</sub>
+- 9. Needs verification — never invented here  <sub>:348</sub>
+- 10. Documents this changes (proposed, not made)  <sub>:370</sub>
 
-### `docs/implementation/supply-chain-operations/246-field-sales.md`  <sub>760 lines</sub>
+### `docs/implementation/supply-chain-operations/246-field-sales.md`  <sub>798 lines</sub>
 
 - Objective  <sub>:10</sub>
 - Existing state (verified, 2026-10-04)  <sub>:29</sub>
 - 1. Design  <sub>:54</sub>
-- 2. Schema — `apps/api/prisma/schema/field-sales.prisma` (new, hand-written forward-only migration)  <sub>:225</sub>
-- 3. Money  <sub>:366</sub>
-- 4. Parameters (exact)  <sub>:389</sub>
-- 5. Work orders  <sub>:408</sub>
-- 6. Files likely affected  <sub>:478</sub>
-- 7. Dependencies reused  <sub>:488</sub>
-- 8. Risks  <sub>:498</sub>
-- 9. Acceptance criteria  <sub>:519</sub>
-- 10. Out of scope  <sub>:550</sub>
-- Scope lenses  <sub>:564</sub>
+- 2. Schema — `apps/api/prisma/schema/field-sales.prisma` (new, hand-written forward-only migration)  <sub>:232</sub>
+- 3. Money  <sub>:374</sub>
+- 4. Parameters (exact)  <sub>:415</sub>
+- 5. Work orders  <sub>:434</sub>
+- 6. Files likely affected  <sub>:509</sub>
+- 7. Dependencies reused  <sub>:519</sub>
+- 8. Risks  <sub>:529</sub>
+- 9. Acceptance criteria  <sub>:550</sub>
+- 10. Out of scope  <sub>:582</sub>
+- Scope lenses  <sub>:596</sub>
 
-### `docs/implementation/supply-chain-operations/README.md`  <sub>43 lines</sub>
+### `docs/implementation/supply-chain-operations/247-field-tracking.md`  <sub>510 lines</sub>
 
-- Read in this order  <sub>:17</sub>
-- Words that must not blur  <sub>:31</sub>
+- Objective  <sub>:12</sub>
+- Existing state (verified, 2026-10-05)  <sub>:34</sub>
+- 1. Design  <sub>:57</sub>
+- 2. Schema — `apps/api/prisma/schema/field-tracking.prisma` (new, hand-written forward-only migration)  <sub>:144</sub>
+- 3. Permissions  <sub>:217</sub>
+- 4. Parameters (exact)  <sub>:228</sub>
+- 5. Work orders  <sub>:251</sub>
+- 6. Files likely affected  <sub>:293</sub>
+- 7. Dependencies reused  <sub>:302</sub>
+- 8. Risks  <sub>:309</sub>
+- 9. Acceptance criteria  <sub>:325</sub>
+- 10. Out of scope  <sub>:346</sub>
+- Scope lenses  <sub>:355</sub>
+
+### `docs/implementation/supply-chain-operations/248-customer-receipts-allocation.md`  <sub>586 lines</sub>
+
+- Objective  <sub>:21</sub>
+- Existing state (verified, 2026-10-05)  <sub>:38</sub>
+- 1. Design  <sub>:78</sub>
+- 2. Schema — added to `apps/api/prisma/schema/receivables.prisma` (hand-written forward-only migration)  <sub>:158</sub>
+- 3. Money  <sub>:235</sub>
+- 4. Parameters (exact)  <sub>:262</sub>
+- 5. Work orders  <sub>:274</sub>
+- 6. Files likely affected  <sub>:321</sub>
+- 7. Dependencies reused  <sub>:334</sub>
+- 8. Risks  <sub>:344</sub>
+- 9. Acceptance criteria  <sub>:358</sub>
+- 10. Out of scope  <sub>:387</sub>
+- Scope lenses  <sub>:399</sub>
+
+### `docs/implementation/supply-chain-operations/README.md`  <sub>51 lines</sub>
+
+- Read in this order  <sub>:19</sub>
+- Words that must not blur  <sub>:37</sub>
 
 ### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>224 lines</sub>
 

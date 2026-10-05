@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-573 files · 104,582 lines
+575 files · 105,763 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -97,7 +97,7 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 92 | 12,818 | doc |
+| `docs/implementation/decisions` | 92 | 12,846 | doc |
 | `docs/implementation/finance-accounting` | 12 | 3,867 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
@@ -111,7 +111,7 @@ has a bug.
 | `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
 | `docs/implementation/resilience-scalability` | 13 | 2,926 | doc |
 | `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
-| `docs/implementation/supply-chain-operations` | 12 | 5,066 | doc |
+| `docs/implementation/supply-chain-operations` | 14 | 6,219 | doc |
 | `docs/implementation/tasks-notifications-support` | 6 | 2,996 | doc |
 | `docs/implementation/tax-compliance` | 4 | 495 | doc |
 | `docs/security` | 1 | 59 | doc |
@@ -135,7 +135,7 @@ has a bug.
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
-| `docs/implementation/supply-chain-operations/246-field-sales.md` | 760 | doc |  |
+| `docs/implementation/supply-chain-operations/246-field-sales.md` | 798 | doc |  |
 | `docs/implementation/README.md` | 708 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 

@@ -129,7 +129,7 @@ The flow:
    second copy a no-op. The server answers `202`.
 2. **Decide.** The pure `decideBooking()` checks:
    - the outlet resolves (an unapproved proposal → `NEEDS_REVIEW
-     OUTLET_PENDING`);
+OUTLET_PENDING`);
    - the snapshot is no older than the ceiling, or every price and discount
      it used is unchanged (else `NEEDS_REVIEW PRICE_CHANGED`).
 3. **Apply.** Through order intake, with:
@@ -146,6 +146,7 @@ The flow:
      `checkout.allow_backorder` is on, else `NEEDS_REVIEW STOCK_SHORT`.
    - **`HANDED_OVER` is a record**, so intake uses `postUnconditional()`
      (R5). An oversold van produces a `StockVariance`, never a refusal.
+
 4. **Result.** The rep's device learns each booking's outcome on its next
    down-sync.
 
@@ -167,10 +168,16 @@ WO-246.10.
 The flow:
 
 1. It is stored as a `FieldCollection` and `FieldCollectionRecorded` is
-   published.
-2. `receivables` creates the `CustomerReceipt` (doc 248), idempotent by
-   source.
-3. `CustomerReceiptRecorded` returns the receipt id.
+   published, carrying the day's `custodyTreasuryAccountId`.
+2. For `CASH` and `BANK_TRANSFER`, `receivables` creates the
+   `CustomerReceipt` (doc 248), idempotent by source. For `CHEQUE`, treasury
+   registers the instrument (an `ON_ACCOUNT` `Cheque`, doc 249) and its
+   `ChequeReceived` creates the receipt. The cheque's details live on
+   treasury's `Cheque`, not on the receipt. With `treasury` off, a cheque
+   collection stays on the "cheques awaiting treasury" list and reduces no
+   balance (doc 248 WO-248.4).
+3. `CustomerReceiptRecorded` returns the receipt id, and
+   `CustomerReceiptRejected` returns a reason.
 
 The day's expected cash is computed from `FieldCollection` rows, which
 `fieldsales` owns. Settlement therefore works even when `receivables` is off.
@@ -289,6 +296,7 @@ model FieldDay {
   depotLocationId String               // where it settles — scope column
   vanLocationId String?
   routeIds String[]; routeVersions Int[]; plannedCalls Json      // the plan as it was that morning
+  custodyTreasuryAccountId String?     // treasury cash box holding this day's cash (doc 248 §3); null = Unattributed
   openingFloatMinor Int @default(0); floatIssuedByUserId String?
   status FieldDayStatus @default(OPEN)
   openedAt DateTime; closedAt DateTime?
@@ -366,44 +374,62 @@ themselves.
 ## 3. Money
 
 The postings are a pure account-selection function with one subscriber
-(canonical Ruling 3). Accounts `1050` Cash with Field Staff (ASSET) and `5710`
-Cash Over/Short (EXPENSE) are added by doc 248 WO-248.1. Every line carries
-`locationId` = the day's depot (WO-236.6).
+(canonical Ruling 3). **No new chart account.**
 
-| Event | Journal | Key |
-|---|---|---|
-| `FieldFloatIssued` (cashier hands the change float) | Dr 1050 · Cr 1000 | `findPostedEntry('fieldsales.float_issued', fieldDayId)` |
-| A field cash receipt (doc 248) | Dr 1050 · Cr 1100 (contactId = outlet) | doc 248 |
-| `FieldDaySettled` | Dr 1000 (counted cash) · Cr 1050 (counted cash). The difference stays in 1050 against the day until resolved. | `('fieldsales.day_settled', fieldDayId)` |
-| `FieldDayDifferenceResolved` shortage → `WRITE_OFF` | Dr 5710 · Cr 1050 | `('fieldsales.difference_resolved', fieldDayId)` |
-| shortage → `RECOVER_FROM_STAFF` (only if OD-F3 enables it) | Dr 1300 Employee Advances · Cr 1050 | same |
-| overage | Dr 1050 · Cr 5710 | same |
+> _Corrected 2026-10-05:_ this section first used new accounts `1050` Cash
+> with Field Staff and `5710` Cash Over/Short. `1050` collides with doc 250's
+> `1050 Cash in Transit`, and `5710` would duplicate doc 250's `5820 Cash
+Over/Short`.
 
-Cheques post nothing on collection. They are uncleared receipts in doc 248,
-and the cashier counts them by number at settlement. **`1050` per rep** has
-no `JournalLine` dimension. It is reconciled by the "Cash with field staff"
-report: the GL balance of `1050` equals Σ (float + cash collections −
-counted cash) over unsettled or unresolved days, by rep. The only legitimate
-delta is a posting still in the outbox.
+A rep's cash is held in a treasury account (ADR-090, doc 248 §3):
+`FieldDay.custodyTreasuryAccountId`, resolved at day open as follows:
+
+- the van `Location`'s default cash box; else
+- the active box whose `custodianUserId` is the rep; else
+- null (Unattributed).
+
+The depot's cash box is the `isDefaultCashBox` at `depotLocationId`. Every
+line carries `locationId` = the day's depot (WO-236.6).
+
+| Event                                                      | Journal                                                                                                                                                           | Key                                                      |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `FieldFloatIssued` (cashier hands the change float)        | Dr 1000 [custody box] · Cr 1000 [depot box]. **No entry** when either box is unresolved: the float never left `1000`.                                             | `findPostedEntry('fieldsales.float_issued', fieldDayId)` |
+| A field cash receipt (doc 248)                             | Dr 1000 [custody box] · Cr 1100 (contactId = outlet)                                                                                                              | doc 248                                                  |
+| `FieldDaySettled`                                          | Dr 1000 [depot box] · Cr 1000 [custody box], at counted cash. **No entry** when either box is unresolved. The difference stays on the custody box until resolved. | `('fieldsales.day_settled', fieldDayId)`                 |
+| `FieldDayDifferenceResolved` shortage → `WRITE_OFF`        | Dr 5820 Cash Over/Short · Cr 1000 [custody box, or Unattributed]                                                                                                  | `('fieldsales.difference_resolved', fieldDayId)`         |
+| shortage → `RECOVER_FROM_STAFF` (only if OD-F3 enables it) | Dr 1300 Employee Advances · Cr 1000 [custody box, or Unattributed]                                                                                                | same                                                     |
+| overage                                                    | Dr 1000 [custody box, or Unattributed] · Cr 5820                                                                                                                  | same                                                     |
+
+`5820` is added by doc 250. Whichever of doc 250 and this brief lands first
+adds it, and the other does not.
+
+Cheques post nothing on collection. They are treasury instruments, and their
+receipt posts on clearance (doc 248). The cashier counts them by number at
+settlement.
+
+**What a rep is carrying** is the balance of their custody box: treasury's
+own per-account balance query, with no extra report. With `treasury` off,
+custody is tracked operationally by `FieldDay` (float plus cash collections
+minus counted cash), and the GL holds it in Unattributed `1000`.
 
 ## 4. Parameters (exact)
 
-| Parameter | Value | Why this number | Enforced in | On failure |
-|---|---|---|---|---|
-| Snapshot age ceiling | **24 h** | One working day. A rep syncs at least each morning at the depot. A price change reaches every device within a day, and bookings priced from an older snapshot are checked line by line. | `decideBooking()` | `NEEDS_REVIEW PRICE_CHANGED` only if a price or discount actually differs; unchanged lines apply |
-| Price tolerance on a stale snapshot | **0 bps** (`Setting` `fieldsales.price_review_threshold_bps`) | A rep quoted a price to a shopkeeper; any change needs a person. Prices change rarely, so review volume is bounded to bookings in the ≤ 24 h window after a change. | `decideBooking()` | Review |
-| Device stops new bookings | **72 h** since the last successful up-sync, **or 1,000** unsynced records | 72 h covers a weekend plus a holiday upcountry. Past that, three days of collected cash is in one person's hands, which is the custody risk settlement exists to bound. A heavy rep makes ~75 records a day, so 1,000 is ~13 days, a pure technical bound behind the time limit. Collections are **never** refused on the device, because the customer has already paid. | rep app | "Sync required" screen; paper fallback (lens 16) |
-| Up-sync batch | **25 records** per request, **≤ 100 KiB** | A 30-line booking is ~2.5 KB, so 25 is ≤ ~65 KiB, inside the platform's 100 KiB JSON limit. A 1,000-record backlog is 40 requests, under a minute on a slow mobile link. | DTO validator | `413`; the app halves the batch |
-| Lines per booking | **200** | A wholesale outlet's largest realistic order. 200 × ~60 B stays far inside one batch. | DTO | `400`; the app splits the order |
-| Down-sync page | **500 rows**, keyset `(updatedAt, id)`; full snapshot if the cursor is older than **7 days** | 500 rows is ~100 KiB of outlet or product JSON. 7 days bounds how much history a delta must reconstruct. | `FieldSyncService` | n/a |
-| Outlets in one rep's scope | **2,000** | A 6-day beat of 40–60 calls a day is ~240–360 outlets. 2,000 bounds device storage and keeps a first full sync to a few minutes on a slow link. | assignment validator | Assignment refused with the count |
-| Check-in geofence | **100 m plus the fix's reported accuracy, capped at 250 m** (`Setting` `fieldsales.geofence_m`) | Outdoor GPS is typically accurate to tens of metres but degrades inside shops. Adding the device's own accuracy avoids flagging honest indoor check-ins. The cap stops a coarse network fix (often > 1 km) from passing. | `classifyCheckIn()` | `OFF_SITE`, recorded, flagged on the supervisor's list |
-| Sync rate limit | **120 requests / 60 s per user** | A backlog flush of 25 × 120 = 3,000 records a minute. A normal rep sends a few requests a minute. A stolen token cannot flood. | `@Throttle` (`core/throttling`) | `429` + `Retry-After`; the outbox backs off |
-| Heartbeat | **every 15 min** while online, and on every sync | A silent device shows on the supervisor screen within a quarter hour. ~96 tiny requests a day is negligible. | rep app | Device listed "silent since …" |
-| Booking acknowledgement (server) | **p95 ≤ 300 ms** (one insert); **apply p95 ≤ 10 s** after storage | Store-first makes acknowledgement one write. Apply rides the outbox (2 s poll) plus order intake. **Network time is not counted and not promised.** The competitor's "0.8 s" is not a target. | SLO recorder (`core/slo`) | Alert only |
-| Settlement second approval | `Setting` `fieldsales.settlement_second_approval_minor`, **unset = any non-zero difference needs a second person** | Fail closed. No currency literal (Law 1). | `FieldDayService.resolveDifference()` | Waits for a second user |
-| Unsynced-cash alert | `Setting` `fieldsales.unsynced_cash_alert_minor`, **unset = no alert** | A business sets its own risk appetite. Heartbeats carry the device's unsynced cash total. | heartbeat handler | Alert to the depot's `fieldsales.settle` holders |
-| `FieldVisit` partitioning | **monthly** on `checkInAt`, from the first migration | 1,000 reps × 40 visits × 300 days ≈ 12 M rows a year at the largest plausible deployment | migration | n/a |
+| Parameter                           | Value                                                                                                              | Why this number                                                                                                                                                                                                                                                                                                                                                          | Enforced in                           | On failure                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Snapshot age ceiling                | **24 h**                                                                                                           | One working day. A rep syncs at least each morning at the depot. A price change reaches every device within a day, and bookings priced from an older snapshot are checked line by line.                                                                                                                                                                                  | `decideBooking()`                     | `NEEDS_REVIEW PRICE_CHANGED` only if a price or discount actually differs; unchanged lines apply |
+| Price tolerance on a stale snapshot | **0 bps** (`Setting` `fieldsales.price_review_threshold_bps`)                                                      | A rep quoted a price to a shopkeeper; any change needs a person. Prices change rarely, so review volume is bounded to bookings in the ≤ 24 h window after a change.                                                                                                                                                                                                      | `decideBooking()`                     | Review                                                                                           |
+| Device stops new bookings           | **72 h** since the last successful up-sync, **or 1,000** unsynced records                                          | 72 h covers a weekend plus a holiday upcountry. Past that, three days of collected cash is in one person's hands, which is the custody risk settlement exists to bound. A heavy rep makes ~75 records a day, so 1,000 is ~13 days, a pure technical bound behind the time limit. Collections are **never** refused on the device, because the customer has already paid. | rep app                               | "Sync required" screen; paper fallback (lens 16)                                                 |
+| Up-sync batch                       | **25 records** per request, **≤ 100 KiB**                                                                          | A 30-line booking is ~2.5 KB, so 25 is ≤ ~65 KiB, inside the platform's 100 KiB JSON limit. A 1,000-record backlog is 40 requests, under a minute on a slow mobile link.                                                                                                                                                                                                 | DTO validator                         | `413`; the app halves the batch                                                                  |
+| Lines per booking                   | **200**                                                                                                            | A wholesale outlet's largest realistic order. 200 × ~60 B stays far inside one batch.                                                                                                                                                                                                                                                                                    | DTO                                   | `400`; the app splits the order                                                                  |
+| Down-sync page                      | **500 rows**, keyset `(updatedAt, id)`; full snapshot if the cursor is older than **7 days**                       | 500 rows is ~100 KiB of outlet or product JSON. 7 days bounds how much history a delta must reconstruct.                                                                                                                                                                                                                                                                 | `FieldSyncService`                    | n/a                                                                                              |
+| Outlets in one rep's scope          | **2,000**                                                                                                          | A 6-day beat of 40–60 calls a day is ~240–360 outlets. 2,000 bounds device storage and keeps a first full sync to a few minutes on a slow link.                                                                                                                                                                                                                          | assignment validator                  | Assignment refused with the count                                                                |
+| Check-in geofence                   | **100 m plus the fix's reported accuracy, capped at 250 m** (`Setting` `fieldsales.geofence_m`)                    | Outdoor GPS is typically accurate to tens of metres but degrades inside shops. Adding the device's own accuracy avoids flagging honest indoor check-ins. The cap stops a coarse network fix (often > 1 km) from passing.                                                                                                                                                 | `classifyCheckIn()`                   | `OFF_SITE`, recorded, flagged on the supervisor's list                                           |
+| Sync rate limit                     | **120 requests / 60 s per user**                                                                                   | A backlog flush of 25 × 120 = 3,000 records a minute. A normal rep sends a few requests a minute. A stolen token cannot flood.                                                                                                                                                                                                                                           | `@Throttle` (`core/throttling`)       | `429` + `Retry-After`; the outbox backs off                                                      |
+| Heartbeat                           | **every 15 min** while online, and on every sync                                                                   | A silent device shows on the supervisor screen within a quarter hour. ~96 tiny requests a day is negligible.                                                                                                                                                                                                                                                             | rep app                               | Device listed "silent since …"                                                                   |
+| Booking acknowledgement (server)    | **p95 ≤ 300 ms** (one insert); **apply p95 ≤ 10 s** after storage                                                  | Store-first makes acknowledgement one write. Apply rides the outbox (2 s poll) plus order intake. **Network time is not counted and not promised.** The competitor's "0.8 s" is not a target.                                                                                                                                                                            | SLO recorder (`core/slo`)             | Alert only                                                                                       |
+| Settlement second approval          | `Setting` `fieldsales.settlement_second_approval_minor`, **unset = any non-zero difference needs a second person** | Fail closed. No currency literal (Law 1).                                                                                                                                                                                                                                                                                                                                | `FieldDayService.resolveDifference()` | Waits for a second user                                                                          |
+| Unsynced-cash alert                 | `Setting` `fieldsales.unsynced_cash_alert_minor`, **unset = no alert**                                             | A business sets its own risk appetite. Heartbeats carry the device's unsynced cash total.                                                                                                                                                                                                                                                                                | heartbeat handler                     | Alert to the depot's `fieldsales.settle` holders                                                 |
+| `FieldVisit` partitioning           | **monthly** on `checkInAt`, from the first migration                                                               | 1,000 reps × 40 visits × 300 days ≈ 12 M rows a year at the largest plausible deployment                                                                                                                                                                                                                                                                                 | migration                             | n/a                                                                                              |
 
 ## 5. Work orders
 
@@ -443,9 +469,14 @@ nav entry, permission grants in `ROLE_PERMISSION_SEED`, and tests.
     idempotency.
   - `/admin/field/bookings/review` (price, stock, outlet, credit reasons).
   - Permission `fieldsales.review`.
-- **WO-246.6 — Collections.** The `FieldCollectionRecorded` publisher, the
-  receipt link-back subscriber, and the receipt-failure exception list. Needs
-  WO-248.2.
+- **WO-246.6 — Collections.**
+  - The `FieldCollectionRecorded` publisher (with the custody box).
+  - The receipt link-back subscriber (`CustomerReceiptRecorded` /
+    `CustomerReceiptRejected`) and the receipt-failure exception list.
+  - The "cheques awaiting treasury" list.
+  - The `CustomerReceiptVoided` subscriber that opens a settlement exception
+    for an already-settled day.
+  - Needs WO-248.2. Cheques need WO-248.4.
 - **WO-246.7 — Van sales.**
   - The van `Location` on the day.
   - Load-out and unload links into `transfers`.
@@ -534,7 +565,8 @@ routing stack when on.
    settlement exception.
 6. Settlement:
    - computes expected cash exactly from float plus cash collections;
-   - posts Dr 1000 / Cr 1050 once;
+   - posts Dr 1000 [depot box] / Cr 1000 [custody box] once when both boxes
+     resolve, and nothing when either does not;
    - refuses settlement by the day's own rep;
    - needs a second person to write off any difference while the band is
      unset.
@@ -584,6 +616,7 @@ routing stack when on.
   - the delivery leg through `fulfilment`'s courier extension point.
 
   Printing waits for a named printer; it is not faked.
+
 - The policy layer: routes and their versions, assignments, geofence,
   snapshot ceiling, price tolerance and settlement band. Each is a Setting
   or row with evidence-class audit on change.
@@ -654,6 +687,7 @@ routing stack when on.
   - load-out and unload name both locations.
 
   `defaultLocationId()` is reached on no path.
+
 - Four hours down:
   - offline is this feature's normal state;
   - with the server down, devices keep queuing under the 72 h ceiling;
@@ -668,9 +702,11 @@ routing stack when on.
 
 - The unwritten posting rule: written out in §3 (float, settlement,
   difference resolution), keyed per day. Field receipts post in doc 248.
-- Every column or none: every line sets `locationId` = the depot. Receipt
-  lines set `contactId` = the outlet. `retailBrandId` and `branchNodeId`
-  follow the existing rules. `counterpartyBrandId` stays null.
+- Every column or none: every line sets `locationId` = the depot, and every
+  `1000` line sets `treasuryAccountId` = the custody or depot box (null =
+  Unattributed, ADR-090's meaning). Receipt lines set `contactId` = the
+  outlet. `retailBrandId` and `branchNodeId` follow the existing rules.
+  `counterpartyBrandId` stays null.
 - The period that already moved: a day settled after its period closed posts
   to the current open period with its own date retained (R15 invariant 3). A
   late collection follows doc 248's rule.
@@ -691,7 +727,8 @@ routing stack when on.
   They differ only by price-change review outcomes, stock shortfalls and
   credit holds, each listed. Collected comes from `FieldCollection`, and
   receipted comes from `CustomerReceipt`; they differ only by receipt
-  failures, listed.
+  failures and by cheques not yet cleared (or awaiting treasury), each
+  listed.
 
 **5. The scale**
 
@@ -703,6 +740,7 @@ routing stack when on.
     dashboards.
 
   `depotLocationId` is NOT NULL on days, routes and bookings.
+
 - The absent collaborator:
   - `orders` off: bookings stored, "N bookings waiting".
   - `receivables` off: collections stored and settled by custody, with no AR

@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2811,
-    "lines": 437904,
+    "files": 2813,
+    "lines": 439085,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 573,
-      "lines": 104582,
-      "bytes": 6448553,
+      "files": 575,
+      "lines": 105763,
+      "bytes": 6539905,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -99950,8 +99950,8 @@
       "path": "docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 276,
-      "bytes": 14012,
+      "lines": 304,
+      "bytes": 16545,
       "doc": "",
       "symbols": []
     },
@@ -101084,8 +101084,8 @@
       "path": "docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 369,
-      "bytes": 21225,
+      "lines": 380,
+      "bytes": 30105,
       "doc": "",
       "symbols": []
     },
@@ -101093,8 +101093,26 @@
       "path": "docs/implementation/supply-chain-operations/246-field-sales.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 760,
-      "bytes": 41245,
+      "lines": 798,
+      "bytes": 50979,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/247-field-tracking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 510,
+      "bytes": 30844,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/248-customer-receipts-allocation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 586,
+      "bytes": 36760,
       "doc": "",
       "symbols": []
     },
@@ -101102,8 +101120,8 @@
       "path": "docs/implementation/supply-chain-operations/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 43,
-      "bytes": 8978,
+      "lines": 51,
+      "bytes": 11579,
       "doc": "",
       "symbols": []
     },

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 573 tracked files in `docs/*`, by directory.
+All 575 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -840,7 +840,7 @@ All 573 tracked files in `docs/*`, by directory.
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
 | `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
-| `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 276 |  |
+| `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 304 |  |
 | `ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md` | doc | 174 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
@@ -1023,7 +1023,7 @@ All 573 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
-### `docs/implementation/supply-chain-operations` (12)
+### `docs/implementation/supply-chain-operations` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1036,9 +1036,11 @@ All 573 tracked files in `docs/*`, by directory.
 | `242-multi-plant-manufacturing.md` | doc | 496 |  |
 | `243-quality-inspection-holds.md` | doc | 283 |  |
 | `244-rfid-phantom-inventory.md` | doc | 260 |  |
-| `245-field-sales-distribution-architecture.md` | doc | 369 |  |
-| `246-field-sales.md` | doc | 760 |  |
-| `README.md` | doc | 43 |  |
+| `245-field-sales-distribution-architecture.md` | doc | 380 |  |
+| `246-field-sales.md` | doc | 798 |  |
+| `247-field-tracking.md` | doc | 510 |  |
+| `248-customer-receipts-allocation.md` | doc | 586 |  |
+| `README.md` | doc | 51 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)
 

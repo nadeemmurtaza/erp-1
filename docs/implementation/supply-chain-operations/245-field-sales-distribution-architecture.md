@@ -53,10 +53,10 @@ distributor and a grocery retailer are arguably different kinds of business,
 not just different scale." They are. But `MULTI-SECTOR.md` already splits
 "kind of business" into two axes:
 
-- A **sector** changes *what a product is* (its data shape). A pack exists,
+- A **sector** changes _what a product is_ (its data shape). A pack exists,
   in `module-packs.ts`'s own words, "only where a vertical owns genuine domain
   data that core cannot express — a drug schedule, a vehicle tree, an ISBN."
-- A **business model** changes *who trades with whom, on what terms*, and
+- A **business model** changes _who trades with whom, on what terms_, and
   "cuts across every sector". It is a capability module in core.
 
 An FMCG distributor sells the same biscuit a grocer sells. What differs is
@@ -83,16 +83,16 @@ an extension point and never edits core. Two examples:
 - FMCG: shelf-share and planogram audits.
 
 `fieldsales` exposes a `VisitActivityRegistry` (doc 246 §2) that a pack
-registers into. If such a pack is ever built, *that* is the sector pack, and
+registers into. If such a pack is ever built, _that_ is the sector pack, and
 it sits on top of a core capability.
 
 **The three-part test** (the same one ADR-088 applied to its eight modules):
 
-| Test | `fieldsales` | `fieldtracking` | `receivables` receipt |
-|---|---|---|---|
-| Some deployment wants it without the alternative | A distributor wants field sales and no `pos`, stores or WMS. A store chain wants `pos` and no field sales. A manufacturer (profile 4) wants field sales beside `bom`. | A privacy-constrained deployment (where tracking employees needs consent, notice or co-determination) wants field sales **without** tracking. A courier or service fleet wants tracking without field sales. | A head-office counter receiving a customer's cheque needs the identical receipt, with no field force at all |
-| The actors differ | Order booker, van salesman, depot cashier settling the day, territory supervisor. None of them is a cashier at a fixed till or a warehouse picker. | The tracked worker, and the supervisor viewing a map. A privacy officer sets retention. | Finance clerk, credit controller |
-| Every cross-module flow is an event, a read-only read or order intake | Bookings and van sales enter `orders` through order intake (doc 236 OD-3). Collections → `receivables` by event. Outlet creation → `crm` in one transaction (one coupling, the `support -> crm` precedent). Prices, discounts, credit and stock are read-only reads for the device snapshot. | Writes only its own tables. The app starts and stops a session when the rep's day opens and closes, so it has no server-side dependency on `fieldsales`. | Posts by event. Settles pending payments by event. Reads orders read-only for allocation. |
+| Test                                                                  | `fieldsales`                                                                                                                                                                                                                                                                                 | `fieldtracking`                                                                                                                                                                                              | `receivables` receipt                                                                                       |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Some deployment wants it without the alternative                      | A distributor wants field sales and no `pos`, stores or WMS. A store chain wants `pos` and no field sales. A manufacturer (profile 4) wants field sales beside `bom`.                                                                                                                        | A privacy-constrained deployment (where tracking employees needs consent, notice or co-determination) wants field sales **without** tracking. A courier or service fleet wants tracking without field sales. | A head-office counter receiving a customer's cheque needs the identical receipt, with no field force at all |
+| The actors differ                                                     | Order booker, van salesman, depot cashier settling the day, territory supervisor. None of them is a cashier at a fixed till or a warehouse picker.                                                                                                                                           | The tracked worker, and the supervisor viewing a map. A privacy officer sets retention.                                                                                                                      | Finance clerk, credit controller                                                                            |
+| Every cross-module flow is an event, a read-only read or order intake | Bookings and van sales enter `orders` through order intake (doc 236 OD-3). Collections → `receivables` by event. Outlet creation → `crm` in one transaction (one coupling, the `support -> crm` precedent). Prices, discounts, credit and stock are read-only reads for the device snapshot. | Writes only its own tables. The app starts and stops a session when the rep's day opens and closes, so it has no server-side dependency on `fieldsales`.                                                     | Posts by event. Settles pending payments by event. Reads orders read-only for allocation.                   |
 
 **Why `fieldtracking` is its own module and not part of `fieldsales`.**
 Location breadcrumbs are high-volume personal data, and whether, when and for
@@ -113,15 +113,15 @@ channel hits, so it gets a core fix (doc 248). The field app is one caller.
 A rep's phone can look like a mobile till. Verified against `pos.prisma`,
 `pos-sales.service.ts` and `orders.service.ts` `placeFromPos()`:
 
-| Concern | `pos` today | Field rep | Verdict |
-|---|---|---|---|
-| Device identity | `PosTerminal.deviceKeyHash`, but `verifyDeviceKey()` has **no caller**; the till syncs under the user's JWT | One phone per rep | Reuse neither table. A phone is a **refresh-token sign-in family** (`RefreshToken.familyId`, WO-206.3), revocable as one, which avoids a fourth copy of the device-credential pattern |
-| Custody window | `PosShift`: terminal, opening float, cash movements, closing count | The rep's day: van change float, collections, cheques, deposit at the depot | **Same shape, separate table** (`FieldDay`). The custody belongs to a person and an optional vehicle, not a fixed terminal, and `pos` must stay absent for a distributor with no tills. |
-| Sale semantics | `placeFromPos()`: DELIVERED now, `postUnconditional()` at the till's location, cash `Payment` PAID | Van sale: goods handed over now at the van's `Location`, often **on credit** to a known outlet. Pre-sell booking: a **request** for later delivery from a depot. | `placeFromPos()`'s "handed over" semantics are right for van sales, but it has no `contactId` and no on-account tender. **Generalise through order intake** (OD-3) with two modes, `HANDED_OVER` and `BOOKED`. `placeFromPos()` becomes intake's first caller rather than a second copy. |
-| Customer | A guest name and phone | A known `Contact` with credit terms, an outstanding balance and a route slot | Different |
-| Context | A counter | A planned stop on a route, geo-stamped, with a "no order" reason when nothing is sold | No `pos` equivalent |
-| Collections against AR | None | Core of the job | No `pos` equivalent (doc 248) |
-| Offline outbox | `packages/pos-core` `outbox.ts` (pure) | Same need | **Reuse the code** (moved to `packages/shared`, WO-245.2) |
+| Concern                | `pos` today                                                                                                 | Field rep                                                                                                                                                        | Verdict                                                                                                                                                                                                                                                                                  |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Device identity        | `PosTerminal.deviceKeyHash`, but `verifyDeviceKey()` has **no caller**; the till syncs under the user's JWT | One phone per rep                                                                                                                                                | Reuse neither table. A phone is a **refresh-token sign-in family** (`RefreshToken.familyId`, WO-206.3), revocable as one, which avoids a fourth copy of the device-credential pattern                                                                                                    |
+| Custody window         | `PosShift`: terminal, opening float, cash movements, closing count                                          | The rep's day: van change float, collections, cheques, deposit at the depot                                                                                      | **Same shape, separate table** (`FieldDay`). The custody belongs to a person and an optional vehicle, not a fixed terminal, and `pos` must stay absent for a distributor with no tills.                                                                                                  |
+| Sale semantics         | `placeFromPos()`: DELIVERED now, `postUnconditional()` at the till's location, cash `Payment` PAID          | Van sale: goods handed over now at the van's `Location`, often **on credit** to a known outlet. Pre-sell booking: a **request** for later delivery from a depot. | `placeFromPos()`'s "handed over" semantics are right for van sales, but it has no `contactId` and no on-account tender. **Generalise through order intake** (OD-3) with two modes, `HANDED_OVER` and `BOOKED`. `placeFromPos()` becomes intake's first caller rather than a second copy. |
+| Customer               | A guest name and phone                                                                                      | A known `Contact` with credit terms, an outstanding balance and a route slot                                                                                     | Different                                                                                                                                                                                                                                                                                |
+| Context                | A counter                                                                                                   | A planned stop on a route, geo-stamped, with a "no order" reason when nothing is sold                                                                            | No `pos` equivalent                                                                                                                                                                                                                                                                      |
+| Collections against AR | None                                                                                                        | Core of the job                                                                                                                                                  | No `pos` equivalent (doc 248)                                                                                                                                                                                                                                                            |
+| Offline outbox         | `packages/pos-core` `outbox.ts` (pure)                                                                      | Same need                                                                                                                                                        | **Reuse the code** (moved to `packages/shared`, WO-245.2)                                                                                                                                                                                                                                |
 
 **Defects found in `pos` while checking.** These must be fixed before a
 second device type depends on the same pattern:
@@ -137,6 +137,7 @@ second device type depends on the same pattern:
    sync". The likely path: the till goes offline, sales queue, the
    connection returns, and the cashier opens the close screen before the
    till screen's sync runs.
+
 2. **A replayed offline sale carries no time of sale.** `placedAt`, `paidAt`
    and `deliveredAt` take the sync time. A sale made at 21:50 and synced at
    09:10 lands in the next day's figures and the next shift's period. R15's
@@ -166,14 +167,14 @@ fixed.** What it lacks, and how this program fixes it once for every device
 type (till, warehouse handheld doc 237, plant tablet doc 242, RFID reader
 doc 244, rep phone):
 
-| Gap in the till's pattern | Fix |
-|---|---|
-| No occurred-at time | Every device-originated record carries `occurredAt` (UTC) and `timezone` (IANA), as `AttendanceEvent` already does |
-| A replay into a closed session is refused | Accepted and flagged `LATE`; the closed session (shift or field day) shows it as a late item for review. Never refused. |
+| Gap in the till's pattern                                        | Fix                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No occurred-at time                                              | Every device-originated record carries `occurredAt` (UTC) and `timezone` (IANA), as `AttendanceEvent` already does                                                                                                                                                                                           |
+| A replay into a closed session is refused                        | Accepted and flagged `LATE`; the closed session (shift or field day) shows it as a late item for review. Never refused.                                                                                                                                                                                      |
 | The idempotency key expires after 7 days (`idempotency.cron.ts`) | Field records are stored first in **domain-keyed inboxes** (`@unique` on the client id, kept permanently), the `PartnerFactInbox` / `AttendanceEvent.externalRef` pattern, rather than relying on the generic, time-limited `Idempotency-Key`. A device offline longer than a week still cannot double-post. |
-| No offline reference data (the till looks products up online) | **New:** a scoped down-sync, a snapshot plus keyset cursor per signed-in rep (doc 246 §4). Neither the till nor replication has one. |
-| One HTTP call per queued record | A batch endpoint with a per-record result. The outbox state machine is unchanged; only the transport batches. |
-| Head office cannot see what a device still holds | A device heartbeat reports queue depth and the age of the oldest unsynced record |
+| No offline reference data (the till looks products up online)    | **New:** a scoped down-sync, a snapshot plus keyset cursor per signed-in rep (doc 246 §4). Neither the till nor replication has one.                                                                                                                                                                         |
+| One HTTP call per queued record                                  | A batch endpoint with a per-record result. The outbox state machine is unchanged; only the transport batches.                                                                                                                                                                                                |
+| Head office cannot see what a device still holds                 | A device heartbeat reports queue depth and the age of the oldest unsynced record                                                                                                                                                                                                                             |
 
 **Proposed ruling R31**, for insertion after R30 (doc 236 §3) in
 `RETAIL-ERP.md`, if the owner approves (OD-F7):
@@ -212,17 +213,17 @@ The competitor's "efficiency" is undefined, so this design does not imitate
 it. These are the standard field-sales measures, each computed from stored
 rows and each clickable to them (doc 246 §6):
 
-| Measure | Definition |
-|---|---|
-| Planned calls | Route stops scheduled for that rep on that day |
-| Coverage | Planned outlets visited ÷ planned calls |
-| Productive calls | Visits with at least one booked or van-sold line |
-| Strike rate | Productive calls ÷ visits |
-| Lines per call | Order lines ÷ productive calls |
-| Drop size | Order value ÷ productive calls |
-| Collection | Σ field receipts recorded on the day |
-| Time in market | First check-in to last check-out |
-| Time per stop | Mean of check-out − check-in |
+| Measure            | Definition                                              |
+| ------------------ | ------------------------------------------------------- |
+| Planned calls      | Route stops scheduled for that rep on that day          |
+| Coverage           | Planned outlets visited ÷ planned calls                 |
+| Productive calls   | Visits with at least one booked or van-sold line        |
+| Strike rate        | Productive calls ÷ visits                               |
+| Lines per call     | Order lines ÷ productive calls                          |
+| Drop size          | Order value ÷ productive calls                          |
+| Collection         | Σ field receipts recorded on the day                    |
+| Time in market     | First check-in to last check-out                        |
+| Time per stop      | Mean of check-out − check-in                            |
 | Off-site check-ins | Visits whose position was outside the outlet's geofence |
 
 Which one is the headline "efficiency" tile is the owner's choice (OD-F6).
@@ -254,6 +255,7 @@ type.
 
   Acceptance: a sale queued, then the shift closed, then the sale synced,
   produces exactly one order dated at its sale time.
+
 - `WO-245.2` **One outbox.** `packages/pos-core/src/outbox.ts` moves to
   `packages/shared/src/offline/outbox.ts`, with `syncedOrderId` generalised
   to `syncedRef`. `pos-core` re-exports it, and the till's behaviour is
@@ -268,9 +270,17 @@ type.
   migration.
 - `WO-245.4` A public `AuthService.revokeSignInFamily(familyId, actorId)` in
   `core/auth`, wrapping the existing private `revokeFamily()`, audited
-  evidence-class. This is how a lost phone is cut off.
+  evidence-class. It publishes `SignInFamilyRevoked` (consumed by doc 247).
+  This is how a lost phone is cut off.
+- `WO-245.5` **Case-pack quantity.** `ProductVariant.casePackQty Int?`
+  (catalog, additive; null means "sold in units only"), editable in the
+  variant editor's advanced section. Reps enter "2 cartons + 5", and the order
+  line is always stored in base units (2 × `casePackQty` + 5), so pricing,
+  stock and every existing reader are unchanged. Real unit-of-measure
+  conversion (buy in cartons, price per carton) remains
+  `RETAIL-VERTICAL-COVERAGE-MATRIX.md` item 7, sequenced.
 
-**Then:** doc 248 (`WO-248.1`–`248.4`) → doc 246 (`WO-246.1`–`246.9`) and
+**Then:** doc 248 (`WO-248.1`–`248.5`) → doc 246 (`WO-246.1`–`246.9`) and
 doc 247 (`WO-247.1`–`247.4`). `WO-246.10` (own-fleet delivery runs) is
 sequenced. Until it is built, a pre-sell order is delivered through
 `fulfilment`'s existing manual courier flow, and the driver's cash comes in
@@ -306,8 +316,9 @@ advice, sets the values.
 
 **OD-F3 — cash shortages.**
 
-- **Recommendation:** a shortage at day settlement is written off to `5710`
-  only with a second person's approval.
+- **Recommendation:** a shortage at day settlement is written off to `5820`
+  Cash Over/Short (doc 250's account; corrected 2026-10-05 from a colliding
+  `5710`) only with a second person's approval.
 - **Recovery from wages:** "recover from the rep" (Dr `1300` Employee
   Advances, deducted through `payroll`) ships **off**. Deducting from wages
   is regulated differently by country.
@@ -358,11 +369,11 @@ recommendation stands.
 
 ## 10. Documents this changes (proposed, not made)
 
-| Document | Amendment |
-|---|---|
-| `RETAIL-ERP.md` | Insert R31 (§4). Part 5 gains `fieldsales` and `fieldtracking`. |
-| `MULTI-SECTOR.md` | Capability table gains both modules. The preset list gains profile 5. `KNOWN_MODULE_COUPLINGS` prose gains `fieldsales -> crm`. |
-| Doc 236 | §7 gains the profile 5 preset. §12 gains Tranche F. OD-3 notes field booking as a caller. |
-| `hr-people-org/52-staff-self-service-mobile-app.md` | A note that field reps use `apps/mobile` (OD-F1), and why that does not reverse doc 52 |
-| `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | Gains a profile 5 section |
-| `docs/implementation/README.md` | The "Numbers 236–244" paragraph extends to 248 |
+| Document                                            | Amendment                                                                                                                       |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `RETAIL-ERP.md`                                     | Insert R31 (§4). Part 5 gains `fieldsales` and `fieldtracking`.                                                                 |
+| `MULTI-SECTOR.md`                                   | Capability table gains both modules. The preset list gains profile 5. `KNOWN_MODULE_COUPLINGS` prose gains `fieldsales -> crm`. |
+| Doc 236                                             | §7 gains the profile 5 preset. §12 gains Tranche F. OD-3 notes field booking as a caller.                                       |
+| `hr-people-org/52-staff-self-service-mobile-app.md` | A note that field reps use `apps/mobile` (OD-F1), and why that does not reverse doc 52                                          |
+| `RETAIL-VERTICAL-COVERAGE-MATRIX.md`                | Gains a profile 5 section                                                                                                       |
+| `docs/implementation/README.md`                     | The "Numbers 236–244" paragraph extends to 248                                                                                  |

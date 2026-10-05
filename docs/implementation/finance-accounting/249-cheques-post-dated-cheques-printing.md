@@ -169,6 +169,19 @@ the number" lens names the delta from the GL.
   - Cleared: treasury rule Dr 1000 [deposit account] · Cr 1100 [`contactId`].
     `aging.ts` FIFO-matches it by `contactId`.
   - Bounced or terminal failure: nothing posts.
+  - **Hand-over to doc 248.** ADR-089 makes `receivables`' `CustomerReceipt`
+    (doc 248, field-sales program, unwritten as of 2026-10-05) the single
+    writer of what a customer paid on account. Once doc 248 is built, this
+    row follows the §3 rule like `ORDER_PAYMENT`:
+    - the cheque links a `customerReceiptId`;
+    - `ChequeCleared` and `ChequeDishonoured` reach `receivables`, which
+      confirms or fails its own receipt and posts it;
+    - treasury's own `ON_ACCOUNT` posting rule is removed in the same PR.
+
+    There is never a period with two writers. If doc 248 lands before
+    WO-249.3, `ON_ACCOUNT` is built on it directly and the treasury rule
+    above is never written. Doc 248 should treat a treasury `Cheque` as the
+    instrument behind a cheque receipt, not model cheque fields of its own.
 - **A bank charge on a bounce** (either purpose): Dr 5810 · Cr 1000 [deposit
   account], via `ChequeBankChargeRecorded`.
 - **A cleared cheque the bank later reverses:** `ON_ACCOUNT` →
@@ -645,7 +658,9 @@ Every screen gets a `/ux-design` brief before its first JSX.
     `chequeDate`.
   - `payments`' `ChequeInstrumentSubscriber` (`approveFromInstrument()`,
     fail on `ChequeDishonoured`).
-  - Treasury posting rules for `ON_ACCOUNT` clearance and bank charges.
+  - Treasury posting rules for `ON_ACCOUNT` clearance and bank charges. If
+    doc 248's `CustomerReceipt` already exists, `ON_ACCOUNT` delegates to it
+    instead (§3 hand-over) and only the bank-charge rule is written.
   - Permission `treasury.cheques.receive`.
   - **Verify** that `fulfilment` never dispatches an order whose only
     Payment is `AWAITING_APPROVAL`, as the bank-transfer provider claims. If

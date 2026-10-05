@@ -3499,22 +3499,22 @@ _no second-level headings_
 - Acceptance  <sub>:267</sub>
 - Out of scope  <sub>:281</sub>
 
-### `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md`  <sub>982 lines</sub>
+### `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md`  <sub>997 lines</sub>
 
 - Objective  <sub>:9</sub>
 - Existing state (verified in code, 2026-10-04)  <sub>:24</sub>
 - 1. Where this lives: a new `treasury` module (ADR-090)  <sub>:84</sub>
 - 2. The ledger shape: treasury accounts are a subsidiary ledger of Cash & Bank  <sub>:97</sub>
 - 3. The settlement rule: who posts what  <sub>:132</sub>
-- 4. Schema: `apps/api/prisma/schema/treasury.prisma` (new, hand-written forward-only migration)  <sub>:215</sub>
-- 5. Behaviour  <sub>:441</sub>
-- 6. Printing: the existing print-page idiom, with the layout as data  <sub>:534</sub>
-- 7. Parameters (exact)  <sub>:591</sub>
-- 8. Work orders  <sub>:609</sub>
-- 9. Acceptance criteria  <sub>:681</sub>
-- 10. Out of scope (named and sequenced, not silently skipped)  <sub>:721</sub>
-- 11. Open decisions for the owner  <sub>:738</sub>
-- Scope lenses  <sub>:772</sub>
+- 4. Schema: `apps/api/prisma/schema/treasury.prisma` (new, hand-written forward-only migration)  <sub>:228</sub>
+- 5. Behaviour  <sub>:454</sub>
+- 6. Printing: the existing print-page idiom, with the layout as data  <sub>:547</sub>
+- 7. Parameters (exact)  <sub>:604</sub>
+- 8. Work orders  <sub>:622</sub>
+- 9. Acceptance criteria  <sub>:696</sub>
+- 10. Out of scope (named and sequenced, not silently skipped)  <sub>:736</sub>
+- 11. Open decisions for the owner  <sub>:753</sub>
+- Scope lenses  <sub>:787</sub>
 
 ### `docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md`  <sub>545 lines</sub>
 

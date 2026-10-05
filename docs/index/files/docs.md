@@ -855,7 +855,7 @@ All 573 tracked files in `docs/*`, by directory.
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 253 |  |
 | `167-bank-facility-management.md` | doc | 296 |  |
-| `249-cheques-post-dated-cheques-printing.md` | doc | 982 |  |
+| `249-cheques-post-dated-cheques-printing.md` | doc | 997 |  |
 | `250-inter-branch-fund-transfers.md` | doc | 545 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-573 files · 104,567 lines
+573 files · 104,582 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -98,7 +98,7 @@ has a bug.
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/decisions` | 92 | 12,818 | doc |
-| `docs/implementation/finance-accounting` | 12 | 3,852 | doc |
+| `docs/implementation/finance-accounting` | 12 | 3,867 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
@@ -127,7 +127,7 @@ has a bug.
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,108 | doc |  |
-| `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md` | 982 | doc |  |
+| `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md` | 997 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
 | `docs/design/principles-laws/10-laws.md` | 942 | doc |  |
 | `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 940 | doc |  |

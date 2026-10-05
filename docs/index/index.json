@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2811,
-    "lines": 437889,
+    "lines": 437904,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1402,8 +1402,8 @@
     },
     "docs": {
       "files": 573,
-      "lines": 104567,
-      "bytes": 6447583,
+      "lines": 104582,
+      "bytes": 6448553,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -100040,8 +100040,8 @@
       "path": "docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 982,
-      "bytes": 61316,
+      "lines": 997,
+      "bytes": 62286,
       "doc": "",
       "symbols": []
     },

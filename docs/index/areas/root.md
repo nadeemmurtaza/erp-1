@@ -3,7 +3,7 @@
 
 # repository root files
 
-229 files · 17,666 lines
+244 files · 19,145 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -36,6 +36,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/test` | 1 | 11 | module |
 | `sites/zu-with-camera` | 7 | 1,479 | asset, html, script, stylesheet |
 | `sites/zu-with-camera/images` | 8 | 0 | jpg |
+| `templates/zu-with-camera` | 7 | 1,479 | asset, html, script, stylesheet |
+| `templates/zu-with-camera/images` | 8 | 0 | jpg |
 
 
 ## Entry points
@@ -46,6 +48,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/app.module.ts` | nest module |  |
 | `apps/platform/src/main.ts` | module |  |
 | `sites/zu-with-camera/index.html` | html |  |
+| `templates/zu-with-camera/index.html` | html |  |
 
 
 ## Largest files (where the weight is)
@@ -53,9 +56,11 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `sites/zu-with-camera/script.js` | 931 | script | ---------- Config / placeholders ---------- |
+| `templates/zu-with-camera/script.js` | 931 | script | ---------- Config / placeholders ---------- |
 | `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `sites/zu-with-camera/styles.css` | 548 | stylesheet |  |
+| `templates/zu-with-camera/styles.css` | 548 | stylesheet |  |
 | `DEPLOYMENT.md` | 529 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
@@ -65,8 +70,6 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.claude/skills/feature-scope/SKILL.md` | 225 | doc |  |
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
 | `.claude/rules/ui.md` | 217 | doc |  |
-| `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
-| `README.md` | 213 | doc |  |
 
 
 ---

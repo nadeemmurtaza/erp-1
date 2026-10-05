@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,808** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,823** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -17,7 +17,7 @@ Split by area so you load one, not all of them.
 | packages/* | 116 | 13,653 | [files/packages.md](../files/packages.md) |
 | docs/* | 555 | 97,028 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 64 | 33,175 | [files/infra.md](../files/infra.md) |
-| repository root files | 229 | 17,666 | [files/root.md](../files/root.md) |
+| repository root files | 244 | 19,145 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -39,14 +39,15 @@ name a new file: the convention is what makes it findable.
 | migration | 122 |
 | nest module | 106 |
 | prisma schema | 65 |
-| script | 46 |
+| script | 47 |
 | event subscriber | 38 |
 | utility | 38 |
 | scheduled job | 34 |
+| asset | 32 |
 | json | 31 |
 | react | 29 |
-| asset | 29 |
 | e2e test | 24 |
+| jpg | 16 |
 | file | 13 |
 | hook | 12 |
 | yaml | 12 |
@@ -55,21 +56,21 @@ name a new file: the convention is what makes it findable.
 | loading | 11 |
 | guard | 9 |
 | constants | 8 |
-| jpg | 8 |
+| html | 6 |
 | layout | 6 |
 | channel | 5 |
-| html | 5 |
 | types | 5 |
 | toml | 4 |
+| stylesheet | 4 |
 | not-found | 4 |
 | example | 3 |
 | driver | 3 |
 | error | 3 |
-| stylesheet | 3 |
 | sh | 3 |
 | timer | 3 |
 | global-error | 2 |
 | route handler | 2 |
+| jsonc | 2 |
 | mdc | 1 |
 | auth strategy | 1 |
 | dispatcher | 1 |
@@ -77,7 +78,6 @@ name a new file: the convention is what makes it findable.
 | mts | 1 |
 | sql | 1 |
 | py | 1 |
-| jsonc | 1 |
 
 
 ---

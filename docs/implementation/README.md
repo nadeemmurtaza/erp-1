@@ -28,6 +28,7 @@ against, not a domain brief themselves. See `DECISIONS.md` ADR-030 for why.
 | [`07-customer-portal.md`](./customer-portal-loyalty/07-customer-portal.md) | Portal shell, tracking timeline, self-service returns, reviews, wishlist, loyalty, mobile parity |
 | [`08-content-marketing-search.md`](./content-marketing-search/08-content-marketing-search.md) | CMS, collections and merchandising, full-text search, campaigns, abandoned cart |
 | [`251-checkout-abandonment-flow.md`](./content-marketing-search/251-checkout-abandonment-flow.md) | **Planned, not built.** A second flow beside doc 08's abandoned-cart sequence, triggered by a new `Cart.checkoutStartedAt` rather than cart staleness alone — a shopper who reached checkout gets different timing and different messaging than one who only added an item. Full scope-lens map |
+| [`252-video-block-chapters.md`](./content-marketing-search/252-video-block-chapters.md) | **Planned, not built.** One additive field on the CMS's existing `video` content block — chapter markers (label + timestamp), click-to-seek, no new table or module |
 | [`09-ai-layer.md`](./ai-layer/09-ai-layer.md) | Alt text and SEO generation, size recommendation, forecasting, COD risk, semantic search, WhatsApp assistant |
 | [`10-admin-dashboard.md`](./admin-platform/10-admin-dashboard.md) | The admin master dashboard rebuild: registry-driven card grid, the analytics page tree, the `finance` module (expenses, order economics) and the `bom` module (raw materials, recipes, production runs) |
 

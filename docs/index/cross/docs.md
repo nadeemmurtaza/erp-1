@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**611** markdown documents. These explain **why**; this index only says **where**.
+**612** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3051,6 +3051,15 @@ _no second-level headings_
 - 6. Scope lenses  <sub>:170</sub>
 - Out of scope, named  <sub>:308</sub>
 
+### `docs/implementation/content-marketing-search/252-video-block-chapters.md`  <sub>124 lines</sub>
+
+- Why this is scoped on its own, not as part of a "VSL feature"  <sub>:13</sub>
+- Decision  <sub>:22</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance criteria  <sub>:58</sub>
+- Scope lenses  <sub>:71</sub>
+- Out of scope, named  <sub>:115</sub>
+
 ### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
 - Why  <sub>:43</sub>
@@ -4573,16 +4582,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>709 lines</sub>
+### `docs/implementation/README.md`  <sub>710 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:562</sub>
-- The two module groups  <sub>:591</sub>
-- How a work order runs  <sub>:628</sub>
-- Known gaps not yet owned by a phase  <sub>:646</sub>
-- When a brief is wrong  <sub>:673</sub>
-- Scope, honestly  <sub>:686</sub>
-- Gap-analysis roadmap references  <sub>:693</sub>
+- Dependency order  <sub>:563</sub>
+- The two module groups  <sub>:592</sub>
+- How a work order runs  <sub>:629</sub>
+- Known gaps not yet owned by a phase  <sub>:647</sub>
+- When a brief is wrong  <sub>:674</sub>
+- Scope, honestly  <sub>:687</sub>
+- Gap-analysis roadmap references  <sub>:694</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

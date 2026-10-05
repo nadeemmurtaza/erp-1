@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2814,
-    "lines": 439411,
+    "files": 2815,
+    "lines": 439536,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 576,
-      "lines": 106089,
-      "bytes": 6559587,
+      "files": 577,
+      "lines": 106214,
+      "bytes": 6565559,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -98096,8 +98096,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 709,
-      "bytes": 109076,
+      "lines": 710,
+      "bytes": 109336,
       "doc": "",
       "symbols": []
     },
@@ -99151,6 +99151,15 @@
       "kind": "doc",
       "lines": 318,
       "bytes": 18896,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/content-marketing-search/252-video-block-chapters.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 124,
+      "bytes": 5712,
       "doc": "",
       "symbols": []
     },

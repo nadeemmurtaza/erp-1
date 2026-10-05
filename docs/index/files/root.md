@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 244 tracked files in `repository root files`, by directory.
+All 229 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -471,31 +471,6 @@ All 244 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `setup-env.ts` | module | 11 |  |
-
-### `sites/zu-with-camera` (7)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `apple-touch-icon.png` | asset | — |  |
-| `favicon-32.png` | asset | — |  |
-| `favicon.svg` | asset | — |  |
-| `index.html` | html | — |  |
-| `script.js` | script | 931 | ---------- Config / placeholders ---------- |
-| `styles.css` | stylesheet | 548 |  |
-| `wrangler.jsonc` | jsonc | — |  |
-
-### `sites/zu-with-camera/images` (8)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `brand-led-sign.jpg` | jpg | — |  |
-| `event-telescope.jpg` | jpg | — |  |
-| `graduation-cap.jpg` | jpg | — |  |
-| `graduation-lawn.jpg` | jpg | — |  |
-| `graduation-seated.jpg` | jpg | — |  |
-| `onset-bricks.jpg` | jpg | — |  |
-| `onset-street.jpg` | jpg | — |  |
-| `studio-lighting.jpg` | jpg | — |  |
 
 ### `templates/zu-with-camera` (7)
 

@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**610** markdown documents. These explain **why**; this index only says **where**.
+**611** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3029,7 +3029,7 @@ _no second-level headings_
 - Acceptance  <sub>:219</sub>
 - Out of scope  <sub>:228</sub>
 
-### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>160 lines</sub>
+### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>167 lines</sub>
 
 - Why  <sub>:27</sub>
 - Work orders  <sub>:35</sub>
@@ -3038,8 +3038,18 @@ _no second-level headings_
 - WO-8.3 — Search  <sub>:83</sub>
 - WO-8.4 — Campaigns and broadcasts  <sub>:107</sub>
 - WO-8.5 — Abandoned cart recovery  <sub>:126</sub>
-- WO-8.6 — On-site messaging  <sub>:142</sub>
-- Phase 8 exit criteria  <sub>:151</sub>
+- WO-8.6 — On-site messaging  <sub>:149</sub>
+- Phase 8 exit criteria  <sub>:158</sub>
+
+### `docs/implementation/content-marketing-search/251-checkout-abandonment-flow.md`  <sub>318 lines</sub>
+
+- 1. What's actually live today, verified against the code, not the doc  <sub>:15</sub>
+- 2. The decision  <sub>:47</sub>
+- 3. Work orders  <sub>:103</sub>
+- 4. Exact parameters  <sub>:125</sub>
+- 5. Acceptance criteria  <sub>:144</sub>
+- 6. Scope lenses  <sub>:170</sub>
+- Out of scope, named  <sub>:308</sub>
 
 ### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
@@ -4563,16 +4573,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>708 lines</sub>
+### `docs/implementation/README.md`  <sub>709 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:561</sub>
-- The two module groups  <sub>:590</sub>
-- How a work order runs  <sub>:627</sub>
-- Known gaps not yet owned by a phase  <sub>:645</sub>
-- When a brief is wrong  <sub>:672</sub>
-- Scope, honestly  <sub>:685</sub>
-- Gap-analysis roadmap references  <sub>:692</sub>
+- Dependency order  <sub>:562</sub>
+- The two module groups  <sub>:591</sub>
+- How a work order runs  <sub>:628</sub>
+- Known gaps not yet owned by a phase  <sub>:646</sub>
+- When a brief is wrong  <sub>:673</sub>
+- Scope, honestly  <sub>:686</sub>
+- Gap-analysis roadmap references  <sub>:693</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

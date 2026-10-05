@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 575 tracked files in `docs/*`, by directory.
+All 576 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -569,7 +569,7 @@ All 575 tracked files in `docs/*`, by directory.
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 708 |  |
+| `README.md` | doc | 709 |  |
 | `RETAIL-ERP.md` | doc | 1108 |  |
 | `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
@@ -736,11 +736,12 @@ All 575 tracked files in `docs/*`, by directory.
 | `182-14-why-newax-builds-and-owns-this.md` | doc | 286 |  |
 | `183-15-engineering-governance-two-agent-split.md` | doc | 233 |  |
 
-### `docs/implementation/content-marketing-search` (1)
+### `docs/implementation/content-marketing-search` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `08-content-marketing-search.md` | doc | 160 |  |
+| `08-content-marketing-search.md` | doc | 167 |  |
+| `251-checkout-abandonment-flow.md` | doc | 318 |  |
 
 ### `docs/implementation/customer-portal-loyalty` (1)
 

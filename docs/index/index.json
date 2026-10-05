@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2813,
-    "lines": 439085,
+    "files": 2814,
+    "lines": 439411,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 575,
-      "lines": 105763,
-      "bytes": 6539905,
+      "files": 576,
+      "lines": 106089,
+      "bytes": 6559587,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -98096,8 +98096,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 708,
-      "bytes": 108682,
+      "lines": 709,
+      "bytes": 109076,
       "doc": "",
       "symbols": []
     },
@@ -99140,8 +99140,17 @@
       "path": "docs/implementation/content-marketing-search/08-content-marketing-search.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 160,
-      "bytes": 7068,
+      "lines": 167,
+      "bytes": 7460,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/content-marketing-search/251-checkout-abandonment-flow.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 318,
+      "bytes": 18896,
       "doc": "",
       "symbols": []
     },

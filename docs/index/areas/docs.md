@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-575 files · 105,763 lines
+576 files · 106,089 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 12 | 4,856 | doc, file |
+| `docs/implementation` | 12 | 4,857 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
 | `docs/implementation/admin-platform` | 6 | 2,797 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -95,7 +95,7 @@ has a bug.
 | `docs/implementation/catalog-variants-pricing` | 3 | 963 | doc |
 | `docs/implementation/commercial-licensing-agency` | 15 | 2,865 | doc |
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
-| `docs/implementation/content-marketing-search` | 1 | 160 | doc |
+| `docs/implementation/content-marketing-search` | 2 | 485 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/decisions` | 92 | 12,846 | doc |
 | `docs/implementation/finance-accounting` | 12 | 3,867 | doc |
@@ -136,7 +136,7 @@ has a bug.
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
 | `docs/implementation/supply-chain-operations/246-field-sales.md` | 798 | doc |  |
-| `docs/implementation/README.md` | 708 | doc |  |
+| `docs/implementation/README.md` | 709 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 
 

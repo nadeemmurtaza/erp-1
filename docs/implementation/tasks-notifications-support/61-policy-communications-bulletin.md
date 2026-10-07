@@ -7,7 +7,7 @@
 > `BulletinNotificationListener` (the only subscriber to the new
 > `DomainEvent.BulletinPublished`), the two named permissions, and a
 > two-screen admin UI (`/admin/bulletins`, `/admin/bulletins/new`) with a
-> nav entry are all real, at `apps/api/src/modules/notify/` and
+> nav entry are all real, at `apps/api/src/modules/customers/notify/` and
 > `apps/web/src/app/(admin)/admin/(app)/bulletins/`.
 >
 > Lives inside the `notify` module, not `hr` (this document's own casual

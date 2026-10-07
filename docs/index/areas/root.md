@@ -3,7 +3,7 @@
 
 # repository root files
 
-219 files · 22,119 lines
+214 files · 16,187 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,11 +17,11 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,306 | file, doc, txt, script |
+| `.` | 17 | 2,371 | file, doc |
 | `.claude` | 2 | 49 | json |
-| `.claude/agents` | 9 | 389 | doc |
+| `.claude/agents` | 9 | 390 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 10 | 644 | doc |
+| `.claude/rules` | 10 | 646 | doc |
 | `.claude/skills/feature-scope` | 1 | 225 | doc |
 | `.claude/skills/restyle` | 1 | 90 | doc |
 | `.claude/skills/ux-audit` | 1 | 108 | doc |
@@ -49,11 +49,9 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 529 | doc |  |
-| `README.md` | 349 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
@@ -63,7 +61,9 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
 | `.claude/rules/ui.md` | 217 | doc |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
+| `README.md` | 213 | doc |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
+| `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 
 
 ---

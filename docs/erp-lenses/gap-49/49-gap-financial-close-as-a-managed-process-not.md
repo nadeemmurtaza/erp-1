@@ -1,6 +1,6 @@
 # 49. Financial close as a managed process, not a status flip
 
-`FiscalPeriodsService.lockPeriod()` (`apps/api/src/modules/accounting/fiscal-periods.service.ts:109`)
+`FiscalPeriodsService.lockPeriod()` (`apps/api/src/modules/money/accounting/fiscal-periods.service.ts:109`)
 checks one thing: the period is CLOSED. At one shop that is close enough. At
 100+ locations across timezones, "closed" is a claim about work that happened
 elsewhere — branch cash counted, intercompany pairs matched, accruals booked
@@ -53,7 +53,7 @@ both.
 **Why:** `lockPeriod()` (`fiscal-periods.service.ts:109-115`) takes only
 `id`, no actor. `AuditService.record()` (`apps/api/src/core/audit/audit.service.ts`)
 is best-effort and not called from this service at all — grepping
-`AuditService` usage under `apps/api/src/modules/accounting/` returns
+`AuditService` usage under `apps/api/src/modules/money/accounting/` returns
 nothing. So today the same person can close and then irreversibly lock a
 period solo, and the system keeps no row saying whether one person or two
 touched it. This is distinct from lens 36's "control has no name" — that
@@ -133,7 +133,7 @@ manual process the feature was meant to remove.
 - No `AdminScope` narrowing applied anywhere in the accounting module today
   (`gl-reports.service.ts:22` names the same gap for GL reports), so even
   once a branch column exists, nothing yet filters a query by it.
-- `AuditService` is never called from `apps/api/src/modules/accounting/`
+- `AuditService` is never called from `apps/api/src/modules/money/accounting/`
   today, so even the weakest version of "record that this happened" is
   currently absent from this specific module.
 

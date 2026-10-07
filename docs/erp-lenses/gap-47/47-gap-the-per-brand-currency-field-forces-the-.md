@@ -37,7 +37,7 @@ look up that brand's currency, resolve a rate, and pass `currency` +
 value and `JournalLine.currency` genuinely records "AED" instead of the
 silent PKR default.
 
-**Done test:** `grep -n "fxRateScaled\|currency:" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+**Done test:** `grep -n "fxRateScaled\|currency:" apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 inside `onOrderPlaced`/`onPaymentSucceeded` returns nothing today. The PR
 adds it, and a query shows at least one `JournalLine` from that brand with
 `fxRateScaled != 1000000`.

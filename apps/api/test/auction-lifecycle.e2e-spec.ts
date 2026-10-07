@@ -3,9 +3,9 @@ import type { TestingModule } from '@nestjs/testing';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CoreModule } from '../src/core/core.module';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { AuctionLifecycleService, OUTAGE_EXTENSION_MS } from '../src/modules/auction/auction-lifecycle.service';
-import { AuctionModule } from '../src/modules/auction/auction.module';
-import { AuctionService } from '../src/modules/auction/auction.service';
+import { AuctionLifecycleService, OUTAGE_EXTENSION_MS } from '../src/modules/sales/auction/auction-lifecycle.service';
+import { AuctionModule } from '../src/modules/sales/auction/auction.module';
+import { AuctionService } from '../src/modules/sales/auction/auction.service';
 
 /**
  * Proxy bidding, anti-snipe and the open and close jobs (launchpad-apps/

@@ -17,7 +17,7 @@ docs/erp-lenses/procurement-supplier-lifecycle/13-procurement-supplier-lifecycle
 
 **Question:** When a SupplierBill is raised against a PurchaseOrder, what named tolerance (percentage, absolute paisa, or both) must the bill's amount and quantity fall within versus the PO's committed unitCost and the cumulative GoodsReceiptItem quantities/landedUnitCost, and what status does a bill outside that tolerance get instead of silently posting as UNPAID?
 
-**Grounding:** PurchasingService.createSupplierBill (apps/api/src/modules/purchasing/purchasing.service.ts:516-551) checks only supplierId match; supplier_bill.raised posts Dr 1200/Cr 2200 unconditionally at baseAmountMinor; grep for 'tolerance' across the repo returns nothing.
+**Grounding:** PurchasingService.createSupplierBill (apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:516-551) checks only supplierId match; supplier_bill.raised posts Dr 1200/Cr 2200 unconditionally at baseAmountMinor; grep for 'tolerance' across the repo returns nothing.
 
 ### Five commitments, one key
 

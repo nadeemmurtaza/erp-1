@@ -7,7 +7,7 @@ want the unsummarised detail for this area.
 ## Facts
 
 HOW A JOURNAL ENTRY COMES INTO EXISTENCE
-Only one writer: `AccountingService.postEntry()` in `apps/api/src/modules/accounting/accounting.service.ts`. Its only production caller is `PostingRulesSubscriber` (`posting-rules.subscriber.ts`) plus `FiscalPeriodsService.closeFiscalYear()`. There is no manual-journal endpoint — `fiscal-periods.controller.ts`, `gl-reports.controller.ts` and `consolidation.controller.ts` are the only accounting controllers, and none posts an entry.
+Only one writer: `AccountingService.postEntry()` in `apps/api/src/modules/money/accounting/accounting.service.ts`. Its only production caller is `PostingRulesSubscriber` (`posting-rules.subscriber.ts`) plus `FiscalPeriodsService.closeFiscalYear()`. There is no manual-journal endpoint — `fiscal-periods.controller.ts`, `gl-reports.controller.ts` and `consolidation.controller.ts` are the only accounting controllers, and none posts an entry.
 
 Exactly seven posting rules exist, all `@OnDomainEvent` subscribers (at-least-once outbox delivery via `apps/api/src/core/events/outbox.dispatcher.ts`, `MAX_ATTEMPTS = 8`), each idempotent via `AccountingService.findPostedEntry(source, sourceRef)`:
 - `order.placed` → Dr 1100 AR · Cr 4000 Revenue · Cr 2100 Tax Payable · Dr 5000 COGS · Cr 1200 Inventory

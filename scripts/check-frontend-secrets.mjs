@@ -16,7 +16,7 @@
  *
  * Run by `pnpm lint` at the repo root and by CI, alongside
  * check-module-boundaries.mjs. See docs/implementation/00-HOUSE-RULES.md
- * Rule 12 and README.md's "Security architecture" section.
+ * Rule 12 and docs/security/security-architecture.md.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';

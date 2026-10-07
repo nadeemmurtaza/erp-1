@@ -6,8 +6,8 @@ import request from 'supertest';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import type { SettingsService } from '../src/core/settings/settings.service';
-import type { AuctionBidderService } from '../src/modules/auction/auction-bidder.service';
-import type { AuctionService } from '../src/modules/auction/auction.service';
+import type { AuctionBidderService } from '../src/modules/sales/auction/auction-bidder.service';
+import type { AuctionService } from '../src/modules/sales/auction/auction.service';
 
 /**
  * Who may bid (launchpad-apps/234-auction-app.md §8, WO-234.5) against the real
@@ -89,8 +89,8 @@ describe('Auction bidders (e2e)', () => {
   beforeAll(async () => {
     process.env.MODULES = `${process.env.MODULES ?? ''},auction`;
     const { AppModule } = await import('../src/app.module');
-    const { AuctionBidderService: BidderService } = await import('../src/modules/auction/auction-bidder.service');
-    const { AuctionService: Auctions } = await import('../src/modules/auction/auction.service');
+    const { AuctionBidderService: BidderService } = await import('../src/modules/sales/auction/auction-bidder.service');
+    const { AuctionService: Auctions } = await import('../src/modules/sales/auction/auction.service');
     const { SettingsService: Settings } = await import('../src/core/settings/settings.service');
     const { IdentityVerificationStatusRegistry } = await import('../src/core/extension-points/identity-verification-status.registry');
     moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();

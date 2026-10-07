@@ -9,11 +9,11 @@ Pack **core** · always on · 7 files
 
 **Registry note** (`modules.registry.ts`): 142-bpmn-visual-workflow-engine.md — a BPMN visual workflow engine over doc 63's own ApprovalChain, built by explicit owner override (ADR-026).
 
-Source: `apps/api/src/modules/bpmn-workflows/`
+Source: `apps/api/src/modules/system/bpmn-workflows/`
 
 ## Files (7 · 425 lines)
 
-All paths relative to `apps/api/src/modules/bpmn-workflows`.
+All paths relative to `apps/api/src/modules/system/bpmn-workflows`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

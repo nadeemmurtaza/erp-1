@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 **Registry note** (`modules.registry.ts`): 146-wholesale-tiered-pricing.md — the pricing module MULTI-SECTOR.md already named as not built.
 
-Source: `apps/api/src/modules/pricing/`
+Source: `apps/api/src/modules/sales/pricing/`
 
 ## Files (5 · 654 lines)
 
-All paths relative to `apps/api/src/modules/pricing/dto`.
+All paths relative to `apps/api/src/modules/sales/pricing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

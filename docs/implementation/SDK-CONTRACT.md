@@ -31,7 +31,7 @@ where its own module already lists implementations, add its key to the
 relevant env allowlist. Nothing else in the codebase changes — no core file
 is edited to add a fifth payment provider or a third AI vendor.
 
-### `PaymentProvider` — `apps/api/src/modules/payments/payment-provider.ts`
+### `PaymentProvider` — `apps/api/src/modules/sales/payments/payment-provider.ts`
 
 ```ts
 interface PaymentProvider {
@@ -102,7 +102,7 @@ interface StorageDriver {
 }
 ```
 
-### `VectorStore` — `apps/api/src/modules/rag/vector-store.ts`
+### `VectorStore` — `apps/api/src/modules/system/rag/vector-store.ts`
 
 ```ts
 interface VectorStore {
@@ -180,7 +180,7 @@ record; restated here only as the checklist an external team runs, in order:
    orders, stock and customers," no new module is needed — a `MODULES`
    entry and some settings are enough.
 2. For each thing that really is specific: a folder under
-   `apps/api/src/modules/<name>/`, its own `prisma/schema/<name>.prisma`
+   `apps/api/src/modules/<domain>/<name>/`, its own `prisma/schema/<name>.prisma`
    (additive only, forward-only migrations, never touching a `core` table),
    one line in `modules.registry.ts`, one entry in every `.env*.example`
    file's `# Available:` line (`scripts/check-env-templates.mjs` fails the
@@ -202,7 +202,7 @@ CI — not a one-time manual check.
 
 ## 4. The reference pack — proof, not prose
 
-`apps/api/src/modules/example-hello-world-pack/` is a real, minimal pack
+`apps/api/src/modules/system/example-hello-world-pack/` is a real, minimal pack
 built strictly to this document: `HelloWorldListener` subscribes to
 `DomainEvent.OrderPlaced` (§2 above — deliberately the safest, most-
 pressure-tested event in the catalogue) through `@OnDomainEvent`, logs one

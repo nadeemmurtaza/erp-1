@@ -7,7 +7,7 @@
 > module named `hr` in `FEATURE_MODULES`
 > (`apps/api/src/modules/modules.registry.ts`) — compensation rates, leave
 > policy/balances and pay runs are all one module, `payroll`
-> (`apps/api/src/modules/payroll/`), confirmed by reading that module's own
+> (`apps/api/src/modules/people/payroll/`), confirmed by reading that module's own
 > directory and `payroll.module.ts`. **WO-84.1** — the HR-only convention
 > (`MODULES=payroll`, not `hr,payroll`) is now recorded alongside doc 82's
 > Basic/Standard mapping in

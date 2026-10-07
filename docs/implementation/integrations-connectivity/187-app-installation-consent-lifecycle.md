@@ -31,14 +31,14 @@ revokes everything at once and is never blocked by any dependency.
   (`core/auth/api-keys/api-key-access.ts`), `NON_DELEGATABLE_PERMISSIONS`
   and `@SessionOnly()` — all built.
 - Grant-with-proof precedents: `OrgUnitGrantService.issue()`
-  (`modules/orgstructure/org-unit-grant.service.ts`) refuses to confer a key
+  (`modules/people/orgstructure/org-unit-grant.service.ts`) refuses to confer a key
   the granter lacks — "you cannot confer what you were never given" — and
   has a `preview*` twin. `SupportAccessService.approve()` (`apps/platform`)
   refuses self-approval.
 - Evidence audit: `AuditService.recordEvidence(tx, …)`
   (`core/audit/audit.service.ts`) — built.
 - The tenant → platform proxy: `MarketplaceService`
-  (`modules/marketplace/marketplace.service.ts`) — built.
+  (`modules/supply-chain/marketplace/marketplace.service.ts`) — built.
 
 ### Required change
 §1–§8 below.

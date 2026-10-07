@@ -96,7 +96,7 @@ there is no separate reconcile/count key.
 and caused a shortfall can also close the shift and read the Z-report that
 would expose them — nothing requires a second person.
 
-**Done test:** `grep -n "openedByUserId" apps/api/src/modules/pos/pos-shifts.service.ts` shows `closeShift` never reads it for comparison; the PR either adds that comparison behind a distinct permission or its description states cash-count SoD is out of scope for this shift model and why.
+**Done test:** `grep -n "openedByUserId" apps/api/src/modules/sales/pos/pos-shifts.service.ts` shows `closeShift` never reads it for comparison; the PR either adds that comparison behind a distinct permission or its description states cash-count SoD is out of scope for this shift model and why.
 
 **Breaks without:** At 100+ till locations run by walk-in till users, a
 shortfall never surfaces in the Z-report because the person who caused it

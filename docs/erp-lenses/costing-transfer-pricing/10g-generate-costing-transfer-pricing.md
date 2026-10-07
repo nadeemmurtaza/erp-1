@@ -23,7 +23,7 @@ docs/erp-lenses/costing-transfer-pricing/10-costing-transfer-pricing.md
 
 **Question:** List every controller action that returns costPrice, unitCost or landedUnitCost, and for each, say whether it calls stripProductCost/stripOrderCost/stripProductListCost/stripOrderListCost (apps/api/src/core/common/cost-fields.ts) or relies only on the coarser permission gating the whole endpoint.
 
-**Grounding:** packages/shared/src/permissions.ts:157-158 (inventory.view_cost); apps/api/src/core/common/cost-fields.ts (opt-in stripper, used in catalog-admin.controller.ts and orders.controller.ts only); apps/api/src/modules/inventory/inventory.controller.ts:11 and inventory.service.ts toVariantView() (costPrice leaks unconditionally under inventory.manage)
+**Grounding:** packages/shared/src/permissions.ts:157-158 (inventory.view_cost); apps/api/src/core/common/cost-fields.ts (opt-in stripper, used in catalog-admin.controller.ts and orders.controller.ts only); apps/api/src/modules/supply-chain/inventory/inventory.controller.ts:11 and inventory.service.ts toVariantView() (costPrice leaks unconditionally under inventory.manage)
 
 ### The ledger's five unfilled columns
 

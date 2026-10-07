@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**495** markdown documents. These explain **why**; this index only says **where**.
+**590** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -16,12 +16,12 @@
    `ENTERPRISE-SCALE.md` overlap.
 4. Everything else, by topic.
 
-Architectural decisions go in `docs/implementation/DECISIONS.md` — a settled
-decision is not reopened without new evidence.
+Architectural decisions go in `docs/implementation/decisions/` (one file each, indexed by
+`docs/implementation/DECISIONS.md`) — a settled decision is not reopened without new evidence.
 
 ## Outlines
 
-### `.claude/agents/architect.md`  <sub>48 lines</sub>
+### `.claude/agents/architect.md`  <sub>49 lines</sub>
 
 _no second-level headings_
 
@@ -65,9 +65,9 @@ _no second-level headings_
 
 - Database change protocol  <sub>:10</sub>
 
-### `.claude/rules/decisions.md`  <sub>26 lines</sub>
+### `.claude/rules/decisions.md`  <sub>28 lines</sub>
 
-- Architectural decision records  <sub>:11</sub>
+- Architectural decision records  <sub>:12</sub>
 
 ### `.claude/rules/dependencies.md`  <sub>23 lines</sub>
 
@@ -161,6 +161,14 @@ _no second-level headings_
 - Three rules about the index  <sub>:56</sub>
 - Commands  <sub>:68</sub>
 
+### `apps/api/src/modules/README.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `apps/mobile/README.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
 ### `Architecture.md`  <sub>32 lines</sub>
 
 _no second-level headings_
@@ -178,13 +186,13 @@ _no second-level headings_
 - Deployment  <sub>:466</sub>
 - NEWAX Engineering Operating Protocol  <sub>:479</sub>
 
-### `CONTRIBUTING.md`  <sub>127 lines</sub>
+### `CONTRIBUTING.md`  <sub>130 lines</sub>
 
 - Layout  <sub>:6</sub>
-- Adding a module  <sub>:21</sub>
-- The rules that keep this working  <sub>:52</sub>
-- Before you push  <sub>:104</sub>
-- Local setup  <sub>:114</sub>
+- Adding a module  <sub>:22</sub>
+- The rules that keep this working  <sub>:55</sub>
+- Before you push  <sub>:107</sub>
+- Local setup  <sub>:117</sub>
 
 ### `DEPLOYMENT.md`  <sub>529 lines</sub>
 
@@ -2004,6 +2012,30 @@ _no second-level headings_
 - Migration safety register  <sub>:1765</sub>
 - Phase 10 definition of done  <sub>:1809</sub>
 
+### `docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md`  <sub>244 lines</sub>
+
+- Objective  <sub>:7</sub>
+- How the snippets conflict with house rules (applies to every screen)  <sub>:16</sub>
+- Existing state (verified by reading routes/permissions, not by running the app)  <sub>:29</sub>
+- Shared layout contract (Law 4, 5, 7)  <sub>:46</sub>
+- 1. Bulk user import (`/admin/users/import`)  <sub>:60</sub>
+- 2. Access panel + effective-access preview (`/admin/users/[id]` → tab)  <sub>:79</sub>
+- 3. Temporary access  <sub>:92</sub>
+- 4. Company profile (`/admin/settings/company`)  <sub>:106</sub>
+- 5. Publish profile + audience builder  <sub>:121</sub>
+- 6. Products & services feed  <sub>:142</sub>
+- 7. Users page  <sub>:151</sub>
+- 8. Audit log viewer (`/admin/audit`)  <sub>:158</sub>
+- 9. Own profile (`/admin/account`)  <sub>:166</sub>
+- 10. Departments + roster  <sub>:173</sub>
+- 11. One-click partner invoice send  <sub>:184</sub>
+- 12. Pixel motion (decorative)  <sub>:193</sub>
+- Implementation plan (sequenced work orders)  <sub>:201</sub>
+- Acceptance criteria (per screen)  <sub>:212</sub>
+- Scope lenses (summary; each WO repeats its own)  <sub>:222</sub>
+- Out of scope  <sub>:232</sub>
+- Open questions for the owner  <sub>:237</sub>
+
 ### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>176 lines</sub>
 
 - 1. An action item is a shape every contributing module already produces  <sub>:29</sub>
@@ -3024,98 +3056,365 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>12,236 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>131 lines</sub>
 
 - How to read this  <sub>:13</sub>
-- ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
-- ADR-002 — A sector is a module pack behind an allowlist  <sub>:104</sub>
-- ADR-003 — Modules are independent; side effects cross through events  <sub>:145</sub>
-- ADR-004 — Events are delivered through a transactional outbox  <sub>:186</sub>
-- ADR-005 — Money is an integer in minor units  <sub>:222</sub>
-- ADR-006 — Customer-facing text is a row, not a column  <sub>:257</sub>
-- ADR-007 — Access control is permission-based, and the grants are data  <sub>:291</sub>
-- ADR-008 — Migrations are hand-written and forward-only  <sub>:331</sub>
-- ADR-009 — A branch is a node with its own database, not a tenant row  <sub>:370</sub>
-- ADR-010 — In-transit stock is a Location, not a flag  <sub>:410</sub>
-- ADR-011 — A till sale is a channel of `orders`  <sub>:449</sub>
-- ADR-012 — Cross-module references are bare scalars, not foreign keys  <sub>:484</sub>
-- ADR-013 — One deployment serves one brand  <sub>:522</sub>
-- ADR-014 — The repository index is generated and enforced, not written  <sub>:555</sub>
-- ADR-015 — Model and effort are routed per job, from one policy  <sub>:597</sub>
-- ADR-016 — Rules that apply to one kind of file are path-scoped  <sub>:640</sub>
-- ADR-017 — An observability backend  <sub>:715</sub>
-- ADR-018 — Horizontal replicas and load balancing  <sub>:752</sub>
-- ADR-019 — WO-B.4 ships against the live reports idiom, not Track A's unbuilt registry  <sub>:788</sub>
-- ADR-020 — `bom` (Track C) ships as a new module, `production` stays as-is  <sub>:892</sub>
-- ADR-021 — WO-23.3's scopeLevel pattern: a new core-owned enum, fail-closed on the money switch, and originNodeId as the node-prefix string  <sub>:981</sub>
-- ADR-022 — WO-23.3b enforces `allowBranchLocalPurchasing` through a new BranchPolicyRegistry extension point, keyed off the caller's own AdminScope grant  <sub>:1156</sub>
-- ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity  <sub>:1272</sub>
-- ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`  <sub>:1407</sub>
-- ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1551</sub>
-- Decision: doc 22's leave schema is struck in favour of payroll's (WO-19.3)  <sub>:1674</sub>
-- Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1725</sub>
-- ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1802</sub>
-- ADR-027 — The three highest-risk items from ADR-026 withdrawn: no WASM sandbox, no service mesh, no dedicated crypto microservice  <sub>:1910</sub>
-- ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1996</sub>
-- ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2128</sub>
-- ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2215</sub>
-- ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2288</sub>
-- ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2453</sub>
-- ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2592</sub>
-- ADR-033 — `admin-platform` docs 02/44/72/75 completed; doc 75's own claims corrected after they were found false against the running code  <sub>:2795</sub>
-- ADR-034 — The wallet module (doc 155) built in full, shipped module-off and checkout-disconnected pending WO-155.0's own legal confirmation  <sub>:2974</sub>
-- ADR-036 — WO-145 (receivables: CreditNote/DebitNote, credit limits, dunning) keys the customer to `Contact`, not R18's own `Invoice`; ships undimensioned like its siblings; dunning gets its own cron, not doc 54's unbuilt registry  <sub>:3176</sub>
-- ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3302</sub>
-- ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3407</sub>
-- ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3487</sub>
-- ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3644</sub>
-- ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3808</sub>
-- ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3988</sub>
-- ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4086</sub>
-- ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4220</sub>
-- ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4377</sub>
-- ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4513</sub>
-- ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4649</sub>
-- ADR-050 — Doc 23 (task allotment, status and tracking): built exactly as specified, with `Employee` translated to `User` per ADR-044, a new `hr.posting_ended` domain event added since doc 20's build didn't need one, and the toxic pair kept out of `TOXIC_PERMISSION_PAIRS`  <sub>:4841</sub>
-- ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4922</sub>
-- ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:5033</sub>
-- ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5164</sub>
-- ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5523</sub>
-- ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5630</sub>
-- ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5752</sub>
-- ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5952</sub>
-- ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6077</sub>
-- ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6183</sub>
-- ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6293</sub>
-- ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6402</sub>
-- ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6529</sub>
-- ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6666</sub>
-- ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6788</sub>
-- ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6903</sub>
-- ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:7015</sub>
-- ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7145</sub>
-- ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7260</sub>
-- ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7425</sub>
-- ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7563</sub>
-- ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7722</sub>
-- ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout  <sub>:7846</sub>
-- ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:8062</sub>
-- ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:8201</sub>
-- ADR-072 — Docs 168–183 revised: NEWAX's own product, not a du-owned platform — du was a quality-bar reference only, never a counterparty; ADR-071's build-here decision carried forward unchanged  <sub>:8347</sub>
-- ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded  <sub>:8540</sub>
-- ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8707</sub>
-- ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8913</sub>
-- ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:9049</sub>
-- ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9121</sub>
-- ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9259</sub>
-- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9326</sub>
-- ADR-080 — Doc 211: cloud (subscription) and offline (license) locked to strictly separate `PricingModel`/`licenseDeploymentMode` pairings, retracting doc 154's "Lifetime License, ONLINE variant" row and naming doc 48 a precondition of a plan already on the public pricing page  <sub>:9383</sub>
-- ADR-081 — Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has exactly one production caller, `orgUnitScopeFilterFor()` has zero, and `check-route-permissions.mjs` has no awareness of either  <sub>:9447</sub>
-- ADR-082 — Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`; the Electron/Tauri shell and auto-update stay unbuilt, exactly as the document's own text already scoped  <sub>:9521</sub>
-- ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes  <sub>:9640</sub>
-- ADR-084 — Hospitality QR/NFC platform: the guest is a token-scoped principal, not a `User`; one order system through an extension point  <sub>:11702</sub>
-- ADR-085 — Housing society pack: a plot is a unique-asset registry with one writer, outside `InventoryService`; the booking lifecycle is an append-only `BookingTransaction` record set  <sub>:11751</sub>
-- ADR-086 — Launchpad apps: a static, presentation-only first-party manifest with tier/sector/audience tags; Mail as a control plane over a mail engine; Auction bids as predicate-on-write records  <sub>:11803</sub>
+
+### `docs/implementation/decisions/ADR-001-a-modular-monolith-one-process-per-node.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-002-a-sector-is-a-module-pack-behind-an-allowlist.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-003-modules-are-independent-side-effects-cross-through-events.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-004-events-are-delivered-through-a-transactional-outbox.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-005-money-is-an-integer-in-minor-units.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-006-customer-facing-text-is-a-row-not-a-column.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-007-access-control-is-permission-based-and-the-grants-are-data.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-008-migrations-are-hand-written-and-forward-only.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-009-a-branch-is-a-node-with-its-own-database-not-a-tenant-row.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-010-in-transit-stock-is-a-location-not-a-flag.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-011-a-till-sale-is-a-channel-of-orders.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-012-cross-module-references-are-bare-scalars-not-foreign-keys.md`  <sub>39 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-013-one-deployment-serves-one-brand.md`  <sub>34 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-014-the-repository-index-is-generated-and-enforced-not-written.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-015-model-and-effort-are-routed-per-job-from-one-policy.md`  <sub>44 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-016-rules-that-apply-to-one-kind-of-file-are-path-scoped.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-017-an-observability-backend.md`  <sub>38 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-018-horizontal-replicas-and-load-balancing.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-019-wo-b-4-ships-against-the-live-reports-idiom-not-track-a-s-unbuilt.md`  <sub>105 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-020-bom-track-c-ships-as-a-new-module-production-stays-as-is.md`  <sub>92 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-021-wo-23-3-s-scopelevel-pattern-a-new-core-owned-enum-fail-closed-on-the.md`  <sub>178 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-022-wo-23-3b-enforces-allowbranchlocalpurchasing-through-a-new.md`  <sub>119 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-023-wo-23-3c-e-node-retailbrandid-a-separate-policyquarantine-table-and.md`  <sub>138 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-024-wo-23-3d-org-central-purchasing-recognized-narrowly-in.md`  <sub>145 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-025-wo-e-2-is-not-executed-its-own-prerequisites-wo-a-1-wo-a-2-were-never.md`  <sub>126 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-026-seven-heavier-extensibility-mechanisms-adopted-by-explicit-owner.md`  <sub>111 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-027-the-three-highest-risk-items-from-adr-026-withdrawn-no-wasm-sandbox.md`  <sub>89 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-028-wo-5-phase-5-discounts-promo-codes-gift-cards-store-credit-built-from.md`  <sub>135 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-029-third-party-gift-card-redemption-at-checkout-giftkarta-a.md`  <sub>90 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-030-docs-implementation-docs-erp-lenses-and-docs-design-reorganized-into.md`  <sub>76 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-031-wo-7-phase-7-customer-portal-reviews-wishlist-returns-loyalty-mobile.md`  <sub>305 lines</sub>
+
+- ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:169</sub>
+
+### `docs/implementation/decisions/ADR-032-phase-10-track-a-built-end-to-end-wo-a-1-a-5-superseding-adr-019-adr.md`  <sub>206 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-033-admin-platform-docs-02-44-72-75-completed-doc-75-s-own-claims.md`  <sub>180 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-034-the-wallet-module-doc-155-built-in-full-shipped-module-off-and.md`  <sub>203 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-035-phase-8-content-marketing-and-search-audited-and-confirmed-built-the.md`  <sub>106 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-036-wo-145-receivables-creditnote-debitnote-credit-limits-dunning-keys.md`  <sub>127 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-037-personal-api-keys-a-user-bound-token-capped-live-by-its-owner-an.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-038-doc-153-usage-based-pricing-metering-reads-a-tenant-s-own.md`  <sub>158 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-039-doc-14-managed-services-built-in-full-overriding-its-own-not-now.md`  <sub>181 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-040-finance-accounting-docs-04-56-68-79-137-147-151-49-completed-a.md`  <sub>165 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-041-an-intentrouter-core-extension-point-one-dispatch-shape-for-every.md`  <sub>99 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-042-doc-154-three-headline-commercial-plans-public-pricing-page-copy.md`  <sub>137 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-043-access-control-identity-docs-126-161-built-16-18-163-re-verified-125.md`  <sub>160 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-044-docs-19-20-org-tree-positions-and-ranks-orgunit-kept-orthogonal-to.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-045-doc-21-access-over-the-org-tree-orgunitgrant-built-exactly-as.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-046-doc-22-attendance-shifts-and-leave-attendanceevent-partitioned-by.md`  <sub>195 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-047-doc-165-cross-tenant-marketplace-directory-a-new-apps-platform-module.md`  <sub>114 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-048-doc-166-unified-product-reference-registry-a-globalproductreference.md`  <sub>134 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-049-docs-140-143-general-eav-metadata-driven-ui-bpmn-workflow-editor.md`  <sub>363 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-050-doc-23-task-allotment-status-and-tracking-built-exactly-as-specified.md`  <sub>84 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-051-docs-47-146-150-category-presets-wholesale-pricing-product-bundles.md`  <sub>110 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-052-docs-127-128-136-hardcoded-policy-sweep-extension-point-coverage.md`  <sub>125 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-053-doc-149-accounts-approvals-sector-packs-a-genuine-request-record.md`  <sub>203 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-054-doc-139-websocket-sse-gateway-verified-deliberately-left-unbuilt-doc.md`  <sub>128 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-055-doc-117-choreography-and-idempotency-and-doc-118-headless-composable.md`  <sub>109 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-056-docs-122-data-lake-130-capability-manifest-and-131-versioned-domain.md`  <sub>113 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-057-docs-133-dry-run-harness-134-hexagonal-purity-ci-check-and-138.md`  <sub>112 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-058-doc-165-cross-tenant-marketplace-directory-part-two-wo-165-1-165-2.md`  <sub>130 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-059-doc-166-unified-product-reference-registry-the-erp-1-side-pieces.md`  <sub>140 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-060-doc-24-internal-notifications-meetings-and-escalation-built-in-full.md`  <sub>124 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-061-docs-47-and-150-category-presets-product-bundles-the-missing-admin-ui.md`  <sub>118 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-062-doc-61-policy-communications-bulletin-board-built-inside-the-notify.md`  <sub>115 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-063-doc-167-bank-facility-management-promoted-from-a-gap-report-to-a.md`  <sub>133 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-064-doc-64-in-app-help-desk-built-as-a-new-standalone-module-with-a-per.md`  <sub>118 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-065-doc-148-external-customer-support-portal-built-as-a-second-contact.md`  <sub>168 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-066-doc-144-r20-r26-supply-chain-resilience-planning-engine-built-as-a.md`  <sub>141 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-067-docs-31-66-67-76-pos-hardware-category-the-till-hardware-layer-as.md`  <sub>162 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-068-doc-37-scalability-future-upgrades-the-versioning-policy-ships-inert.md`  <sub>127 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-069-docs-32-71-158-lots-serials-traceability-the-move-call-site-scoping.md`  <sub>219 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-070-doc-38-resilience-engineering-a-table-driven-contract-test-over-the.md`  <sub>143 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-071-docs-168-183-a-composable-resilience-first-sme-platform-for-du-built.md`  <sub>149 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-072-docs-168-183-revised-newax-s-own-product-not-a-du-owned-platform-du.md`  <sub>194 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-073-third-party-apps-docs-184-195-an-open-reviewed-directory-of-remote.md`  <sub>168 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-074-doc-205-video-rooms-for-doc-24-s-meetings-self-host-livekit-as-newax.md`  <sub>209 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-075-doc-206-rate-limiting-sudden-logout-ram-ceilings-connection-pooling.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-076-doc-207-checkout-admission-queue-prevent-overselling-during-rush.md`  <sub>75 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-077-doc-208-l1-l2-l3-caching-each-tier-attached-to-a-found-hot-path-not.md`  <sub>141 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-078-doc-209-semantic-caching-applied-to-exactly-one-of-ten-aifeature-call.md`  <sub>70 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-079-doc-210-caching-third-party-api-calls-to-save-charges-checked-every.md`  <sub>60 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md`  <sub>67 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md`  <sub>77 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md`  <sub>2,065 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md`  <sub>52 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md`  <sub>55 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md`  <sub>437 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md`  <sub>80 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md`  <sub>54 lines</sub>
+
+_no second-level headings_
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3894,6 +4193,21 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:235</sub>
 
+### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>319 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified in code, 2026-09-30)  <sub>:19</sub>
+- The design  <sub>:39</sub>
+- Parameters (exact)  <sub>:127</sub>
+- Required change (work orders)  <sub>:144</sub>
+- Files likely affected  <sub>:157</sub>
+- Dependencies reused (nothing rebuilt)  <sub>:166</sub>
+- Risks  <sub>:174</sub>
+- Acceptance criteria  <sub>:182</sub>
+- Out of scope (named and sequenced, not silently skipped)  <sub>:193</sub>
+- Scope lenses  <sub>:203</sub>
+- Build log  <sub>:250</sub>
+
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 
 - 1. Two channels, one interface, no caller changes  <sub>:19</sub>
@@ -3983,22 +4297,22 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
-### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>188 lines</sub>
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>236 lines</sub>
 
-- 1. Objective  <sub>:7</sub>
-- 2. Existing state (inspected)  <sub>:14</sub>
-- 3. The manifest  <sub>:29</sub>
-- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:71</sub>
-- 5. What the user sees  <sub>:89</sub>
-- 6. Per-tenant control  <sub>:100</sub>
-- 7. Third-party (directory) apps on the same screen  <sub>:112</sub>
-- 8. Licensing hook (doc 211)  <sub>:120</sub>
-- 9. Resilience and failure modes  <sub>:129</sub>
-- 10. Verification additions  <sub>:139</sub>
-- 11. Scope lenses  <sub>:147</sub>
-- 12. Acceptance criteria  <sub>:168</sub>
-- 13. Permissions  <sub>:177</sub>
-- 14. Work orders  <sub>:182</sub>
+- 1. Objective  <sub>:55</sub>
+- 2. Existing state (inspected)  <sub>:62</sub>
+- 3. The manifest  <sub>:77</sub>
+- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:119</sub>
+- 5. What the user sees  <sub>:137</sub>
+- 6. Per-tenant control  <sub>:148</sub>
+- 7. Third-party (directory) apps on the same screen  <sub>:160</sub>
+- 8. Licensing hook (doc 211)  <sub>:168</sub>
+- 9. Resilience and failure modes  <sub>:177</sub>
+- 10. Verification additions  <sub>:187</sub>
+- 11. Scope lenses  <sub>:195</sub>
+- 12. Acceptance criteria  <sub>:216</sub>
+- 13. Permissions  <sub>:225</sub>
+- 14. Work orders  <sub>:230</sub>
 
 ### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
 
@@ -4204,16 +4518,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>700 lines</sub>
+### `docs/implementation/README.md`  <sub>701 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:553</sub>
-- The two module groups  <sub>:582</sub>
-- How a work order runs  <sub>:619</sub>
-- Known gaps not yet owned by a phase  <sub>:637</sub>
-- When a brief is wrong  <sub>:664</sub>
-- Scope, honestly  <sub>:677</sub>
-- Gap-analysis roadmap references  <sub>:684</sub>
+- Dependency order  <sub>:554</sub>
+- The two module groups  <sub>:583</sub>
+- How a work order runs  <sub>:620</sub>
+- Known gaps not yet owned by a phase  <sub>:638</sub>
+- When a brief is wrong  <sub>:665</sub>
+- Scope, honestly  <sub>:678</sub>
+- Gap-analysis roadmap references  <sub>:685</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 
@@ -4513,6 +4827,10 @@ _no second-level headings_
 - Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
 - Recommendation  <sub>:524</sub>
 
+### `docs/security/security-architecture.md`  <sub>59 lines</sub>
+
+_no second-level headings_
+
 ### `GEMINI.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
@@ -4540,21 +4858,29 @@ _no second-level headings_
 - Success metrics  <sub>:167</sub>
 - References  <sub>:179</sub>
 
-### `README.md`  <sub>349 lines</sub>
+### `README.md`  <sub>213 lines</sub>
 
-- Read this before touching anything  <sub>:12</sub>
-- Documentation map  <sub>:101</sub>
-- What is here today  <sub>:131</sub>
-- Running it  <sub>:152</sub>
-- Design decisions worth knowing  <sub>:223</sub>
-- Security architecture  <sub>:255</sub>
-- Commands  <sub>:309</sub>
-- Where the project is going  <sub>:323</sub>
-- Repository layout  <sub>:337</sub>
+- Where it is heading  <sub>:17</sub>
+- Run it  <sub>:37</sub>
+- What exists today  <sub>:75</sub>
+- The rules that bind everyone  <sub>:96</sub>
+- Design decisions worth knowing  <sub>:141</sub>
+- Commands  <sub>:167</sub>
+- Read next  <sub>:182</sub>
+- Repository layout  <sub>:197</sub>
 
 ### `Rules.md`  <sub>30 lines</sub>
 
 _no second-level headings_
+
+### `START-HERE.md`  <sub>107 lines</sub>
+
+- What this is  <sub>:7</sub>
+- The map  <sub>:23</sub>
+- Five ideas that explain the rest  <sub>:40</sub>
+- Where the documents are  <sub>:53</sub>
+- Run it locally  <sub>:71</sub>
+- State of the organization (honest)  <sub>:88</sub>
 
 
 ---

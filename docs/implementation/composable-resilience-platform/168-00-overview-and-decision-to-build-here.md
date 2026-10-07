@@ -80,7 +80,7 @@ here as shipped, tested code, and the third is specified to the column.
 
 ### 2.1 The resilience engine is already built (doc 144, ADR-066)
 
-`apps/api/src/modules/planning/` is `RETAIL-ERP.md` R20–R26, built and spec'd:
+`apps/api/src/modules/supply-chain/planning/` is `RETAIL-ERP.md` R20–R26, built and spec'd:
 
 | Capability | Real code | What it guarantees today |
 |---|---|---|
@@ -166,7 +166,7 @@ owns it.
 1. **`FiscalComplianceProvider` has zero implementations, not one.** It is an
    interface *sketched* in `tax-compliance/15-tax-module.md` (WO-15.5,
    "field payload blocked on real FBR requirements"); no code under
-   `apps/api/src/modules/tax/` declares it (grep: no match). A UAE
+   `apps/api/src/modules/money/tax/` declares it (grep: no match). A UAE
    Accredited-Service-Provider implementation would be its **first**
    implementation, not its second — and PINT AE, being a published
    specification, is the first fiscal regime concrete enough to build it

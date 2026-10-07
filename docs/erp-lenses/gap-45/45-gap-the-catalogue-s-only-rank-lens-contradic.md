@@ -71,7 +71,7 @@ this feature ships. If the answer routes through `Role.name` string matching
 instead of a `RankId` foreign key, say so explicitly.
 
 **Why:** `GlReportsService`
-(`apps/api/src/modules/accounting/gl-reports.service.ts:38,95,192`) groups
+(`apps/api/src/modules/money/accounting/gl-reports.service.ts:38,95,192`) groups
 every sum by a real foreign key via Prisma `groupBy` (`by: ['accountId']`) —
 never by parsing a name string. (Its own file comment, line 23, names
 `retailBrandId`/`branchNodeId` as columns no posting rule sets yet — unused

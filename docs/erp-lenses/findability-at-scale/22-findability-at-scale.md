@@ -139,7 +139,7 @@ list gets the same paginated contract `catalog.service.ts`'s `listProducts`
 already uses (`catalog.service.ts:65-84`: `skip`/`take`/`count` in one
 transaction) instead of loading every row.
 
-**Done test:** `grep -n "take: 20" apps/api/src/modules/pos/pos-catalog.service.ts`
+**Done test:** `grep -n "take: 20" apps/api/src/modules/sales/pos/pos-catalog.service.ts`
 and a read of `InventoryService.list()` around `inventory.service.ts:109` —
 the PR must change at least one of these two to carry a total match count
 back to the caller.

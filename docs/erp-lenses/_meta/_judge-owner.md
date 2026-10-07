@@ -22,17 +22,17 @@ Every claim below was opened in the repository, not inferred.
 |---|---|---|
 | `PERMISSION_CATALOG`, `PermissionsGuard` | true | `apps/api/src/core/auth/guards.ts`, `app.module.ts` |
 | `RolesService.create` / `.update` | true | `apps/api/src/core/auth/roles.service.ts:60`, `:91` |
-| `InventoryService.defaultLocationId()`, resolving MAIN | true | `apps/api/src/modules/inventory/inventory.service.ts:160-169` |
-| `adjust()` takes its `locationId` from it | true | `apps/api/src/modules/inventory/inventory.controller.ts:41-51` |
+| `InventoryService.defaultLocationId()`, resolving MAIN | true | `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:160-169` |
+| `adjust()` takes its `locationId` from it | true | `apps/api/src/modules/supply-chain/inventory/inventory.controller.ts:41-51` |
 | `JournalLine`'s five dimension columns | true, all five | `apps/api/prisma/schema/accounting.prisma:185-197` |
 | `JournalLine.contactId` survives the `User` | true | same file, `:189` |
-| thirteen-account chart | true, exactly 13 | `apps/api/src/modules/accounting/chart-of-accounts.ts:20-32` |
+| thirteen-account chart | true, exactly 13 | `apps/api/src/modules/money/accounting/chart-of-accounts.ts:20-32` |
 | `FiscalPeriod` has CLOSED and LOCKED | true | `apps/api/prisma/schema/accounting.prisma:80-84` |
 | `FiscalPeriod` has **no** brand column | true | same file, `:91-108` |
-| `reverseEntry()` dates the reversal `now` | true | `apps/api/src/modules/accounting/accounting.service.ts:112-121` |
-| `PaymentsService.refund()` takes a partial amount | true | `apps/api/src/modules/payments/payments.service.ts:289` |
-| `onPaymentRefunded` reverses receipt **and** sale in full | true | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts:183-192` |
-| `OrdersAdminController`, one class-level `orders.manage` | true | `apps/api/src/modules/orders/orders.controller.ts:87-88`, status write at `:112` |
+| `reverseEntry()` dates the reversal `now` | true | `apps/api/src/modules/money/accounting/accounting.service.ts:112-121` |
+| `PaymentsService.refund()` takes a partial amount | true | `apps/api/src/modules/sales/payments/payments.service.ts:289` |
+| `onPaymentRefunded` reverses receipt **and** sale in full | true | `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts:183-192` |
+| `OrdersAdminController`, one class-level `orders.manage` | true | `apps/api/src/modules/sales/orders/orders.controller.ts:87-88`, status write at `:112` |
 | DELIVERED and RETURNED both in `OrderStatus` | true | `apps/api/prisma/schema/orders.prisma:7-16` |
 | `User` has a `Contact` relation, no link to `Party` | true | `apps/api/prisma/schema/core.prisma:48` |
 | `TradingPartner` authenticates by key hash | true | `apps/api/prisma/schema/trading-partners.prisma:43-47` |

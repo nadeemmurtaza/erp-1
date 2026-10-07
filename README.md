@@ -1,161 +1,46 @@
-# Yaseen — Clothing Store & Stitching Services
+# Business platform
 
-An online store for **stitched and unstitched clothing** plus **stitching
-(tailoring) services**, built for Pakistan: PKR, Cash on Delivery, local
-couriers, and a bilingual English/Urdu storefront.
+An ERP and commerce platform built as **one universal core plus sector packs**.
+The same codebase runs a single shop, a chain with many branches, or a group of
+brands, and a new sector or brand is a new folder or a new value, not a fork.
 
-A customer can buy a ready-made piece, buy unstitched fabric and tick "get it
-stitched" against their saved measurements, or send their own cloth for a
-standalone stitching job — and follow the tailoring progress. Staff run the
-catalogue, orders, tailor queue and customer relationships from one back office.
+Its first deployment is **Yaseen**, a store for stitched and unstitched clothing
+and tailoring services in Pakistan: PKR, Cash on Delivery, local couriers, and a
+bilingual English/Urdu storefront. A customer can buy a ready-made piece, buy
+fabric and have it stitched to their saved measurements, or send their own cloth
+for a stitching job and follow its progress. Staff run the catalogue, orders,
+tailor queue, stock, purchasing and accounts from one back office.
 
-## Read this before touching anything
+New here? Read [`START-HERE.md`](./START-HERE.md) first. It is one page, written
+for people, and says what lives where.
 
-**[`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md)
-is the contract.** Every agent and every contributor reads it first, every
-session — not background reading, the thing a pull request is rejected against
-regardless of whether the feature works. What follows here is the summary; that
-file is the source of truth, and where the two disagree, it wins.
+## Where it is heading
 
-### The rule that matters most: `production` is the owner's alone
+The aim is more than an ERP: a network in which businesses of any size publish
+products and services, choose who may see them, and trade with each other
+without re-entering data. A seller's price becomes the buyer's cost, and stock
+moves on both sides from one fact, entered once.
 
-> **Pushing to `main` is fine — push your branch straight to it once it's
-> ready, no PR needed. `production` is different: never push to it, never
-> merge into it. This holds even when CI is green, even when the change is
-> trivial.**
+| Piece                                                                        | State                                                                                                                               |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Publish a product or service to a shared marketplace, with upsert and delist | Built (off by default)                                                                                                              |
+| One shared product record per barcode, reused instead of copied per retailer | Built on the platform app; retailers still keep local rows                                                                          |
+| Trading-partner network: an invite handshake and pushed product alerts       | Built; the buyer-side automation is not                                                                                             |
+| Seller event creates the buyer's purchase order, receipt, cost and stock     | Planned, designed in [`213-partner-fact-exchange.md`](./docs/implementation/integrations-connectivity/213-partner-fact-exchange.md) |
+| Public discovery feed and a map of live stock and prices                     | Planned                                                                                                                             |
 
-`main` auto-deploys to `test.yaseen.pk` — low stakes, so a direct push is the
-normal workflow. `production` auto-deploys to the **live shop** at
-`yaseen.pk`, so promoting `main` to `production` — by push, merge or PR — is
-a deployment decision that belongs to the repository owner, not to whoever is
-at the keyboard. Only the owner pushes, merges or opens a PR into
-`production`, or explicitly asks for it to happen. If `production` needs to
-move and that hasn't been said, the answer is to ask — never to push or merge
-it yourself.
+The design notes are in
+[`docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`](./docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md)
+and
+[`docs/implementation/integrations-connectivity/18-trading-partner-network.md`](./docs/implementation/integrations-connectivity/18-trading-partner-network.md).
 
-### The eleven house rules, in one line each
-
-Full detail, code samples and the reasoning for each are in
-[`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) §2.
-
-1. **A module is a folder, a schema file, and one registry line.** Nothing else
-   changes to add a feature — see [CONTRIBUTING.md](./CONTRIBUTING.md).
-2. **Modules do not import each other's internals** — only another module's
-   `<name>.module` or a top-level `<name>.service`. `pnpm boundaries` enforces it.
-3. **Side effects go through domain events, not direct calls** — subscribe to
-   `DomainEvent.OrderPlaced` and friends; never edit the module that publishes.
-4. **Business rules are data, not constants** — shipping fees, COD fee, lead
-   times live in the `Setting` table, edited from `/admin/settings`.
-5. **Money is integer paisa, always** — `toMinor()` / `formatMoney()` from
-   `@newax/shared`. No float, no string, no `Decimal` ever touches a price.
-6. **Customer-facing text is never a column** — `*Translation` rows, `en` and
-   `ur`, always both.
-7. **Order lines are snapshots** — name, price, measurements, unit cost are
-   copied at purchase and never joined back to the live product.
-8. **Anything with more than one implementation gets an interface** —
-   `PaymentProvider`, `StorageDriver`, `NotificationChannel`, `CourierProvider`.
-9. **Permissions are capabilities, never roles** — `@RequirePermission('x')`,
-   never `if (user.role === 'ADMIN')`.
-10. **Concurrency belongs in the UPDATE, not in a read-then-write** — put the
-    predicate on the write and check the row count; never read-check-write.
-11. **Shared rules live in `@newax/shared` and every app calls them** — pricing,
-    measurement validation, phone normalisation. Never reimplemented per app.
-
-### The module-pack seam
-
-The platform is a **universal commerce core** plus sector **packs** (today:
-`core` and `apparel`). A core module may never import a pack module; a pack
-module may never import another pack's module; packs talk to core only through
-domain events, one direction. `scripts/check-module-boundaries.mjs` enforces
-this in `pnpm lint` and in CI, module-by-module, against the map in
-`apps/api/src/modules/module-packs.ts`. Full reasoning, the current pack list,
-and the one outstanding violation being paid down (`cart` → `measurements`) are
-in [`docs/implementation/MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md).
-
-**There is one `main` and one `production`. There is no master branch per
-sector** — a sector is a `MODULES` allowlist chosen at deploy time, not a
-branch. See the same file for why, and for branch-naming convention
-(`<pack>/<type>/<slug>`, e.g. `apparel/feat/measurements-size-chart`).
-
-### Definition of done
-
-Before anything is called finished:
-
-```bash
-pnpm lint        # ESLint + the module boundary check
-pnpm typecheck   # types across the whole workspace
-pnpm test        # unit and end-to-end, against a real Postgres
-pnpm build       # catches Next.js build-time failures the dev server hides
-```
-
-All four run in CI, so a green local run is what clears a change to go
-straight to `main` — but green CI is never, by itself, a reason to push or
-merge into `production`. Plus, every time: migrations
-run forward on a copy of production data (never just a fresh database); the
-seed still succeeds and is still idempotent; every new route has
-`@RequirePermission` and `@ApiOperation`; every user-facing string has both
-`en` and `ur`; every money value is integer paisa; concurrency-sensitive code
-has a concurrency test. Full checklist in
-[`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) §3.
-
-## Documentation map
-
-| Document | What it covers |
-|---|---|
-| [`README.md`](./README.md) | This file — what the store is, how to run it, the rules, and the doc index. |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | How to add a module day-to-day: layout, the rules that keep boundaries clean, pre-push checks. |
-| [`DEPLOYMENT.md`](./DEPLOYMENT.md) | ⚠️ Describes the retired Docker Swarm / Caddy / systemd deployment. Kept for history; production now runs on Coolify. |
-| [`docs/email.md`](./docs/email.md) | **Current.** Transactional email on this shop's own Stalwart mail server: setup, DNS/SPF/DKIM/DMARC, the notification-channel architecture, deliverability practices. |
-| [`docs/brand/README.md`](./docs/brand/README.md) | The locked wordmark: which SVG for which use, colour, clear space, what not to do to it. |
-| [`docs/implementation/README.md`](./docs/implementation/README.md) | Index and reading order for the phase briefs below; the dependency graph between phases. |
-| [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) | **The contract.** Read first, every session. The twelve rules, definition of done, the no-data-loss migration procedure, branch/PR/push conventions. |
-| [`docs/implementation/MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md) | How one repo serves clothing, grocery, pharmacy, etc. — packs vs. branches, why there's one `main`/one `production`, the full sector/business-model taxonomy and the core blockers (B1–B7) any second sector hits. |
-| [`docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md`](./docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md) | Phase 1 (**shipped**) — suppliers, purchase orders, goods receipts, the unified stock ledger, cost price, COGS, reorder points, slow movers, stock counts. |
-| [`docs/implementation/admin-platform/02-admin-shell.md`](./docs/implementation/admin-platform/02-admin-shell.md) | Phase 2 — shared admin primitives (DataTable, PageHeader, Modal, FilterBar), command palette, error states. |
-| [`docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md`](./docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md) | Phase 3 — **WO-3.1 shipped** (Blocker B2: the bilingual `ProductOption`/`ProductOptionValue` data model, additive alongside `size`/`color`, with a verified backfill script). SKU templates, the sectioned product editor, enforced alt text, the SEO publish gate, JSON-LD, sitemap, hreflang, redirects remain unbuilt. |
-| [`docs/implementation/finance-accounting/04-finance.md`](./docs/implementation/finance-accounting/04-finance.md) | Phase 4 — expenses, order economics, profit and loss, cash flow, month-end close. |
-| [`docs/implementation/promotions-giftcards/05-promotions-giftcards.md`](./docs/implementation/promotions-giftcards/05-promotions-giftcards.md) | Phase 5 — discount rules engine, promo codes, gift cards, store credit. |
-| [`docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`](./docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md) | Phase 6 — shipping zones/rates, courier providers, shipments and manifests, tracking automation, returns/RMA, RTO. |
-| [`docs/implementation/customer-portal-loyalty/07-customer-portal.md`](./docs/implementation/customer-portal-loyalty/07-customer-portal.md) | Phase 7 — portal shell, tracking timeline, self-service returns, reviews, wishlist, loyalty, mobile parity. |
-| [`docs/implementation/content-marketing-search/08-content-marketing-search.md`](./docs/implementation/content-marketing-search/08-content-marketing-search.md) | Phase 8 — CMS, collections and merchandising, full-text search, campaigns, abandoned cart. |
-| [`docs/implementation/ai-layer/09-ai-layer.md`](./docs/implementation/ai-layer/09-ai-layer.md) | Phase 9 — alt text and SEO generation, size recommendation, forecasting, COD risk, semantic search, WhatsApp assistant. |
-| [`docs/implementation/admin-platform/10-admin-dashboard.md`](./docs/implementation/admin-platform/10-admin-dashboard.md) | Phase 10 (runs alongside, not after) — the admin dashboard rebuild, the `finance` and `bom` modules. |
-| [`docs/implementation/commercial-licensing-agency/11-client-handover-model.md`](./docs/implementation/commercial-licensing-agency/11-client-handover-model.md) | Planning doc — the master-platform-plus-client-handover model: one blueprint repo, stripped-down private repos per client, and why per-client branches/submodules/npm packages were rejected. |
-| [`docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md`](./docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md) | Planning doc — spec for `scripts/sync-client.mjs` (not yet built), which would generate/upgrade a client's stripped-down repo from this one. |
-| [`docs/implementation/integrations-connectivity/13-email-service-plan.md`](./docs/implementation/integrations-connectivity/13-email-service-plan.md) | Planning doc — the *business* case for reselling white-labelled, self-hosted email (Stalwart + SnappyMail) to agency clients. For how *this* shop's email actually works, see `docs/email.md` instead. |
-| [`docs/implementation/commercial-licensing-agency/14-managed-services-module.md`](./docs/implementation/commercial-licensing-agency/14-managed-services-module.md) | Planning doc — scope for the `agency` (Master Platform) and `managed-services` (client-side) modules that back the agency-managed billing/hosting dashboard named in doc 11. Not built yet — see "When to actually build this" in the doc. |
-| [`docs/implementation/tax-compliance/15-tax-module.md`](./docs/implementation/tax-compliance/15-tax-module.md) | Blocker B4 (`MULTI-SECTOR.md`), **shipped** — a `tax` module with a selectable inclusive/exclusive pricing mode, `/admin/tax`. `tax.enabled=false` by default. |
-| [`docs/implementation/access-control-identity/16-pbac-row-scoping.md`](./docs/implementation/access-control-identity/16-pbac-row-scoping.md) | Blocker B5 — **the shared ownership guard is shipped**: `assertCanManage()` generalizes the `manage_own`/`manage_all` pattern (stitching jobs is the reference call site). The rest — an actual marketplace, `Product.sellerId`, row-filtered list endpoints — is only worth building once a marketplace model is real. |
-| [`docs/implementation/inventory-purchasing/17-inventory-locations.md`](./docs/implementation/inventory-purchasing/17-inventory-locations.md) | Blocker B6 — **shipped**: a `Location` dimension on stock (`ProductVariant.stock` is now a denormalized, concurrency-safe SUM over `VariantLocationStock`), byte-identical for every deployment's single `MAIN` location today. Multi-location admin UI and fulfilment routing wait on an actual second location or O2O plan. |
-
-## What is here today
-
-| Area | State |
-|---|---|
-| Monorepo, Docker Compose, CI | Done |
-| Core platform — event outbox, settings, storage, notifications, audit, auth | Done |
-| Catalogue API — products, fabrics, services, variants, images, bilingual content | Done |
-| Measurements — garment types, editable measurement fields, saved profiles | Done |
-| Admin API — product/service CRUD, stock, categories, CSV bulk import | Done |
-| Bilingual storefront — browsing, filters, product pages | Done |
-| Back office — catalogue overview, product editor, categories, garments, import | Done |
-| Cart and the stitching add-on | Done |
-| Checkout, orders, COD and bank transfer, order management | Done |
-| Dashboard metrics + CRM — customers, enquiries, follow-ups | Done |
-| Stitching operations — own-fabric bookings, tailor queue, progress tracking | Done |
-| Expo mobile app — shop, cart, checkout, measurements, tracking, tailor queue | Done |
-| Email — self-hosted Stalwart mail server, multi-domain, webmail (SnappyMail) | Done |
-| Inventory & purchasing (Phase 1) — stock ledger, weighted-average cost, COGS snapshot, suppliers, purchase orders, goods receipts, reorder/slow-mover job, stock counts | Done |
-| Admin nav — declared 11-group order, icons, one level of nesting, module-gated items | Done |
-| Reports — order, sales-by-day, stock, stock valuation, purchases-by-supplier, stock ledger, slow-movers exports | Done |
-
-## Running it
+## Run it
 
 Requires Node 22 and pnpm 10.
 
 ```bash
 cp .env.example .env
-docker compose up -d          # postgres, minio
+docker compose up -d          # postgres, redis, minio
 pnpm install
 pnpm db:migrate
 pnpm db:seed
@@ -168,181 +53,160 @@ pnpm dev
 - API docs: <http://localhost:3001/api/docs>
 - Health: <http://localhost:3001/api/v1/health/ready>
 
-The seed creates a small realistic catalogue (lawn suits, khaddar, ready-to-wear,
-menswear), garment types with their measurement fields, stitching style options,
-and four accounts:
+The seed creates a small realistic catalogue, garment types with their
+measurement fields, stitching options, and four **development-only** accounts:
 
-| Role | Sign in | Password |
-|---|---|---|
-| Admin | `admin@yaseen.pk` | `admin12345` |
-| Staff | `staff@yaseen.pk` | `staff12345` |
-| Tailor | `tailor@yaseen.pk` | `tailor12345` |
+| Role     | Sign in              | Password        |
+| -------- | -------------------- | --------------- |
+| Admin    | `admin@yaseen.pk`    | `admin12345`    |
+| Staff    | `staff@yaseen.pk`    | `staff12345`    |
+| Tailor   | `tailor@yaseen.pk`   | `tailor12345`   |
 | Customer | `ayesha@example.com` | `customer12345` |
 
-Customers can sign in with a phone number as well as an email — `0300 1234567`,
+Never use these anywhere reachable from the internet. Set `SEED_ADMIN_EMAIL` and
+`SEED_ADMIN_PASSWORD` to override the admin account.
+
+Customers can sign in with a phone number as well as an email; `0300 1234567`,
 `+92 300 1234567` and `03001234567` all resolve to the same account.
 
-### Without Docker
+With no Docker, point `DATABASE_URL` at any PostgreSQL 16 you already run. The
+mobile app has its own instructions in [`apps/mobile/README.md`](./apps/mobile/README.md).
 
-If a PostgreSQL 16 is already running locally, skip `docker compose up` and
-point `DATABASE_URL` at it.
+## What exists today
 
-### The mobile app
+The API is a set of independent modules, grouped by domain under
+[`apps/api/src/modules/`](./apps/api/src/modules/README.md).
+
+| Domain        | Capabilities                                                                                                                                                                                                                                              |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sales         | Cart, checkout and orders (COD and bank transfer, pluggable gateways), tills and offline-capable POS, pricing, promotions, gift cards, wallet, loyalty, reviews and wishlists, shipping and tracking, stitching jobs and saved measurements, B2B accounts |
+| Merchandising | Catalogue with variants and bilingual content, collections, content pages, search and recommendations, campaigns, custom fields                                                                                                                           |
+| Supply chain  | Inventory with locations and a stock ledger, purchasing and goods receipts, inter-branch transfers, production and bills of materials, planning, trading partners, marketplace, resilience                                                                |
+| Money         | Double-entry accounting, receivables, settlements, finance and order economics, tax, bank facilities, reports and analytics                                                                                                                               |
+| People        | HR, payroll, attendance, organization and department structure, tasks                                                                                                                                                                                     |
+| Customers     | CRM, parties, support, notifications and preferences, on-site messaging                                                                                                                                                                                   |
+| System        | Users and permissions, settings, feature flags, identity verification, managed services, the AI layer, workflow engine                                                                                                                                    |
+
+Around the API sit the storefront and back office (`apps/web`), the till
+(`apps/pos`), the mobile app (`apps/mobile`) and the multi-tenant control plane
+(`apps/platform`). Per-capability build status is in
+[`docs/implementation/README.md`](./docs/implementation/README.md); where any
+route, table or permission lives is in [`docs/index/`](./docs/index/README.md).
+
+## The rules that bind everyone
+
+[`CLAUDE.md`](./CLAUDE.md) is the contract for every contributor, human or
+agent, and [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md)
+is its long form. A change that only works by breaking them is rejected even
+when the feature works. The short version:
+
+1. **A module is a folder, a schema file and one registry line.**
+2. **Modules never import each other's internals.** Side effects cross through
+   domain events. `pnpm boundaries` enforces it.
+3. **Business rules are data, not constants.** Fees and lead times live in the
+   `Setting` table.
+4. **Money is an integer in minor units** (`349900` is Rs 3,499). No floats.
+5. **Customer-facing text is a row, not a column**, in both English and Urdu.
+6. **Order lines are snapshots**, never joined back to the live product.
+7. **Anything with more than one implementation gets an interface**
+   (`PaymentProvider`, `StorageDriver`, `NotificationChannel`, `CourierProvider`).
+8. **Permissions are capabilities, never roles.** Every route declares
+   `@RequirePermission`.
+9. **Concurrency belongs in the write**, as a predicate on the `UPDATE`.
+10. **Shared rules live in `@newax/shared`** and every app calls them.
+
+**Branches:** there is one `main` and one `production`, and no branch per sector.
+A sector is a `MODULES` allowlist chosen at deploy time. See
+[`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md).
+
+**`production` belongs to the owner.** Never push to it or merge into it without
+being asked, even when CI is green. The owner's own repository deploys `main` to
+the test site and `production` to the live shop; a disconnected clone such as
+`nadeemmurtaza/erp-1` triggers no deployment, as `CLAUDE.md` explains.
+
+### Definition of done
 
 ```bash
-pnpm --filter @newax/mobile start        # then scan the QR code with Expo Go
+pnpm lint        # ESLint, the module boundary check and the repo's other checks
+pnpm typecheck   # types across the whole workspace
+pnpm test        # unit and end-to-end tests, against a real Postgres
+pnpm build       # catches Next.js build failures the dev server hides
 ```
 
-It talks to the same API. Point it at one with `EXPO_PUBLIC_API_URL`; with
-nothing set it uses `http://localhost:3001/api/v1`, except on Android, where the
-emulator reaches the host on `10.0.2.2`. A phone on your wi-fi needs your
-machine's LAN address rather than localhost:
-
-```bash
-EXPO_PUBLIC_API_URL="http://192.168.1.20:3001/api/v1" pnpm --filter @newax/mobile start
-```
-
-Sign in with any of the seeded accounts above — a tailor lands on their queue
-rather than the shop.
-
-**Push notifications** tell a customer when their garment moves on. Add
-`expo_push` to `NOTIFICATION_CHANNELS` to switch them on; the app registers the
-handset on sign-in, and no provider credentials are needed. Delivery has not been
-exercised against a real handset — that needs a device and an EAS project id in
-`app.json`.
-
-Store builds go through EAS, with development, preview and production profiles in
-`apps/mobile/eas.json`:
-
-```bash
-cd apps/mobile
-npx eas build --profile preview --platform android
-npx eas build --profile production --platform all
-```
+The four commands pass, plus migrations run forward on a copy of production data,
+the seed is still idempotent, every route has `@RequirePermission`, every
+user-facing string has `en` and `ur`, and concurrency-sensitive code has a
+concurrency test. The full list is in `00-HOUSE-RULES.md` §3.
 
 ## Design decisions worth knowing
 
-**Money is integer paisa.** Rs 3,499 is stored as `349900`. No floats touch a
-price, anywhere.
-
 **Text is bilingual by structure.** Product and category names live in
-`*Translation` rows keyed by locale, not in columns, so adding a language needs
-no migration. Urdu renders right-to-left.
+`*Translation` rows keyed by locale, so adding a language needs no migration.
+Urdu renders right-to-left.
 
 **Measurement fields are database rows, not code.** Staff add "cuff width" from
-the dashboard and every measurement form — website, admin, and later the mobile
-app — picks it up immediately. One validator in `@newax/shared` enforces the
-rules everywhere.
+the dashboard and every measurement form picks it up. One validator in
+`@newax/shared` enforces the rules everywhere.
 
-**Modules talk through events, not imports.** Placing an order publishes
-`order.placed` through a transactional outbox; the CRM, stitching and
-notification modules subscribe. Adding a module is a folder plus one line in the
-registry — enforced by `pnpm boundaries` in CI. See
-[CONTRIBUTING.md](./CONTRIBUTING.md).
+**Modules talk through events.** Placing an order publishes `order.placed`
+through a transactional outbox; the CRM, stitching and notification modules
+subscribe. See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
-**Customer email is a channel, not a feature.** Order confirmations, payment
-receipts, status changes and stitching updates all go out through the same
-`NotificationChannel` interface as the log and push channels, in English and
-Urdu, driven by the events the outbox already publishes — so adding an email is
-a `notifications.send()` call, and moving from our own mail server to a relay is
-four environment variables. See [docs/email.md](./docs/email.md).
+**Email is a channel, not a feature.** Order confirmations, receipts and status
+changes go out through the same `NotificationChannel` interface as push and log
+channels, driven by outbox events. See [`docs/email.md`](./docs/email.md).
 
-**Payments are pluggable.** Cash on Delivery and bank transfer are live.
-JazzCash and Easypaisa sit behind the same `PaymentProvider` interface and are
-switched on through the `PAYMENT_PROVIDERS` env allowlist once merchant
-credentials exist — a config change, not a rewrite.
+**Payments are pluggable.** Cash on Delivery and bank transfer are live;
+JazzCash and Easypaisa sit behind `PaymentProvider` and switch on through the
+`PAYMENT_PROVIDERS` allowlist once merchant credentials exist.
 
-## Security architecture
-
-The trust boundary in this codebase is simple to state and, more importantly,
-already enforced in three places rather than left as a slogan. It's the
-house rule for where a secret is allowed to exist and where a sensitive
-decision is allowed to be made:
-
-1. **The browser and the Expo app hold zero secrets.** No database
-   credentials, no payment-gateway password or salt, no SMTP password, no S3
-   key, no JWT secret — ever, in any form, committed or not. The only
-   environment values a frontend build may embed are ones already public by
-   definition, and they're marked as such: `NEXT_PUBLIC_API_URL`
-   (`apps/web/src/lib/api.ts`), `EXPO_PUBLIC_API_URL`
-   (`apps/mobile/src/api/client.ts`). Anything else appearing in a frontend
-   `.env` is a bug, full stop. The frontend only ever calls its own backend
-   over an authenticated HTTPS API — never a database, never a third party
-   directly.
-2. **Sensitive operations happen only on the backend, and the backend is the
-   only source of truth for them** — authenticating a user, computing a
-   final price/total/tax/stock figure, checking a permission
-   (`assertCanManage`, `@RequirePermission`), and every database write. A
-   client-submitted total, discount or stock count is a suggestion, never an
-   input to money math: `orders.service.ts` recomputes every figure
-   server-side, inside the same transaction that decrements stock, and
-   discards whatever the client sent.
-3. **Every call to a third party that needs a secret — JazzCash, Easypaisa,
-   SMTP, S3 — happens from the API process only**, using a secret read from
-   an environment variable through the validated config layer
-   (`apps/api/src/core/config/env.validation.ts`), never hardcoded and never
-   committed. The inbound side of that relationship — a payment gateway's
-   webhook callback — is verified with a constant-time signature comparison
-   (`timingSafeEqual` in `payments/providers/*.ts`), not `===`, so a timing
-   side-channel can't be used to guess the secret one byte at a time.
-
-Four supporting practices carry the same principle into the places a
-three-line rule doesn't reach on its own:
-
-- **Fail fast.** The API refuses to boot if a required secret is missing, too
-  short, or still the checked-in placeholder in production
-  (`env.validation.ts`) — a misconfigured secret is a startup error, not a
-  silent vulnerability discovered later.
-- **Least privilege.** A secret is scoped behind the one interface that needs
-  it — `PaymentProvider`, `StorageDriver`, `NotificationChannel` — so
-  unrelated code never reaches for `process.env.JAZZCASH_PASSWORD` directly.
-- **Errors are generic on the wire.** `AllExceptionsFilter` returns a fixed
-  "Something went wrong" message and logs the real stack trace server-side
-  only; a client response never carries an exception message, a stack trace,
-  or a database error string.
-- **The perimeter is locked down by default.** CORS is an explicit allowlist
-  (`CORS_ORIGINS`), never `*`; login and registration are rate-limited
-  (`@Throttle`) against brute force; every `.env*` file is gitignored, and
-  only `.env.example`/`.env.production.example` templates with placeholder
-  values are committed.
+**Secrets never reach a browser or a phone.** Every sensitive decision and every
+third-party call happens on the API. See
+[`docs/security/security-architecture.md`](./docs/security/security-architecture.md).
 
 ## Commands
 
-| Command | What it does |
-|---|---|
-| `pnpm dev` | Runs every app in watch mode |
-| `pnpm build` | Builds everything |
-| `pnpm test` | Unit and end-to-end tests |
-| `pnpm lint` | ESLint plus the module boundary check |
-| `pnpm check:overflow` | Boots the real stack and sweeps every route at Law 4's seven widths in a browser — CI's own job, not part of `pnpm lint` |
-| `pnpm typecheck` | Types across the workspace |
-| `pnpm db:migrate` | Creates and applies a migration |
-| `pnpm db:seed` | Loads the sample catalogue |
-| `pnpm db:reset` | Drops, re-migrates and re-seeds |
+| Command               | What it does                                                                           |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| `pnpm dev`            | Runs every app in watch mode                                                           |
+| `pnpm build`          | Builds everything                                                                      |
+| `pnpm test`           | Unit and end-to-end tests                                                              |
+| `pnpm lint`           | ESLint plus the module boundary and repository checks                                  |
+| `pnpm typecheck`      | Types across the workspace                                                             |
+| `pnpm check:overflow` | Boots the real stack and sweeps every route at the seven screen widths; its own CI job |
+| `pnpm db:migrate`     | Creates and applies a migration                                                        |
+| `pnpm db:seed`        | Loads the sample catalogue                                                             |
+| `pnpm db:reset`       | Drops, re-migrates and re-seeds                                                        |
+| `pnpm idx`            | Looks up a route, permission, table, event or rule without opening files               |
 
-## Where the project is going
+## Read next
 
-[`docs/implementation/`](./docs/implementation/) holds the build instructions for
-ten phases — inventory and purchasing, the admin shell, custom variants and SEO,
-profit and loss, promotions and gift cards, shipping and returns, the customer
-portal, content and search, the AI layer, and the admin dashboard rebuild —
-plus [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md) on running more
-than one sector from this one repository, and seven planning docs (11–17) —
-four on a possible future master-platform-plus-client-handover model, three
-scoping the multi-sector blockers B4–B6. See the
-[documentation map](#documentation-map) above for what each one covers, and
-start with [`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) — the
-contract every contributor, human or agent, works to.
+| You want                                      | Open                                                                                                                                                                                                       |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A one-page tour of the repository             | [`START-HERE.md`](./START-HERE.md)                                                                                                                                                                         |
+| To add a feature                              | [`CONTRIBUTING.md`](./CONTRIBUTING.md)                                                                                                                                                                     |
+| Why something was decided                     | [`docs/implementation/DECISIONS.md`](./docs/implementation/DECISIONS.md)                                                                                                                                   |
+| Every build brief, in reading order           | [`docs/implementation/README.md`](./docs/implementation/README.md)                                                                                                                                         |
+| How screens must look and behave              | [`docs/design/README.md`](./docs/design/README.md)                                                                                                                                                         |
+| How sectors, brands and branches fit together | [`docs/implementation/MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md), [`ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md), [`RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md) |
+| Security rules                                | [`docs/security/security-architecture.md`](./docs/security/security-architecture.md)                                                                                                                       |
+| Transactional email                           | [`docs/email.md`](./docs/email.md)                                                                                                                                                                         |
+| The brand wordmark                            | [`docs/brand/README.md`](./docs/brand/README.md)                                                                                                                                                           |
+| Deployment history                            | [`DEPLOYMENT.md`](./DEPLOYMENT.md) (describes the retired Swarm and Caddy setup; production now runs on Coolify)                                                                                           |
 
 ## Repository layout
 
 ```
-apps/api        NestJS + Prisma + PostgreSQL — all business logic
-apps/web        Next.js storefront + /admin back office
-apps/mobile     Expo (iOS + Android) on the same API
-packages/shared measurement rules, pricing maths, phone normalisation
-packages/config tsconfig and eslint presets
-scripts         module boundary check, DNS/deliverability check
-docs/           this repo's rules, phase briefs and setup guides — see the
-                documentation map above
+apps/api         NestJS + Prisma + PostgreSQL: all business logic
+apps/web         Next.js storefront and /admin back office
+apps/pos         Next.js point of sale, able to keep selling offline
+apps/mobile      Expo (iOS and Android) on the same API
+apps/platform    Control plane: tenants, billing, hosting, shared product
+                 reference, marketplace
+packages/shared  Brand values, money, measurement rules, phone normalisation
+packages/pos-core        Till logic shared by the POS and mobile
+packages/desktop-runtime Runs a deployment on one computer
+packages/config  tsconfig and eslint presets
+scripts          Repository checks and the index generator
+docs/            Rules, build briefs, design system, security, generated index
 ```

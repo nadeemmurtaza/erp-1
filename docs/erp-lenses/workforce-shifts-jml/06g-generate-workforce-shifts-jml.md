@@ -17,7 +17,7 @@ docs/erp-lenses/workforce-shifts-jml/06-workforce-shifts-jml.md
 
 **Question:** When isActive flips to false on a User (users-admin.service.ts update()), name every other row keyed to that userId that must change in the same transaction — and say which of AdminScope, UserRoleAssignment, and any OPEN PosShift this migration leaves untouched today.
 
-**Grounding:** apps/api/src/modules/users/users-admin.service.ts:250-254 (deactivation only revokes RefreshToken rows); organization.prisma:106 AdminScope (no expiresAt); core.prisma:336 UserRoleAssignment (no expiresAt); pos.prisma:68 PosShift.openedByUserId (bare scalar, not a relation)
+**Grounding:** apps/api/src/modules/system/users/users-admin.service.ts:250-254 (deactivation only revokes RefreshToken rows); organization.prisma:106 AdminScope (no expiresAt); core.prisma:336 UserRoleAssignment (no expiresAt); pos.prisma:68 PosShift.openedByUserId (bare scalar, not a relation)
 
 ### Branch means database, not location
 

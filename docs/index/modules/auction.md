@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 **Registry note** (`modules.registry.ts`): launchpad-apps/234-auction-app.md — off by default: a shop that never sells by competitive bidding must not see the concept at all.
 
-Source: `apps/api/src/modules/auction/`
+Source: `apps/api/src/modules/sales/auction/`
 
 ## Files (26 · 7,416 lines)
 
-All paths relative to `apps/api/src/modules/auction`.
+All paths relative to `apps/api/src/modules/sales/auction`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

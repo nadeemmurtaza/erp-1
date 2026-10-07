@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 **Registry note** (`modules.registry.ts`): Off by default for every deployment today (WO-18.3) — a chain deployment switches it on when it actually has branches or brands to register (RETAIL-ERP.md R14: "every tier concept must be invisible i…
 
-Source: `apps/api/src/modules/organization/`
+Source: `apps/api/src/modules/people/organization/`
 
 ## Files (12 · 1,384 lines)
 
-All paths relative to `apps/api/src/modules/organization/dto`.
+All paths relative to `apps/api/src/modules/people/organization/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

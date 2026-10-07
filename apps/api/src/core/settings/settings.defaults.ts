@@ -107,6 +107,10 @@ export const SettingKey = {
   Documents: 'documents',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
+  /** WO-213.1 — days a newly issued trading-partner inbound API key stays valid. 0 means it never expires. A key already issued keeps whatever expiry it was given. */
+  PartnersKeyTtlDays: 'partners.key_ttl_days',
+  /** WO-213.2 — a partner's fact is held for review when a line's price is more than this many percent away from our current cost for that product. 0 switches the check off. */
+  PartnersPriceReviewThresholdPercent: 'partners.price_review_threshold_percent',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
   /** Off until an owner turns it on — checkout keeps its "stock lands or none of it does" behavior by default. */
   OrdersAllowBackorder: 'checkout.allow_backorder',
@@ -301,6 +305,12 @@ export const SettingKey = {
    * before it is classified OUTSIDE_ROSTER rather than linked cleanly — a
    * few minutes early or late is normal, not an exception.
    */
+  /**
+   * Launchpad app keys the tenant has switched off (launchpad-apps/232 §6,
+   * `AppEnablement`). A JSON array of `LaunchpadApp.key`. Switching an app off
+   * hides its tile; it deletes nothing and stops no module.
+   */
+  LaunchpadDisabledApps: 'launchpad.disabled_apps',
   AttendanceShiftGraceMinutes: 'attendance.shift_grace_minutes',
   /**
    * Two punches of the same kind for the same person inside this many
@@ -460,6 +470,11 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
 
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
+  // One rotation per audit year (213-partner-fact-exchange.md, ADR-087).
+  [SettingKey.PartnersKeyTtlDays]: 365,
+  // Wide enough that an ordinary supplier price change passes, narrow enough
+  // that a decimal slip or a wrong currency does not (213-partner-fact-exchange.md).
+  [SettingKey.PartnersPriceReviewThresholdPercent]: 25,
   [SettingKey.PurchasingAutoDraftReorder]: true,
   [SettingKey.OrdersAllowBackorder]: false,
 
@@ -503,6 +518,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   /** 6am — after most night shifts have ended, before most day shifts have started. */
   [SettingKey.AttendanceWorkingDayCutoverHour]: 6,
   /** 15 minutes either side of a shift's own start/end. */
+  [SettingKey.LaunchpadDisabledApps]: [] as string[],
   [SettingKey.AttendanceShiftGraceMinutes]: 15,
   /** 2 minutes — long enough to catch a double-scan, short enough never to merge two real punches. */
   [SettingKey.AttendanceDuplicateWindowMinutes]: 2,

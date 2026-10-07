@@ -154,7 +154,7 @@ use" failure this gap names.
 
 - **The quorum of one** — confirmed `PosShiftStatus`
   (`apps/api/prisma/schema/pos.prisma:52-55`) has only `OPEN`/`CLOSED`, that
-  `closeShift()` (`apps/api/src/modules/pos/pos-shifts.service.ts:72`) has no
+  `closeShift()` (`apps/api/src/modules/sales/pos/pos-shifts.service.ts:72`) has no
   second-holder check to relax, and that `openShift()`
   (`pos-shifts.service.ts:35-36`) already throws on any non-`ACTIVE`
   terminal — so a stuck `ABANDONED` state is a real, traceable dead end, not
@@ -199,7 +199,7 @@ question.
   point there directly instead of implying a local file number.
 - `pos-shifts.service.ts` citations were given as a bare filename with no
   path; verified the actual path is
-  `apps/api/src/modules/pos/pos-shifts.service.ts` (not `apps/api/src/pos/...`)
+  `apps/api/src/modules/sales/pos/pos-shifts.service.ts` (not `apps/api/src/pos/...`)
   and confirmed `closeShift` at line 72 and the `ACTIVE` check at lines
   35-36 match exactly. Filled in the full path in this Hardening record for
   traceability; left the lens bodies' bare-filename form as-is since it was

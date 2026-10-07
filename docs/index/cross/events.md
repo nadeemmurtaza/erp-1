@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **69** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **72** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -30,7 +30,7 @@ order" is a new file, not an edit to checkout.
 
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
-| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `example-hello-world-pack`, `orders`, `stitching` |
+| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `crm`, `accounting`, `orders`, `stitching`, `example-hello-world-pack` |
 | `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `loyalty`, `orders` |
 | `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
 | `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
@@ -38,7 +38,7 @@ order" is a new file, not an edit to checkout.
 | `payment.awaiting_approval` | `PaymentAwaitingApproval` | `payments` | _none_ |
 | `payment.refunded` | `PaymentRefunded` | `payments` | `accounting`, `payments` |
 | `stitching.job_created` | `StitchingJobCreated` | `stitching` | `production` |
-| `stitching.job_stage_changed` | `StitchingJobStageChanged` | `stitching` | `production`, `stitching` |
+| `stitching.job_stage_changed` | `StitchingJobStageChanged` | `stitching` | `stitching`, `production` |
 | `stitching.order_created` | `StitchingOrderCreated` | `stitching` | _none_ |
 | `crm.contact_upserted` | `ContactUpserted` | **none** | _none_ |
 | `crm.lead_created` | `LeadCreated` | **none** | _none_ |
@@ -65,6 +65,9 @@ order" is a new file, not an edit to checkout.
 | `purchasing.supplier_deleted` | `SupplierDeleted` | `purchasing` | `entity-attributes` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
 | `analytics.supplier_digest_ready` | `SupplierDigestReady` | `analytics` | `tradingpartners` |
+| `partners.fact_received` | `PartnerFactReceived` | `tradingpartners` | `purchasing` |
+| `partners.fact_applied` | `PartnerFactApplied` | `purchasing` | `tradingpartners` |
+| `partners.fact_needs_review` | `PartnerFactNeedsReview` | `purchasing` | `tradingpartners` |
 | `production.work_order_created` | `WorkOrderCreated` | `production` | _none_ |
 | `production.work_order_released` | `WorkOrderReleased` | `production` | _none_ |
 | `production.work_order_completed` | `WorkOrderCompleted` | `production` | _none_ |
@@ -110,10 +113,10 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:58` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:165` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:545` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:806` | `orders` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:58` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:165` | `accounting` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:545` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:806` | `orders` |
 
 
 **Subscribed by**
@@ -121,12 +124,12 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:56` | `accounting` |
-| `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
-| `onOrderPlaced()` | `apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts:23` | `example-hello-world-pack` |
-| `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
-| `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
-| `onOrderPlaced()` | `apps/api/src/modules/stitching/order.subscriber.ts:25` | `stitching` |
+| `onOrderPlaced()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:27` | `crm` |
+| `onOrderPlaced()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:56` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:70` | `orders` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/orders/order-replication.listener.ts:48` | `orders` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/stitching/order.subscriber.ts:25` | `stitching` |
+| `onOrderPlaced()` | `apps/api/src/modules/system/example-hello-world-pack/hello-world.listener.ts:23` | `example-hello-world-pack` |
 
 ### `order.status_changed`
 
@@ -135,18 +138,18 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:833` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:1018` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:833` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStatusChanged()` | `apps/api/src/modules/crm/order.subscriber.ts:66` | `crm` |
-| `onOrderStatusChanged()` | `apps/api/src/modules/finance/finance.listener.ts:18` | `finance` |
-| `onOrderStatusChanged()` | `apps/api/src/modules/loyalty/loyalty-order.listener.ts:24` | `loyalty` |
-| `onStatusChanged()` | `apps/api/src/modules/orders/notification.subscriber.ts:166` | `orders` |
+| `onStatusChanged()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:66` | `crm` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/money/finance/finance.listener.ts:18` | `finance` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/sales/loyalty/loyalty-order.listener.ts:24` | `loyalty` |
+| `onStatusChanged()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:166` | `orders` |
 
 ### `order.cancelled`
 
@@ -155,16 +158,16 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:1018` | `orders` |
+| `apps/api/src/modules/money/finance/finance.listener.ts:9` | `finance` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCancelled()` | `apps/api/src/modules/crm/order.subscriber.ts:71` | `crm` |
-| `onCancelled()` | `apps/api/src/modules/orders/notification.subscriber.ts:161` | `orders` |
+| `onCancelled()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:71` | `crm` |
+| `onCancelled()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:161` | `orders` |
 
 ### `payment.succeeded`
 
@@ -173,21 +176,21 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:125` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:162` | `accounting` |
-| `apps/api/src/modules/orders/instalment-plan.service.ts:90` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:777` | `orders` |
-| `apps/api/src/modules/payments/payments.service.ts:199` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:301` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:349` | `payments` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:162` | `accounting` |
+| `apps/api/src/modules/sales/orders/instalment-plan.service.ts:90` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:777` | `orders` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:301` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:349` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:123` | `accounting` |
-| `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:123` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
 
@@ -196,15 +199,15 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:199` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:301` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:301` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentFailed()` | `apps/api/src/modules/payments/notification.subscriber.ts:79` | `payments` |
+| `onPaymentFailed()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:79` | `payments` |
 
 ### `payment.awaiting_approval`
 
@@ -213,7 +216,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:124` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:124` | `payments` |
 
 
 **Subscribed by**
@@ -227,15 +230,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:408` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:408` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:160` | `accounting` |
-| `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
+| `onPaymentRefunded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:160` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
 
@@ -244,14 +247,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/jobs.service.ts:217` | `stitching` |
+| `apps/api/src/modules/sales/stitching/jobs.service.ts:217` | `stitching` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStitchingJobCreated()` | `apps/api/src/modules/production/stitching-cascade.listener.ts:30` | `production` |
+| `onStitchingJobCreated()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:30` | `production` |
 
 ### `stitching.job_stage_changed`
 
@@ -260,15 +263,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/jobs.service.ts:379` | `stitching` |
+| `apps/api/src/modules/sales/stitching/jobs.service.ts:379` | `stitching` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStitchingJobStageChanged()` | `apps/api/src/modules/production/stitching-cascade.listener.ts:68` | `production` |
-| `onStageChanged()` | `apps/api/src/modules/stitching/order.subscriber.ts:48` | `stitching` |
+| `onStageChanged()` | `apps/api/src/modules/sales/stitching/order.subscriber.ts:48` | `stitching` |
+| `onStitchingJobStageChanged()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:68` | `production` |
 
 ### `stitching.order_created`
 
@@ -277,7 +280,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/stitching-orders.service.ts:148` | `stitching` |
+| `apps/api/src/modules/sales/stitching/stitching-orders.service.ts:148` | `stitching` |
 
 
 **Subscribed by**
@@ -322,7 +325,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onRegistered()` | `apps/api/src/modules/users/notification.subscriber.ts:21` | `users` |
+| `onRegistered()` | `apps/api/src/modules/system/users/notification.subscriber.ts:21` | `users` |
 
 ### `user.password_changed`
 
@@ -339,7 +342,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:36` | `users` |
+| `onPasswordChanged()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:36` | `users` |
 
 ### `user.password_reset_requested`
 
@@ -355,7 +358,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:58` | `users` |
+| `onPasswordResetRequested()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:58` | `users` |
 
 ### `user.email_verification_requested`
 
@@ -371,7 +374,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:81` | `users` |
+| `onEmailVerificationRequested()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:81` | `users` |
 
 ### `user.api_key_issued`
 
@@ -389,7 +392,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onApiKeyIssued()` | `apps/api/src/modules/users/security-notification.subscriber.ts:114` | `users` |
+| `onApiKeyIssued()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:114` | `users` |
 
 ### `user.sso_account_linked`
 
@@ -407,7 +410,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSsoAccountLinked()` | `apps/api/src/modules/users/security-notification.subscriber.ts:150` | `users` |
+| `onSsoAccountLinked()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:150` | `users` |
 
 ### `user.sso_user_provisioned`
 
@@ -431,14 +434,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:410` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:410` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `handleLowStock()` | `apps/api/src/modules/inventory/inventory.listener.ts:19` | `inventory` |
+| `handleLowStock()` | `apps/api/src/modules/supply-chain/inventory/inventory.listener.ts:19` | `inventory` |
 
 ### `catalog.product_reorder_point_reached`
 
@@ -448,15 +451,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:428` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:428` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onReorderPointReached()` | `apps/api/src/modules/production/reorder-work-order.listener.ts:19` | `production` |
-| `onReorderPointReached()` | `apps/api/src/modules/purchasing/reorder.listener.ts:33` | `purchasing` |
+| `onReorderPointReached()` | `apps/api/src/modules/supply-chain/production/reorder-work-order.listener.ts:19` | `production` |
+| `onReorderPointReached()` | `apps/api/src/modules/supply-chain/purchasing/reorder.listener.ts:33` | `purchasing` |
 
 ### `catalog.product_published`
 
@@ -466,15 +469,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:200` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:200` | `catalog` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onProductPublished()` | `apps/api/src/modules/catalog/product-replication.listener.ts:50` | `catalog` |
-| `onProductPublished()` | `apps/api/src/modules/tradingpartners/product-alerts.listener.ts:26` | `tradingpartners` |
+| `onProductPublished()` | `apps/api/src/modules/merchandising/catalog/product-replication.listener.ts:50` | `catalog` |
+| `onProductPublished()` | `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.ts:26` | `tradingpartners` |
 
 ### `catalog.product_price_changed`
 
@@ -484,15 +487,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:359` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:359` | `catalog` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onProductPriceChanged()` | `apps/api/src/modules/catalog/product-replication.listener.ts:55` | `catalog` |
-| `onProductPriceChanged()` | `apps/api/src/modules/tradingpartners/product-alerts.listener.ts:31` | `tradingpartners` |
+| `onProductPriceChanged()` | `apps/api/src/modules/merchandising/catalog/product-replication.listener.ts:55` | `catalog` |
+| `onProductPriceChanged()` | `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.ts:31` | `tradingpartners` |
 
 ### `catalog.product_changed`
 
@@ -502,16 +505,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/ai-suggestions.service.ts:296` | `catalog` |
-| `apps/api/src/modules/catalog/product-admin.service.ts:210` | `catalog` |
-| `apps/api/src/modules/catalog/product-admin.service.ts:367` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/ai-suggestions.service.ts:296` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:210` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:367` | `catalog` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onProductChanged()` | `apps/api/src/modules/search/search-reindex.listener.ts:17` | `search` |
+| `onProductChanged()` | `apps/api/src/modules/merchandising/search/search-reindex.listener.ts:17` | `search` |
 
 ### `inventory.stock_replenished`
 
@@ -521,15 +524,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:445` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:445` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockReplenished()` | `apps/api/src/modules/orders/backorder.listener.ts:29` | `orders` |
-| `onStockReplenished()` | `apps/api/src/modules/wishlist/back-in-stock.listener.ts:31` | `wishlist` |
+| `onStockReplenished()` | `apps/api/src/modules/sales/orders/backorder.listener.ts:29` | `orders` |
+| `onStockReplenished()` | `apps/api/src/modules/sales/wishlist/back-in-stock.listener.ts:31` | `wishlist` |
 
 ### `inventory.stock_variance_recorded`
 
@@ -539,15 +542,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:289` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:396` | `inventory` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:289` | `accounting` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:396` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:287` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:287` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -556,16 +559,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:517` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:534` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
-| `onGoodsReceived()` | `apps/api/src/modules/planning/goods-received-lead-time.listener.ts:24` | `planning` |
-| `onGoodsReceived()` | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
+| `recomputeAffectedRecipes()` | `apps/api/src/modules/supply-chain/bom/bom.listener.ts:22` | `bom` |
+| `onGoodsReceived()` | `apps/api/src/modules/supply-chain/planning/goods-received-lead-time.listener.ts:24` | `planning` |
+| `onGoodsReceived()` | `apps/api/src/modules/supply-chain/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
 
 ### `purchasing.requisition_created`
 
@@ -574,8 +577,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/requisition-task-source.ts:38` | `purchasing` |
-| `apps/api/src/modules/purchasing/requisition.service.ts:72` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/requisition-task-source.ts:38` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/requisition.service.ts:72` | `purchasing` |
 
 
 **Subscribed by**
@@ -589,7 +592,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/requisition.service.ts:205` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/requisition.service.ts:205` | `purchasing` |
 
 
 **Subscribed by**
@@ -604,14 +607,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/bom/production.service.ts:350` | `bom` |
+| `apps/api/src/modules/supply-chain/bom/production.service.ts:350` | `bom` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onBomProductionCompleted()` | `apps/api/src/modules/bom/bom-production-replication.listener.ts:38` | `bom` |
+| `onBomProductionCompleted()` | `apps/api/src/modules/supply-chain/bom/bom-production-replication.listener.ts:38` | `bom` |
 
 ### `purchasing.supplier_bill_raised`
 
@@ -620,15 +623,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:186` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:668` | `purchasing` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:186` | `accounting` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:688` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:184` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:184` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -637,15 +640,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:236` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:732` | `purchasing` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:236` | `accounting` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:753` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:234` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:234` | `accounting` |
 
 ### `purchasing.supplier_deleted`
 
@@ -655,14 +658,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:186` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:186` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierDeleted()` | `apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts:23` | `entity-attributes` |
+| `onSupplierDeleted()` | `apps/api/src/modules/merchandising/entity-attributes/supplier-deleted.listener.ts:23` | `entity-attributes` |
 
 ### `transfers.inter_branch_invoiced`
 
@@ -672,15 +675,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:342` | `accounting` |
-| `apps/api/src/modules/transfers/transfers.service.ts:300` | `transfers` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:342` | `accounting` |
+| `apps/api/src/modules/supply-chain/transfers/transfers.service.ts:300` | `transfers` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:340` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:340` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -690,14 +693,65 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:82` | `analytics` |
+| `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts:82` | `analytics` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierDigestReady()` | `apps/api/src/modules/tradingpartners/supplier-digest.listener.ts:22` | `tradingpartners` |
+| `onSupplierDigestReady()` | `apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.ts:22` | `tradingpartners` |
+
+### `partners.fact_received`
+
+> A connected trading partner's fact was stored in PartnerFactInbox and acknowledged (WO-213.1, 213-partner-fact-exchange.md).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:94` | `tradingpartners` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPartnerFactReceived()` | `apps/api/src/modules/supply-chain/purchasing/partner-fact.listener.ts:20` | `purchasing` |
+
+### `partners.fact_applied`
+
+> The subscriber that owns the effect applied the fact — for `sale.dispatched`, a purchase order now exists (WO-213.2).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:113` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onApplied()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:29` | `tradingpartners` |
+
+### `partners.fact_needs_review`
+
+> The subscriber could not apply the fact without a person — an unknown barcode, a price far from the last (WO-213.2).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:196` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onNeedsReview()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:49` | `tradingpartners` |
 
 ### `production.work_order_created`
 
@@ -706,7 +760,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:114` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:114` | `production` |
 
 
 **Subscribed by**
@@ -720,7 +774,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:180` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:180` | `production` |
 
 
 **Subscribed by**
@@ -734,7 +788,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:223` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:223` | `production` |
 
 
 **Subscribed by**
@@ -748,7 +802,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/crm/email-inbox/email-inbox.service.ts:100` | `crm` |
+| `apps/api/src/modules/customers/crm/email-inbox/email-inbox.service.ts:100` | `crm` |
 
 
 **Subscribed by**
@@ -762,7 +816,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:159` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:159` | `identity-verification` |
 
 
 **Subscribed by**
@@ -776,7 +830,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:160` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:160` | `identity-verification` |
 
 
 **Subscribed by**
@@ -790,7 +844,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:161` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:161` | `identity-verification` |
 
 
 **Subscribed by**
@@ -805,14 +859,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/hr/people.service.ts:215` | `hr` |
+| `apps/api/src/modules/people/hr/people.service.ts:215` | `hr` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPostingEnded()` | `apps/api/src/modules/tasks/task-leaver.listener.ts:29` | `tasks` |
+| `onPostingEnded()` | `apps/api/src/modules/people/tasks/task-leaver.listener.ts:29` | `tasks` |
 
 ### `finance.expense_recorded`
 
@@ -822,17 +876,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:402` | `accounting` |
-| `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:645` | `finance` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:402` | `accounting` |
+| `apps/api/src/modules/money/finance/finance.service.ts:252` | `finance` |
+| `apps/api/src/modules/money/finance/finance.service.ts:645` | `finance` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:400` | `accounting` |
-| `onExpenseRecorded()` | `apps/api/src/modules/finance/expense-replication.listener.ts:38` | `finance` |
+| `onExpenseRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:400` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/money/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
 
@@ -842,7 +896,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/finance/order-economics.service.ts:143` | `finance` |
+| `apps/api/src/modules/money/finance/order-economics.service.ts:143` | `finance` |
 
 
 **Subscribed by**
@@ -857,15 +911,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:447` | `accounting` |
-| `apps/api/src/modules/payroll/pay-run.service.ts:186` | `payroll` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:447` | `accounting` |
+| `apps/api/src/modules/people/payroll/pay-run.service.ts:186` | `payroll` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:445` | `accounting` |
+| `onPayrollRunPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:445` | `accounting` |
 
 ### `payroll.adjustment_posted`
 
@@ -875,15 +929,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:498` | `accounting` |
-| `apps/api/src/modules/payroll/pay-run.service.ts:237` | `payroll` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:498` | `accounting` |
+| `apps/api/src/modules/people/payroll/pay-run.service.ts:237` | `payroll` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:496` | `accounting` |
+| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:496` | `accounting` |
 
 ### `fulfilment.shipment_status_changed`
 
@@ -893,15 +947,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/fulfilment.service.ts:153` | `fulfilment` |
-| `apps/api/src/modules/fulfilment/fulfilment.service.ts:246` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:153` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:246` | `fulfilment` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onShipmentStatusChanged()` | `apps/api/src/modules/orders/shipment-status.listener.ts:33` | `orders` |
+| `onShipmentStatusChanged()` | `apps/api/src/modules/sales/orders/shipment-status.listener.ts:33` | `orders` |
 
 ### `fulfilment.shipment_rto`
 
@@ -911,15 +965,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/fulfilment.service.ts:261` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:261` | `fulfilment` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/crm/rto-contact.listener.ts:19` | `crm` |
-| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/finance/rto-expense.listener.ts:25` | `finance` |
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/customers/crm/rto-contact.listener.ts:19` | `crm` |
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/money/finance/rto-expense.listener.ts:25` | `finance` |
 
 ### `fulfilment.return_status_changed`
 
@@ -929,17 +983,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/returns.service.ts:147` | `fulfilment` |
-| `apps/api/src/modules/fulfilment/returns.service.ts:196` | `fulfilment` |
-| `apps/api/src/modules/fulfilment/returns.service.ts:307` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:147` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:196` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:307` | `fulfilment` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStatusChanged()` | `apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24` | `fulfilment` |
-| `onReturnRequestStatusChanged()` | `apps/api/src/modules/measurements/size-bias.listener.ts:33` | `measurements` |
+| `onStatusChanged()` | `apps/api/src/modules/sales/fulfilment/return-notification.subscriber.ts:24` | `fulfilment` |
+| `onReturnRequestStatusChanged()` | `apps/api/src/modules/sales/measurements/size-bias.listener.ts:33` | `measurements` |
 
 ### `fulfilment.return_fully_refunded`
 
@@ -949,14 +1003,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/returns.service.ts:393` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:393` | `fulfilment` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onReturnFullyRefunded()` | `apps/api/src/modules/orders/shipment-status.listener.ts:61` | `orders` |
+| `onReturnFullyRefunded()` | `apps/api/src/modules/sales/orders/shipment-status.listener.ts:61` | `orders` |
 
 ### `promotions.discount_redeemed`
 
@@ -966,7 +1020,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/promotions/promotions.service.ts:512` | `promotions` |
+| `apps/api/src/modules/sales/promotions/promotions.service.ts:512` | `promotions` |
 
 
 **Subscribed by**
@@ -981,15 +1035,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/reviews/reviews.service.ts:127` | `reviews` |
+| `apps/api/src/modules/sales/reviews/reviews.service.ts:127` | `reviews` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onReviewModerated()` | `apps/api/src/modules/measurements/size-bias.listener.ts:21` | `measurements` |
-| `onReviewModerated()` | `apps/api/src/modules/reviews/review-summary.listener.ts:13` | `reviews` |
+| `onReviewModerated()` | `apps/api/src/modules/sales/measurements/size-bias.listener.ts:21` | `measurements` |
+| `onReviewModerated()` | `apps/api/src/modules/sales/reviews/review-summary.listener.ts:13` | `reviews` |
 
 ### `wallet.credit_purchased`
 
@@ -999,16 +1053,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:30` | `accounting` |
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:125` | `accounting` |
-| `apps/api/src/modules/wallet/wallet.service.ts:139` | `wallet` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:30` | `accounting` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:139` | `wallet` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onWalletCreditPurchased()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:28` | `accounting` |
+| `onWalletCreditPurchased()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:28` | `accounting` |
 
 ### `wallet.credit_redeemed`
 
@@ -1018,15 +1072,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:64` | `accounting` |
-| `apps/api/src/modules/wallet/wallet.service.ts:251` | `wallet` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:64` | `accounting` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:251` | `wallet` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onWalletCreditRedeemed()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:62` | `accounting` |
+| `onWalletCreditRedeemed()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:62` | `accounting` |
 
 ### `wallet.credit_refunded`
 
@@ -1036,15 +1090,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/wallet/wallet.service.ts:338` | `wallet` |
-| `apps/api/src/modules/wallet/wallet.service.ts:376` | `wallet` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:338` | `wallet` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:376` | `wallet` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onWalletCreditRefunded()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:121` | `accounting` |
+| `onWalletCreditRefunded()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:121` | `accounting` |
 
 ### `wallet.merchant_payable_created`
 
@@ -1054,10 +1108,10 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:100` | `accounting` |
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:103` | `accounting` |
-| `apps/api/src/modules/wallet/merchant-payable.service.ts:66` | `wallet` |
-| `apps/api/src/modules/wallet/wallet.service.ts:263` | `wallet` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:100` | `accounting` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:103` | `accounting` |
+| `apps/api/src/modules/sales/wallet/merchant-payable.service.ts:66` | `wallet` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:263` | `wallet` |
 
 
 **Subscribed by**
@@ -1072,7 +1126,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/wallet/merchant-payable.service.ts:149` | `wallet` |
+| `apps/api/src/modules/sales/wallet/merchant-payable.service.ts:149` | `wallet` |
 
 
 **Subscribed by**
@@ -1087,16 +1141,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:537` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:564` | `accounting` |
-| `apps/api/src/modules/receivables/credit-notes.service.ts:130` | `receivables` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:537` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:564` | `accounting` |
+| `apps/api/src/modules/money/receivables/credit-notes.service.ts:130` | `receivables` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCreditNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:535` | `accounting` |
+| `onCreditNoteIssued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:535` | `accounting` |
 
 ### `receivables.credit_note_voided`
 
@@ -1106,14 +1160,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/receivables/credit-notes.service.ts:181` | `receivables` |
+| `apps/api/src/modules/money/receivables/credit-notes.service.ts:181` | `receivables` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCreditNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:562` | `accounting` |
+| `onCreditNoteVoided()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:562` | `accounting` |
 
 ### `receivables.debit_note_issued`
 
@@ -1123,16 +1177,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:583` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:609` | `accounting` |
-| `apps/api/src/modules/receivables/debit-notes.service.ts:93` | `receivables` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:583` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:609` | `accounting` |
+| `apps/api/src/modules/money/receivables/debit-notes.service.ts:93` | `receivables` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onDebitNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:581` | `accounting` |
+| `onDebitNoteIssued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:581` | `accounting` |
 
 ### `receivables.debit_note_voided`
 
@@ -1142,14 +1196,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/receivables/debit-notes.service.ts:123` | `receivables` |
+| `apps/api/src/modules/money/receivables/debit-notes.service.ts:123` | `receivables` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onDebitNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:607` | `accounting` |
+| `onDebitNoteVoided()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:607` | `accounting` |
 
 ### `receivables.credit_hold_applied`
 
@@ -1159,7 +1213,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/receivables/credit-terms.service.ts:86` | `receivables` |
+| `apps/api/src/modules/money/receivables/credit-terms.service.ts:86` | `receivables` |
 
 
 **Subscribed by**
@@ -1189,15 +1243,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:627` | `accounting` |
-| `apps/api/src/modules/settlements/settlements.service.ts:210` | `settlements` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:627` | `accounting` |
+| `apps/api/src/modules/money/settlements/settlements.service.ts:210` | `settlements` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSettlementShortfallWrittenOff()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:625` | `accounting` |
+| `onSettlementShortfallWrittenOff()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:625` | `accounting` |
 
 ### `bank_facility.drawdown_posted`
 
@@ -1207,15 +1261,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:665` | `accounting` |
-| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:204` | `bankfacilities` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:665` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:204` | `bankfacilities` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onBankFacilityDrawdownPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:663` | `accounting` |
+| `onBankFacilityDrawdownPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:663` | `accounting` |
 
 ### `bank_facility.repayment_recorded`
 
@@ -1225,15 +1279,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:697` | `accounting` |
-| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:249` | `bankfacilities` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:697` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:249` | `bankfacilities` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onBankFacilityRepaymentRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:695` | `accounting` |
+| `onBankFacilityRepaymentRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:695` | `accounting` |
 
 ### `bank_facility.markup_accrued`
 
@@ -1243,15 +1297,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:745` | `accounting` |
-| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:298` | `bankfacilities` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:745` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:298` | `bankfacilities` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onBankFacilityMarkupAccrued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:743` | `accounting` |
+| `onBankFacilityMarkupAccrued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:743` | `accounting` |
 
 ### `notify.bulletin_published`
 
@@ -1261,16 +1315,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/notify/bulletins.service.ts:29` | `notify` |
-| `apps/api/src/modules/notify/bulletins.service.ts:70` | `notify` |
-| `apps/api/src/modules/notify/notify.module.ts:36` | `notify` |
+| `apps/api/src/modules/customers/notify/bulletins.service.ts:29` | `notify` |
+| `apps/api/src/modules/customers/notify/bulletins.service.ts:70` | `notify` |
+| `apps/api/src/modules/customers/notify/notify.module.ts:36` | `notify` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onBulletinPublished()` | `apps/api/src/modules/notify/bulletin-notification.listener.ts:26` | `notify` |
+| `onBulletinPublished()` | `apps/api/src/modules/customers/notify/bulletin-notification.listener.ts:26` | `notify` |
 
 
 ---

@@ -9,11 +9,11 @@ Pack **core** · always on · 5 files
 
 **Registry note** (`modules.registry.ts`): 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
 
-Source: `apps/api/src/modules/embeds/`
+Source: `apps/api/src/modules/merchandising/embeds/`
 
 ## Files (5 · 301 lines)
 
-All paths relative to `apps/api/src/modules/embeds/dto`.
+All paths relative to `apps/api/src/modules/merchandising/embeds/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

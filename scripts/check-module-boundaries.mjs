@@ -3,11 +3,11 @@
  * Enforces the two rules that make this codebase extensible.
  *
  * DEPTH — a feature module may not reach into another feature module's
- * internals. Allowed from inside apps/api/src/modules/<name>/:
+ * internals. Allowed from inside apps/api/src/modules/<domain>/<name>/:
  *   - anything under its own folder
  *   - anything under src/core/          (the shared platform)
  *   - packages (@newax/shared, node_modules)
- *   - another module's public surface:  ../<other>/<other>.module  |  .service
+ *   - another module's public surface:  <other>/<other>.module  |  .service
  *
  * Forbidden: ../<other>/dto/…, ../<other>/internal/…, deep files. Reaching for
  * one is the signal that an extension point or a domain event is missing.
@@ -52,7 +52,7 @@
  * See docs/implementation/MULTI-SECTOR.md.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 
 const MODULES_ROOT = resolve('apps/api/src/modules');
 const PACKS_FILE = resolve('apps/api/src/modules/module-packs.ts');
@@ -266,10 +266,35 @@ function walk(dir) {
   return entries;
 }
 
-function moduleNames() {
-  return readdirSync(MODULES_ROOT).filter((name) =>
-    statSync(join(MODULES_ROOT, name)).isDirectory(),
-  );
+/**
+ * Modules live two levels down: modules/<domain>/<module>/. A domain is only a
+ * folder that groups modules for people; it carries no rule. The module NAME
+ * (the second segment) is what MODULE_PACKS, the env allowlist and every
+ * coupling list below are keyed by, so the grouping can change without
+ * touching any of them.
+ */
+function moduleDirs() {
+  const dirs = new Map(); // module name -> absolute directory
+  for (const domain of readdirSync(MODULES_ROOT)) {
+    const domainDir = join(MODULES_ROOT, domain);
+    if (!statSync(domainDir).isDirectory()) continue;
+    for (const name of readdirSync(domainDir)) {
+      if (!statSync(join(domainDir, name)).isDirectory()) continue;
+      if (dirs.has(name)) {
+        throw new Error(`Two modules are both called "${name}" (${relative(process.cwd(), dirs.get(name))} and ${relative(process.cwd(), join(domainDir, name))}).`);
+      }
+      dirs.set(name, join(domainDir, name));
+    }
+  }
+  return dirs;
+}
+
+/** The module an absolute path belongs to, or null when it is outside every module. */
+function moduleOfPath(abs, dirs) {
+  for (const [name, dir] of dirs) {
+    if (abs === dir || abs.startsWith(dir + sep)) return name;
+  }
+  return null;
 }
 
 /**
@@ -344,7 +369,7 @@ function directionViolation(ownModule, targetModule, packs) {
   return null;
 }
 
-function checkFile(file, ownModule, modules, packs) {
+function checkFile(file, ownModule, modules, packs, dirs) {
   const violations = [];
   const source = readFileSync(file, 'utf8');
 
@@ -355,7 +380,7 @@ function checkFile(file, ownModule, modules, packs) {
     const target = resolve(file, '..', specifier);
     if (!target.startsWith(MODULES_ROOT)) continue;
 
-    const targetModule = relative(MODULES_ROOT, target).split(/[\\/]/)[0];
+    const targetModule = moduleOfPath(target, dirs);
     if (!targetModule || targetModule === ownModule || !modules.includes(targetModule)) {
       continue;
     }
@@ -555,9 +580,12 @@ function checkPrismaBoundaries(packs) {
 
 function main() {
   let modules;
+  let dirs;
   try {
-    modules = moduleNames();
-  } catch {
+    dirs = moduleDirs();
+    modules = [...dirs.keys()];
+  } catch (error) {
+    if (!/No such file|ENOENT/.test(String(error))) throw error;
     console.log('No apps/api/src/modules directory yet — nothing to check.');
     return;
   }
@@ -573,7 +601,7 @@ function main() {
   const violations = [
     ...checkClassification(modules, packs),
     ...modules.flatMap((name) =>
-      walk(join(MODULES_ROOT, name)).flatMap((file) => checkFile(file, name, modules, packs)),
+      walk(dirs.get(name)).flatMap((file) => checkFile(file, name, modules, packs, dirs)),
     ),
     ...checkPrismaBoundaries(packs),
     // After the walk, so it knows which entries fired.

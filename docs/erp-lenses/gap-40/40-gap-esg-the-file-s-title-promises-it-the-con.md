@@ -141,7 +141,7 @@ accounts are tamper-evident and its sustainability accounts are not.
 - **The disclosure period has no lock** — verified: `FiscalPeriodStatus`
   enum (accounting.prisma:80-84) and `FiscalPeriod` model (91-108) exist
   with `OPEN/CLOSED/LOCKED`; `lockPeriod()` in
-  `apps/api/src/modules/accounting/fiscal-periods.service.ts:109-115`
+  `apps/api/src/modules/money/accounting/fiscal-periods.service.ts:109-115`
   enforces `CLOSED` before `LOCKED`; `forbid_journal_line_mutation()` exists
   in `apps/api/prisma/schema/migrations/20260917070552_add_accounting_ledger/migration.sql:221`.
   `PERMISSION_CATALOG` (packages/shared/src/permissions.ts) has exactly 50

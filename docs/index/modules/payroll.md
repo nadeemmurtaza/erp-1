@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 
 
-Source: `apps/api/src/modules/payroll/`
+Source: `apps/api/src/modules/people/payroll/`
 
 ## Files (18 · 1,911 lines)
 
-All paths relative to `apps/api/src/modules/payroll/dto`.
+All paths relative to `apps/api/src/modules/people/payroll/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

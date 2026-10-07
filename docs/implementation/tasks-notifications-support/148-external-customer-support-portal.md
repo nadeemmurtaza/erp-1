@@ -11,7 +11,7 @@
 > primitive for both ticket kinds, and `SupportTicketActionSource`
 > extended (not duplicated) to also surface `CustomerSupportTicket` items
 > under a `CUSTOMER_SUPPORT_TICKET` kind, are all real, at
-> `apps/api/src/modules/support/`. Keyed on `contactId`, never
+> `apps/api/src/modules/customers/support/`. Keyed on `contactId`, never
 > `raisedByUserId` — this document's own central actor-model thesis,
 > restated: `raise()` finds-or-creates the caller's own `Contact` via
 > `CrmService.upsertContact()` inside the same transaction as the ticket

@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 **Registry note** (`modules.registry.ts`): 145-receivables-credit-limits-dunning.md — CreditNote/DebitNote, customer credit limits/holds and dunning.
 
-Source: `apps/api/src/modules/receivables/`
+Source: `apps/api/src/modules/money/receivables/`
 
 ## Files (13 · 1,669 lines)
 
-All paths relative to `apps/api/src/modules/receivables`.
+All paths relative to `apps/api/src/modules/money/receivables`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

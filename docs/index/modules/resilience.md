@@ -9,11 +9,11 @@ Pack **core** · always on · 3 files
 
 **Registry note** (`modules.registry.ts`): 38-resilience-engineering.md — the admin read/tune surface over CircuitBreakerService (core/resilience) and SloRecorderService (core/slo), both already global and always available regardless of this…
 
-Source: `apps/api/src/modules/resilience/`
+Source: `apps/api/src/modules/supply-chain/resilience/`
 
 ## Files (3 · 153 lines)
 
-All paths relative to `apps/api/src/modules/resilience/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/resilience/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

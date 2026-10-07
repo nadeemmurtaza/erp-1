@@ -8,7 +8,7 @@
 > the partitioned table, including `AttendanceException`'s real two-column
 > foreign key against `AttendanceEvent`'s own composite primary key, before
 > any service code was written against it. `AttendanceService.record()`
-> (`apps/api/src/modules/attendance/`) is the unconditional write path: 22
+> (`apps/api/src/modules/people/attendance/`) is the unconditional write path: 22
 > specs (`attendance.service.spec.ts`) prove a punch is recorded in every
 > one of the acceptance criteria's own cases — no shift, wrong unit, on
 > leave, a duplicate, a missing counterpart — and that a replayed

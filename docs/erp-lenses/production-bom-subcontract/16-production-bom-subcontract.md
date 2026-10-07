@@ -18,7 +18,7 @@ into `Location`, whose `LocationType` enum (`inventory.prisma`) is only
 `STORE | WAREHOUSE | IN_TRANSIT` — no subcontractor site. `StitchingJob.
 assignedTailorId` (`stitching.prisma:132`) points at `User.id`, not a `Party`,
 and stitching "writes no stock movements" (ground truth, confirmed: no
-`inventory.move()` call anywhere under `modules/stitching/`). `PartyRoleName`
+`inventory.move()` call anywhere under `modules/sales/stitching/`). `PartyRoleName`
 (`parties.prisma:8`) is `SUPPLIER | MANUFACTURER | DISTRIBUTOR | RETAILER` —
 no subcontractor role exists either. Cloth handed to an outside tailor is
 consumed from our stock (`PRODUCTION_CONSUMPTION`) and then simply gone from

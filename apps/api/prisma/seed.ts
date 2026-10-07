@@ -17,12 +17,12 @@ config({ path: ['.env', '../../.env'], quiet: true });
 import { EventBusService } from '../src/core/events/event-bus.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AuditService } from '../src/core/audit/audit.service';
-import { InventoryService } from '../src/modules/inventory/inventory.service';
+import { InventoryService } from '../src/modules/supply-chain/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../src/core/extension-points/entity-enrichment.registry';
 import { IntentRouterService } from '../src/core/intent/intent-router.service';
-import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
+import { CHART_OF_ACCOUNTS } from '../src/modules/money/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;

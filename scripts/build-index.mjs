@@ -142,7 +142,11 @@ for (const r of records) {
 
 /* ── the API's own structure ───────────────────────────────────────────── */
 
-const apiModuleOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/([^/]+)\//) ?? [])[1] ?? null;
+// Modules live at src/modules/<domain>/<name>/ — the domain only groups them for
+// people, so a module's identity everywhere (packs, allowlist, index pages) is
+// its bare name, the second segment.
+const apiModuleOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/[^/]+\/([^/]+)\//) ?? [])[1] ?? null;
+const apiModuleDomainOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/([^/]+)\/[^/]+\//) ?? [])[1] ?? null;
 const apiCoreOf = (rel) => (rel.match(/^apps\/api\/src\/core\/([^/]+)\//) ?? [])[1] ?? null;
 
 const controllers = [];
@@ -449,6 +453,7 @@ for (const r of records) {
 }
 
 const apiModuleNames = [...new Set(records.map((r) => apiModuleOf(r.rel)).filter(Boolean))].sort();
+const moduleDomains = new Map(records.filter((r) => apiModuleOf(r.rel)).map((r) => [apiModuleOf(r.rel), apiModuleDomainOf(r.rel)]));
 const apiCoreNames = [...new Set(records.map((r) => apiCoreOf(r.rel)).filter(Boolean))].sort();
 
 const moduleFile = (name) => `docs/index/modules/${name}.md`;
@@ -1134,7 +1139,8 @@ so a route with no \`@RequirePermission\` is authenticated-but-unrestricted,
 which CLAUDE.md calls "almost never intended".
 
 Structure: \`src/core/\` is the shared platform every deployment runs;
-\`src/modules/<name>/\` is one feature module, independent of every other one.`,
+\`src/modules/<domain>/<name>/\` is one feature module, independent of every other one;
+the domain folder (sales, merchandising, supply-chain, money, people, customers, system) only groups them.`,
   web: `Next.js App Router. **Two products in one deployment**: the admin console under
 \`(admin)/admin\` and the customer storefront under \`(storefront)/[locale]\`.
 They share primitives in \`src/components/ui\` and nothing else.
@@ -1258,9 +1264,12 @@ function renderUnit({ self, title, subtitle, unitRecords, routeFilter, schemaBas
       const resolved = imp.replace(/^\.\//, '');
       const up = imp.match(/\.\.\/\.\.\/core\/([\w-]+)/);
       if (up) { edges.add(`core \`${up[1]}\``); continue; }
-      const cross = imp.match(/\.\.\/([\w-]+)\/[\w.-]+/);
-      if (cross && apiModuleNames.includes(cross[1]) && !owned.has(`apps/api/src/modules/${cross[1]}/`)) {
-        if (!r.rel.includes(`/modules/${cross[1]}/`)) edges.add(`**module \`${cross[1]}\`** ⚠ direct import`);
+      // Resolve the import to the module that owns the target file, so a
+      // cross-domain import (../../money/tax/tax.service) is seen as well as a
+      // same-domain one.
+      const target = apiModuleOf(`${join(dirname(r.rel), imp)}/`);
+      if (target && apiModuleNames.includes(target) && target !== apiModuleOf(r.rel)) {
+        edges.add(`**module \`${target}\`** ⚠ direct import`);
       }
       void resolved;
     }
@@ -1377,7 +1386,7 @@ for (const name of apiModuleNames) {
     extraIntro: [
       moduleDoc ? `> ${moduleDoc}` : '',
       feature?.note ? `\n**Registry note** (\`modules.registry.ts\`): ${feature.note}` : '',
-      `\nSource: \`apps/api/src/modules/${name}/\``,
+      `\nSource: \`apps/api/src/modules/${moduleDomains.get(name)}/${name}/\``,
     ].filter(Boolean).join('\n'),
   });
 }
@@ -2402,8 +2411,8 @@ ${BACK(self)}`);
    \`ENTERPRISE-SCALE.md\` overlap.
 4. Everything else, by topic.
 
-Architectural decisions go in \`docs/implementation/DECISIONS.md\` — a settled
-decision is not reopened without new evidence.
+Architectural decisions go in \`docs/implementation/decisions/\` (one file each, indexed by
+\`docs/implementation/DECISIONS.md\`) — a settled decision is not reopened without new evidence.
 
 ## Outlines
 

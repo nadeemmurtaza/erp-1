@@ -31,7 +31,7 @@ transaction also removes their `UserRoleAssignment` rows, removes their
 matches them, posting the same closing `CashMovement` a normal
 `closeShift()` would.
 
-**Done test:** `grep -n "isActive" apps/api/src/modules/users/users-admin.service.ts`
+**Done test:** `grep -n "isActive" apps/api/src/modules/system/users/users-admin.service.ts`
 shows only a `RefreshToken.updateMany` beside the `User.update`. The PR must
 add `UserRoleAssignment`/`AdminScope` writes, or a `PosShift` closure, to
 that same transaction — not a separate cron.
@@ -99,7 +99,7 @@ event (a real `shift.closed`), the posting rule that turns hours/rate into a
 supplies the rate — none of which exist, so the tile's own PR must create
 them or the column stays permanently null.
 
-**Done test:** `grep -rn costCentreId apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+**Done test:** `grep -rn costCentreId apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 returns nothing today. The PR must add a setter there, or name and wire the
 new rule — not just a `WHERE` clause over the existing seven.
 

@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 4 files
 
 
 
-Source: `apps/api/src/modules/tracking/`
+Source: `apps/api/src/modules/sales/tracking/`
 
 ## Files (4 · 186 lines)
 
-All paths relative to `apps/api/src/modules/tracking/dto`.
+All paths relative to `apps/api/src/modules/sales/tracking/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

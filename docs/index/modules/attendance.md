@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 **Registry note** (`modules.registry.ts`): attendance-workforce/22-attendance-shifts-leave.md — reads hr's Posting/Rank/Position and payroll's LeaveRequest directly by Prisma query, no dependency on either module being on (see AttendanceServi…
 
-Source: `apps/api/src/modules/attendance/`
+Source: `apps/api/src/modules/people/attendance/`
 
 ## Files (13 · 1,659 lines)
 
-All paths relative to `apps/api/src/modules/attendance`.
+All paths relative to `apps/api/src/modules/people/attendance`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

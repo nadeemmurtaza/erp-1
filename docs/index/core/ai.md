@@ -57,14 +57,6 @@ _none_
 - exports: `AiService`
 
 
-## Reaches out to
-
-- **module `resilience`** ⚠ direct import
-- **module `settings`** ⚠ direct import
-
-A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
-either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
-check there before adding another.
 
 
 ## Tests (1)

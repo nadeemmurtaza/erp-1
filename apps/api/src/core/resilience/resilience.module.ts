@@ -6,7 +6,7 @@ import { CircuitBreakerService } from './circuit-breaker.service';
  * `FeatureFlagsModule` — `AiService`, `PaymentsService` and the `rag`
  * module's retrieval/ingestion services all inject `CircuitBreakerService`
  * directly, with no import of this module. The admin read/tune surface
- * lives separately in `apps/api/src/modules/resilience/`, the same
+ * lives separately in `apps/api/src/modules/supply-chain/resilience/`, the same
  * `core/*` vs `modules/*` split `feature-flags` already establishes.
  */
 @Global()

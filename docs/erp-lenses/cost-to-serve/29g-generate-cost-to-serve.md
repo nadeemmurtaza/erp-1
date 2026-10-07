@@ -17,19 +17,19 @@ docs/erp-lenses/cost-to-serve/29-cost-to-serve.md
 
 **Question:** For a single-unit sale, name every location the posting transaction reads or aggregates over besides the one that sold the unit, and state whether that count grows with the SKU's location count or stays fixed.
 
-**Grounding:** apps/api/src/modules/inventory/inventory.service.ts:220-304 (applyMovement's UPDATE ... SET stock = (SELECT SUM(quantity) FROM VariantLocationStock WHERE variantId = ...) recompute on every move()/postUnconditional() call)
+**Grounding:** apps/api/src/modules/supply-chain/inventory/inventory.service.ts:220-304 (applyMovement's UPDATE ... SET stock = (SELECT SUM(quantity) FROM VariantLocationStock WHERE variantId = ...) recompute on every move()/postUnconditional() call)
 
 ### The report that recomputes from scratch
 
 **Question:** For a figure a user can click to refresh (a trial balance, a P&L, a balance sheet), name the columns its underlying query filters or groups on, and state which of those columns has a database index today.
 
-**Grounding:** apps/api/src/modules/accounting/gl-reports.service.ts:37,74,146 (balancesAsOf groupBy on JournalLine filtered via JournalEntry.status/date); apps/api/prisma/schema/accounting.prisma:120-149,203 (JournalEntry has @@index([status]) but no index on date; JournalLine has @@index([accountId])); apps/api/src/core/settings/settings.service.ts:6 (30s cache covers only the Setting table)
+**Grounding:** apps/api/src/modules/money/accounting/gl-reports.service.ts:37,74,146 (balancesAsOf groupBy on JournalLine filtered via JournalEntry.status/date); apps/api/prisma/schema/accounting.prisma:120-149,203 (JournalEntry has @@index([status]) but no index on date; JournalLine has @@index([accountId])); apps/api/src/core/settings/settings.service.ts:6 (30s cache covers only the Setting table)
 
 ### The write that doesn't chunk
 
 **Question:** For a background job that must touch every row of a corporate-scale table (a stock count, a bulk re-price, a mass re-tag), name the number of rows it inserts or updates in its single database transaction, and state whether that number is bounded by anything other than 'how many rows currently match'.
 
-**Grounding:** apps/api/src/modules/inventory/stock-count.service.ts:92-118 (StockCountService.start() findMany's every active ProductVariant and createMany's one StockCountLine per row inside one $transaction; StockCount model has no locationId column)
+**Grounding:** apps/api/src/modules/supply-chain/inventory/stock-count.service.ts:92-118 (StockCountService.start() findMany's every active ProductVariant and createMany's one StockCountLine per row inside one $transaction; StockCount model has no locationId column)
 
 ## Absences
 

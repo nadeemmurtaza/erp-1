@@ -17,19 +17,19 @@ docs/erp-lenses/segregation-of-duties/03-segregation-of-duties.md
 
 **Question:** Name the toxic permission-key pair this feature creates (which two capabilities must never sit in one grant), and the file where that pair is checked — at role-save time or nowhere.
 
-**Grounding:** packages/shared/src/permissions.ts (PermissionDefinition has no conflictsWith field), apps/api/src/core/auth/roles.service.ts (only checks locked-permission orphaning and duplicate sets, never a pair), apps/api/src/modules/purchasing/purchasing.service.ts:242 createPurchaseOrder and :289 receiveGoods both gated by the single key purchasing.manage with no comparison of receivedById to the PO's createdById
+**Grounding:** packages/shared/src/permissions.ts (PermissionDefinition has no conflictsWith field), apps/api/src/core/auth/roles.service.ts (only checks locked-permission orphaning and duplicate sets, never a pair), apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:242 createPurchaseOrder and :289 receiveGoods both gated by the single key purchasing.manage with no comparison of receivedById to the PO's createdById
 
 ### Detected at grant or at act
 
 **Question:** For this feature's toxic pair, state which enforcement exists — a grant-time check refusing the role assignment, or an act-time check comparing the actor to a stored id — and where in the diff it lives.
 
-**Grounding:** apps/api/src/modules/payments/payments.service.ts:229 approve(actorId, paymentId) stamps approvedById but never reads order.placedById or compares to any prior actor; packages/shared/src/permissions.ts:83 payments.approve is a flat key under PermissionsGuard's pure-OR check
+**Grounding:** apps/api/src/modules/sales/payments/payments.service.ts:229 approve(actorId, paymentId) stamps approvedById but never reads order.placedById or compares to any prior actor; packages/shared/src/permissions.ts:83 payments.approve is a flat key under PermissionsGuard's pure-OR check
 
 ### Who counts the drawer they held
 
 **Question:** Name the field that would prove a different person closed and reconciled a POS shift than the one who opened it and moved its cash, and say what closeShift/zReport actually compare today.
 
-**Grounding:** apps/api/src/modules/pos/pos-shifts.service.ts:32 openShift and :72 closeShift never compare closedByUserId to shift.openedByUserId; recordCashMovement accepts any actorId; packages/shared/src/permissions.ts:77 pos.operate is one key covering open, cash movement, and close
+**Grounding:** apps/api/src/modules/sales/pos/pos-shifts.service.ts:32 openShift and :72 closeShift never compare closedByUserId to shift.openedByUserId; recordCashMovement accepts any actorId; packages/shared/src/permissions.ts:77 pos.operate is one key covering open, cash movement, and close
 
 ## Absences
 

@@ -7,7 +7,7 @@
 > (also cited below), and neither doc 18 nor doc 36 (the connectivity
 > framework `EdiTranslator` would sit on) carries a `Status:` note — both
 > are unbuilt proposals. What is real and verified: the trading-partners
-> module (`apps/api/src/modules/tradingpartners/`) already exposes
+> module (`apps/api/src/modules/supply-chain/tradingpartners/`) already exposes
 > offers, quotes and invoices to a linked `TradingPartner` through
 > ordinary DTO-validated endpoints — a real, narrower instance of "a
 > partner integrates against a stable shape, not a raw table," just
@@ -31,7 +31,7 @@ honestly rather than citing the unbuilt one as if it already shipped.
   controller returns a DTO shape, never a raw Prisma model (doc 98's own
   citation of `class-validator`-backed DTOs as the actual API contract); a
   frontend, a first-party consumer, or a linked `TradingPartner` calling
-  `apps/api/src/modules/tradingpartners/` all depend on a DTO's own stable
+  `apps/api/src/modules/supply-chain/tradingpartners/` all depend on a DTO's own stable
   field names, which can remain unchanged across an internal schema
   migration that renames or restructures the underlying table. This is
   the real, shipped instance of "stable concept over brittle structure" —
@@ -66,7 +66,7 @@ a new mechanism.
 
 - No schema or code change — verified by citation to the DTO pattern
   already enforced across every controller, including
-  `apps/api/src/modules/tradingpartners/`.
+  `apps/api/src/modules/supply-chain/tradingpartners/`.
 - This document's own corrected text draws no claim from doc 18's unbuilt
   `EdiTranslator`/`FiscalComplianceProvider` sketch.
 

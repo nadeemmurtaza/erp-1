@@ -288,10 +288,10 @@ declared (manifest) vs. running (`/meta`).
 
 `PlatformRelease.moneyOrStockPath` is set by the release author, and CI refuses
 to register a release with it `false` when the release's diff touches any of:
-`apps/api/src/modules/inventory/inventory.service.ts`,
-`apps/api/src/modules/payments/**`, `apps/api/src/modules/settlements/**`,
-`apps/api/src/modules/accounting/**`, `apps/api/src/modules/orders/orders.service.ts`,
-`apps/api/src/modules/wallet/**`, `apps/api/src/modules/purchasing/purchasing.service.ts`,
+`apps/api/src/modules/supply-chain/inventory/inventory.service.ts`,
+`apps/api/src/modules/sales/payments/**`, `apps/api/src/modules/money/settlements/**`,
+`apps/api/src/modules/money/accounting/**`, `apps/api/src/modules/sales/orders/orders.service.ts`,
+`apps/api/src/modules/sales/wallet/**`, `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts`,
 the connectors module's sink promotion path (doc 172 §8), or any migration.
 The list is data in the CI script, reviewed like code; the check can only make
 a release *more* guarded, never less.

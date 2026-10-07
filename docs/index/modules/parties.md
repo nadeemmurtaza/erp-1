@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
-Source: `apps/api/src/modules/parties/`
+Source: `apps/api/src/modules/customers/parties/`
 
 ## Files (6 · 367 lines)
 
-All paths relative to `apps/api/src/modules/parties/dto`.
+All paths relative to `apps/api/src/modules/customers/parties/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

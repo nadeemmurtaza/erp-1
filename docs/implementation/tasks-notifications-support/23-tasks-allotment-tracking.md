@@ -7,7 +7,7 @@
 > module it serves), `task-leaver.listener.ts` (on `hr.posting_ended`,
 > unclaims and surfaces — never auto-reassigns), the four permissions, and
 > a my-work list + post queue + task drawer UI with a nav entry are all
-> real, confirmed at `apps/api/src/modules/tasks/`. Three deviations from
+> real, confirmed at `apps/api/src/modules/people/tasks/`. Three deviations from
 > this document's own literal text, recorded in `tasks.prisma`'s own
 > header and ADR-049: `assigneeUserId` not `assigneeEmployeeId` (ADR-044 —
 > no `Employee` model, every actor is a `User`); `TaskStageDefinition` has

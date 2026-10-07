@@ -158,7 +158,7 @@ model Interaction {
 }
 
 /// A message pulled from a connected mailbox's IMAP inbox by the poller
-/// (modules/crm/email-inbox) — a customer's reply to an order or support
+/// (modules/customers/crm/email-inbox) — a customer's reply to an order or support
 /// email. `messageId` is unique per account, so re-polling the same message
 /// (the poller re-checks unseen mail every run, not a durable cursor) is a
 /// no-op rather than a duplicate row. Auto-linked to a Contact only when the

@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 4 files
 
 **Registry note** (`modules.registry.ts`): Off by default for EVERY deployment, always — doc 14 (commercial-licensing-agency/14-managed-services-module.md).
 
-Source: `apps/api/src/modules/managed-services/`
+Source: `apps/api/src/modules/system/managed-services/`
 
 ## Files (4 · 157 lines)
 
-All paths relative to `apps/api/src/modules/managed-services`.
+All paths relative to `apps/api/src/modules/system/managed-services`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

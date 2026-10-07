@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 114 tracked files in `packages/*`, by directory.
+All 116 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -86,7 +86,7 @@ All 114 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (54)
+### `packages/shared/src` (56)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -109,12 +109,14 @@ All 114 tracked files in `packages/*`, by directory.
 | `http-client.spec.ts` | unit test | 90 |  |
 | `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 50 |  |
+| `index.ts` | module | 51 |  |
+| `launchpad.spec.ts` | unit test | 133 |  |
+| `launchpad.ts` | module | 362 | The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launch… |
 | `markdown-suggestion.spec.ts` | unit test | 86 |  |
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 1528 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 1539 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

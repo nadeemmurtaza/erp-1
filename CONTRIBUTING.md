@@ -10,7 +10,8 @@ apps/
   api/       NestJS + Prisma + PostgreSQL — all business logic
     prisma/schema/     one .prisma file per module
     src/core/          the shared platform every module may use
-    src/modules/       feature modules — add folders here
+    src/modules/       feature modules, grouped by domain — add a folder here
+                       (see src/modules/README.md for the seven domains)
   web/       Next.js storefront + /admin back office
   mobile/    Expo app (phase 2)
 packages/
@@ -29,7 +30,9 @@ models that module owns. Do not touch another module's file. Then:
 pnpm --filter @newax/api db:migrate -- --name add_reviews
 ```
 
-**2. Its code.** Create `apps/api/src/modules/reviews/` with the usual shape:
+**2. Its code.** Pick the domain it belongs to (see
+[`apps/api/src/modules/README.md`](./apps/api/src/modules/README.md)) and create
+`apps/api/src/modules/sales/reviews/` with the usual shape:
 
 ```
 reviews/

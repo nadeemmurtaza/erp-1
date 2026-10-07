@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 
 
-Source: `apps/api/src/modules/orgstructure/`
+Source: `apps/api/src/modules/people/orgstructure/`
 
 ## Files (10 · 1,367 lines)
 
-All paths relative to `apps/api/src/modules/orgstructure/dto`.
+All paths relative to `apps/api/src/modules/people/orgstructure/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

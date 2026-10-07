@@ -10,7 +10,7 @@
 > shortfall), `EscalationCron` (climbs `Position.reportsTo`, skipping a
 > vacant post for free, respecting a ceiling and a fire count), the three
 > named permissions, and a compose/meetings/escalation-rules admin UI with
-> nav entries are all real, at `apps/api/src/modules/notify/` and
+> nav entries are all real, at `apps/api/src/modules/customers/notify/` and
 > `apps/web/src/app/(admin)/admin/(app)/notify/`. `notify` is a `core`
 > module (not off by default), matching `tasks`/`attendance`'s own
 > precedent of a broadly-useful capability rather than a sector- or

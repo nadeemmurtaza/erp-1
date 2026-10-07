@@ -13,7 +13,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (10 · 829 lines)
+## Files (10 · 870 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -24,8 +24,8 @@ All paths relative to `apps/api/src/core/common`.
 | `cost-fields.spec.ts` | unit test | 44 | — |  |
 | `cost-fields.ts` | module | 98 | 7 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
-| `all-exceptions.filter.spec.ts` | unit test | 119 | — |  |
-| `all-exceptions.filter.ts` | module | 181 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
+| `all-exceptions.filter.spec.ts` | unit test | 143 | — |  |
+| `all-exceptions.filter.ts` | module | 198 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
 | `hash-chain.spec.ts` | unit test | 59 | — |  |
 | `hash-chain.ts` | module | 83 | 7 | What a chain's first record is chained to. |
 | `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
@@ -56,7 +56,6 @@ _none_
 
 ## Reaches out to
 
-- core `common`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -70,7 +69,7 @@ check there before adding another.
 |---|---|---|
 | `aging.spec.ts` | 7 | ageMovements |
 | `cost-fields.spec.ts` | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `all-exceptions.filter.spec.ts` | 7 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · AllExceptionsFilter — a m… |
+| `all-exceptions.filter.spec.ts` | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an over-limit request bod… |
 | `hash-chain.spec.ts` | 8 | hash chain |
 
 

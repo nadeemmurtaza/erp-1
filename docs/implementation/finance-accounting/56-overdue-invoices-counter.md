@@ -1,7 +1,7 @@
 # 56 — The overdue-invoices counter
 
 > **Status (2026-09-25): built, WO-56.1–56.2.** `overdueInvoicesSummary()`
-> (`apps/api/src/modules/tradingpartners/invoice.service.ts`) is exactly
+> (`apps/api/src/modules/supply-chain/tradingpartners/invoice.service.ts`) is exactly
 > the read-time query this doc specifies, exposed at `GET
 > /admin/invoices/overdue-summary`
 > (`invoices.controller.ts`), proven by a spec computing the same

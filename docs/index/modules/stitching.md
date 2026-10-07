@@ -7,11 +7,11 @@ Pack **apparel** · enabled by the `MODULES` allowlist · 8 files
 
 
 
-Source: `apps/api/src/modules/stitching/`
+Source: `apps/api/src/modules/sales/stitching/`
 
 ## Files (8 · 2,160 lines)
 
-All paths relative to `apps/api/src/modules/stitching`.
+All paths relative to `apps/api/src/modules/sales/stitching`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

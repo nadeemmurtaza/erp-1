@@ -2,8 +2,8 @@ import { Test } from '@nestjs/testing';
 import type { TestingModule } from '@nestjs/testing';
 import { CoreModule } from '../src/core/core.module';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { AuctionModule } from '../src/modules/auction/auction.module';
-import { AuctionService } from '../src/modules/auction/auction.service';
+import { AuctionModule } from '../src/modules/sales/auction/auction.module';
+import { AuctionService } from '../src/modules/sales/auction/auction.service';
 
 /**
  * Auction app foundation (launchpad-apps/234-auction-app.md, WO-234.1),

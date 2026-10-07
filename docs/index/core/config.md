@@ -3,7 +3,7 @@
 
 # Core: `config`
 
-Shared platform — available to every module, part of no feature · 6 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/config/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 740 lines)
+## Files (7 · 753 lines)
 
 All paths relative to `apps/api/src/core/config`.
 
@@ -20,10 +20,11 @@ All paths relative to `apps/api/src/core/config`.
 |---|---|---|---|---|
 | `app-config.service.ts` | service | 72 | 1 | Typed accessor over ConfigService. |
 | `config.module.ts` | nest module | 23 | 1 |  |
+| `enabled-modules.ts` | config | 15 | 1 | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allowlist names. |
 | `env.validation.spec.ts` | unit test | 190 | — |  |
 | `env.validation.ts` | config | 400 | 3 |  |
 | `load-env.ts` | config | 14 | — |  |
-| `meta.controller.ts` | controller | 41 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
+| `meta.controller.ts` | controller | 39 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
 
 
 ## HTTP routes (1)
@@ -80,6 +81,7 @@ check there before adding another.
 |---|---|---|---|
 | `AppConfigService` | class | `app-config.service.ts:11` | Typed accessor over ConfigService. |
 | `AppConfigModule` | class | `config.module.ts:22` |  |
+| `enabledFeatureModules` | function | `enabled-modules.ts:10` | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allow… |
 | `envSchema` | const | `env.validation.ts:57` |  |
 | `Env` | type | `env.validation.ts:252` |  |
 | `validateEnv` | function | `env.validation.ts:282` |  |

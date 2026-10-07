@@ -5,10 +5,10 @@ import { ApiKeysAdminController } from '../src/core/auth/api-keys/api-keys-admin
 import { ApiKeysController } from '../src/core/auth/api-keys/api-keys.controller';
 import { AuthController } from '../src/core/auth/auth.controller';
 import { SsoAdminController } from '../src/core/auth/sso-admin.controller';
-import { OrganizationController } from '../src/modules/organization/organization.controller';
-import { PosTerminalsController } from '../src/modules/pos/pos-terminals.controller';
-import { TradingPartnersController } from '../src/modules/tradingpartners/trading-partners.controller';
-import { UsersAdminController } from '../src/modules/users/users-admin.controller';
+import { OrganizationController } from '../src/modules/people/organization/organization.controller';
+import { PosTerminalsController } from '../src/modules/sales/pos/pos-terminals.controller';
+import { TradingPartnersController } from '../src/modules/supply-chain/tradingpartners/trading-partners.controller';
+import { UsersAdminController } from '../src/modules/system/users/users-admin.controller';
 
 /**
  * Pins `@SessionOnly()` on every route that issues, rotates or installs a

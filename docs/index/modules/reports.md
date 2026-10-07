@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
-Source: `apps/api/src/modules/reports/`
+Source: `apps/api/src/modules/money/reports/`
 
 ## Files (6 · 916 lines)
 
-All paths relative to `apps/api/src/modules/reports`.
+All paths relative to `apps/api/src/modules/money/reports`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

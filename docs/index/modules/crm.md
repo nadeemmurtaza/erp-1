@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 
 
-Source: `apps/api/src/modules/crm/`
+Source: `apps/api/src/modules/customers/crm/`
 
 ## Files (26 · 3,379 lines)
 
-All paths relative to `apps/api/src/modules/crm`.
+All paths relative to `apps/api/src/modules/customers/crm`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
@@ -108,7 +108,7 @@ All paths relative to `apps/api/src/modules/crm`.
 | `Contact` | 36 | :16 |  |
 | `ContactTag` | 4 | :242 |  |
 | `FollowUpTask` | 13 | :213 |  |
-| `InboundEmail` | 17 | :168 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
+| `InboundEmail` | 17 | :168 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/customers/crm/email-inbox) — a… |
 | `InboundEmailReply` | 7 | :200 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
 | `Interaction` | 11 | :142 |  |
 | `Lead` | 21 | :101 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |

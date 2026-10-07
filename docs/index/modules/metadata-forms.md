@@ -9,11 +9,11 @@ Pack **core** · always on · 5 files
 
 **Registry note** (`modules.registry.ts`): 141-general-metadata-driven-ui-engine.md — a general metadata-driven UI engine, built by explicit owner override (ADR-026).
 
-Source: `apps/api/src/modules/metadata-forms/`
+Source: `apps/api/src/modules/merchandising/metadata-forms/`
 
 ## Files (5 · 219 lines)
 
-All paths relative to `apps/api/src/modules/metadata-forms/dto`.
+All paths relative to `apps/api/src/modules/merchandising/metadata-forms/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -8,7 +8,7 @@
 > registry), the four named permissions, and a three-screen admin UI
 > (list, raise, detail-with-reply) with a nav entry under Settings — "per
 > the request's own placement" — are all real, at
-> `apps/api/src/modules/support/` and
+> `apps/api/src/modules/customers/support/` and
 > `apps/web/src/app/(admin)/admin/(app)/support/tickets/`. A new,
 > standalone module (`support`, `core`, not off by default): nothing
 > depends on it, it depends on nothing else, matching this document's own

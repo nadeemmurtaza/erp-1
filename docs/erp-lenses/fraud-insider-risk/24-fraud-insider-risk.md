@@ -33,7 +33,7 @@ stock quietly returns to the shelf. Nothing forces a refund, a payment void,
 or even a flag that this cancellation happened against a paid order, so the
 cash the till user collected is never reconciled against the books.
 
-**Done test:** `grep -n "Payment.status\|paymentStatus\|reverseEntry" apps/api/src/modules/orders/orders.service.ts` inside `changeStatus()` returns nothing today. The PR either refuses `CANCELLED` on a paid order without an explicit reversal step, or its description names the existing screen that surfaces "cancelled and already paid" as a distinct, reviewable state.
+**Done test:** `grep -n "Payment.status\|paymentStatus\|reverseEntry" apps/api/src/modules/sales/orders/orders.service.ts` inside `changeStatus()` returns nothing today. The PR either refuses `CANCELLED` on a paid order without an explicit reversal step, or its description names the existing screen that surfaces "cancelled and already paid" as a distinct, reviewable state.
 
 **Breaks without:** At 100+ till locations a paid sale can be voided after
 the fact with the cash never returned to drawer or customer; `AuditLog`
@@ -68,7 +68,7 @@ default/MAIN location's `VariantLocationStock`, not Branch 47's — Branch
 47's shelf count stays wrong with a gap that never closes, while a location
 that lost nothing silently loses stock on the ledger instead.
 
-**Done test:** `grep -n "locationId" apps/api/src/modules/inventory/dto/inventory.dto.ts` returns no match today. The PR either adds a required `locationId` to `AdjustStockDto` and threads it through to `move()`, or its description states why every corporate write-off may legitimately post to one shared default location.
+**Done test:** `grep -n "locationId" apps/api/src/modules/supply-chain/inventory/dto/inventory.dto.ts` returns no match today. The PR either adds a required `locationId` to `AdjustStockDto` and threads it through to `move()`, or its description states why every corporate write-off may legitimately post to one shared default location.
 
 **Breaks without:** With 100+ locations, every manual write-off through the
 admin screen lands on the same single location regardless of which branch

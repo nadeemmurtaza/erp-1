@@ -36,7 +36,7 @@ exceeds Intercompany COGS by a real amount, giving `ConsolidationService`'s
 stated-but-unattempted unrealized-intercompany-profit case something to
 eventually eliminate.
 
-**Done test:** `grep -n "markup\|transferPrice\|INTERNAL_PL" apps/api/prisma/schema/transfers.prisma apps/api/src/modules/transfers/transfers.service.ts`
+**Done test:** `grep -n "markup\|transferPrice\|INTERNAL_PL" apps/api/prisma/schema/transfers.prisma apps/api/src/modules/supply-chain/transfers/transfers.service.ts`
 - today only the enum value and the doc comments exist. A passing PR adds a
 real column or policy table there and a `resolveTransferSettlement()` path
 that reads it, not a UI slider writing into `unitCost` after the fact.
@@ -115,7 +115,7 @@ sales volume, not only the rare transfer invoice; `costCentreId` is either
 wired to a real model or removed from the schema rather than left
 unfillable.
 
-**Done test:** `grep -n "retailBrandId:\|branchNodeId:\|costCentreId:" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+**Done test:** `grep -n "retailBrandId:\|branchNodeId:\|costCentreId:" apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 - today this returns only the six lines inside the transfer-invoice rule. A
 passing PR adds hits outside that block, or its own description states why
 a given rule genuinely has no owning brand or branch.

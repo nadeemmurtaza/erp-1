@@ -1,7 +1,7 @@
 # 173 — Layer 4: the resilience engine, extended — confidence-partitioned propagation, a currency-neutral cost field, and an honest count of which actions gain real data
 
 > **Status: proposed (2026-09-27), not yet built. The base engine below is
-> already built per doc 144** (`apps/api/src/modules/planning/`, ADR-066);
+> already built per doc 144** (`apps/api/src/modules/supply-chain/planning/`, ADR-066);
 > this document specifies the extension only. It changes no guarantee doc 144
 > proves: `propagate()` and `rankActions()` stay pure and deterministic, every
 > candidate stays generated from a real edge, every narrated figure stays a
@@ -161,15 +161,15 @@ equivalent that preserves meaning is `cashSpentMinor`.
 
 | # | Location | Today | After |
 |---|---|---|---|
-| 1 | `apps/api/src/modules/planning/action-ranking.ts:31` | `rupeesSpentMinor: number;` | `cashSpentMinor: number \| null;` (the `null` is §3.4, a separate work order) |
+| 1 | `apps/api/src/modules/supply-chain/planning/action-ranking.ts:31` | `rupeesSpentMinor: number;` | `cashSpentMinor: number \| null;` (the `null` is §3.4, a separate work order) |
 | 2 | `action-ranking.ts:82` | `const rupeesSpentMinor = 0;` | `const cashSpentMinor = …` (see §3.4) |
 | 3 | `action-ranking.ts:88` | `rupeesSpentMinor,` | `cashSpentMinor,` |
 | 4 | `action-ranking.ts:89` | `score: rupeesSpentMinor > 0 ? cashPreservedMinor / rupeesSpentMinor : cashPreservedMinor,` | `score: cashSpentMinor && cashSpentMinor > 0 ? … : …` per §3.4 |
 | 5 | `action-ranking.ts:104` | description: `` `… preserving ${amountMinor} paisa of cash.` `` | a structured description; the amount rendered with `formatMoney()` (`packages/shared/src/constants.ts:137`), never a unit word |
 | 6 | `action-ranking.ts:106` | `rupeesSpentMinor: 0,` | `cashSpentMinor: 0,` (delaying a payment genuinely costs nothing now) |
-| 7 | `apps/api/src/modules/planning/narration.service.ts:63` | `citations.push({ value: String(action.rupeesSpentMinor) });` | citations built from `formatMoney(action.cashSpentMinor)` — the same string the prompt shows |
+| 7 | `apps/api/src/modules/supply-chain/planning/narration.service.ts:63` | `citations.push({ value: String(action.rupeesSpentMinor) });` | citations built from `formatMoney(action.cashSpentMinor)` — the same string the prompt shows |
 | 8 | `narration.service.ts:75` | prompt line `` `${a.kind}: preserves ${a.cashPreservedMinor} paisa, costs ${a.rupeesSpentMinor} paisa` `` | `` `${a.kind}: preserves ${formatMoney(a.cashPreservedMinor)}, costs ${fmt(a.cashSpentMinor)}` `` with `fmt(null) = 'cost not modelled'` |
-| 9 | `apps/api/src/modules/planning/narration.service.spec.ts:16` | fixture `rupeesSpentMinor: 0` | `cashSpentMinor: 0` |
+| 9 | `apps/api/src/modules/supply-chain/planning/narration.service.spec.ts:16` | fixture `rupeesSpentMinor: 0` | `cashSpentMinor: 0` |
 | 10 | `narration.service.spec.ts:35`, `:42` | fixture texts "…preserves 5000 paisa" / "99999 paisa" | fixtures re-written around formatted citations; the refusal case keeps an originated figure so the spec still proves refusal |
 | 11 | `apps/web/src/app/(admin)/admin/(app)/resilience/page.tsx:33` | `rupeesSpentMinor: number;` | `cashSpentMinor: number \| null;` |
 | 12 | `resilience/page.tsx:258` | `formatMoney(a.rupeesSpentMinor)` | `a.cashSpentMinor === null ? t('costNotModelled') : formatMoney(a.cashSpentMinor)` |
@@ -439,7 +439,7 @@ reason.
   `lowestTier: 'WARNING'`.
 - No code path multiplies a quantity or amount by a confidence value — asserted
   by a spec over `propagate()`'s inputs and outputs, and by review.
-- `grep -rn "rupeesSpentMinor\|paisa" apps/api/src/modules/planning` returns
+- `grep -rn "rupeesSpentMinor\|paisa" apps/api/src/modules/supply-chain/planning` returns
   nothing after WO-173.1 except the one deprecated response alias, which is
   gone after its window.
 - A USD supplier bill contributes its AED `baseAmountMinor` share to both the

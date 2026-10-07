@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 **Registry note** (`modules.registry.ts`): tasks-notifications-support/23-tasks-allotment-tracking.md — imports no other module (event-intake goes through TaskSourceRegistry, WO-23.3); reads hr's/orgstructure's Position table directly by Pris…
 
-Source: `apps/api/src/modules/tasks/`
+Source: `apps/api/src/modules/people/tasks/`
 
 ## Files (12 · 1,509 lines)
 
-All paths relative to `apps/api/src/modules/tasks/dto`.
+All paths relative to `apps/api/src/modules/people/tasks/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

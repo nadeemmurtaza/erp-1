@@ -3,7 +3,7 @@
 
 # Schema: `trading-partners.prisma`
 
-2 models · 2 enums. Owned by the core platform.
+3 models · 3 enums. Owned by the core platform.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Offer`  <sub>`apps/api/prisma/schema/trading-partners.prisma:84`</sub>
+### `Offer`  <sub>`apps/api/prisma/schema/trading-partners.prisma:165`</sub>
 
 > A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongside the product-alerts push) — never targeted, never a coupon engine: one broadcast row, fanned out to every A…
 
@@ -35,6 +35,30 @@ against a real database.
 | `createdAt` | `DateTime` |  | @default(now()) |
 
 Indexes: `@@index([createdAt])`
+
+### `PartnerFactInbox`  <sub>`apps/api/prisma/schema/trading-partners.prisma:116`</sub>
+
+> One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-087).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tradingPartnerId` | `String` |  |  |
+| `factId` | `String` |  |  |
+| `type` | `String` |  |  |
+| `schemaVersion` | `Int` |  |  |
+| `documentRef` | `String?` | optional |  |
+| `occurredAt` | `DateTime` |  |  |
+| `payloadHash` | `String` |  |  |
+| `payload` | `Json?` | optional |  |
+| `status` | `PartnerFactStatus` |  | @default(RECEIVED) |
+| `statusReason` | `String?` | optional |  |
+| `appliedPurchaseOrderId` | `String?` | optional |  |
+| `receivedAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `partner` | `TradingPartner` | relation | @relation(fields: [tradingPartnerId], references: [id], onDelete: Restrict) |
+
+Indexes: `@@unique([tradingPartnerId, factId])` · `@@index([tradingPartnerId, receivedAt])`
 
 ### `TradingPartner`  <sub>`apps/api/prisma/schema/trading-partners.prisma:33`</sub>
 
@@ -53,15 +77,27 @@ Indexes: `@@index([createdAt])`
 | `invitedAt` | `DateTime?` | optional |  |
 | `acceptedAt` | `DateTime?` | optional |  |
 | `contactEmail` | `String?` | optional |  |
+| `inboundKeyExpiresAt` | `DateTime?` | optional |  |
+| `inboundKeyRotatedByUserId` | `String?` | optional |  |
 | `status` | `TradingPartnerStatus` |  | @default(PENDING) |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `suppliers` | `Supplier[]` |  |  |
+| `facts` | `PartnerFactInbox[]` |  |  |
 
 Indexes: `@@index([status])`
 
 
 ## Enums
+
+### `PartnerFactStatus`  <sub>`apps/api/prisma/schema/trading-partners.prisma:90`</sub>
+
+| Value | Meaning |
+|---|---|
+| `RECEIVED` |  |
+| `APPLIED` |  |
+| `NEEDS_REVIEW` |  |
+| `REJECTED` |  |
 
 ### `TradingPartnerKind`  <sub>`apps/api/prisma/schema/trading-partners.prisma:8`</sub>
 

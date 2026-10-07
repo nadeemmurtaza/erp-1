@@ -133,6 +133,14 @@ model PurchaseOrder {
   updatedAt   DateTime  @updatedAt
 
   supplier          Supplier             @relation(fields: [supplierId], references: [id])
+  /// WO-213.2 (213-partner-fact-exchange.md). The `PartnerFactInbox` row this
+  /// order was created from, when a connected partner's `sale.dispatched` fact
+  /// made it. Null means "raised by a person, or from a requisition". A bare
+  /// scalar, no `@relation`: purchasing is decoupled from `tradingpartners`
+  /// (ADR-012). UNIQUE is the point: a fact is delivered at least once, so the
+  /// second attempt to create its order must be a no-op by constraint, not by
+  /// a check that two deliveries could race past.
+  sourceFactInboxId String? @unique
   createdBy         User?                @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
   items             PurchaseOrderItem[]
   receipts          GoodsReceipt[]

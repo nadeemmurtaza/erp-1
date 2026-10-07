@@ -2,8 +2,8 @@ import { Test } from '@nestjs/testing';
 import type { TestingModule } from '@nestjs/testing';
 import { CoreModule } from '../src/core/core.module';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { AuctionModule } from '../src/modules/auction/auction.module';
-import { AuctionService } from '../src/modules/auction/auction.service';
+import { AuctionModule } from '../src/modules/sales/auction/auction.module';
+import { AuctionService } from '../src/modules/sales/auction/auction.service';
 
 /**
  * Bidding (launchpad-apps/234-auction-app.md, WO-234.2) against the real
@@ -253,7 +253,7 @@ describe('Auction bidding (e2e)', () => {
     await auctions.placeBid({ lotId, amountMinor: 100_000, idempotencyKey: key(), user: bidderUser('list-a') });
     await auctions.placeBid({ lotId, amountMinor: 105_000, idempotencyKey: key(), user: bidderUser('list-b') });
 
-    const page = await auctions.listBids(auctionId, lotId, Object.assign(new (await import('../src/modules/auction/dto/auction.dto')).BidListQueryDto(), {}));
+    const page = await auctions.listBids(auctionId, lotId, Object.assign(new (await import('../src/modules/sales/auction/dto/auction.dto')).BidListQueryDto(), {}));
     expect(page.data.map((bid) => [bid.seq, bid.alias, bid.amountMinor])).toEqual([[2, 'Bidder 2', 105_000], [1, 'Bidder 1', 100_000]]);
     expect(JSON.stringify(page)).not.toContain('e2e-bidder');
     await expect(auctions.verifyBids('no-such-auction', lotId)).rejects.toMatchObject({ status: 404 });

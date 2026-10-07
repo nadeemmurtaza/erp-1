@@ -86,6 +86,8 @@ export const ROUTES = {
 
   admin: {
     dashboard: '/admin',
+    /** The launchpad (launchpad-apps/232-launchpad-and-app-manifest.md). */
+    launchpad: '/admin/launchpad',
     account: '/admin/account',
     /** Your own personal API keys (163-personal-api-keys.md). */
     accountApiKeys: '/admin/account/api-keys',

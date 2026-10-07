@@ -3,12 +3,12 @@
 
 # Files — root
 
-All 219 tracked files in `repository root files`, by directory.
+All 214 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (22)
+### `.` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -18,22 +18,17 @@ All 219 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
-| `check_output.txt` | txt | — |  |
 | `CLAUDE.md` | doc | 866 |  |
-| `CONTRIBUTING.md` | doc | 127 |  |
+| `CONTRIBUTING.md` | doc | 130 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
-| `fix-all.js` | script | 15 | Get all files from git grep |
-| `fix-db.js` | script | 15 |  |
-| `fix.js` | script | 9 | Use regex to remove duplicate users block |
 | `GEMINI.md` | doc | 81 |  |
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
 | `PRD.md` | doc | 185 |  |
-| `raw_output.txt` | txt | — |  |
-| `README.md` | doc | 349 |  |
+| `README.md` | doc | 213 |  |
 | `Rules.md` | doc | 30 |  |
-| `yaseen-backup-before-reset.sql` | sql | 5870 |  |
+| `START-HERE.md` | doc | 107 |  |
 
 ### `.claude` (2)
 
@@ -46,7 +41,7 @@ All 219 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `architect.md` | doc | 48 |  |
+| `architect.md` | doc | 49 |  |
 | `debug.md` | doc | 38 |  |
 | `feature.md` | doc | 45 |  |
 | `implement.md` | doc | 37 |  |
@@ -69,7 +64,7 @@ All 219 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `configuration.md` | doc | 20 |  |
 | `database.md` | doc | 19 |  |
-| `decisions.md` | doc | 26 |  |
+| `decisions.md` | doc | 28 |  |
 | `dependencies.md` | doc | 23 |  |
 | `design.md` | doc | 179 |  |
 | `performance.md` | doc | 42 |  |

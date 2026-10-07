@@ -16,7 +16,7 @@ by default; what survives below survived that.
 
 **Question:** Name the field, on which model, that records who currently has physical custody of one specific device or vehicle, and what happens to that field when the holder leaves or the device moves branches.
 
-**Verified against:** PosTerminal (pos.prisma:27-46) has no custodianUserId/assignment history; grep for AuditService across apps/api/src/modules/pos hits only pos-receipts.service.ts, not the five files that touch PosTerminal — verified.
+**Verified against:** PosTerminal (pos.prisma:27-46) has no custodianUserId/assignment history; grep for AuditService across apps/api/src/modules/sales/pos hits only pos-receipts.service.ts, not the five files that touch PosTerminal — verified.
 
 ### Downtime that outranks the sale  — strong
 

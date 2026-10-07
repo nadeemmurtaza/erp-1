@@ -4,7 +4,7 @@
 > "prevent overselling during rush hours." Investigated first: overselling is
 > **already structurally impossible** in this codebase, at any traffic volume,
 > via the predicate-on-write idiom already in `InventoryService.applyMovement()`
-> (`apps/api/src/modules/inventory/inventory.service.ts:236`, House Rule 10).
+> (`apps/api/src/modules/supply-chain/inventory/inventory.service.ts:236`, House Rule 10).
 > This document does not touch that guarantee and does not duplicate it. What
 > a real traffic rush on one hot SKU actually threatens is different: checkout
 > **UX** (most bidders lose at the payment step instead of before it) and

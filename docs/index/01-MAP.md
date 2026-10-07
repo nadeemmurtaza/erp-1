@@ -32,17 +32,17 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,233 | 170,076 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 571 | 102,775 | Next.js — admin console and customer storefront in one app |
-| `docs` | 463 | 96,808 | documents of record — implementation plans, house rules, brand |
-| `(root)` | 42 | 29,286 | workspace manifests, docker compose/stack files, env templates |
+| `apps/api` | 1,257 | 173,429 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 578 | 103,398 | Next.js — admin console and customer storefront in one app |
+| `docs` | 555 | 97,804 | documents of record — implementation plans, house rules, brand |
+| `(root)` | 37 | 23,355 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
-| `scripts` | 30 | 11,696 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 75 | 9,544 | brand, money, permissions, measurements, entities |
-| `apps/mobile` | 49 | 6,906 | Expo — customer mobile app |
+| `scripts` | 30 | 11,756 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 77 | 10,051 | brand, money, permissions, measurements, entities |
+| `apps/mobile` | 50 | 6,942 | Expo — customer mobile app |
 | `packages/desktop-runtime` | 21 | 2,891 |  |
 | `apps/pos` | 33 | 2,671 | Next.js PWA — offline-first point of sale |
-| `.claude` | 28 | 1,889 |  |
+| `.claude` | 28 | 1,892 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `.github` | 3 | 375 | CI and deployment workflows |
@@ -121,7 +121,7 @@ Each is independent: no module imports another except through a named
 | [`tasks`](modules/tasks.md) | core | MODULES allowlist | 11 | 3 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
 | [`tracking`](modules/tracking.md) | core | MODULES allowlist | 1 | — |
-| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 19 | — |
+| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 20 | — |
 | [`transfers`](modules/transfers.md) | core | MODULES allowlist | 5 | 5 |
 | [`users`](modules/users.md) | core | always on | 8 | — |
 | [`wallet`](modules/wallet.md) | core | MODULES allowlist | 17 | 4 |
@@ -143,7 +143,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`cache`](core/cache.md) | 4 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 10 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
-| [`config`](core/config.md) | 6 |  |
+| [`config`](core/config.md) | 7 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | [`extension-points`](core/extension-points.md) | 11 |  |
@@ -152,6 +152,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`health`](core/health.md) | 3 |  |
 | [`idempotency`](core/idempotency.md) | 7 |  |
 | [`intent`](core/intent.md) | 4 |  |
+| [`launchpad`](core/launchpad.md) | 5 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
@@ -176,7 +177,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | Module allowlist | `apps/api/src/modules/modules.registry.ts` | `MODULES` env decides what boots |
 | Web middleware | `apps/web/src/middleware.ts` | locale routing + admin auth redirect |
 | Admin shell | `apps/web/src/components/admin/admin-shell.tsx` | sidebar, command palette |
-| Admin nav | `apps/web/src/components/admin/nav-registry.ts` | sidebar order — 0 entries |
+| Admin nav | `apps/web/src/components/admin/nav-registry.ts` | sidebar order — 1 entries |
 | Prisma datasource | `apps/api/prisma/schema/schema.prisma` | generator + datasource only |
 | Seed | `apps/api/prisma/seed.ts` | permissions, roles, demo data |
 | Brand tokens | `packages/shared/src/brand.ts` | House Rule 1 — no literal anywhere else |

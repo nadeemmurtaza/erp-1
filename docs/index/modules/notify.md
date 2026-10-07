@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 **Registry note** (`modules.registry.ts`): tasks-notifications-support/24-internal-notifications-meetings-escalation.md — imports no other module (reads hr's/orgstructure's/tasks's own tables directly by Prisma query), same no-dependency-on-e…
 
-Source: `apps/api/src/modules/notify/`
+Source: `apps/api/src/modules/customers/notify/`
 
 ## Files (20 · 1,972 lines)
 
-All paths relative to `apps/api/src/modules/notify`.
+All paths relative to `apps/api/src/modules/customers/notify`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

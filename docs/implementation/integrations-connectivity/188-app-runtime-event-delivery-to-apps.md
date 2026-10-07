@@ -72,7 +72,7 @@ business tx ── EventBusService.publish(name, payload, tx) ──▶ OutboxEv
 **Stage 1 — fan-out, inside the outbox's own guarantee.**
 `OutboxFanOutListener` (`apps/api/src/core/events/outbox-fan-out.listener.ts`)
 subscribes with `EventEmitter2.onAny()`, exactly as `TaskEventIntakeService`
-(`modules/tasks/task-event-intake.service.ts`) already does, for the same
+(`modules/people/tasks/task-event-intake.service.ts`) already does, for the same
 reason that file gives: the event names are not known at compile time.
 `EventBusService.dispatch()` is the only `emitAsync()` call site, so it sees
 only real outbox events. For each event it asks
@@ -312,7 +312,7 @@ X-Newax-Signature: t=1759054443,v1=<hex HMAC-SHA256(secret, "1759054443." + rawB
 The signature is the construction `NidVerificationProvider`'s
 `verifySignature()` already checks **inbound** — HMAC-SHA256 over
 `${timestamp}.${rawBody}`, hex, compared with `timingSafeEqual`
-(`modules/identity-verification/providers/nid.provider.ts:166–175`) —
+(`modules/system/identity-verification/providers/nid.provider.ts:166–175`) —
 applied outbound. `t` is the send time of **this attempt**, so a retry is
 freshly signed and a receiver's 5-minute freshness window rejects captured
 replays. During a webhook-secret rotation (doc 189 §2.3), both the old and

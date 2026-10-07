@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
-Source: `apps/api/src/modules/wishlist/`
+Source: `apps/api/src/modules/sales/wishlist/`
 
 ## Files (6 · 387 lines)
 
-All paths relative to `apps/api/src/modules/wishlist`.
+All paths relative to `apps/api/src/modules/sales/wishlist`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

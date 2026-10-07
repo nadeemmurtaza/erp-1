@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
-Source: `apps/api/src/modules/search/`
+Source: `apps/api/src/modules/merchandising/search/`
 
 ## Files (9 · 1,066 lines)
 
-All paths relative to `apps/api/src/modules/search/dto`.
+All paths relative to `apps/api/src/modules/merchandising/search/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

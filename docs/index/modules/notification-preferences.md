@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 3 files
 
 
 
-Source: `apps/api/src/modules/notification-preferences/`
+Source: `apps/api/src/modules/customers/notification-preferences/`
 
 ## Files (3 · 78 lines)
 
-All paths relative to `apps/api/src/modules/notification-preferences/dto`.
+All paths relative to `apps/api/src/modules/customers/notification-preferences/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -17,7 +17,7 @@ docs/erp-lenses/automation-and-ai-surface/32-automation-and-ai-surface.md
 
 **Question:** For this feature's non-human caller (service account, scheduled job, or connected partner's key), which exact PermissionKey values does it carry, and where in the request path is that list checked?
 
-**Grounding:** apps/api/src/modules/tradingpartners/trading-partner-portal.controller.ts (every route @Public(), verifies via verifyInboundKey in trading-partners.service.ts:137); PosTerminal.deviceKeyHash and Node.inboundApiKeyHash as two more independent hash-a-key patterns; packages/shared/src/permissions.ts PermissionKey catalogue; decorators.ts RequirePermission/PermissionsGuard never invoked on the machine-caller path.
+**Grounding:** apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts (every route @Public(), verifies via verifyInboundKey in trading-partners.service.ts:137); PosTerminal.deviceKeyHash and Node.inboundApiKeyHash as two more independent hash-a-key patterns; packages/shared/src/permissions.ts PermissionKey catalogue; decorators.ts RequirePermission/PermissionsGuard never invoked on the machine-caller path.
 
 ### Quota has no owner
 

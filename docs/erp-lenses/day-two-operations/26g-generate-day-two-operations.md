@@ -23,7 +23,7 @@ docs/erp-lenses/24-day-two-operations.md
 
 **Question:** Name the timestamp this feature relies on to say "still alive" (a lastSeenAt, a replication cursor, a heartbeat), and the piece of code that compares it to now and decides "stale" — not just that the column is written.
 
-**Grounding:** apps/api/src/core/replication/node-credential.service.ts:33 (Node.lastSeenAt touched fire-and-forget, no reader); apps/api/src/modules/pos/pos-terminals.service.ts:91 (PosTerminal.lastSeenAt same pattern); ReplicationCursor in replication.prisma has no lag computation anywhere
+**Grounding:** apps/api/src/core/replication/node-credential.service.ts:33 (Node.lastSeenAt touched fire-and-forget, no reader); apps/api/src/modules/sales/pos/pos-terminals.service.ts:91 (PosTerminal.lastSeenAt same pattern); ReplicationCursor in replication.prisma has no lag computation anywhere
 
 ### The operator's second door
 

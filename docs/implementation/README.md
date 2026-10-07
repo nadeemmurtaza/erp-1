@@ -549,6 +549,7 @@ with no automated check covering the gap:
 | File | What it is |
 |---|---|
 | [`212-role-scope-enforcement-gap.md`](./access-control-identity/212-role-scope-enforcement-gap.md) | **Investigated, nothing built.** `Role`/`UserRoleAssignment` carry no company or department scope by design — that's `scope.guard.ts`'s job. Confirmed by grep: `assertCanManageAtScope`/`scopeFilterFor` have exactly one production caller (`organization.service.ts`); `orgUnitScopeFilterFor` has zero, only its own spec. `check-route-permissions.mjs` verifies a permission decorator exists, not that a handler also scopes its query — a route can pass lint while being exposed to exactly the cross-company/cross-department access the owner asked about. Proposes a new `check-route-scoping.mjs` static check, same enforcement class as `check-module-boundaries.mjs`; no code built in this pass. ADR-081 |
+| [`213-partner-fact-exchange.md`](./integrations-connectivity/213-partner-fact-exchange.md) | **WO-213.1 (inbox and inbound endpoint) and WO-213.2 (buyer applier) built; the rest planned.** Partners exchange compact data facts (`sale.dispatched`, `receipt.confirmed`), not documents: the seller's price becomes the buyer's cost, stock moves on both sides from one entry, and each side generates its own PO, receipt and bill with its own numbering. Verified gaps it closes: the WO-18.2 inbound endpoint was never built, outbound push has no retry, and a partner sale posts nothing to the ledger. Exact parameters and all 27 scope lenses inside. ADR-087 |
 
 ## Dependency order
 

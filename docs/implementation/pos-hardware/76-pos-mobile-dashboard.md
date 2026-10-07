@@ -2,7 +2,7 @@
 
 "Low Stock counters broken down by specific product variants," "Total
 Customers," and "Daily Sales" are each already computed today —
-`AnalyticsService.summary()` (`apps/api/src/modules/analytics/
+`AnalyticsService.summary()` (`apps/api/src/modules/money/analytics/
 analytics.service.ts`) already returns `lowStockVariants`, `totalCustomers`,
 and `today`'s sales figure in one call, and `ProductLowStock`/
 `ProductReorderPointReached` (`inventory.service.ts`,
@@ -15,7 +15,7 @@ the separate admin web app. This document is the missing screen, not a
 new data source.
 
 > **Status (2026-09-27): built, WO-76.1–76.3.** `PosDashboardService.summary
-> (locationId)` (`apps/api/src/modules/pos/pos-dashboard.service.ts`)
+> (locationId)` (`apps/api/src/modules/sales/pos/pos-dashboard.service.ts`)
 > delegates to the same facts `AnalyticsService.summary()` already
 > aggregates (`Order`, `Contact`, `VariantLocationStock`/`ProductVariant`)
 > — no new aggregation logic, only a location-scoped read: `dailySales` is

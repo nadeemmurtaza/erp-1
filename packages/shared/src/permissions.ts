@@ -46,6 +46,14 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   { key: 'analytics.view', label: 'View dashboard analytics', category: 'Dashboard', sensitivity: 'low' },
   { key: 'reports.view', label: 'Export CSV reports', category: 'Dashboard', sensitivity: 'low' },
   {
+    // launchpad-apps/232 §6/§13 — switch a launchpad app off (or back on) for the
+    // whole tenant. Hides tiles only: grants no data access and removes no module.
+    key: 'launchpad.manage',
+    label: 'Switch launchpad apps on or off for the whole organization',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
     key: 'organization.view',
     label: 'View the organization/brand/branch dashboard',
     category: 'Dashboard',
@@ -1194,6 +1202,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'settings.fragments.manage',
       'settings.metadata-forms.manage',
       'settings.bpmn-workflows.manage',
+      'launchpad.manage',
       'roles.manage_permissions',
       'users.manage',
       'audit.view',
@@ -1424,6 +1433,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'settings.custom-fields.manage',
     'settings.embeds.manage',
     'settings.fragments.manage',
+    // launchpad-apps/232 — tenant-wide app on/off; ADMIN only.
+    'launchpad.manage',
     'settings.metadata-forms.manage',
     'settings.bpmn-workflows.manage',
     'roles.manage_permissions',

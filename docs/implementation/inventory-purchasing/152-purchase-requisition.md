@@ -3,7 +3,7 @@
 > **Status: shipped (2026-09-25), WO-152.1–152.4.** `PurchaseRequisition`/
 > `RequisitionLine` exist (`apps/api/prisma/schema/purchasing.prisma`),
 > served by `RequisitionService`/`RequisitionController`
-> (`apps/api/src/modules/purchasing/requisition.{service,controller}.ts`),
+> (`apps/api/src/modules/supply-chain/purchasing/requisition.{service,controller}.ts`),
 > with UI at `/admin/requisitions`, `/admin/requisitions/new` and
 > `/admin/requisitions/[id]`. Two deviations from this doc's own sketch,
 > both because the "existing" mechanisms it names to reuse did not exist

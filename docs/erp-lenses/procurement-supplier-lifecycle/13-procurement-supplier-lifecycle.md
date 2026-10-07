@@ -36,7 +36,7 @@ three-way match comparing the bill against the PO line and the summed
 and a named exception status (e.g. `PENDING_MATCH_REVIEW`) with its own
 permission to release outside it.
 
-**Done test:** `grep -n "GoodsReceiptItem\|po.total" apps/api/src/modules/purchasing/purchasing.service.ts`
+**Done test:** `grep -n "GoodsReceiptItem\|po.total" apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts`
 inside `createSupplierBill` — today zero hits (the only tolerance hit in the
 file is inside `receiveGoods`, a different method gating a different
 comparison). The PR must add a match record or `MatchException`-shaped table
@@ -70,7 +70,7 @@ PO form. Complete capability: a spend-ceiling field on `PurchaseOrder` or
 above it, and a maker-checker record naming who raised versus who approved
 each step for one PO/bill pair.
 
-**Done test:** `grep -c "RequirePermission('purchasing.manage')" apps/api/src/modules/purchasing/purchasing.controller.ts`
+**Done test:** `grep -c "RequirePermission('purchasing.manage')" apps/api/src/modules/supply-chain/purchasing/purchasing.controller.ts`
 — today 9 (2 read endpoints per controller plus the 5 write moments at
 :96, :103, :110, :137, :144), with no amount branch anywhere in the file. The
 PR must add a per-step key or a threshold-gated second permission with a

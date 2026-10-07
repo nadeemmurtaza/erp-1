@@ -55,6 +55,30 @@ describe('AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compres
     expect(response.setHeader).not.toHaveBeenCalled();
     expect(response.json.mock.calls[0][0]).not.toHaveProperty('retryAfterSeconds');
   });
+
+  describe('an over-limit request body', () => {
+    it('is a 413 the caller can act on, not a 500', () => {
+      const tooLarge = Object.assign(new Error('request entity too large'), { type: 'entity.too.large', status: 413 });
+
+      new AllExceptionsFilter().catch(tooLarge, host);
+
+      expect(response.status).toHaveBeenCalledWith(HttpStatus.PAYLOAD_TOO_LARGE);
+      expect(response.json).toHaveBeenCalledWith(
+        expect.objectContaining({ statusCode: 413, error: 'PAYLOAD_TOO_LARGE', message: 'The request body is too large.' }),
+      );
+    });
+
+    it('does not turn an ordinary unknown error into anything but a generic 500', () => {
+      jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
+
+      new AllExceptionsFilter().catch(new Error('boom'), host);
+
+      expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
+      expect(response.json).toHaveBeenCalledWith(
+        expect.objectContaining({ message: 'Something went wrong. Please try again.' }),
+      );
+    });
+  });
 });
 
 describe('AllExceptionsFilter — a machine-readable reason', () => {

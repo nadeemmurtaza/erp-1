@@ -17,7 +17,7 @@ docs/erp-lenses/migration-cutover-restatement/27-migration-cutover-restatement.m
 
 **Question:** Name the domain event, the posting-rule subscriber, and the `source` string that will carry the client's opening trial balance into `AccountingService.postEntry()` — and which `FiscalPeriod` it targets given that period is created, not inferred, for a historic year.
 
-**Grounding:** apps/api/src/modules/accounting/accounting.service.ts (postEntry, reverseEntry, resolveOpenPeriod), posting-rules.subscriber.ts (only production caller besides FiscalPeriodsService.closeFiscalYear), fiscal-periods.service.ts (createFiscalPeriod)
+**Grounding:** apps/api/src/modules/money/accounting/accounting.service.ts (postEntry, reverseEntry, resolveOpenPeriod), posting-rules.subscriber.ts (only production caller besides FiscalPeriodsService.closeFiscalYear), fiscal-periods.service.ts (createFiscalPeriod)
 
 ### The crosswalk that doesn't exist
 
@@ -29,7 +29,7 @@ docs/erp-lenses/migration-cutover-restatement/27-migration-cutover-restatement.m
 
 **Question:** When posted history from before cutover turns out to be wrong, name what marks the correcting entry as a restatement, and how a report or auditor tells it apart from an ordinary payment.refunded reversal filed the same week.
 
-**Grounding:** apps/api/src/modules/accounting/accounting.service.ts:102-156 (reverseEntry copies source/sourceRef verbatim, dates to now, posts via resolveOpenPeriod(now)); JournalEntry model comment in accounting.prisma:115-119
+**Grounding:** apps/api/src/modules/money/accounting/accounting.service.ts:102-156 (reverseEntry copies source/sourceRef verbatim, dates to now, posts via resolveOpenPeriod(now)); JournalEntry model comment in accounting.prisma:115-119
 
 ## Absences
 

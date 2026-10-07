@@ -7,11 +7,11 @@ Pack **core** · always on · 4 files
 
 
 
-Source: `apps/api/src/modules/addresses/`
+Source: `apps/api/src/modules/sales/addresses/`
 
 ## Files (4 · 259 lines)
 
-All paths relative to `apps/api/src/modules/addresses`.
+All paths relative to `apps/api/src/modules/sales/addresses`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

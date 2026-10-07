@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,747** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,868** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,233 | 170,076 | [files/api.md](../files/api.md) |
-| apps/web | 571 | 102,775 | [files/web.md](../files/web.md) |
+| apps/api | 1,257 | 173,429 | [files/api.md](../files/api.md) |
+| apps/web | 578 | 103,398 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
-| apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 114 | 13,218 | [files/packages.md](../files/packages.md) |
-| docs/* | 463 | 96,808 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 65 | 33,452 | [files/infra.md](../files/infra.md) |
-| repository root files | 219 | 22,119 | [files/root.md](../files/root.md) |
+| apps/mobile | 50 | 6,942 | [files/mobile.md](../files/mobile.md) |
+| packages/* | 116 | 13,725 | [files/packages.md](../files/packages.md) |
+| docs/* | 555 | 97,804 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 65 | 33,516 | [files/infra.md](../files/infra.md) |
+| repository root files | 214 | 16,187 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,20 +28,20 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 494 |
-| unit test | 379 |
-| page | 233 |
-| service | 216 |
-| module | 201 |
-| component | 201 |
-| controller | 155 |
-| dto | 136 |
-| migration | 125 |
-| nest module | 106 |
+| doc | 589 |
+| unit test | 390 |
+| page | 234 |
+| service | 219 |
+| component | 206 |
+| module | 203 |
+| controller | 156 |
+| dto | 138 |
+| migration | 128 |
+| nest module | 107 |
 | prisma schema | 66 |
-| script | 49 |
+| script | 46 |
 | utility | 44 |
-| event subscriber | 36 |
+| event subscriber | 38 |
 | scheduled job | 35 |
 | json | 31 |
 | e2e test | 30 |
@@ -52,7 +52,7 @@ name a new file: the convention is what makes it findable.
 | file | 13 |
 | yaml | 12 |
 | registry | 12 |
-| config | 11 |
+| config | 12 |
 | guard | 9 |
 | constants | 8 |
 | layout | 6 |
@@ -69,13 +69,12 @@ name a new file: the convention is what makes it findable.
 | global-error | 2 |
 | stylesheet | 2 |
 | route handler | 2 |
-| txt | 2 |
-| sql | 2 |
 | mdc | 1 |
 | auth strategy | 1 |
 | dispatcher | 1 |
 | agent | 1 |
 | mts | 1 |
+| sql | 1 |
 | py | 1 |
 
 

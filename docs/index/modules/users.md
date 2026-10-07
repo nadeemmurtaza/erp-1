@@ -7,11 +7,11 @@ Pack **core** · always on · 8 files
 
 
 
-Source: `apps/api/src/modules/users/`
+Source: `apps/api/src/modules/system/users/`
 
 ## Files (8 · 1,210 lines)
 
-All paths relative to `apps/api/src/modules/users/dto`.
+All paths relative to `apps/api/src/modules/system/users/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

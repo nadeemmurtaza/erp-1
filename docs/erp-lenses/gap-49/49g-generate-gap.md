@@ -17,7 +17,7 @@ docs/erp-lenses/gap-49/49-gap-financial-close-as-a-managed-process-not.md
 
 **Question:** Before FiscalPeriodsService.lockPeriod() is allowed to run, what is the row — task name, the branch or department it belongs to, a completedAt/completedByUserId pair — that a close-task list must show as all-complete, and where does lockPeriod() or closePeriod() query it?
 
-**Grounding:** apps/api/src/modules/accounting/fiscal-periods.service.ts closePeriod() (line 89) and lockPeriod() (line 109) check only FiscalPeriod.status transitions and nothing else; no Task/CloseTask/Checklist model exists in apps/api/prisma/schema/*.prisma.
+**Grounding:** apps/api/src/modules/money/accounting/fiscal-periods.service.ts closePeriod() (line 89) and lockPeriod() (line 109) check only FiscalPeriod.status transitions and nothing else; no Task/CloseTask/Checklist model exists in apps/api/prisma/schema/*.prisma.
 
 ### One lock, every brand at once
 

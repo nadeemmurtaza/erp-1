@@ -17,7 +17,7 @@ docs/erp-lenses/gap-51/51-gap-the-approval-that-stalls-without-a-leave.md
 
 **Question:** For a pending approval step assigned to a still-active user, name the timestamp marking clock start, the cron/interval job scanning for aged steps, and the Settings key holding the threshold per document type.
 
-**Citations:** MarketingAutomationCron (apps/api/src/modules/marketing/marketing-automation.cron.ts, @Cron('0 3 * * *')) verified as the only idle-timer precedent; grep confirms no model Approval/ApprovalStep/PENDING_APPROVAL anywhere in .prisma
+**Citations:** MarketingAutomationCron (apps/api/src/modules/merchandising/marketing/marketing-automation.cron.ts, @Cron('0 3 * * *')) verified as the only idle-timer precedent; grep confirms no model Approval/ApprovalStep/PENDING_APPROVAL anywhere in .prisma
 
 **Strength:** strong
 

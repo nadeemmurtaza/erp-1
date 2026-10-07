@@ -49,7 +49,7 @@ for real call sites, excluding the guard's own definition and its spec:
 
 | Function | Production callers | Where |
 |---|---|---|
-| `assertCanManageAtScope` / `scopeFilterFor` | **1 file** | `modules/organization/organization.service.ts` — `listBrands`, `listNodes`, `getBrandPolicy`, `setBrandPolicy`, `listPolicyQuarantine` |
+| `assertCanManageAtScope` / `scopeFilterFor` | **1 file** | `modules/people/organization/organization.service.ts` — `listBrands`, `listNodes`, `getBrandPolicy`, `setBrandPolicy`, `listPolicyQuarantine` |
 | `orgUnitScopeFilterFor` | **0 files** | Referenced only in its own `scope.guard.spec.ts` |
 
 Doc 16's own status blockquote already said this plainly for the

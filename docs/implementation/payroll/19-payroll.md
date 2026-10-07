@@ -329,7 +329,7 @@ not modifying an existing code:
 `ROLE_PERMISSION_SEED`: `payroll.view_own` on `STAFF`/`TAILOR`/`ADMIN`;
 `payroll.view` + `payroll.manage` on `ADMIN` only.
 
-**Module**: `apps/api/src/modules/payroll/payroll.module.ts` (empty
+**Module**: `apps/api/src/modules/people/payroll/payroll.module.ts` (empty
 providers array until WO-19.2), registered in `modules.registry.ts` with
 no `offByDefault`. `MODULES` env templates gain `payroll` in the base
 list (same tier as `finance`, `bom`), not under `# Available:`.

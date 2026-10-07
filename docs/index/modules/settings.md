@@ -9,11 +9,11 @@ Pack **core** · always on · 5 files
 
 **Registry note** (`modules.registry.ts`): Account administration — not togglable business features.
 
-Source: `apps/api/src/modules/settings/`
+Source: `apps/api/src/modules/system/settings/`
 
 ## Files (5 · 472 lines)
 
-All paths relative to `apps/api/src/modules/settings/dto`.
+All paths relative to `apps/api/src/modules/system/settings/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

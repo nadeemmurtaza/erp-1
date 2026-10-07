@@ -6,7 +6,7 @@ stockrooms" describes, exactly, `CLAUDE.md`'s own standing rule: **"One
 writer per invariant. Stock moves through `InventoryService.move()` and
 nothing else."** Doc 68's own research (this same batch) already traced
 the POS sale path directly: `OrdersService.createFromPos()`
-(`apps/api/src/modules/orders/orders.service.ts`, lines 495-509) calls
+(`apps/api/src/modules/sales/orders/orders.service.ts`, lines 495-509) calls
 `this.inventory.postUnconditional(...)` **inside the same transaction**
 that creates the order, for every line item, the instant a till sale is
 rung up — not a queued job, not an eventual-consistency batch, a

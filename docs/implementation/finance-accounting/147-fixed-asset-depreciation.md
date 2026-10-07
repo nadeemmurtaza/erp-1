@@ -14,7 +14,7 @@ that separately-scoped capability doc 79 already deferred.
 > cross-file Prisma relations are one schema regardless of file, unlike the
 > app-code import the module-boundary checker actually polices).
 > `AssetDepreciationService`/`Controller`/`Cron`
-> (`apps/api/src/modules/accounting/`) read and write `Asset` by its bare
+> (`apps/api/src/modules/money/accounting/`) read and write `Asset` by its bare
 > Prisma model, never by importing `hr`'s `AssetsService` — `accounting`
 > still imports no other module, the same "core data, no module import"
 > shape `PostingRulesSubscriber` already established for `Order`.

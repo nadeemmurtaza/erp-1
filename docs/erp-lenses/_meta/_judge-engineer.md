@@ -17,14 +17,14 @@ fidelity. Line numbers are from the worktree at the time of judging.
 |---|---|---|
 | `PERMISSION_CATALOG` | `packages/shared/src/permissions.ts:45` | true |
 | `PermissionsGuard` (not `PermissionGuard`) | `apps/api/src/core/auth/guards.ts:80` | true — and CLAUDE.md's own line 99 spells it wrong |
-| `InventoryService.defaultLocationId()` | `apps/api/src/modules/inventory/inventory.service.ts:166` | true |
-| `adjust()` resolves `defaultLocationId()` | `apps/api/src/modules/inventory/inventory.controller.ts:41,51` | true — it is the controller's `adjust()`, and it then calls `inventory.move()` |
-| `findPostedEntry(source, sourceRef)` | `apps/api/src/modules/accounting/accounting.service.ts:176` | true, exact signature |
+| `InventoryService.defaultLocationId()` | `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:166` | true |
+| `adjust()` resolves `defaultLocationId()` | `apps/api/src/modules/supply-chain/inventory/inventory.controller.ts:41,51` | true — it is the controller's `adjust()`, and it then calls `inventory.move()` |
+| `findPostedEntry(source, sourceRef)` | `apps/api/src/modules/money/accounting/accounting.service.ts:176` | true, exact signature |
 | The five `JournalLine` dimension columns | `apps/api/prisma/schema/accounting.prisma:162` | true — `organizationId`, `retailBrandId`, `branchNodeId`, `costCentreId`, `counterpartyBrandId` all present |
-| Thirteen-account chart | `apps/api/src/modules/accounting/chart-of-accounts.ts` | true — exactly 13 entries |
+| Thirteen-account chart | `apps/api/src/modules/money/accounting/chart-of-accounts.ts` | true — exactly 13 entries |
 | `FiscalPeriod` status `CLOSED`/`LOCKED`, and no brand column | `accounting.prisma:80-84, 91` | true on both |
 | `reverseEntry()` dates at `now` and resolves the period from it | `accounting.service.ts:102,113-114` | true — `const now = new Date(); const period = await this.resolveOpenPeriod(now);` |
-| `OrdersAdminController` has one class-level `@RequirePermission('orders.manage')` | `apps/api/src/modules/orders/orders.controller.ts:85-88` | true, verbatim |
+| `OrdersAdminController` has one class-level `@RequirePermission('orders.manage')` | `apps/api/src/modules/sales/orders/orders.controller.ts:85-88` | true, verbatim |
 | `RolesService.create` / `.update` | `apps/api/src/core/auth/roles.service.ts:60, 91` | true, both exist |
 | `ROLE_PERMISSION_SEED` vs a bare `Permission` row | `apps/api/prisma/seed.ts:7,100,116` | true |
 | `User` has no link to `Party` | `core.prisma` `model User` | true — no party field |

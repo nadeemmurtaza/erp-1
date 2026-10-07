@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 571 tracked files in `apps/web`, by directory.
+All 578 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -629,6 +629,12 @@ All 571 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 119 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/launchpad` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 10 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads` (1)
 
@@ -1492,7 +1498,7 @@ All 571 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 529 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1212 |  |
+| `nav-registry.ts` | component | 1221 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1614 |  |
@@ -1577,6 +1583,17 @@ All 571 tracked files in `apps/web`, by directory.
 | `metric-card.tsx` | component | 144 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
+
+### `apps/web/src/components/admin/launchpad` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app-icons.ts` | component | 35 |  |
+| `app-tile.tsx` | component | 39 |  |
+| `launchpad-screen.tsx` | component | 176 |  |
+| `launchpad.spec.ts` | unit test | 147 |  |
+| `launchpad.ts` | component | 121 |  |
+| `manage-apps.tsx` | component | 84 |  |
 
 ### `apps/web/src/components/admin/marketing` (1)
 
@@ -1754,7 +1771,7 @@ All 571 tracked files in `apps/web`, by directory.
 | `order-transitions.ts` | constants | 19 | Which status a staff member may move an order to next. |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 321 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 323 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 69 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (15)

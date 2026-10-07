@@ -46,7 +46,7 @@ export function Disclosure({
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={id}
-        className="inline-flex items-center gap-1.5 rounded py-1 text-sm font-medium text-neutral-900/70 transition-colors hover:text-neutral-900"
+        className="inline-flex min-h-touch items-center gap-1.5 rounded py-1 text-sm font-medium text-neutral-900/70 transition-colors hover:text-neutral-900 fold:min-h-0"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

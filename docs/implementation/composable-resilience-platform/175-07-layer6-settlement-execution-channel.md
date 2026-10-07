@@ -2,9 +2,9 @@
 
 > **Status: proposed (2026-09-27), not yet built.** Both extension points this
 > layer needs already exist: `PaymentProvider`
-> (`apps/api/src/modules/payments/payment-provider.ts`) for collection and
+> (`apps/api/src/modules/sales/payments/payment-provider.ts`) for collection and
 > `FinancialInstitutionConnector`
-> (`apps/api/src/modules/settlements/settlement-connector.ts`) for settlement,
+> (`apps/api/src/modules/money/settlements/settlement-connector.ts`) for settlement,
 > and doc 49's `SettlementsService` — expected batch, reconcile, a named `SHORT`
 > variance, a maker-checker write-off posting through
 > `SettlementShortfallWrittenOff` — is built. This document specifies **one
@@ -121,7 +121,7 @@ doc 169 §6).
 NEWAX integrates with licensed third-party PSPs and payment gateways, market by
 market, through the extension point that already exists —
 `export interface PaymentProvider` at
-`apps/api/src/modules/payments/payment-provider.ts:73` — and never becomes a
+`apps/api/src/modules/sales/payments/payment-provider.ts:73` — and never becomes a
 money transmitter or wallet-holder itself for this program. Its own header
 states the whole cost: "implement this interface, add the class to
 `PaymentsService`'s constructor list, add its key to the allowlist. Nothing else

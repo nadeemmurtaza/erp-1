@@ -3,7 +3,7 @@
 
 # Tests
 
-**409** spec files, **4,513** cases. What is already pinned down — and what is not.
+**420** spec files, **4,652** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -69,7 +69,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (379)
+## Unit and integration (390)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -97,7 +97,7 @@ regression or an N+1.
 | `apps/api/src/core/cache/tiered-cache.spec.ts` | core/cache | 12 | TieredCache without a working Redis · Redis not connected · a read in flight when this process inva… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 7 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · AllEx… |
+| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an ov… |
 | `apps/api/src/core/common/hash-chain.spec.ts` | core/common | 8 | hash chain |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
@@ -109,6 +109,7 @@ regression or an N+1.
 | `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
 | `apps/api/src/core/idempotency/idempotency.interceptor.spec.ts` | core/idempotency | 8 | IdempotencyInterceptor — WO-157.2 |
 | `apps/api/src/core/intent/intent-router.service.spec.ts` | core/intent | 12 | IntentRouterService · routing · permission enforcement — mirrors PermissionsGuard exactly, for a se… |
+| `apps/api/src/core/launchpad/launchpad.service.spec.ts` | core/launchpad | 11 | LAUNCHPAD_APPS against the module registry · LaunchpadService · statuses() · setEnabled() |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
@@ -138,218 +139,226 @@ regression or an N+1.
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/core/versioning/api-version-policy.service.spec.ts` | core/versioning | 5 | ApiVersionPolicyService — WO-37.1 |
 | `apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts` | core/versioning | 5 | DeprecationHeaderInterceptor — WO-37.1 |
-| `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
-| `apps/api/src/modules/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
-| `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
-| `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
-| `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
-| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
-| `apps/api/src/modules/accounts/accounts.service.spec.ts` | accounts | 13 | AccountsService — 149-b2b-accounts-approvals-sector-packs.md · submitOrderRequest · decide — the to… |
-| `apps/api/src/modules/analytics/analytics.category-velocity.spec.ts` | analytics | 4 | AnalyticsService.categoryVelocity — WO-57.1 |
-| `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
-| `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
-| `apps/api/src/modules/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
-| `apps/api/src/modules/analytics/analytics.lifecycle.spec.ts` | analytics | 4 | AnalyticsService.orderLifecycleBreakdown — WO-69.1 |
-| `apps/api/src/modules/analytics/analytics.metrics.spec.ts` | analytics | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider ·… |
-| `apps/api/src/modules/analytics/analytics.orders.spec.ts` | analytics | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
-| `apps/api/src/modules/analytics/analytics.products.spec.ts` | analytics | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlow… |
-| `apps/api/src/modules/analytics/analytics.purchasing.spec.ts` | analytics | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9… |
-| `apps/api/src/modules/analytics/analytics.sales.spec.ts` | analytics | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit ·… |
-| `apps/api/src/modules/analytics/analytics.summary.spec.ts` | analytics | 2 | AnalyticsService.summary — WO-45.1 totalUnits |
-| `apps/api/src/modules/analytics/analytics.workshop.spec.ts` | analytics | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
-| `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
-| `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
-| `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
-| `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
-| `apps/api/src/modules/auction/auction-bidder.service.spec.ts` | auction | 44 | AuctionBidderService · joining an auction · an appeal · a staff decision · reading the Settings, wh… |
-| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 53 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · who may bid, as the a… |
-| `apps/api/src/modules/auction/auction-lifecycle.service.spec.ts` | auction | 6 | AuctionLifecycleService · AuctionLifecycleCron |
-| `apps/api/src/modules/auction/auction-public.controller.spec.ts` | auction | 3 | AuctionPublicController stream |
-| `apps/api/src/modules/auction/auction-public.service.spec.ts` | auction | 36 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
-| `apps/api/src/modules/auction/auction-realtime.service.spec.ts` | auction | 21 | AuctionRealtimeService · a stream · publishing · another node’s events, off Redis |
-| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 41 | AuctionService · create · who may bid (WO-234.5) · list · get · update · addLot · updateLot · withd… |
-| `apps/api/src/modules/auction/bidder-trust.spec.ts` | auction | 29 | eligibility · decideRegistration · nextBidderStatus · appealState · registrationView · strike polic… |
-| `apps/api/src/modules/auction/bidding.spec.ts` | auction | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlia… |
-| `apps/api/src/modules/auction/lot-live.spec.ts` | auction | 9 | mergeLiveEvents · eventForAcceptedBids |
-| `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
-| `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
-| `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
-| `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
-| `apps/api/src/modules/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
-| `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
-| `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
-| `apps/api/src/modules/bom/production.service.spec.ts` | bom | 17 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
-| `apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
-| `apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |
-| `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
-| `apps/api/src/modules/cart/cart.service.spec.ts` | cart | 2 | CartService.getOrCreate — guest cart TTL |
-| `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
-| `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 20 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
-| `apps/api/src/modules/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
-| `apps/api/src/modules/catalog/import-assistant.service.spec.ts` | catalog | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic… |
-| `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
-| `apps/api/src/modules/catalog/product-import.service.spec.ts` | catalog | 3 | ProductImportService — dry run |
-| `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
-| `apps/api/src/modules/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
-| `apps/api/src/modules/content/content.service.spec.ts` | content | 9 | ContentService · pages · banners · menu items |
-| `apps/api/src/modules/crm/contact-import.service.spec.ts` | crm | 5 | ContactImportService |
-| `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
-| `apps/api/src/modules/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
-| `apps/api/src/modules/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
-| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts` | crm | 4 | WhatsAppWebhookController |
-| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts` | crm | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idem… |
-| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
-| `apps/api/src/modules/custom-fields/custom-fields.service.spec.ts` | custom-fields | 9 | CustomFieldsService — WO-104.2 |
-| `apps/api/src/modules/embeds/embed-widgets.service.spec.ts` | embeds | 8 | EmbedWidgetsService — WO-113.1 |
-| `apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts` | entity-attributes | 6 | EntityAttributeService — WO-140.2 |
-| `apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts` | entity-attributes | 1 | EntityAttributeSupplierDeletedListener — WO-140.3 |
-| `apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts` | feature-flags | 3 | FeatureFlagAuditCron — WO-37.3 |
-| `apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts` | feature-flags | 14 | FeatureFlagsAdminService — WO-37.2/37.5 · listStale · update · proposeRollout · approveRollout |
-| `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
-| `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
-| `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
-| `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
-| `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
-| `apps/api/src/modules/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
-| `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
-| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
-| `apps/api/src/modules/fragments/fragments.service.spec.ts` | fragments | 9 | FragmentsService — WO-143.2/143.3 |
-| `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
-| `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
-| `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
-| `apps/api/src/modules/hr/assets.service.spec.ts` | hr | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued… |
-| `apps/api/src/modules/hr/people.service.spec.ts` | hr | 17 | PeopleService · createRank · createPosition · primaryFor / postingsFor · ranksOf / outranks — the m… |
-| `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
-| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 14 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
-| `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
-| `apps/api/src/modules/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
-| `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 18 | InventoryService — locations (B6) · check_inventory_chain_status intent (135-intent-router-voice-vi… |
-| `apps/api/src/modules/inventory/lot-allocation.spec.ts` | inventory | 7 | allocateFefo |
-| `apps/api/src/modules/inventory/lots.service.spec.ts` | inventory | 9 | LotsService · recordReceipt · recordDeduction · getDetail · recallLookup |
-| `apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts` | inventory | 10 | MarkdownSuggestionsService · list · activate · dismiss |
-| `apps/api/src/modules/inventory/serialized-units.service.spec.ts` | inventory | 13 | SerializedUnitsService · receiveUnits · sellUnit · returnUnit — the toxic-pair guard · getUnitHisto… |
-| `apps/api/src/modules/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
-| `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
-| `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
-| `apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts` | inventory | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
-| `apps/api/src/modules/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
-| `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
-| `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
-| `apps/api/src/modules/marketplace/marketplace-webhook.controller.spec.ts` | marketplace | 1 | MarketplaceWebhookController — 166-unified-product-reference-registry.md WO-166.4 |
-| `apps/api/src/modules/marketplace/marketplace-webhook.guard.spec.ts` | marketplace | 4 | MarketplaceWebhookGuard — 166-unified-product-reference-registry.md WO-166.4 |
-| `apps/api/src/modules/marketplace/marketplace.service.spec.ts` | marketplace | 10 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 · product references — 166-… |
-| `apps/api/src/modules/marketplace/product-reference-sync.service.spec.ts` | marketplace | 9 | ProductReferenceSyncService · adopt · apply |
-| `apps/api/src/modules/marketplace/product-references.controller.spec.ts` | marketplace | 9 | ProductReferencesController — 166-unified-product-reference-registry.md WO-166.3 · lookup · apply ·… |
-| `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
-| `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
-| `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
-| `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
-| `apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts` | metadata-forms | 5 | MetadataFormsService — WO-141.1 |
-| `apps/api/src/modules/notify/audience.service.spec.ts` | notify | 4 | AudienceService |
-| `apps/api/src/modules/notify/bulletin-notification.listener.spec.ts` | notify | 3 | BulletinNotificationListener |
-| `apps/api/src/modules/notify/bulletins.service.spec.ts` | notify | 11 | BulletinsService · publish · list · get · acknowledge · retract |
-| `apps/api/src/modules/notify/escalation-rule.service.spec.ts` | notify | 3 | EscalationRuleService |
-| `apps/api/src/modules/notify/escalation.cron.spec.ts` | notify | 5 | EscalationCron |
-| `apps/api/src/modules/notify/meetings.service.spec.ts` | notify | 6 | MeetingsService · shortfallReport · respond · cancel |
-| `apps/api/src/modules/notify/notify.service.spec.ts` | notify | 9 | NotifyService · decide |
-| `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
-| `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
-| `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
-| `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
-| `apps/api/src/modules/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
-| `apps/api/src/modules/orders/order-feed.source.spec.ts` | orders | 6 | OrderFeedSource — WO-58.2 |
-| `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 13 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
-| `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
-| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
-| `apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 22 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
-| `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
-| `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
-| `apps/api/src/modules/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
-| `apps/api/src/modules/payments/payments.service.spec.ts` | payments | 2 | PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2 |
-| `apps/api/src/modules/payments/providers/account.provider.spec.ts` | payments | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
-| `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
-| `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
-| `apps/api/src/modules/payroll/leave-request-action.source.spec.ts` | payroll | 5 | LeaveRequestActionSource |
-| `apps/api/src/modules/payroll/leave.service.spec.ts` | payroll | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
-| `apps/api/src/modules/payroll/pay-run.service.spec.ts` | payroll | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
-| `apps/api/src/modules/payroll/payroll.service.spec.ts` | payroll | 15 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISS… |
-| `apps/api/src/modules/planning/action-ranking.spec.ts` | planning | 4 | rankActions |
-| `apps/api/src/modules/planning/dependency-graph.spec.ts` | planning | 4 | DependencyGraphService |
-| `apps/api/src/modules/planning/goods-received-lead-time.listener.spec.ts` | planning | 3 | GoodsReceivedLeadTimeListener |
-| `apps/api/src/modules/planning/liquidity-forecast.service.spec.ts` | planning | 5 | LiquidityForecastService |
-| `apps/api/src/modules/planning/narration.service.spec.ts` | planning | 4 | NarrationService |
-| `apps/api/src/modules/planning/online-stock.service.spec.ts` | planning | 7 | OnlineStockService · onlineStockFor · assignFulfillingBranch |
-| `apps/api/src/modules/planning/planning.service.spec.ts` | planning | 3 | PlanningService |
-| `apps/api/src/modules/planning/propagation.spec.ts` | planning | 5 | propagate |
-| `apps/api/src/modules/planning/supplier-resilience.service.spec.ts` | planning | 7 | SupplierResilienceService · leadTimeDistribution · recordObservation · supplierScorecard |
-| `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 5 | PosCatalogService — WO-21.4 · listSellableRecipes |
-| `apps/api/src/modules/pos/pos-dashboard.service.spec.ts` | pos | 4 | PosDashboardService — pos-hardware/76 WO-76.1 |
-| `apps/api/src/modules/pos/pos-parked-sales.service.spec.ts` | pos | 9 | PosParkedSalesService — pos-hardware/31 WO-31.3 · park · retrieve · listOpen / countOpen |
-| `apps/api/src/modules/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
-| `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 9 | PosSalesService — WO-21.3 · line modifiers / quantity source (pos-hardware/31) |
-| `apps/api/src/modules/pos/pos-shifts.service.spec.ts` | pos | 16 | PosShiftsService — WO-21.2 · openShift · recordCashMovement · closeShift · xReport · zReport |
-| `apps/api/src/modules/pos/pos-terminals.service.spec.ts` | pos | 13 | PosTerminalsService — WO-21.1 · register · findOne / update / suspend — the not-found guard · updat… |
-| `apps/api/src/modules/pricing/pricing.service.spec.ts` | pricing | 19 | PricingService · resolvePrices · resolvePrice · createPriceList · updatePriceList · setAssignment ·… |
-| `apps/api/src/modules/production/bom.service.spec.ts` | production | 4 | BomService |
-| `apps/api/src/modules/production/reorder-work-order.listener.spec.ts` | production | 5 | ReorderWorkOrderListener |
-| `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
-| `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
-| `apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
-| `apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts` | purchasing | 5 | PurchaseOrderFeedSource — WO-58.2 |
-| `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 5 | PurchasingCron |
-| `apps/api/src/modules/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
-| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 15 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
-| `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
-| `apps/api/src/modules/purchasing/requisition-task-source.spec.ts` | purchasing | 4 | RequisitionTaskSource |
-| `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
-| `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
-| `apps/api/src/modules/rag/chunking.spec.ts` | rag | 7 | chunkPages |
-| `apps/api/src/modules/rag/pdf-extraction.service.spec.ts` | rag | 10 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout… |
-| `apps/api/src/modules/rag/pg-vector.store.spec.ts` | rag | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
-| `apps/api/src/modules/rag/rag-admin.controller.spec.ts` | rag | 17 | RagAdminController · query (H1, security review) · ask (H1, security review) · uploadSource (H1/M4,… |
-| `apps/api/src/modules/rag/rag-corpus.service.spec.ts` | rag | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1,… |
-| `apps/api/src/modules/rag/rag-generation.service.spec.ts` | rag | 9 | RagGenerationService · answer · isAvailable · prompt construction (L14, security review) · topK cla… |
-| `apps/api/src/modules/rag/rag-ingestion.service.spec.ts` | rag | 14 | RagIngestionService · processQueued · ingestOne · corpus access (H1, security review) |
-| `apps/api/src/modules/rag/rag-retrieval.service.spec.ts` | rag | 6 | RagRetrievalService · isAvailable · retrieve |
-| `apps/api/src/modules/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
-| `apps/api/src/modules/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
-| `apps/api/src/modules/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |
-| `apps/api/src/modules/receivables/statements.service.spec.ts` | receivables | 3 | StatementsService — WO-145.5 |
-| `apps/api/src/modules/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
-| `apps/api/src/modules/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
-| `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
-| `apps/api/src/modules/reviews/review-summary.listener.spec.ts` | reviews | 3 | ReviewSummaryListener |
-| `apps/api/src/modules/reviews/review-summary.service.spec.ts` | reviews | 15 | ReviewSummaryService · maybeRegenerate — threshold gating · regeneration — degradation and validati… |
-| `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
-| `apps/api/src/modules/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |
-| `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
-| `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
-| `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
-| `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
-| `apps/api/src/modules/support/customer-support.service.spec.ts` | support | 20 | CustomerSupportService · raise · replyAsCustomer · replyAsStaff · assign · transition · listForStaf… |
-| `apps/api/src/modules/support/support-handlers.service.spec.ts` | support | 4 | SupportHandlersService · holdsPermission · notifyHandlers |
-| `apps/api/src/modules/support/support-ticket-action.source.spec.ts` | support | 6 | SupportTicketActionSource |
-| `apps/api/src/modules/support/support-tickets.service.spec.ts` | support | 21 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
-| `apps/api/src/modules/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
-| `apps/api/src/modules/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
-| `apps/api/src/modules/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |
-| `apps/api/src/modules/tasks/task.service.spec.ts` | tasks | 29 | canTransitionTask — PURE, no I/O (the exact function the UI calls to disable a button) · cycleTimeM… |
-| `apps/api/src/modules/tasks/tasks.module.spec.ts` | tasks | 1 | TasksModule — pack-absence |
-| `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
-| `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
-| `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
-| `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 5 | QuoteService · send · findOne |
-| `apps/api/src/modules/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
-| `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
-| `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
-| `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
-| `apps/api/src/modules/users/security-notification.subscriber.spec.ts` | users | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 15 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
-| `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
-| `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
-| `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |
+| `apps/api/src/modules/customers/crm/contact-import.service.spec.ts` | crm | 5 | ContactImportService |
+| `apps/api/src/modules/customers/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
+| `apps/api/src/modules/customers/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
+| `apps/api/src/modules/customers/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
+| `apps/api/src/modules/customers/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts` | crm | 4 | WhatsAppWebhookController |
+| `apps/api/src/modules/customers/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts` | crm | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idem… |
+| `apps/api/src/modules/customers/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
+| `apps/api/src/modules/customers/notify/audience.service.spec.ts` | notify | 4 | AudienceService |
+| `apps/api/src/modules/customers/notify/bulletin-notification.listener.spec.ts` | notify | 3 | BulletinNotificationListener |
+| `apps/api/src/modules/customers/notify/bulletins.service.spec.ts` | notify | 11 | BulletinsService · publish · list · get · acknowledge · retract |
+| `apps/api/src/modules/customers/notify/escalation-rule.service.spec.ts` | notify | 3 | EscalationRuleService |
+| `apps/api/src/modules/customers/notify/escalation.cron.spec.ts` | notify | 5 | EscalationCron |
+| `apps/api/src/modules/customers/notify/meetings.service.spec.ts` | notify | 6 | MeetingsService · shortfallReport · respond · cancel |
+| `apps/api/src/modules/customers/notify/notify.service.spec.ts` | notify | 9 | NotifyService · decide |
+| `apps/api/src/modules/customers/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
+| `apps/api/src/modules/customers/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
+| `apps/api/src/modules/customers/support/customer-support.service.spec.ts` | support | 20 | CustomerSupportService · raise · replyAsCustomer · replyAsStaff · assign · transition · listForStaf… |
+| `apps/api/src/modules/customers/support/support-handlers.service.spec.ts` | support | 4 | SupportHandlersService · holdsPermission · notifyHandlers |
+| `apps/api/src/modules/customers/support/support-ticket-action.source.spec.ts` | support | 6 | SupportTicketActionSource |
+| `apps/api/src/modules/customers/support/support-tickets.service.spec.ts` | support | 21 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
+| `apps/api/src/modules/merchandising/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
+| `apps/api/src/modules/merchandising/catalog/bundles.service.spec.ts` | catalog | 20 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
+| `apps/api/src/modules/merchandising/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
+| `apps/api/src/modules/merchandising/catalog/import-assistant.service.spec.ts` | catalog | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic… |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
+| `apps/api/src/modules/merchandising/catalog/product-import.service.spec.ts` | catalog | 3 | ProductImportService — dry run |
+| `apps/api/src/modules/merchandising/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
+| `apps/api/src/modules/merchandising/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
+| `apps/api/src/modules/merchandising/content/content.service.spec.ts` | content | 9 | ContentService · pages · banners · menu items |
+| `apps/api/src/modules/merchandising/custom-fields/custom-fields.service.spec.ts` | custom-fields | 9 | CustomFieldsService — WO-104.2 |
+| `apps/api/src/modules/merchandising/embeds/embed-widgets.service.spec.ts` | embeds | 8 | EmbedWidgetsService — WO-113.1 |
+| `apps/api/src/modules/merchandising/entity-attributes/entity-attributes.service.spec.ts` | entity-attributes | 6 | EntityAttributeService — WO-140.2 |
+| `apps/api/src/modules/merchandising/entity-attributes/supplier-deleted.listener.spec.ts` | entity-attributes | 1 | EntityAttributeSupplierDeletedListener — WO-140.3 |
+| `apps/api/src/modules/merchandising/fragments/fragments.service.spec.ts` | fragments | 9 | FragmentsService — WO-143.2/143.3 |
+| `apps/api/src/modules/merchandising/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
+| `apps/api/src/modules/merchandising/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
+| `apps/api/src/modules/merchandising/metadata-forms/metadata-forms.service.spec.ts` | metadata-forms | 5 | MetadataFormsService — WO-141.1 |
+| `apps/api/src/modules/merchandising/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
+| `apps/api/src/modules/merchandising/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
+| `apps/api/src/modules/merchandising/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |
+| `apps/api/src/modules/merchandising/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
+| `apps/api/src/modules/merchandising/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
+| `apps/api/src/modules/money/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
+| `apps/api/src/modules/money/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
+| `apps/api/src/modules/money/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
+| `apps/api/src/modules/money/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
+| `apps/api/src/modules/money/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
+| `apps/api/src/modules/money/analytics/analytics.category-velocity.spec.ts` | analytics | 4 | AnalyticsService.categoryVelocity — WO-57.1 |
+| `apps/api/src/modules/money/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
+| `apps/api/src/modules/money/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
+| `apps/api/src/modules/money/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
+| `apps/api/src/modules/money/analytics/analytics.lifecycle.spec.ts` | analytics | 4 | AnalyticsService.orderLifecycleBreakdown — WO-69.1 |
+| `apps/api/src/modules/money/analytics/analytics.metrics.spec.ts` | analytics | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider ·… |
+| `apps/api/src/modules/money/analytics/analytics.orders.spec.ts` | analytics | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
+| `apps/api/src/modules/money/analytics/analytics.products.spec.ts` | analytics | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlow… |
+| `apps/api/src/modules/money/analytics/analytics.purchasing.spec.ts` | analytics | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9… |
+| `apps/api/src/modules/money/analytics/analytics.sales.spec.ts` | analytics | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit ·… |
+| `apps/api/src/modules/money/analytics/analytics.summary.spec.ts` | analytics | 2 | AnalyticsService.summary — WO-45.1 totalUnits |
+| `apps/api/src/modules/money/analytics/analytics.workshop.spec.ts` | analytics | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
+| `apps/api/src/modules/money/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
+| `apps/api/src/modules/money/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
+| `apps/api/src/modules/money/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
+| `apps/api/src/modules/money/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
+| `apps/api/src/modules/money/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
+| `apps/api/src/modules/money/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
+| `apps/api/src/modules/money/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
+| `apps/api/src/modules/money/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
+| `apps/api/src/modules/money/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
+| `apps/api/src/modules/money/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
+| `apps/api/src/modules/money/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
+| `apps/api/src/modules/money/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |
+| `apps/api/src/modules/money/receivables/statements.service.spec.ts` | receivables | 3 | StatementsService — WO-145.5 |
+| `apps/api/src/modules/money/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
+| `apps/api/src/modules/money/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
+| `apps/api/src/modules/people/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
+| `apps/api/src/modules/people/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
+| `apps/api/src/modules/people/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
+| `apps/api/src/modules/people/hr/assets.service.spec.ts` | hr | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued… |
+| `apps/api/src/modules/people/hr/people.service.spec.ts` | hr | 17 | PeopleService · createRank · createPosition · primaryFor / postingsFor · ranksOf / outranks — the m… |
+| `apps/api/src/modules/people/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
+| `apps/api/src/modules/people/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/people/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 22 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
+| `apps/api/src/modules/people/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
+| `apps/api/src/modules/people/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
+| `apps/api/src/modules/people/payroll/leave-request-action.source.spec.ts` | payroll | 5 | LeaveRequestActionSource |
+| `apps/api/src/modules/people/payroll/leave.service.spec.ts` | payroll | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
+| `apps/api/src/modules/people/payroll/pay-run.service.spec.ts` | payroll | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
+| `apps/api/src/modules/people/payroll/payroll.service.spec.ts` | payroll | 15 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISS… |
+| `apps/api/src/modules/people/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
+| `apps/api/src/modules/people/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
+| `apps/api/src/modules/people/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |
+| `apps/api/src/modules/people/tasks/task.service.spec.ts` | tasks | 29 | canTransitionTask — PURE, no I/O (the exact function the UI calls to disable a button) · cycleTimeM… |
+| `apps/api/src/modules/people/tasks/tasks.module.spec.ts` | tasks | 1 | TasksModule — pack-absence |
+| `apps/api/src/modules/sales/accounts/accounts.service.spec.ts` | accounts | 13 | AccountsService — 149-b2b-accounts-approvals-sector-packs.md · submitOrderRequest · decide — the to… |
+| `apps/api/src/modules/sales/auction/auction-bidder.service.spec.ts` | auction | 44 | AuctionBidderService · joining an auction · an appeal · a staff decision · reading the Settings, wh… |
+| `apps/api/src/modules/sales/auction/auction-bidding.service.spec.ts` | auction | 53 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · who may bid, as the a… |
+| `apps/api/src/modules/sales/auction/auction-lifecycle.service.spec.ts` | auction | 6 | AuctionLifecycleService · AuctionLifecycleCron |
+| `apps/api/src/modules/sales/auction/auction-public.controller.spec.ts` | auction | 3 | AuctionPublicController stream |
+| `apps/api/src/modules/sales/auction/auction-public.service.spec.ts` | auction | 36 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
+| `apps/api/src/modules/sales/auction/auction-realtime.service.spec.ts` | auction | 21 | AuctionRealtimeService · a stream · publishing · another node’s events, off Redis |
+| `apps/api/src/modules/sales/auction/auction.service.spec.ts` | auction | 41 | AuctionService · create · who may bid (WO-234.5) · list · get · update · addLot · updateLot · withd… |
+| `apps/api/src/modules/sales/auction/bidder-trust.spec.ts` | auction | 29 | eligibility · decideRegistration · nextBidderStatus · appealState · registrationView · strike polic… |
+| `apps/api/src/modules/sales/auction/bidding.spec.ts` | auction | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlia… |
+| `apps/api/src/modules/sales/auction/lot-live.spec.ts` | auction | 9 | mergeLiveEvents · eventForAcceptedBids |
+| `apps/api/src/modules/sales/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
+| `apps/api/src/modules/sales/cart/cart.service.spec.ts` | cart | 2 | CartService.getOrCreate — guest cart TTL |
+| `apps/api/src/modules/sales/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
+| `apps/api/src/modules/sales/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
+| `apps/api/src/modules/sales/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
+| `apps/api/src/modules/sales/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
+| `apps/api/src/modules/sales/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
+| `apps/api/src/modules/sales/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
+| `apps/api/src/modules/sales/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
+| `apps/api/src/modules/sales/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
+| `apps/api/src/modules/sales/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
+| `apps/api/src/modules/sales/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
+| `apps/api/src/modules/sales/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
+| `apps/api/src/modules/sales/orders/order-feed.source.spec.ts` | orders | 6 | OrderFeedSource — WO-58.2 |
+| `apps/api/src/modules/sales/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
+| `apps/api/src/modules/sales/orders/orders-pos.service.spec.ts` | orders | 13 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
+| `apps/api/src/modules/sales/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
+| `apps/api/src/modules/sales/payments/payments.service.spec.ts` | payments | 2 | PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2 |
+| `apps/api/src/modules/sales/payments/providers/account.provider.spec.ts` | payments | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
+| `apps/api/src/modules/sales/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
+| `apps/api/src/modules/sales/pos/pos-catalog.service.spec.ts` | pos | 5 | PosCatalogService — WO-21.4 · listSellableRecipes |
+| `apps/api/src/modules/sales/pos/pos-dashboard.service.spec.ts` | pos | 4 | PosDashboardService — pos-hardware/76 WO-76.1 |
+| `apps/api/src/modules/sales/pos/pos-parked-sales.service.spec.ts` | pos | 9 | PosParkedSalesService — pos-hardware/31 WO-31.3 · park · retrieve · listOpen / countOpen |
+| `apps/api/src/modules/sales/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
+| `apps/api/src/modules/sales/pos/pos-sales.service.spec.ts` | pos | 9 | PosSalesService — WO-21.3 · line modifiers / quantity source (pos-hardware/31) |
+| `apps/api/src/modules/sales/pos/pos-shifts.service.spec.ts` | pos | 16 | PosShiftsService — WO-21.2 · openShift · recordCashMovement · closeShift · xReport · zReport |
+| `apps/api/src/modules/sales/pos/pos-terminals.service.spec.ts` | pos | 13 | PosTerminalsService — WO-21.1 · register · findOne / update / suspend — the not-found guard · updat… |
+| `apps/api/src/modules/sales/pricing/pricing.service.spec.ts` | pricing | 19 | PricingService · resolvePrices · resolvePrice · createPriceList · updatePriceList · setAssignment ·… |
+| `apps/api/src/modules/sales/reviews/review-summary.listener.spec.ts` | reviews | 3 | ReviewSummaryListener |
+| `apps/api/src/modules/sales/reviews/review-summary.service.spec.ts` | reviews | 15 | ReviewSummaryService · maybeRegenerate — threshold gating · regeneration — degradation and validati… |
+| `apps/api/src/modules/sales/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
+| `apps/api/src/modules/sales/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
+| `apps/api/src/modules/sales/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
+| `apps/api/src/modules/sales/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |
+| `apps/api/src/modules/supply-chain/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
+| `apps/api/src/modules/supply-chain/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
+| `apps/api/src/modules/supply-chain/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
+| `apps/api/src/modules/supply-chain/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
+| `apps/api/src/modules/supply-chain/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
+| `apps/api/src/modules/supply-chain/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
+| `apps/api/src/modules/supply-chain/bom/production.service.spec.ts` | bom | 17 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
+| `apps/api/src/modules/supply-chain/inventory/inventory.cron.spec.ts` | inventory | 14 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
+| `apps/api/src/modules/supply-chain/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
+| `apps/api/src/modules/supply-chain/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.spec.ts` | inventory | 18 | InventoryService — locations (B6) · check_inventory_chain_status intent (135-intent-router-voice-vi… |
+| `apps/api/src/modules/supply-chain/inventory/lot-allocation.spec.ts` | inventory | 7 | allocateFefo |
+| `apps/api/src/modules/supply-chain/inventory/lots.service.spec.ts` | inventory | 9 | LotsService · recordReceipt · recordDeduction · getDetail · recallLookup |
+| `apps/api/src/modules/supply-chain/inventory/markdown-suggestions.service.spec.ts` | inventory | 10 | MarkdownSuggestionsService · list · activate · dismiss |
+| `apps/api/src/modules/supply-chain/inventory/serialized-units.service.spec.ts` | inventory | 13 | SerializedUnitsService · receiveUnits · sellUnit · returnUnit — the toxic-pair guard · getUnitHisto… |
+| `apps/api/src/modules/supply-chain/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
+| `apps/api/src/modules/supply-chain/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
+| `apps/api/src/modules/supply-chain/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
+| `apps/api/src/modules/supply-chain/inventory/suspicious-traffic.service.spec.ts` | inventory | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
+| `apps/api/src/modules/supply-chain/marketplace/marketplace-webhook.controller.spec.ts` | marketplace | 1 | MarketplaceWebhookController — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/supply-chain/marketplace/marketplace-webhook.guard.spec.ts` | marketplace | 4 | MarketplaceWebhookGuard — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/supply-chain/marketplace/marketplace.service.spec.ts` | marketplace | 10 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 · product references — 166-… |
+| `apps/api/src/modules/supply-chain/marketplace/product-reference-sync.service.spec.ts` | marketplace | 9 | ProductReferenceSyncService · adopt · apply |
+| `apps/api/src/modules/supply-chain/marketplace/product-references.controller.spec.ts` | marketplace | 9 | ProductReferencesController — 166-unified-product-reference-registry.md WO-166.3 · lookup · apply ·… |
+| `apps/api/src/modules/supply-chain/planning/action-ranking.spec.ts` | planning | 4 | rankActions |
+| `apps/api/src/modules/supply-chain/planning/dependency-graph.spec.ts` | planning | 4 | DependencyGraphService |
+| `apps/api/src/modules/supply-chain/planning/goods-received-lead-time.listener.spec.ts` | planning | 3 | GoodsReceivedLeadTimeListener |
+| `apps/api/src/modules/supply-chain/planning/liquidity-forecast.service.spec.ts` | planning | 5 | LiquidityForecastService |
+| `apps/api/src/modules/supply-chain/planning/narration.service.spec.ts` | planning | 4 | NarrationService |
+| `apps/api/src/modules/supply-chain/planning/online-stock.service.spec.ts` | planning | 7 | OnlineStockService · onlineStockFor · assignFulfillingBranch |
+| `apps/api/src/modules/supply-chain/planning/planning.service.spec.ts` | planning | 3 | PlanningService |
+| `apps/api/src/modules/supply-chain/planning/propagation.spec.ts` | planning | 5 | propagate |
+| `apps/api/src/modules/supply-chain/planning/supplier-resilience.service.spec.ts` | planning | 7 | SupplierResilienceService · leadTimeDistribution · recordObservation · supplierScorecard |
+| `apps/api/src/modules/supply-chain/production/bom.service.spec.ts` | production | 4 | BomService |
+| `apps/api/src/modules/supply-chain/production/reorder-work-order.listener.spec.ts` | production | 5 | ReorderWorkOrderListener |
+| `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
+| `apps/api/src/modules/supply-chain/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.integration.spec.ts` | purchasing | 10 | Partner fact applier — real database (WO-213.2) |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.spec.ts` | purchasing | 14 | PartnerFactApplierService · apply — a fact that checks out · apply — a fact that is not ours to app… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-plan.spec.ts` | purchasing | 20 | planSaleFact · when everything checks out · the supplier · the currency · matching lines to product… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact.listener.spec.ts` | purchasing | 3 | PartnerFactListener |
+| `apps/api/src/modules/supply-chain/purchasing/purchase-order-feed.source.spec.ts` | purchasing | 5 | PurchaseOrderFeedSource — WO-58.2 |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.cron.spec.ts` | purchasing | 5 | PurchasingCron |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.spec.ts` | purchasing | 15 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
+| `apps/api/src/modules/supply-chain/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
+| `apps/api/src/modules/supply-chain/purchasing/requisition-task-source.spec.ts` | purchasing | 4 | RequisitionTaskSource |
+| `apps/api/src/modules/supply-chain/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
+| `apps/api/src/modules/supply-chain/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.spec.ts` | tradingpartners | 4 | SubmitPartnerFactDto |
+| `apps/api/src/modules/supply-chain/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
+| `apps/api/src/modules/supply-chain/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.integration.spec.ts` | tradingpartners | 8 | PartnerFactInbox — real database (WO-213.1) |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.spec.ts` | tradingpartners | 22 | PartnerFactInboxService · accept — the normal case · accept — who may send what · accept — the seco… |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.spec.ts` | tradingpartners | 6 | PartnerFactStatusListener |
+| `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
+| `apps/api/src/modules/supply-chain/tradingpartners/quote.service.spec.ts` | tradingpartners | 5 | QuoteService · send · findOne |
+| `apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
+| `apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 9 | TradingPartnerPortalController · submitFact — WO-213.1 · accept |
+| `apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 39 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
+| `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
+| `apps/api/src/modules/system/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
+| `apps/api/src/modules/system/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |
+| `apps/api/src/modules/system/feature-flags/feature-flag-audit.cron.spec.ts` | feature-flags | 3 | FeatureFlagAuditCron — WO-37.3 |
+| `apps/api/src/modules/system/feature-flags/feature-flags-admin.service.spec.ts` | feature-flags | 14 | FeatureFlagsAdminService — WO-37.2/37.5 · listStale · update · proposeRollout · approveRollout |
+| `apps/api/src/modules/system/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
+| `apps/api/src/modules/system/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
+| `apps/api/src/modules/system/rag/chunking.spec.ts` | rag | 7 | chunkPages |
+| `apps/api/src/modules/system/rag/pdf-extraction.service.spec.ts` | rag | 10 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout… |
+| `apps/api/src/modules/system/rag/pg-vector.store.spec.ts` | rag | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
+| `apps/api/src/modules/system/rag/rag-admin.controller.spec.ts` | rag | 17 | RagAdminController · query (H1, security review) · ask (H1, security review) · uploadSource (H1/M4,… |
+| `apps/api/src/modules/system/rag/rag-corpus.service.spec.ts` | rag | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1,… |
+| `apps/api/src/modules/system/rag/rag-generation.service.spec.ts` | rag | 9 | RagGenerationService · answer · isAvailable · prompt construction (L14, security review) · topK cla… |
+| `apps/api/src/modules/system/rag/rag-ingestion.service.spec.ts` | rag | 14 | RagIngestionService · processQueued · ingestOne · corpus access (H1, security review) |
+| `apps/api/src/modules/system/rag/rag-retrieval.service.spec.ts` | rag | 6 | RagRetrievalService · isAvailable · retrieve |
+| `apps/api/src/modules/system/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
+| `apps/api/src/modules/system/users/security-notification.subscriber.spec.ts` | users | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
+| `apps/api/src/modules/system/users/users-admin.service.spec.ts` | users | 15 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/test/backfill-product-options.spec.ts` | api | 4 | backfillProductOptions |
 | `apps/api/test/customer-scope-routes.spec.ts` | api | 5 | storefront API key scopes, route by route · storefront API key scopes, swept across every controller |
 | `apps/api/test/email-channel.behavior.spec.ts` | api | 33 | env.validation — email cross-field check · isDeliverable · EmailChannel — interface contract · Emai… |
@@ -393,6 +402,7 @@ regression or an N+1.
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
 | `apps/web/src/components/admin/charts/chart-math.spec.ts` | web | 47 | periodChange · changeTone · foldShares · sharePct · funnelSteps · largestDropIndex · gaugeState · q… |
 | `apps/web/src/components/admin/charts/chart-motion.spec.ts` | web | 23 | chartDrawProps · cubicBezierCss · chartTooltipMotion · pointPopDelayMs · pointPopStyle · cursors an… |
+| `apps/web/src/components/admin/launchpad/launchpad.spec.ts` | web | 14 | the shipped manifest against the admin nav registry · reachableEntries · tilesFor · filters · entry… |
 | `apps/web/src/components/design-system/access-draft.spec.ts` | web | 24 | grantEndsAt · grantRefusals · countersignCandidates · scopeDiff · saveBlocker · formatRemaining · e… |
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
@@ -438,6 +448,7 @@ regression or an N+1.
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
 | `packages/shared/src/http-client.spec.ts` | packages | 5 | singleFlight — at most one refresh in flight per tab (206-rate-limiting-caching-compression-hardeni… |
+| `packages/shared/src/launchpad.spec.ts` | packages | 15 | LAUNCHPAD_APPS (the shipped manifest) · launchpadHiddenReason / resolveLaunchpad |
 | `packages/shared/src/markdown-suggestion.spec.ts` | packages | 10 | computeMarkdownSuggestion |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
 | `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |

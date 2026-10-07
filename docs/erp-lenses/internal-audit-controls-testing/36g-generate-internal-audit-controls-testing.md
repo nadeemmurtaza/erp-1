@@ -29,7 +29,7 @@ docs/erp-lenses/internal-audit-controls-testing/36-internal-audit-controls-testi
 
 **Question:** Which permission key does control-testing/audit-read use, and by what mechanism in code — not a policy document — is a user holding it stopped from also holding a key for the operations that control governs (accounting.manage_periods, transfers.manage, inventory.manage, …)?
 
-**Grounding:** packages/shared/src/permissions.ts:221 (audit.view, medium, unscoped) and :438-441 (ADMIN_LOCKED_PERMISSIONS = settings.manage, roles.manage_permissions only); SettingsAdminService.listAuditLog() (apps/api/src/modules/settings/settings-admin.service.ts:87-113) building its where with no scopeFilterFor() call; PermissionsGuard.canActivate pure-OR semantics and absence of any SoD/mutual-exclusion check in RolesService.
+**Grounding:** packages/shared/src/permissions.ts:221 (audit.view, medium, unscoped) and :438-441 (ADMIN_LOCKED_PERMISSIONS = settings.manage, roles.manage_permissions only); SettingsAdminService.listAuditLog() (apps/api/src/modules/system/settings/settings-admin.service.ts:87-113) building its where with no scopeFilterFor() call; PermissionsGuard.canActivate pure-OR semantics and absence of any SoD/mutual-exclusion check in RolesService.
 
 ## Absences
 

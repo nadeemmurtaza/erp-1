@@ -579,6 +579,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `InvoicesPage` | default | :27 | Invoices issued to trading partners (doc 18) — the "detail on click" screen the overdue-invoices ti… |
 
+### `apps/web/src/app/(admin)/admin/(app)/launchpad`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `LaunchpadPage` | default | :7 | `/admin/launchpad` — the launchpad (launchpad-apps/232-launchpad-and-app-manifest.md). |
+
 ### `apps/web/src/app/(admin)/admin/(app)/leads`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1480,8 +1486,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1182 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1197 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1191 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1206 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1680,6 +1686,28 @@ Every top-level export in `web`, with the line to open.
 | `needs-attention-strip.tsx` | `NeedsAttentionStrip` | function | :26 | "The one genuinely good part of the current page" (WO-A.4's own words) — kept, not rebuilt, straigh… |
 | `use-dashboard-metrics.ts` | `DashboardMetrics` | interface | :11 |  |
 | `use-dashboard-metrics.ts` | `useDashboardMetrics` | function | :26 | The dashboard's ONE network request per range change (WO-A.4's own acceptance criterion). |
+
+### `apps/web/src/components/admin/launchpad`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `app-icons.ts` | `LAUNCHPAD_ICONS` | const | :22 | One glyph per `LaunchpadIconKey`. |
+| `app-tile.tsx` | `AppTile` | function | :12 | One app on the launchpad. |
+| `launchpad-screen.tsx` | `LaunchpadScreen` | function | :39 | The launchpad: the apps this person can open, one tile each. |
+| `launchpad.ts` | `LaunchpadEntry` | interface | :11 | One door inside an app: a nav-registry entry this person can actually open. |
+| `launchpad.ts` | `LaunchpadTileData` | interface | :17 |  |
+| `launchpad.ts` | `LaunchpadAppStatus` | interface | :24 | One row of the admin's list, as `GET /launchpad/apps` returns it. |
+| `launchpad.ts` | `reachableEntries` | function | :37 | The entries of `app` that appear in `nav`. |
+| `launchpad.ts` | `tilesFor` | function | :59 | The tiles for this person: each server-approved app with at least one reachable entry. |
+| `launchpad.ts` | `LaunchpadFilter` | interface | :71 |  |
+| `launchpad.ts` | `filterTiles` | function | :76 |  |
+| `launchpad.ts` | `audiencesPresent` | function | :86 |  |
+| `launchpad.ts` | `tiersPresent` | function | :90 |  |
+| `launchpad.ts` | `AUDIENCE_LABEL` | const | :94 |  |
+| `launchpad.ts` | `TIER_LABEL` | const | :101 |  |
+| `launchpad.ts` | `HIDDEN_REASON_LABEL` | const | :107 | Why an app is off, in the words the person who can switch it needs. |
+| `launchpad.ts` | `entryPreview` | function | :116 | "Orders · Payment approvals · Returns +4" — a hint of what is inside, never a menu. |
+| `manage-apps.tsx` | `ManageApps` | function | :17 | Who may switch an app off for the whole organization (`launchpad.manage`). |
 
 ### `apps/web/src/components/admin/marketing`
 

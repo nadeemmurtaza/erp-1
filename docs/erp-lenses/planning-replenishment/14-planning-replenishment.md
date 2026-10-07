@@ -58,7 +58,7 @@ to.
 received quantity through `moveMany` at `defaultLocationId(tx)`
 (`inventory.service.ts:166`, one row `findFirstOrThrow({ where: { isDefault:
 true } })`) — the single default location, regardless of how many of the 100
-locations independently need it. `grep -in allocat apps/api/src/modules/purchasing/purchasing.service.ts`
+locations independently need it. `grep -in allocat apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts`
 returns only `allocateLandedCost`, which splits freight/duty *cost* across PO
 lines, not physical units across locations. No table, function or event in
 the repo divides one incoming quantity among competing locations. R26
@@ -141,7 +141,7 @@ assumed.
   `ProductVariant` exists (`catalog.prisma:184`).
 - Any allocation rule for splitting scarce incoming supply across multiple
   requesting locations — no table, column or function does this anywhere in
-  `apps/api/src/modules/purchasing/` or `inventory/`.
+  `apps/api/src/modules/supply-chain/purchasing/` or `inventory/`.
 - Lead-time variance/distribution — `Supplier.leadTimeDays` and
   `SupplierProduct.leadTimeDays` are bare scalars; nothing computes a mean or
   variance from `GoodsReceipt` vs `PurchaseOrder` history (R25 names this as

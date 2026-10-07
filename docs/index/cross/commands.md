@@ -171,7 +171,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2629 |  |
+| `scripts/build-index.mjs` | 2638 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-chart-imports.mjs` | 117 |  |
 | `scripts/check-clipboard.mjs` | 174 |  |
@@ -185,7 +185,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-links.mjs` | 416 |  |
 | `scripts/check-menus.mjs` | 229 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
-| `scripts/check-module-boundaries.mjs` | 624 |  |
+| `scripts/check-module-boundaries.mjs` | 652 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
 | `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
@@ -196,11 +196,11 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
 | `scripts/lib/index-scan.mjs` | 965 | Scanners for the repository index. |
-| `scripts/lib/model-routing.mjs` | 400 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/model-routing.mjs` | 401 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/load-auction.mjs` | 312 |  |
 | `scripts/nested-borders.py` | 0 |  |
-| `scripts/sync-client.mjs` | 701 | scripts/sync-client.mjs — the Extractor. |
+| `scripts/sync-client.mjs` | 723 | scripts/sync-client.mjs — the Extractor. |
 
 
 ---

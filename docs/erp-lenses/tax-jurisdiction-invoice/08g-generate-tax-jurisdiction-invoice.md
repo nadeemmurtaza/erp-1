@@ -35,7 +35,7 @@ docs/erp-lenses/tax-jurisdiction-invoice/08-tax-jurisdiction-invoice.md
 
 **Question:** Name the model, its own number series and its foreign key to the original invoice's line that would let a partial credit against an Invoice reduce output tax on a filed return, and show what reverseEntry() does instead today.
 
-**Grounding:** apps/api/src/modules/accounting/accounting.service.ts:102 (reverseEntry(entryId, memo?) — full reversal only, confirmed by opening the file); apps/api/prisma/schema/invoicing.prisma:49-53 (InvoiceStatus = ISSUED|PAID|VOID, no CREDITED value, no CreditNote/DebitNote model anywhere in schema)
+**Grounding:** apps/api/src/modules/money/accounting/accounting.service.ts:102 (reverseEntry(entryId, memo?) — full reversal only, confirmed by opening the file); apps/api/prisma/schema/invoicing.prisma:49-53 (InvoiceStatus = ISSUED|PAID|VOID, no CREDITED value, no CreditNote/DebitNote model anywhere in schema)
 
 ## Absences
 

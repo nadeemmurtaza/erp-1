@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 37 files
 
 
 
-Source: `apps/api/src/modules/catalog/`
+Source: `apps/api/src/modules/merchandising/catalog/`
 
 ## Files (37 · 6,944 lines)
 
-All paths relative to `apps/api/src/modules/catalog`.
+All paths relative to `apps/api/src/modules/merchandising/catalog`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -9,11 +9,11 @@ Pack **core** · always on · 21 files
 
 **Registry note** (`modules.registry.ts`): 144-supply-chain-resilience-planning-engine.md — a pure read/ recommendation engine over rows every other module already writes; a deployment gains nothing by running without it.
 
-Source: `apps/api/src/modules/planning/`
+Source: `apps/api/src/modules/supply-chain/planning/`
 
 ## Files (21 · 1,639 lines)
 
-All paths relative to `apps/api/src/modules/planning`.
+All paths relative to `apps/api/src/modules/supply-chain/planning`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
-Source: `apps/api/src/modules/finance/`
+Source: `apps/api/src/modules/money/finance/`
 
 ## Files (20 · 3,027 lines)
 
-All paths relative to `apps/api/src/modules/finance/dto`.
+All paths relative to `apps/api/src/modules/money/finance/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

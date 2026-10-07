@@ -9,11 +9,11 @@ Pack **core** · always on · 7 files
 
 **Registry note** (`modules.registry.ts`): 37-scalability-future-upgrades.md (WO-37.2/37.5) — the admin CRUD surface over FeatureFlag.
 
-Source: `apps/api/src/modules/feature-flags/`
+Source: `apps/api/src/modules/system/feature-flags/`
 
 ## Files (7 · 587 lines)
 
-All paths relative to `apps/api/src/modules/feature-flags/dto`.
+All paths relative to `apps/api/src/modules/system/feature-flags/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

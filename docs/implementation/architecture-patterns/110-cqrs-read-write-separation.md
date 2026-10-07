@@ -2,7 +2,7 @@
 
 > **Status: verified (2026-09-26).** `VariantSalesStat`
 > (`inventory.prisma`) and `OrderEconomics`/`FinanceListener`
-> (`apps/api/src/modules/finance/`) both confirmed real. No MongoDB or
+> (`apps/api/src/modules/money/finance/`) both confirmed real. No MongoDB or
 > other secondary database exists anywhere in this stack. No code or
 > schema change.
 

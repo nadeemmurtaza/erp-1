@@ -9,11 +9,11 @@ Pack **example** · enabled by the `MODULES` allowlist · 2 files
 
 **Registry note** (`modules.registry.ts`): 37-scalability-future-upgrades.md §3 (WO-37.4) — a reference "hello world" pack proving SDK-CONTRACT.md's published extension-point/ domain-event seam works for a pack built outside this repository.
 
-Source: `apps/api/src/modules/example-hello-world-pack/`
+Source: `apps/api/src/modules/system/example-hello-world-pack/`
 
 ## Files (2 · 45 lines)
 
-All paths relative to `apps/api/src/modules/example-hello-world-pack`.
+All paths relative to `apps/api/src/modules/system/example-hello-world-pack`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

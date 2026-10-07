@@ -9,9 +9,9 @@ import request from 'supertest';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { RedisService } from '../src/core/redis/redis.service';
-import { AuctionLifecycleService } from '../src/modules/auction/auction-lifecycle.service';
-import { AuctionRealtimeService } from '../src/modules/auction/auction-realtime.service';
-import type { LotLiveEvent } from '../src/modules/auction/lot-live';
+import { AuctionLifecycleService } from '../src/modules/sales/auction/auction-lifecycle.service';
+import { AuctionRealtimeService } from '../src/modules/sales/auction/auction-realtime.service';
+import type { LotLiveEvent } from '../src/modules/sales/auction/lot-live';
 
 /**
  * The public side of the Auction app (launchpad-apps/234-auction-app.md,

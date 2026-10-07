@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 
 
-Source: `apps/api/src/modules/payments/`
+Source: `apps/api/src/modules/sales/payments/`
 
 ## Files (16 · 2,088 lines)
 
-All paths relative to `apps/api/src/modules/payments`.
+All paths relative to `apps/api/src/modules/sales/payments`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

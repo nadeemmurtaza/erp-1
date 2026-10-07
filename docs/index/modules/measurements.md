@@ -7,11 +7,11 @@ Pack **apparel** · enabled by the `MODULES` allowlist · 12 files
 
 
 
-Source: `apps/api/src/modules/measurements/`
+Source: `apps/api/src/modules/sales/measurements/`
 
 ## Files (12 · 1,646 lines)
 
-All paths relative to `apps/api/src/modules/measurements/dto`.
+All paths relative to `apps/api/src/modules/sales/measurements/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

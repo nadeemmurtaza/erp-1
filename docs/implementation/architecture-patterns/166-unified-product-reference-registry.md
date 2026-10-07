@@ -380,7 +380,7 @@ made while building, not a silent drift:**
   .update()`'s own translation upsert now clears both `ProductTranslation`
   fields on every ordinary edit — the mechanism behind "a local edit is a
   deliberate override, never silently clobbered."
-- `apps/api/src/modules/marketplace/` gained: `product-reference-sync.service.ts`
+- `apps/api/src/modules/supply-chain/marketplace/` gained: `product-reference-sync.service.ts`
   (`ProductReferenceSyncService.adopt()`/`.apply()` — see "Two write paths,
   not one" below), `product-references.controller.ts` (`GET .../lookup`,
   `POST .../apply`, `POST .../register`, all `catalog.manage`-gated),

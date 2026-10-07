@@ -819,7 +819,7 @@ What each event writes:
 
 ### 7.6 `MeetingVideoReconcileCron`
 
-`apps/api/src/modules/notify/meeting-video-reconcile.cron.ts`, `@Cron('* * * * *')`.
+`apps/api/src/modules/customers/notify/meeting-video-reconcile.cron.ts`, `@Cron('* * * * *')`.
 
 - It is a self-initialising provider, like `EscalationCron`, and listed in
   `NotifyModule`.

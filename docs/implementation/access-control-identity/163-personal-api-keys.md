@@ -407,7 +407,7 @@ this document, ADR-037, doc 34's status note.
 `apps/api/src/core/auth/api-keys/*`; the controllers named in §2 and §4;
 `users-admin.service.ts`; `core/events/domain-events.ts`;
 `core/notifications/email/{copy,templates,catalog}.ts`;
-`modules/users/security-notification.subscriber.ts`; three web pages, the nav
+`modules/system/users/security-notification.subscriber.ts`; three web pages, the nav
 registry, the account nav, routes, types, messages (en, ur).
 
 ### Dependencies (existing capabilities reused)
@@ -608,7 +608,7 @@ of its own, because `JwtAuthGuard` is an `APP_GUARD` and must inject
 | `apps/api/src/core/auth/guards.spec.ts` | the JWT path unchanged; key recognition; a dead key refused on a public route; a key personalises a public route only when it holds the route's capability; both surfaces through `PermissionsGuard` |
 | `apps/api/test/session-only-routes.spec.ts` | `@SessionOnly()` on every credential route in §2 |
 | `apps/api/test/customer-scope-routes.spec.ts` | every route in §4 declares its scope; every left-out route declares none; every catalogue scope is declared somewhere; a sweep of every controller finds no scoped route missing from §4, inherited scopes included, and no state-changing route accepting a `read` scope |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | deactivation revokes keys in the same transaction; a role change does not; a failed revoke fails the deactivation |
+| `apps/api/src/modules/system/users/users-admin.service.spec.ts` | deactivation revokes keys in the same transaction; a role change does not; a failed revoke fails the deactivation |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | the `user.api_key_issued` notice in both languages, linking to the right surface |
 | `apps/api/test/api-keys.e2e-spec.ts` | through the real global guards and database: a key reaches only its own permission's routes; fail-closed on signed-in-only routes; never manages keys; a demotion shrinks a live key and the returning grant resumes it; rotation kills the old secret; a revoked key is refused on the very next request; the `api_key_revocation_is_final` trigger refuses an un-revoke and a re-scope; the `CHECK`s refuse a row with both catalogues, with none, or revoked without a reason; a storefront key cannot change the sign-in identity; oversight lists and revokes; deactivation revokes and reactivation does not revive; guessed keys from one address end in a 429 while a session from that address still works |
 

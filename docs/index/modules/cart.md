@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 
 
-Source: `apps/api/src/modules/cart/`
+Source: `apps/api/src/modules/sales/cart/`
 
 ## Files (7 · 1,336 lines)
 
-All paths relative to `apps/api/src/modules/cart`.
+All paths relative to `apps/api/src/modules/sales/cart`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

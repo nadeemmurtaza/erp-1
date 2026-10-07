@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:168`</sub>
+### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:176`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -41,7 +41,7 @@ against a real database.
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([locationId])`
 
-### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:196`</sub>
+### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:204`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -83,6 +83,7 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `supplier` | `Supplier` | relation | @relation(fields: [supplierId], references: [id]) |
+| `sourceFactInboxId` | `String?` | unique, optional | @unique |
 | `createdBy` | `User?` | relation, optional | @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetN… |
 | `items` | `PurchaseOrderItem[]` |  |  |
 | `receipts` | `GoodsReceipt[]` |  |  |
@@ -91,7 +92,7 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 
 Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([scopeLevel])`
 
-### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:150`</sub>
+### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:158`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -109,7 +110,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 
-### `PurchaseRequisition`  <sub>`apps/api/prisma/schema/purchasing.prisma:269`</sub>
+### `PurchaseRequisition`  <sub>`apps/api/prisma/schema/purchasing.prisma:277`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -128,7 +129,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 
 Indexes: `@@index([status, createdAt])` · `@@index([requestedById, createdAt])` · `@@index([locationId])`
 
-### `RequisitionLine`  <sub>`apps/api/prisma/schema/purchasing.prisma:293`</sub>
+### `RequisitionLine`  <sub>`apps/api/prisma/schema/purchasing.prisma:301`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -177,7 +178,7 @@ Indexes: `@@index([requisitionId])` · `@@index([variantId])`
 
 Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
-### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:219`</sub>
+### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:227`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -202,7 +203,7 @@ Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
 Indexes: `@@index([supplierId, status])` · `@@index([status, dueAt])`
 
-### `SupplierLeadTimeObservation`  <sub>`apps/api/prisma/schema/purchasing.prisma:316`</sub>
+### `SupplierLeadTimeObservation`  <sub>`apps/api/prisma/schema/purchasing.prisma:324`</sub>
 
 > resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time distribution from history already in the database.
 
@@ -248,7 +249,7 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 | `RECEIVED` |  |
 | `CANCELLED` |  |
 
-### `RequisitionApprovalStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:262`</sub>
+### `RequisitionApprovalStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:270`</sub>
 
 > 152-purchase-requisition.md.
 
@@ -259,7 +260,7 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 | `REJECTED` |  |
 | `CONVERTED` |  |
 
-### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:213`</sub>
+### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:221`</sub>
 
 | Value | Meaning |
 |---|---|

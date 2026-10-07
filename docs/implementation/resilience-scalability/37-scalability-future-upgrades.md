@@ -64,7 +64,7 @@ no document for it today.
 > [`SDK-CONTRACT.md`](../SDK-CONTRACT.md) publishes the extension-point
 > interfaces, a judged stable subset of the domain-event catalogue, and the
 > module-registration checklist (citing `MULTI-SECTOR.md` rather than
-> re-deriving it); `apps/api/src/modules/example-hello-world-pack/`
+> re-deriving it); `apps/api/src/modules/system/example-hello-world-pack/`
 > (registered under a new, non-`core` `'example'` `PackName`, `offByDefault:
 > true`) is the reference pack this document's own acceptance criterion
 > asks for — `pnpm lint`'s `check-module-boundaries.mjs` passes with it

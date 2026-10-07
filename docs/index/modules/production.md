@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 
 
-Source: `apps/api/src/modules/production/`
+Source: `apps/api/src/modules/supply-chain/production/`
 
 ## Files (12 · 1,040 lines)
 
-All paths relative to `apps/api/src/modules/production`.
+All paths relative to `apps/api/src/modules/supply-chain/production`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

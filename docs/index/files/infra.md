@@ -16,7 +16,7 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 | `.env.branch.example` | example | 109 |  |
 | `.env.example` | example | 193 |  |
 | `.env.production.example` | example | 140 |  |
-| `.gitignore` | file | 71 |  |
+| `.gitignore` | file | 75 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
 | `docker-compose.branch.yml` | yaml | 129 |  |
@@ -77,7 +77,7 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2629 |  |
+| `build-index.mjs` | script | 2638 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 117 |  |
 | `check-clipboard.mjs` | script | 174 |  |
@@ -91,7 +91,7 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-links.mjs` | script | 416 |  |
 | `check-menus.mjs` | script | 229 |  |
 | `check-metadata-renderer.mjs` | script | 134 |  |
-| `check-module-boundaries.mjs` | script | 624 |  |
+| `check-module-boundaries.mjs` | script | 652 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
@@ -103,14 +103,14 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 | `install-git-hooks.mjs` | script | 94 |  |
 | `load-auction.mjs` | script | 312 |  |
 | `nested-borders.py` | py | — |  |
-| `sync-client.mjs` | script | 701 | scripts/sync-client.mjs — the Extractor. |
+| `sync-client.mjs` | script | 723 | scripts/sync-client.mjs — the Extractor. |
 
 ### `scripts/lib` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 965 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 400 | Which model and how much effort each kind of job in this repository deserves. |
+| `model-routing.mjs` | utility | 401 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 

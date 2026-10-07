@@ -17,7 +17,7 @@ docs/erp-lenses/gap-46/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md
 
 **Question:** For Ruling 6's abandoned-PosShift close and for the top-band quorum in 'The threshold nobody approves alone' (04), name the fallback state a control moves to when the deployment's live roster has fewer distinct qualified holders than the control requires, the field recording that this was a shortfall pass rather than a genuine quorum pass, and the permission key that authorises invoking it.
 
-**Grounding:** apps/api/prisma/schema/pos.prisma:52-55 (PosShiftStatus has only OPEN/CLOSED, no ABANDONED state exists); apps/api/prisma/schema/purchasing.prisma:88-94 (PurchaseOrderStatus has no approval-gate status); apps/api/src/modules/pos/pos-shifts.service.ts:35-36,72 (openShift throws on any non-ACTIVE terminal, closeShift has no second-holder logic)
+**Grounding:** apps/api/prisma/schema/pos.prisma:52-55 (PosShiftStatus has only OPEN/CLOSED, no ABANDONED state exists); apps/api/prisma/schema/purchasing.prisma:88-94 (PurchaseOrderStatus has no approval-gate status); apps/api/src/modules/sales/pos/pos-shifts.service.ts:35-36,72 (openShift throws on any non-ACTIVE terminal, closeShift has no second-holder logic)
 
 ### The count nobody keeps
 

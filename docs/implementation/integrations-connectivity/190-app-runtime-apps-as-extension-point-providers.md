@@ -2,8 +2,8 @@
 
 > **Status: proposed, not yet built.** No `AppProviderBinding`,
 > `RemoteProviderBindingRegistry` or remote adapter exists (grep, `main` at
-> `642b2831`). `PaymentProvider` (`modules/payments/payment-provider.ts`) and
-> `CourierProvider` (`modules/fulfilment/courier-provider.ts`) are built.
+> `642b2831`). `PaymentProvider` (`modules/sales/payments/payment-provider.ts`) and
+> `CourierProvider` (`modules/sales/fulfilment/courier-provider.ts`) are built.
 > `FiscalComplianceProvider` is a design (doc 15), not code.
 > `VideoConferenceProvider` is proposed by doc 205
 > (`tasks-notifications-support/205-self-hosted-video-meetings-livekit.md`,
@@ -158,9 +158,9 @@ and `app-installations` never imports them. The adapter classes live in the
 modules that own the interfaces, so no DEPTH violation arises from importing
 `payment-provider.ts` across modules (`scripts/check-module-boundaries.mjs`):
 
-- `modules/payments/providers/remote-app.provider.ts` —
+- `modules/sales/payments/providers/remote-app.provider.ts` —
   `RemoteAppPaymentProvider`, constructed from a `RemoteProviderBinding`.
-- `modules/fulfilment/providers/remote-app.provider.ts` —
+- `modules/sales/fulfilment/providers/remote-app.provider.ts` —
   `RemoteAppCourierProvider`.
 
 **The one change to each service**, the extension point SDK-CONTRACT step 5

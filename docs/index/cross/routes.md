@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **904** endpoints across **165** controllers, with the access rule that actually guards each one.
+All **908** endpoints across **166** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -26,13 +26,13 @@ never authorization.
 
 | Method | Path | Handler | File |
 |---|---|---|---|
-| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/accounts/accounts.controller.ts:31` |
-| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/accounts/accounts.controller.ts:45` |
-| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/accounts/accounts.controller.ts:38` |
-| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
-| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
+| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:31` |
+| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:45` |
+| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:38` |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
+| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 80** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 81** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -113,6 +113,7 @@ never authorization.
 | GET | `/stitching/option-groups` | `StitchingController.optionGroups` |
 | POST | `/track/event` | `TrackingController.track` |
 | POST | `/trading-partners/accept` | `TradingPartnerPortalController.accept` |
+| POST | `/trading-partners/facts` | `TradingPartnerPortalController.submitFact` |
 | GET | `/trading-partners/stock` | `TradingPartnerPortalController.stock` |
 | POST | `/webhooks/marketplace/product-reference-sync` | `MarketplaceWebhookController.productReferenceSync` |
 | POST | `/whatsapp/webhook` | `WhatsAppWebhookController.webhook` |
@@ -486,6 +487,14 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
 | GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database and the rate-limit Redis |
+
+### [`core/launchpad`](../core/launchpad.md) (3)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/launchpad` | signed-in | `LaunchpadController.list` | The first-party apps this deployment and organization show on the launchpad |
+| GET | `/launchpad/apps` | `launchpad.manage` | `LaunchpadController.statuses` | Every shipped app with its on/off switch and why it is hidden, if it is |
+| PUT | `/launchpad/apps/:key` | `launchpad.manage` | `LaunchpadController.setEnabled` | Switch one app on or off for the whole organization (hides the tile; deletes no… |
 
 ### [`core/notifications`](../core/notifications.md) (14)
 
@@ -1307,7 +1316,7 @@ never authorization.
 |---|---|---|---|---|
 | POST | `/track/event` | **PUBLIC** | `TrackingController.track` | Record one page_view / add_to_cart / checkout_started event |
 
-### [`tradingpartners`](../modules/tradingpartners.md) (19)
+### [`tradingpartners`](../modules/tradingpartners.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1329,6 +1338,7 @@ never authorization.
 | POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` | Store the key they gave us, for calling their API |
 | POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` | Issue a fresh key for them to call us with — shown once, never retrievable again |
 | POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` | "They accept" — the second half of the first-connection handshake, starts the r… |
+| POST | `/trading-partners/facts` | **PUBLIC** | `TradingPartnerPortalController.submitFact` | Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, app… |
 | GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` |  |
 
 ### [`transfers`](../modules/transfers.md) (5)

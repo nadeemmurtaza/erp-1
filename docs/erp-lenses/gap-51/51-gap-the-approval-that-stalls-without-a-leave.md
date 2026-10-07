@@ -17,7 +17,7 @@ job that scans for steps older than a configured threshold, and the
 Settings key holding that threshold per document type.
 
 **Why:** `MarketingAutomationCron`
-(`apps/api/src/modules/marketing/marketing-automation.cron.ts`) is the one
+(`apps/api/src/modules/merchandising/marketing/marketing-automation.cron.ts`) is the one
 precedent in this codebase for an idle timer the system acts on
 unprompted: `SettingKey.MarketingAbandonedCartReminderHours` fires a
 reminder, and `MarketingAbandonedCartIncentiveHours`
@@ -145,7 +145,7 @@ have acted, had anyone told them twice.
 - **The clock nobody starts** — distinct from lens 04's "Acting cover has
   no clock" (a delegation window between two named people); this times one
   step against nobody, delegate or not. Verified: `MarketingAutomationCron`
-  exists at `apps/api/src/modules/marketing/marketing-automation.cron.ts`
+  exists at `apps/api/src/modules/merchandising/marketing/marketing-automation.cron.ts`
   with `@Cron('0 3 * * *')` reading `SettingKey.MarketingAbandonedCartReminderHours`
   and `MarketingAbandonedCartIncentiveHours`; no `.prisma` file anywhere
   defines `model Approval`, `ApprovalStep`, or a `PENDING_APPROVAL` value

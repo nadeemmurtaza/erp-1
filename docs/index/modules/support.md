@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 **Registry note** (`modules.registry.ts`): tasks-notifications-support/64-help-desk-support-ticketing.md — a fully standalone module (doc's own "The absent collaborator" lens): imports nothing, nothing imports it, reads only its own tables.
 
-Source: `apps/api/src/modules/support/`
+Source: `apps/api/src/modules/customers/support/`
 
 ## Files (13 · 1,703 lines)
 
-All paths relative to `apps/api/src/modules/support`.
+All paths relative to `apps/api/src/modules/customers/support`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -2,7 +2,7 @@
 
 > **Status (2026-09-25): audit re-verified, no code change.** This doc's
 > own claim was re-checked against the current
-> `apps/api/src/modules/payments/payment-provider.ts` rather than trusted
+> `apps/api/src/modules/sales/payments/payment-provider.ts` rather than trusted
 > from its own text: `PaymentContext` still carries only `orderId`/
 > `orderNumber`/`amount`/customer contact fields, and `PaymentInitiation`
 > still resolves through `redirectUrl` (nullable) plus an opaque `meta`

@@ -40,7 +40,7 @@ describe('Auction proxy, anti-snipe and close job (e2e)', () => {
    */
   const openAuction = async (opts: { lots?: Array<{ startPriceMinor: number; reservePriceMinor?: number }>; endsInMs?: number; rules?: object } = {}) => {
     const auction = await auctions.create(
-      { title: TITLE, startsAt: new Date(Date.now() + 3_600_000).toISOString(), endsAt: new Date(Date.now() + 7_200_000).toISOString() },
+      { title: TITLE, startsAt: new Date(Date.now() + 3_600_000).toISOString(), endsAt: new Date(Date.now() + 7_200_000).toISOString(), registration: 'OPEN' },
       ACTOR,
     );
     made.push(auction.id);
@@ -92,7 +92,7 @@ describe('Auction proxy, anti-snipe and close job (e2e)', () => {
   describe('the open job', () => {
     it('opens a scheduled auction whose start has passed, with its lots, and does it once', async () => {
       const auction = await auctions.create(
-        { title: TITLE, startsAt: new Date(Date.now() + 3_600_000).toISOString(), endsAt: new Date(Date.now() + 7_200_000).toISOString() },
+        { title: TITLE, startsAt: new Date(Date.now() + 3_600_000).toISOString(), endsAt: new Date(Date.now() + 7_200_000).toISOString(), registration: 'OPEN' },
         ACTOR,
       );
       made.push(auction.id);

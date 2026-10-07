@@ -1,4 +1,4 @@
-// Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.3).
+// Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5).
 // Sell — or, later, buy — by competitive bidding. This file holds what the
 // work orders so far read and write: the auction, its lots, the bidders, the
 // hash-chained bids, the encrypted proxy maxima and the result of a closed lot.
@@ -37,13 +37,27 @@ enum BidKind {
   SEALED
 }
 
-/// APPROVED is the only value written today: the first bid provisions the
-/// bidder. PENDING and SUSPENDED exist for registration and strikes
-/// (WO-234.5), so that work order adds a gate, not a column.
+/// Where a bidder stands in one auction (WO-234.5). PENDING is a registration
+/// waiting for staff; APPROVED may bid; DECLINED is a registration staff
+/// refused; SUSPENDED is a bidder staff stopped, with a reason either way. A
+/// declined registration is not a suspension: the person reads one sentence and
+/// staff read another history.
 enum BidderStatus {
   PENDING
   APPROVED
   SUSPENDED
+  DECLINED
+}
+
+/// How an auction vets who may bid (WO-234.5). OPEN: any signed-in customer who
+/// does not run it, registered by their first bid. VERIFIED: a customer whose
+/// identity is verified is approved on registering, anyone else waits for
+/// staff. APPROVAL: everyone waits for staff. Chosen while the auction is a
+/// draft; frozen from `schedule()` like the bidding rules.
+enum AuctionRegistration {
+  OPEN
+  VERIFIED
+  APPROVAL
 }
 
 /// One auction event. The three scope columns exist from the first migration
@@ -75,6 +89,10 @@ model Auction {
   /// (doc 234 §15, "rules are versioned per auction"). Null while a draft;
   /// WO-234.3 adds the anti-snipe window here without a new column.
   bidRules         Json?
+  /// Who may bid (WO-234.5). The column defaults to OPEN, the rule every
+  /// auction ran under before it existed; AuctionService.create() writes the
+  /// Setting `auction.registration_default` (APPROVAL) for a new one.
+  registration     AuctionRegistration @default(OPEN)
   createdById      String
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
@@ -138,26 +156,59 @@ model AuctionLot {
   @@index([auctionId, status])
 }
 
-/// A person bidding in one auction. Provisioned on the first bid and shown to
-/// everyone else only by `alias` ("Bidder 7"), never by name (doc 234 §15,
-/// "whose rows"). `userId` is the portal account that acts as this bidder, a
-/// plain string like the other cross-module ids in this file; a B2B party link
-/// and eligibility rules arrive with WO-234.5.
+/// A person bidding in one auction. Registered by themselves (WO-234.5) or by
+/// their first bid under an OPEN auction, and shown to everyone else only by
+/// `alias` ("Bidder 7"), never by name (doc 234 §15, "whose rows"). `userId` is
+/// the portal account that acts as this bidder, a plain string like the other
+/// cross-module ids in this file. The decision columns say who last decided and
+/// why (the reason is written for the bidder to read); the appeal is the
+/// bidder's one open question, cleared by the next decision, and the history of
+/// both is the audit trail. Strikes are about the person, so they live apart.
 model Bidder {
-  id        String       @id @default(cuid())
-  auctionId String
-  userId    String
-  alias     String
-  status    BidderStatus @default(APPROVED)
-  createdAt DateTime     @default(now())
+  id             String       @id @default(cuid())
+  auctionId      String
+  userId         String
+  alias          String
+  status         BidderStatus @default(APPROVED)
+  decidedById    String?
+  decidedAt      DateTime?
+  decisionReason String?
+  appealText     String?
+  appealedAt     DateTime?
+  createdAt      DateTime     @default(now())
 
   auction Auction         @relation(fields: [auctionId], references: [id])
   bids    Bid[]
   proxies ProxyBid[]
   results AuctionResult[]
+  strikes BidderStrike[]
 
   @@unique([auctionId, userId])
   @@unique([auctionId, alias])
+  // The staff queue: one auction's bidders by status, oldest first.
+  @@index([auctionId, status, createdAt])
+}
+
+/// A mark against a person (WO-234.5), recorded by staff with a reason and,
+/// when there is one, the lot it concerns. Counted over a rolling window per
+/// `userId`, never stored as a number, so voiding one cannot leave a stale
+/// count. Never deleted: a mistaken strike is voided with a reason.
+model BidderStrike {
+  id           String    @id @default(cuid())
+  userId       String
+  bidderId     String
+  lotId        String?
+  reason       String
+  recordedById String
+  recordedAt   DateTime  @default(now())
+  voidedAt     DateTime?
+  voidedById   String?
+  voidReason   String?
+
+  bidder Bidder @relation(fields: [bidderId], references: [id])
+
+  @@index([userId, recordedAt])
+  @@index([bidderId])
 }
 
 /// One accepted bid: a record, never edited and never deleted (doc 234 §5.2).

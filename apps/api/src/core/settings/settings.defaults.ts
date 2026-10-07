@@ -364,6 +364,16 @@ export const SettingKey = {
   AuctionAntiSnipeExtendSeconds: 'auction.anti_snipe_extend_seconds',
   /** The most seconds anti-snipe may add to one lot in total, so a bidding war ends. Copied onto an auction when it is scheduled. */
   AuctionMaxExtensionSeconds: 'auction.max_extension_seconds',
+  /**
+   * launchpad-apps/234-auction-app.md §8, §12 — how a NEW auction vets who may
+   * bid when its creator names none: `OPEN`, `VERIFIED` or `APPROVAL`. Read once,
+   * when the auction is created; the auction then holds its own value.
+   */
+  AuctionRegistrationDefault: 'auction.registration_default',
+  /** Strikes (not voided, within the window below) at which a person is flagged for staff review (doc 234 §12). Read live: it is a policy on people, not a rule of one auction. */
+  AuctionStrikesToReview: 'auction.strikes_to_review',
+  /** How many days back a strike still counts. Read live. */
+  AuctionStrikeWindowDays: 'auction.strike_window_days',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -563,4 +573,12 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.AuctionAntiSnipeWindowSeconds]: 120,
   [SettingKey.AuctionAntiSnipeExtendSeconds]: 120,
   [SettingKey.AuctionMaxExtensionSeconds]: 1_800,
+  /* A new auction vets its bidders unless staff choose otherwise: one click on
+   * an open sale costs far less than an unvetted winner who does not pay.
+   * Three strikes in a year is a pattern rather than a slip, and a year is long
+   * enough for a pattern to show without one bad week following someone for
+   * ever. Doc 234 §12. */
+  [SettingKey.AuctionRegistrationDefault]: 'APPROVAL',
+  [SettingKey.AuctionStrikesToReview]: 3,
+  [SettingKey.AuctionStrikeWindowDays]: 365,
 };

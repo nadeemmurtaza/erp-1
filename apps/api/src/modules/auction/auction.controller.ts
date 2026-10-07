@@ -20,7 +20,9 @@ import {
  * automatically the one who commits the business to it. The lot's hidden
  * reserve is returned only to a holder of `auction.manage`; a read-only
  * holder never sees it. The bid ledger and its integrity check are read-only
- * and need only `auction.view`.
+ * and need only `auction.view`. The list and the page also open for a holder of
+ * `auction.bidders.manage` (WO-234.5), so a person who only approves bidders can
+ * reach them; that key shows no reserve either.
  */
 @ApiTags('admin/auctions')
 @Controller('admin/auctions')
@@ -28,14 +30,14 @@ export class AuctionController {
   constructor(private readonly auctions: AuctionService) {}
 
   @Get()
-  @RequirePermission('auction.view', 'auction.manage')
+  @RequirePermission('auction.view', 'auction.manage', 'auction.bidders.manage')
   @ApiOperation({ summary: 'Auctions, newest first, optionally filtered by status' })
   list(@Query() query: AuctionListQueryDto) {
     return this.auctions.list(query);
   }
 
   @Get(':id')
-  @RequirePermission('auction.view', 'auction.manage')
+  @RequirePermission('auction.view', 'auction.manage', 'auction.bidders.manage')
   @ApiOperation({ summary: 'One auction with its lots' })
   get(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
     return this.auctions.get(id, user.permissions.includes('auction.manage'));

@@ -17,9 +17,12 @@ import {
   parseAmountToMinor,
   standingOf,
   type BidFailure,
+  type IneligibleWhy,
   type LotLiveEvent,
   type PublicLot,
 } from '@/lib/auction-live';
+import { registrationCard } from '@/lib/auction-registration';
+import { LotRegistration, RegistrationApproved, useLetIn } from './lot-registration';
 import { LotStanding } from './lot-status';
 
 function subscribeOnline(onChange: () => void): () => void {
@@ -48,8 +51,10 @@ function newRequestKey(): string {
 /**
  * Everything a bidder does on an open lot, and nothing else (the bid box of
  * launchpad-apps/234-auction-app.md §11): who they are to the lot (signed out,
- * not allowed, leading, outbid), one amount and one button, and, one level down,
- * a standing maximum. The rest of the page reads the lot; only this writes to it.
+ * not yet allowed in, leading, outbid), one amount and one button, and, one level
+ * down, a standing maximum. A person who may not bid yet gets the registration
+ * card in this place (`LotRegistration`), not a refusal. The rest of the page
+ * reads the lot; only this writes to it.
  *
  * What it will not do: queue a bid while offline (it says so instead), place a
  * bid for someone who already leads (the API refuses it, so the box is replaced
@@ -79,6 +84,7 @@ export function LotBidding({
   const { viewer, setViewer, myMax, setMyMax, reload } = lotViewer;
 
   const standing = standingOf(viewer?.alias ?? null, viewer?.participating ?? false, lot.bids);
+  const letIn = useLetIn(viewer);
   /** Set when this person's own bid was just accepted, so focus can follow the form that is about to be replaced by their standing. */
   const focusStanding = useRef(false);
   const standingRef = useRef<HTMLDivElement>(null);
@@ -108,16 +114,9 @@ export function LotBidding({
     );
   }
 
-  if (viewer && !viewer.eligible) {
-    return (
-      <div className="grid gap-3">
-        <p className="text-base font-medium text-neutral-900">{t('notEligible.title')}</p>
-        <p className="text-sm text-neutral-900/60">{t('notEligible.body')}</p>
-        <Link href={ROUTES.storefront.contact} className="btn-secondary justify-self-start">
-          {t('notEligible.action')}
-        </Link>
-      </div>
-    );
+  const card = registrationCard(viewer);
+  if (card) {
+    return <LotRegistration card={card} lot={lot} mode={viewer?.registration?.mode ?? 'APPROVAL'} onViewer={setViewer} reload={reload} />;
   }
 
   const minimum = lot.minimumNextBidMinor ?? lot.startPriceMinor;
@@ -128,6 +127,8 @@ export function LotBidding({
 
   return (
     <div className="grid gap-4">
+      {letIn && standing === 'none' ? <RegistrationApproved alias={viewer?.registration?.alias ?? null} /> : null}
+
       {/* Programmatic focus lands here after a bid is accepted: the form that had it is replaced by this. */}
       <div ref={standingRef} tabIndex={-1} className="empty:hidden">
         <LotStanding standing={standing} minimumMinor={lot.minimumNextBidMinor} />
@@ -151,7 +152,18 @@ export function LotBidding({
             focusStanding.current = true;
             setViewer((current) => ({ eligible: true, leading: false, ...current, alias, participating: true }));
           }}
-          onNotEligible={() => setViewer((current) => ({ alias: null, participating: false, leading: false, ...current, eligible: false }))}
+          onNotEligible={(why) => {
+            setViewer((current) => ({
+              alias: null,
+              participating: false,
+              leading: false,
+              ...current,
+              eligible: false,
+              reason: { code: 'BIDDER_NOT_ELIGIBLE', why: why ?? 'NOT_REGISTERED', message: '' },
+            }));
+            // The refusal said why in a word; the read says the rest (the organiser's reason, an appeal).
+            reload();
+          }}
         />
       )}
 
@@ -208,7 +220,7 @@ function BidForm({
   applyEvent: (event: LotLiveEvent, options?: { clock?: boolean }) => void;
   refresh: () => Promise<void>;
   onPlaced: (alias: string) => void;
-  onNotEligible: () => void;
+  onNotEligible: (why: IneligibleWhy | undefined) => void;
 }) {
   const t = useTranslations('auction');
   const [text, setText] = useState(amountForInput(minimum));
@@ -245,7 +257,7 @@ function BidForm({
     } catch (error) {
       const failed = describeBidFailure(error);
       if (failed.newKey) pending.current = null;
-      if (failed.key === 'notEligible') onNotEligible();
+      if (failed.key === 'notEligible') onNotEligible(failed.why);
       setFailure(failed);
       if (failed.refresh) void refresh();
     } finally {

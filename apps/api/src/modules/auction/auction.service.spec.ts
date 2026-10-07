@@ -5,6 +5,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
 import { AuctionService } from './auction.service';
 import { DEFAULT_BID_RULES } from './bidding';
@@ -79,6 +80,7 @@ describe('AuctionService', () => {
       $transaction: jest.fn((arg: any) => (Array.isArray(arg) ? Promise.all(arg) : arg(prisma))),
     };
     audit = { record: jest.fn().mockImplementation(({ action }) => events.push(action)) };
+    const bidders = { strikeState: jest.fn().mockResolvedValue({ inWindow: 0, reviewDue: false }), policy: jest.fn().mockResolvedValue({ strikesToReview: 3, strikeWindowMs: 365 * 86_400_000 }) };
     settings = { get: jest.fn().mockResolvedValue(undefined) };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -89,6 +91,7 @@ describe('AuctionService', () => {
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1' } },
         { provide: AuditService, useValue: audit },
         { provide: AuctionRealtimeService, useValue: { publish: jest.fn() } },
+        { provide: AuctionBidderService, useValue: bidders },
       ],
     }).compile();
 
@@ -120,6 +123,33 @@ describe('AuctionService', () => {
       prisma.auction.create.mockImplementation(async ({ data }: any) => ({ id: 'a1', ...data }));
 
       expect((await service.create(dto, 'u1')).number).toMatch(/-0001$/);
+    });
+
+    describe('who may bid (WO-234.5)', () => {
+      const created = async (over: Record<string, unknown> = {}) => {
+        prisma.$queryRaw.mockResolvedValueOnce([{ max: 0 }]);
+        prisma.auction.create.mockImplementation(async ({ data }: any) => ({ id: 'a1', ...data }));
+        await service.create({ ...dto, ...over }, 'u1');
+        return prisma.auction.create.mock.calls[0][0].data;
+      };
+
+      it('vets bidders by approval when the request names nothing and the Setting is unset', async () => {
+        expect((await created()).registration).toBe('APPROVAL');
+      });
+
+      it('takes the deployment default from the Setting, and keeps a malformed one from loosening the sale', async () => {
+        settings.get.mockImplementation(async (key: string) => (key === 'auction.registration_default' ? 'OPEN' : undefined));
+        expect((await created()).registration).toBe('OPEN');
+        prisma.auction.create.mockClear();
+        settings.get.mockImplementation(async (key: string) => (key === 'auction.registration_default' ? 'anyone' : undefined));
+        expect((await created()).registration).toBe('APPROVAL');
+      });
+
+      it('lets the request choose, and then does not consult the Setting for it', async () => {
+        settings.get.mockImplementation(async (key: string) => (key === 'auction.registration_default' ? 'OPEN' : undefined));
+        expect((await created({ registration: 'VERIFIED' })).registration).toBe('VERIFIED');
+        expect(settings.get).not.toHaveBeenCalledWith('auction.registration_default');
+      });
     });
 
     it('refuses an end at or before the start and writes nothing', async () => {
@@ -210,6 +240,26 @@ describe('AuctionService', () => {
       expect(prisma.auction.update.mock.calls[0][0].data.title).toBe('Renamed');
       expect(audit.record.mock.calls[0][0].data.before.title).toBe('Clearance');
       expect(audit.record.mock.calls[0][0].data.after.title).toBe('Renamed');
+    });
+
+    it('changes who may bid while it is a draft, and records the old and the new rule', async () => {
+      lockedAs('DRAFT');
+      prisma.auction.findUniqueOrThrow.mockResolvedValue(draft({ registration: 'APPROVAL' }));
+      prisma.auction.update.mockResolvedValue(draft({ registration: 'OPEN' }));
+
+      await service.update('a1', { registration: 'OPEN' }, 'u1');
+
+      expect(prisma.auction.update.mock.calls[0][0].data.registration).toBe('OPEN');
+      expect(audit.record.mock.calls[0][0].data.before.registration).toBe('APPROVAL');
+      expect(audit.record.mock.calls[0][0].data.after.registration).toBe('OPEN');
+    });
+
+    it('leaves who may bid alone when the edit does not name it', async () => {
+      lockedAs('DRAFT');
+      prisma.auction.findUniqueOrThrow.mockResolvedValue(draft());
+      prisma.auction.update.mockResolvedValue(draft({ title: 'Renamed' }));
+      await service.update('a1', { title: 'Renamed' }, 'u1');
+      expect(prisma.auction.update.mock.calls[0][0].data.registration).toBeUndefined();
     });
 
     it.each(['SCHEDULED', 'OPEN', 'CLOSED', 'CANCELLED'])('refuses a %s auction and writes nothing', async (status) => {

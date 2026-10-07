@@ -12117,3 +12117,119 @@ Known costs and gaps, stated rather than hidden:
 - **Redis pub/sub is at-most-once.** A message sent while a node is
   disconnected is lost; the reconnect snapshot and the poll are what close the
   gap, which is why no delta is ever relied on.
+
+### ADR-086 addendum (2026-10-07) — WO-234.5 bidder registration, approval and strikes: exact parameters
+
+Built: `Auction.registration`, `BidderStatus.DECLINED`, the decision and appeal
+columns on `Bidder`, `BidderStrike`, the pure rules in `bidder-trust.ts`,
+`AuctionBidderService`, the customer routes `POST /auctions/:auctionId/registration`
+and `…/appeal`, the staff routes under `admin/auctions/:id/bidders`, the
+permission `auction.bidders.manage` (catalogue, the "Sales & payments" bundle and
+a migration that grants it to the live Admin role), the viewer's registration
+state, the lot page's register-to-bid states, and the Bidders panel and sheet on
+the admin auction page. One additive migration; no new dependency; the `auction`
+module still imports no other module (identity is read through the core
+`IdentityVerificationStatusRegistry`).
+
+Decisions, each with the alternative it displaced:
+
+- **How an auction vets its bidders is a column on the auction, not one
+  deployment switch.** A shop runs a free-for-all clearance and an invitation-only
+  sale in the same month. The value is chosen while the auction is a draft and
+  frozen from `schedule()` like every other rule bidders can see. The displaced
+  option, one Setting for the whole deployment, would have made the stricter sale
+  loosen or the looser one tighten whenever someone changed it.
+- **A single pure function decides eligibility.** `eligibility()` is called by
+  `placeBid()`, `setProxyBid()`, the viewer's own state and registration, so the
+  page's "you can bid" and the API's "you may not" cannot drift. The previous
+  shape had the same two checks written twice, in the service and in the public
+  read, with the same text copied into both.
+- **A strike belongs to a person and is computed, not stored.** The threshold is
+  "three in twelve months", a fact about someone across auctions; a counter on the
+  per-auction `Bidder` would be wrong the day they bid in a second auction, and a
+  counter of any kind goes stale when a strike is voided.
+- **Reaching the threshold flags and never suspends.** §8 says suspension is a
+  staff decision with a reason, and an automatic ban on a count is the silent ban
+  §8 rules out for fraud signals. The system's part is to stop *approving*
+  without a human: the registration lands `PENDING`, and an open-auction first bid
+  is refused until the person registers.
+- **A refused registration is `DECLINED`, not `SUSPENDED`.** The person reads
+  "your registration was not approved" and staff read a different history. The
+  cost is one enum value, added in a migration that does not use it.
+- **The reason is written for the bidder.** A refusal states its remedy
+  (design law `FLO-7`); the form says the bidder will read it, so staff do not put
+  an internal note there. The audit row carries the same text.
+- **Decisions, strikes, voids, registrations and appeals use `recordEvidence()`
+  in the same transaction.** They change what someone may do. A failed audit write
+  fails the act, where the module's other transitions use the log-and-continue
+  `record()`.
+- **Predicate-on-write on the status.** A decision is an `UPDATE … WHERE id = ?
+  AND status = <the status the staff member saw>`. Two staff acting on one
+  registration cannot both succeed: the second gets 409 `BIDDER_CHANGED` and the
+  fresh row, never a silent overwrite.
+- **Nobody decides on themselves.** Compared on `userId` at the act
+  (`CANNOT_DECIDE_OWN`), because the same person can hold `auction.bidders.manage`
+  and a customer account.
+- **The strike policy is read before a bid's transaction opens, never inside
+  it.** The policy is two Settings, and a Setting that is not cached is read on a
+  second pool connection. A first-time bidder under `OPEN` needs it to learn
+  whether they are at the threshold, so the first version read it inside the bid
+  transaction: each bid held one of the pool's ten connections while asking for
+  another. With the cache cold (a restart, or the 30 seconds an L1 entry lives)
+  and more first-time bidders than connections, every connection was held by a
+  bid waiting for one, and every bid timed out as a 503. It showed first as three
+  concurrency tests failing in the combined e2e run and passing alone. The policy
+  is now read by `placeBid()` and `setProxyBid()` before `inBidTransaction()` and
+  handed in; `strikeState()` takes it as a required argument, so a caller cannot
+  forget. Pinned two ways: unit tests assert the order (policy, then
+  transaction), and `test/auction-bidders.e2e-spec.ts` runs 40 first-time bidders
+  at once after `settings.invalidate()` against a pool of ten, which returns 503
+  to all 40 with the read inside the transaction and to none with it before.
+  The displaced option, a longer pool timeout, hides the starvation until the
+  crowd is a little bigger. The rule generalises: nothing inside an interactive
+  transaction may wait on a second connection.
+- **Suspension does not rewrite the ledger.** An accepted bid is a record
+  (§5.2). The suspended bidder's maximum stops answering (the proxy read already
+  requires `APPROVED`) and no new bid is accepted; a standing bid is removed only
+  by a void under `auction.adjust` (WO-234.9), and the screen says so when staff
+  suspend.
+
+| Parameter | Exact value | Applies to | Why this number (not smaller or larger) | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Strikes to review | 3 not voided within 365 days, per person; Settings `auction.strikes_to_review` 1 to 20 and `auction.strike_window_days` 1 to 3 650 | the flag and the `PENDING` landing | One slip is human, three is a pattern; a year shows a pattern without one bad week following someone for ever | `strikeState()` in `bidder-trust.ts`, `AuctionBidderService` | flags only; a missing or malformed value → 3 and 365 |
+| Default registration | `APPROVAL`; Setting `auction.registration_default` | `AuctionService.create()` when the request names none | The cost of one click on an open sale is far below the cost of an unvetted winner who does not pay | `create()` | malformed → `APPROVAL`; the column itself defaults to `OPEN` for auctions that already ran |
+| Registration throttle | 10 per 60 000 ms per client address | `POST /auctions/:auctionId/registration` | Once per auction per person: ten lets an office register several people, a script is held to one every six seconds | `@Throttle`, Redis-backed, off under `NODE_ENV=test` | 429, nothing changed |
+| Appeal throttle | 5 per 60 000 ms per client address | `POST /auctions/:auctionId/appeal` | An appeal is written once | same | 429 |
+| Reason length | 1 to 500 characters | decline, suspend, keep, strike, void | A paragraph a person reads and an audit row stores | DTO `@MaxLength` | 400 naming the limit |
+| Appeal length | 1 to 1 000 characters | an appeal | Room to explain without becoming a letter | DTO `@MaxLength` | 400 |
+| Open appeals | 1 per bidder | the bidder row | One question at a time; the audit trail holds history | `appeal()` | 409 `APPEAL_ALREADY_OPEN` |
+| Waiting-page refresh | 20 000 ms ±20 % while `PENDING` or an appeal is open, and on tab focus | the lot page's own state read | An approval is seen within half a minute; three reads a minute per waiting page is cheap, and the spread keeps a crowd from lining up | `useLotViewer` | the page keeps showing "waiting" |
+| Bidders list | 20 a page, 100 at most | the staff queue | The shared pagination limits | `PaginationQueryDto` | none |
+
+Pillars touched: architecture (one pure rule shared by four callers; no new
+coupling, identity through an existing extension point), scalable (the queue is
+indexed `(auctionId, status, createdAt)` and paged; the strike window reads only
+rows inside it through `(userId, recordedAt)`; the bid hot path adds no query for
+a bidder that already exists), secure by design (`auction.bidders.manage` on
+every staff route, checked server-side; the customer routes find the caller's own
+row by `(auctionId, userId)` and never take a bidder id; identity columns leave
+the server only on the staff routes; a person cannot decide on themselves),
+stable and reliable (predicate-on-write decisions, the audit row in the same
+transaction, an identity lookup that fails is "not verified"), observable (`Logger`
+lines for each decision with the actor and the auction, no reason text or contact
+details in the log; the audit rows are the trail).
+
+Known costs and gaps, stated rather than hidden:
+
+- **No message reaches a bidder or an approver.** There is no `notify` wiring in
+  this work order, so the person sees the state on the lot page (refreshed every
+  20 s while waiting) and staff see a count on the auction page. The first
+  consumer of a `bidder decided` event would be `notify`; none is published until
+  then, as with `auction.lot_closed`.
+- **A suspended leader still leads.** Their bids stand until WO-234.9 can void
+  them, which matters on a lot that closes before then.
+- **B2B accounts, `Party` conflict barring, `expiresAt`, deposits and lot-value
+  caps are not built;** each is named in §8 of doc 234 with the work order that
+  owns it.
+- **Strikes are entered by staff.** Nothing records "did not pay" until
+  settlement exists (WO-234.6), which will call the same method.

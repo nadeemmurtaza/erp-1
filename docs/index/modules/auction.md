@@ -3,7 +3,7 @@
 
 # Module: `auction`
 
-Pack **core** · enabled by the `MODULES` allowlist · 20 files
+Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 
 
@@ -11,54 +11,68 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 Source: `apps/api/src/modules/auction/`
 
-## Files (20 · 5,369 lines)
+## Files (26 · 7,416 lines)
 
 All paths relative to `apps/api/src/modules/auction`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `auction-bid.controller.ts` | controller | 74 | 1 | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
-| `auction-bidding.service.spec.ts` | unit test | 623 | — |  |
+| `auction-bid.controller.ts` | controller | 97 | 1 | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `auction-bidder.controller.ts` | controller | 75 | 1 | Staff decide who may bid in an auction, hold bidders to account with strikes, and answer their appeals (launchpad-apps/… |
+| `auction-bidder.service.spec.ts` | unit test | 575 | — |  |
+| `auction-bidder.service.ts` | service | 531 | 7 |  |
+| `auction-bidding.service.spec.ts` | unit test | 719 | — |  |
 | `auction-lifecycle.cron.ts` | scheduled job | 41 | 1 | Opens and closes auctions every 15 seconds (doc 234 §6, §12). |
 | `auction-lifecycle.service.spec.ts` | unit test | 108 | — |  |
 | `auction-lifecycle.service.ts` | service | 251 | 4 | How late a lot may be found before the delay is treated as an outage, in milliseconds. |
 | `auction-public.controller.spec.ts` | unit test | 74 | — |  |
 | `auction-public.controller.ts` | controller | 88 | 2 | The status and headers of a server-sent-events response, sent before the first frame. |
-| `auction-public.service.spec.ts` | unit test | 357 | — |  |
-| `auction-public.service.ts` | service | 405 | 7 | How long a lot's public page may be served from this node's memory, in milliseconds. |
+| `auction-public.service.spec.ts` | unit test | 447 | — |  |
+| `auction-public.service.ts` | service | 413 | 7 | How long a lot's public page may be served from this node's memory, in milliseconds. |
 | `auction-realtime.service.spec.ts` | unit test | 301 | — |  |
 | `auction-realtime.service.ts` | service | 315 | 8 | The shortest gap between two writes to a lot's watchers on one node, in milliseconds. |
-| `auction.controller.ts` | controller | 119 | 1 | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `auction.module.ts` | nest module | 25 | 1 |  |
-| `auction.service.spec.ts` | unit test | 489 | — |  |
-| `auction.service.ts` | service | 1128 | 11 | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and the hidde… |
+| `auction.controller.ts` | controller | 121 | 1 | launchpad-apps/234-auction-app.md (WO-234.1). |
+| `auction.module.ts` | nest module | 35 | 1 |  |
+| `auction.service.spec.ts` | unit test | 539 | — |  |
+| `auction.service.ts` | service | 1144 | 11 | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and the hidde… |
+| `bidder-provision.ts` | module | 30 | 2 | Serialises the creation of bidders within one auction, so aliases stay "Bidder 1, 2, 3…" with no gap or repeat. |
+| `bidder-trust.spec.ts` | unit test | 237 | — |  |
+| `bidder-trust.ts` | module | 205 | 27 | The pure half of bidder trust (launchpad-apps/234-auction-app.md §8, §15, WO-234.5): who may bid, how a registration is… |
 | `bidding.spec.ts` | unit test | 297 | — |  |
 | `bidding.ts` | module | 236 | 16 | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
-| `auction.dto.ts` | dto | 235 | 15 | The largest price or bid, in minor units (doc 234 §12). |
+| `auction.dto.ts` | dto | 334 | 24 | The largest price or bid, in minor units (doc 234 §12). |
 | `lot-live.spec.ts` | unit test | 99 | — |  |
 | `lot-live.ts` | module | 104 | 7 | What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4). |
 
 
-## HTTP routes (19)
+## HTTP routes (27)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/auctions` | `auction.view` `auction.manage` | `AuctionController.list` :33 | Auctions, newest first, optionally filtered by status |
-| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` :47 | Draft an auction |
-| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` | `AuctionController.get` :40 | One auction with its lots |
-| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` :54 | Edit a draft auction |
-| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` :115 | Cancel a draft or scheduled auction, with a reason |
-| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` :61 | Add a lot to a draft auction |
-| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` :68 | Edit a lot on a draft auction |
-| GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` :87 | A lot’s accepted bids, newest first, bidders by alias only |
-| GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` :94 | Re-walk a lot’s bid chain and say whether anything was inserted, edited or removed |
-| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` :80 | Withdraw a lot from a draft auction — kept on record, never deleted |
-| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` :101 | Schedule a draft auction to open at its start time |
-| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` :108 | Return a scheduled auction to draft, before it opens |
-| POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` :35 | Place a bid on an open lot; a retry with the same idempotency key returns the accepted bid |
-| GET | `/auctions/lots/:lotId/me` | signed-in | `AuctionBidController.me` :70 | Whether you lead this lot and may bid on it |
-| GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` :63 | Your own maximum on a lot. Nobody else’s is readable through any route |
-| PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` :53 | Set or raise your own maximum on a lot; the system bids for you up to it. It can never be… |
+| GET | `/admin/auctions` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.list` :35 | Auctions, newest first, optionally filtered by status |
+| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` :49 | Draft an auction |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.get` :42 | One auction with its lots |
+| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` :56 | Edit a draft auction |
+| GET | `/admin/auctions/:id/bidders` | `auction.bidders.manage` | `AuctionBidderController.list` :31 | The auction’s bidders, oldest first, with who they are and their strikes |
+| GET | `/admin/auctions/:id/bidders/:bidderId` | `auction.bidders.manage` | `AuctionBidderController.detail` :37 | One bidder: who they are, whether their identity is verified, their strikes and any appeal |
+| POST | `/admin/auctions/:id/bidders/:bidderId/decision` | `auction.bidders.manage` | `AuctionBidderController.decide` :43 | Approve, decline or suspend a bidder, or keep a decision they appealed. A refusal carries… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes` | `auction.bidders.manage` | `AuctionBidderController.recordStrike` :54 | Record a strike against the person behind a bidder. It flags at the threshold and never s… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes/:strikeId/void` | `auction.bidders.manage` | `AuctionBidderController.voidStrike` :65 | Void a strike with a reason; it stays on record and stops counting |
+| GET | `/admin/auctions/:id/bidders/summary` | `auction.bidders.manage` | `AuctionBidderController.summary` :25 | How many bidders are waiting, approved, stopped, or waiting on an appeal |
+| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` :117 | Cancel a draft or scheduled auction, with a reason |
+| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` :63 | Add a lot to a draft auction |
+| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` :70 | Edit a lot on a draft auction |
+| GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` :89 | A lot’s accepted bids, newest first, bidders by alias only |
+| GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` :96 | Re-walk a lot’s bid chain and say whether anything was inserted, edited or removed |
+| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` :82 | Withdraw a lot from a draft auction — kept on record, never deleted |
+| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` :103 | Schedule a draft auction to open at its start time |
+| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` :110 | Return a scheduled auction to draft, before it opens |
+| POST | `/auctions/:auctionId/appeal` | signed-in | `AuctionBidController.appeal` :86 | Ask the organiser to look again at a declined or suspended place, once for each decision |
+| POST | `/auctions/:auctionId/registration` | signed-in | `AuctionBidController.join` :78 | Join an auction to bid in it: approved at once, or waiting for the organiser, as the auct… |
+| POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` :37 | Place a bid on an open lot; a retry with the same idempotency key returns the accepted bid |
+| GET | `/auctions/lots/:lotId/me` | signed-in | `AuctionBidController.me` :93 | Whether you lead this lot and may bid on it |
+| GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` :65 | Your own maximum on a lot. Nobody else’s is readable through any route |
+| PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` :55 | Set or raise your own maximum on a lot; the system bids for you up to it. It can never be… |
 | GET | `/auctions/public/lots` | **PUBLIC** | `AuctionPublicController.list` :53 | Lots to browse: live, upcoming or ended |
 | GET | `/auctions/public/lots/:lotId` | **PUBLIC** | `AuctionPublicController.lot` :61 | One lot as a visitor sees it: price, time left, newest bids, and how it ended |
 | GET | `/auctions/public/lots/:lotId/stream` | **PUBLIC** | `AuctionPublicController.stream` :76 | Live price and bids for one lot as server-sent events |
@@ -80,15 +94,16 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Auction` | 17 | :55 | One auction event. |
-| `AuctionLot` | 22 | :95 | One thing being sold within an auction. |
-| `AuctionResult` | 9 | :224 | How a lot ended (doc 234 §5.5). |
-| `Bid` | 12 | :169 | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
-| `Bidder` | 10 | :146 | A person bidding in one auction. |
-| `ProxyBid` | 9 | :198 | A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to… |
+| `Auction` | 18 | :69 | One auction event. |
+| `AuctionLot` | 22 | :113 | One thing being sold within an auction. |
+| `AuctionResult` | 9 | :275 | How a lot ended (doc 234 §5.5). |
+| `Bid` | 12 | :220 | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
+| `Bidder` | 16 | :167 | A person bidding in one auction. |
+| `BidderStrike` | 11 | :196 | A mark against a person (WO-234.5), recorded by staff with a reason and, when there is one, the lot it concer… |
+| `ProxyBid` | 9 | :249 | A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to… |
 
 
-Enums: `AuctionLotStatus` (4) · `AuctionStatus` (7) · `AuctionType` (3) · `BidderStatus` (3) · `BidKind` (3)
+Enums: `AuctionLotStatus` (4) · `AuctionRegistration` (3) · `AuctionStatus` (7) · `AuctionType` (3) · `BidderStatus` (4) · `BidKind` (3)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -104,8 +119,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`AuctionModule`** (`auction.module.ts`)
 - imports: —
-- controllers: `AuctionController`, `AuctionBidController`, `AuctionPublicController`
-- providers: `AuctionService`, `AuctionLifecycleService`, `AuctionLifecycleCron`, `AuctionPublicService`, `AuctionRealtimeService`
+- controllers: `AuctionController`, `AuctionBidderController`, `AuctionBidController`, `AuctionPublicController`
+- providers: `AuctionService`, `AuctionBidderService`, `AuctionLifecycleService`, `AuctionLifecycleCron`, `AuctionPublicService`, `AuctionRealtimeService`
 - exports: `AuctionService`
 
 
@@ -115,6 +130,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `common`
 - core `config`
+- core `extension-points`
 - core `prisma`
 - core `redis`
 - core `settings`
@@ -126,16 +142,18 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (8)
+## Tests (10)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `auction-bidding.service.spec.ts` | 47 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves under the bid · anti-s… |
+| `auction-bidder.service.spec.ts` | 44 | AuctionBidderService · joining an auction · an appeal · a staff decision · reading the Settings, which is never done in… |
+| `auction-bidding.service.spec.ts` | 53 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · who may bid, as the auction decides (WO-2… |
 | `auction-lifecycle.service.spec.ts` | 6 | AuctionLifecycleService · AuctionLifecycleCron |
 | `auction-public.controller.spec.ts` | 3 | AuctionPublicController stream |
-| `auction-public.service.spec.ts` | 31 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState · the list |
+| `auction-public.service.spec.ts` | 36 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState · registration, as th… |
 | `auction-realtime.service.spec.ts` | 21 | AuctionRealtimeService · a stream · publishing · another node’s events, off Redis |
-| `auction.service.spec.ts` | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unschedule · cancel |
+| `auction.service.spec.ts` | 41 | AuctionService · create · who may bid (WO-234.5) · list · get · update · addLot · updateLot · withdrawLot · schedule ·… |
+| `bidder-trust.spec.ts` | 29 | eligibility · decideRegistration · nextBidderStatus · appealState · registrationView · strike policy · parseRegistratio… |
 | `bidding.spec.ts` | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias · antiSnipeExtensi… |
 | `lot-live.spec.ts` | 9 | mergeLiveEvents · eventForAcceptedBids |
 
@@ -144,7 +162,15 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AuctionBidController` | class | `auction-bid.controller.ts:26` | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `AuctionBidController` | class | `auction-bid.controller.ts:27` | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `AuctionBidderController` | class | `auction-bidder.controller.ts:20` | Staff decide who may bid in an auction, hold bidders to account with strikes, and answer their appeals (launc… |
+| `BidderUser` | interface | `auction-bidder.service.ts:29` |  |
+| `BidderPerson` | interface | `auction-bidder.service.ts:35` | What staff may know about a person: the only place a bidder's name, email or phone leave the server (doc 234… |
+| `BidderRowView` | interface | `auction-bidder.service.ts:41` |  |
+| `StrikeView` | interface | `auction-bidder.service.ts:55` |  |
+| `BidderDetailView` | interface | `auction-bidder.service.ts:65` |  |
+| `BidderSummary` | interface | `auction-bidder.service.ts:71` |  |
+| `AuctionBidderService` | class | `auction-bidder.service.ts:99` | Who may bid, and who has been told they may not (launchpad-apps/234-auction-app.md §8, WO-234.5). |
 | `AuctionLifecycleCron` | class | `auction-lifecycle.cron.ts:18` | Opens and closes auctions every 15 seconds (doc 234 §6, §12). |
 | `OUTAGE_GRACE_MS` | const | `auction-lifecycle.service.ts:20` | How late a lot may be found before the delay is treated as an outage, in milliseconds. |
 | `OUTAGE_EXTENSION_MS` | const | `auction-lifecycle.service.ts:29` | How long a lot found past `OUTAGE_GRACE_MS` is given, counted from the moment of recovery. |
@@ -152,13 +178,13 @@ check there before adding another.
 | `AuctionLifecycleService` | class | `auction-lifecycle.service.ts:68` | Opens and closes auctions on the clock (launchpad-apps/234-auction-app.md §5.5, §6, §16.7 and §16.10). |
 | `openEventStream` | function | `auction-public.controller.ts:17` | The status and headers of a server-sent-events response, sent before the first frame. |
 | `AuctionPublicController` | class | `auction-public.controller.ts:44` | What anyone may see of an auction without signing in (launchpad-apps/ 234-auction-app.md §11, WO-234.4): lots… |
-| `LOT_PAGE_CACHE_MS` | const | `auction-public.service.ts:20` | How long a lot's public page may be served from this node's memory, in milliseconds. |
-| `PAGE_BIDS` | const | `auction-public.service.ts:30` | Bids a lot page lists, newest first. |
-| `PublicLotPhase` | type | `auction-public.service.ts:32` | Bids a lot page lists, newest first. |
-| `PublicLotView` | interface | `auction-public.service.ts:35` | A lot as anyone may see it. |
-| `PublicLotSummary` | interface | `auction-public.service.ts:60` |  |
-| `ViewerLotState` | interface | `auction-public.service.ts:77` | What the signed-in caller is to this lot: whether they lead it and whether they may bid. |
-| `AuctionPublicService` | class | `auction-public.service.ts:113` | The read side of the Auction app for people who are not signed in (launchpad-apps/234-auction-app.md §11, WO-… |
+| `LOT_PAGE_CACHE_MS` | const | `auction-public.service.ts:22` | How long a lot's public page may be served from this node's memory, in milliseconds. |
+| `PAGE_BIDS` | const | `auction-public.service.ts:32` | Bids a lot page lists, newest first. |
+| `PublicLotPhase` | type | `auction-public.service.ts:34` | Bids a lot page lists, newest first. |
+| `PublicLotView` | interface | `auction-public.service.ts:37` | A lot as anyone may see it. |
+| `PublicLotSummary` | interface | `auction-public.service.ts:62` |  |
+| `ViewerLotState` | interface | `auction-public.service.ts:79` | What the signed-in caller is to this lot: whether they lead it and whether they may bid. |
+| `AuctionPublicService` | class | `auction-public.service.ts:118` | The read side of the Auction app for people who are not signed in (launchpad-apps/234-auction-app.md §11, WO-… |
 | `FLUSH_INTERVAL_MS` | const | `auction-realtime.service.ts:18` | The shortest gap between two writes to a lot's watchers on one node, in milliseconds. |
 | `MAX_STREAMS_PER_NODE` | const | `auction-realtime.service.ts:27` | Open streams one node will hold. |
 | `HEARTBEAT_MS` | const | `auction-realtime.service.ts:34` | A comment line sent this often keeps a quiet stream from being closed by an idle-connection timeout on a prox… |
@@ -167,8 +193,8 @@ check there before adding another.
 | `MAX_BUFFERED_BYTES` | const | `auction-realtime.service.ts:58` | A watcher whose socket already holds more than this unsent is not written to until it drains: its updates are… |
 | `LiveStreamTarget` | interface | `auction-realtime.service.ts:66` | What the fan-out needs of one watcher's connection: a writable stream, nothing about HTTP. |
 | `AuctionRealtimeService` | class | `auction-realtime.service.ts:119` | Live fan-out of one lot's changes to everyone watching it (launchpad-apps/ 234-auction-app.md §6, WO-234.4). |
-| `AuctionController` | class | `auction.controller.ts:27` | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `AuctionModule` | class | `auction.module.ts:24` |  |
+| `AuctionController` | class | `auction.controller.ts:29` | launchpad-apps/234-auction-app.md (WO-234.1). |
+| `AuctionModule` | class | `auction.module.ts:34` |  |
 | `AuctionLotView` | type | `auction.service.ts:86` | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and… |
 | `AuctionDetail` | type | `auction.service.ts:96` |  |
 | `AuctionResultView` | interface | `auction.service.ts:103` | A lot's outcome as staff see it (doc 234 §5.5): the highest bidder by alias, the price, and how many bids it… |
@@ -179,7 +205,36 @@ check there before adding another.
 | `SetProxyBidInput` | interface | `auction.service.ts:154` |  |
 | `ProxyBidResult` | interface | `auction.service.ts:161` |  |
 | `BidIntegrity` | interface | `auction.service.ts:169` |  |
-| `AuctionService` | class | `auction.service.ts:237` | The Auction app (launchpad-apps/234-auction-app.md): WO-234.1's drafting of an auction and its lots, scheduli… |
+| `AuctionService` | class | `auction.service.ts:239` | The Auction app (launchpad-apps/234-auction-app.md): WO-234.1's drafting of an auction and its lots, scheduli… |
+| `BIDDER_LOCK_NAMESPACE` | const | `bidder-provision.ts:6` | Serialises the creation of bidders within one auction, so aliases stay "Bidder 1, 2, 3…" with no gap or repea… |
+| `provisionBidder` | function | `bidder-provision.ts:17` | Gives a person their place in an auction: "Bidder N", N one more than the auction's bidders so far, taken und… |
+| `BidderStatus` | type | `bidder-trust.ts:10` | The pure half of bidder trust (launchpad-apps/234-auction-app.md §8, §15, WO-234.5): who may bid, how a regis… |
+| `RegistrationMode` | type | `bidder-trust.ts:13` | How an auction vets who may bid (`Auction.registration`). |
+| `REGISTRATION_MODES` | const | `bidder-trust.ts:15` | How an auction vets who may bid (`Auction.registration`). |
+| `BidderDecision` | type | `bidder-trust.ts:18` | What staff can do to a bidder. |
+| `BIDDER_DECISIONS` | const | `bidder-trust.ts:20` | What staff can do to a bidder. |
+| `IneligibleReason` | type | `bidder-trust.ts:23` | Why a person may not bid. |
+| `INELIGIBLE_MESSAGES` | const | `bidder-trust.ts:26` | Said to the caller in English; the storefront tells it in the shopper's language from the reason alone. |
+| `Eligibility` | type | `bidder-trust.ts:34` |  |
+| `eligibility` | function | `bidder-trust.ts:47` | Whether someone may bid (doc 234 §5.7, §8). |
+| `decideRegistration` | function | `bidder-trust.ts:74` | The status a registration is first given. |
+| `Transition` | type | `bidder-trust.ts:86` |  |
+| `nextBidderStatus` | function | `bidder-trust.ts:93` | What a staff decision does to a bidder in a given state. |
+| `AppealState` | type | `bidder-trust.ts:114` |  |
+| `appealState` | function | `bidder-trust.ts:124` | Where a bidder's appeal stands. |
+| `RegistrationView` | interface | `bidder-trust.ts:130` | What a person is told about their own place in one auction. |
+| `BidderRow` | interface | `bidder-trust.ts:142` |  |
+| `registrationView` | function | `bidder-trust.ts:152` | The registration card's state, from the row alone: pure, so the viewer read and the join and appeal answers s… |
+| `decisionNeedsReason` | const | `bidder-trust.ts:170` | A decline, a suspension and an answer to an appeal are read by the bidder, so each needs its reason; an appro… |
+| `TrustPolicy` | interface | `bidder-trust.ts:173` | The strike policy: how many strikes flag a person, and how far back one counts. |
+| `DEFAULT_STRIKES_TO_REVIEW` | const | `bidder-trust.ts:178` |  |
+| `DEFAULT_STRIKE_WINDOW_DAYS` | const | `bidder-trust.ts:179` |  |
+| `MAX_STRIKES_TO_REVIEW` | const | `bidder-trust.ts:180` |  |
+| `MAX_STRIKE_WINDOW_DAYS` | const | `bidder-trust.ts:181` |  |
+| `parseTrustPolicy` | function | `bidder-trust.ts:189` | Takes each Setting it can trust and the default for the other (§12, "missing or malformed → the defaults, fie… |
+| `strikeWindowStart` | const | `bidder-trust.ts:196` | Strikes recorded at or after this instant count. |
+| `isReviewDue` | const | `bidder-trust.ts:199` | True once a person has as many live strikes in the window as the policy names. |
+| `parseRegistrationMode` | function | `bidder-trust.ts:202` | Reads a stored or requested registration mode, with the fallback for anything else (the Setting's default is… |
 | `MAX_PRICE_MINOR` | const | `bidding.ts:18` | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
 | `BidRules` | type | `bidding.ts:21` | A type alias, not an interface, so it can be stored as the auction's JSON column as it is. |
 | `DEFAULT_BID_RULES` | const | `bidding.ts:41` | What an auction falls back to when its frozen rules are missing or malformed (doc 234 §12, "rule missing → 5%… |
@@ -196,21 +251,30 @@ check there before adding another.
 | `resolveProxy` | function | `bidding.ts:167` | What the system should bid on someone's behalf now, if anything (doc 234 §5.3). |
 | `LotOutcome` | interface | `bidding.ts:211` |  |
 | `lotOutcome` | function | `bidding.ts:223` | How a lot ended (doc 234 §5.5). |
-| `MAX_MINOR` | const | `auction.dto.ts:24` | The largest price or bid, in minor units (doc 234 §12). |
-| `CREATABLE_AUCTION_TYPES` | const | `auction.dto.ts:27` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
-| `AUCTION_STATUSES` | const | `auction.dto.ts:29` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
-| `CreateAuctionDto` | class | `auction.dto.ts:31` |  |
-| `UpdateAuctionDto` | class | `auction.dto.ts:64` |  |
-| `CancelAuctionDto` | class | `auction.dto.ts:95` |  |
-| `CreateAuctionLotDto` | class | `auction.dto.ts:103` |  |
-| `UpdateAuctionLotDto` | class | `auction.dto.ts:137` |  |
-| `AuctionListQueryDto` | class | `auction.dto.ts:174` | Page, page size, free-text search (`q`: title or number) and `order` (by start time) come from the shared lis… |
-| `PlaceBidDto` | class | `auction.dto.ts:181` |  |
-| `BidListQueryDto` | class | `auction.dto.ts:202` | Newest bid first; page, page size and `order` come from the shared list query. |
-| `SetProxyBidDto` | class | `auction.dto.ts:204` | Newest bid first; page, page size and `order` come from the shared list query. |
-| `PUBLIC_LOT_STATES` | const | `auction.dto.ts:216` |  |
-| `PublicLotState` | type | `auction.dto.ts:217` |  |
-| `PublicLotListQueryDto` | class | `auction.dto.ts:219` |  |
+| `MAX_MINOR` | const | `auction.dto.ts:25` | The largest price or bid, in minor units (doc 234 §12). |
+| `CREATABLE_AUCTION_TYPES` | const | `auction.dto.ts:28` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
+| `AUCTION_STATUSES` | const | `auction.dto.ts:30` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
+| `MAX_REASON_LENGTH` | const | `auction.dto.ts:33` | Longest reason a staff member writes for a decision or a strike, and the bidder reads (doc 234 §12). |
+| `MAX_APPEAL_LENGTH` | const | `auction.dto.ts:35` | Longest appeal a bidder writes. |
+| `CreateAuctionDto` | class | `auction.dto.ts:37` | Longest appeal a bidder writes. |
+| `UpdateAuctionDto` | class | `auction.dto.ts:80` |  |
+| `CancelAuctionDto` | class | `auction.dto.ts:119` |  |
+| `CreateAuctionLotDto` | class | `auction.dto.ts:127` |  |
+| `UpdateAuctionLotDto` | class | `auction.dto.ts:161` |  |
+| `AuctionListQueryDto` | class | `auction.dto.ts:198` | Page, page size, free-text search (`q`: title or number) and `order` (by start time) come from the shared lis… |
+| `PlaceBidDto` | class | `auction.dto.ts:205` |  |
+| `BidListQueryDto` | class | `auction.dto.ts:226` | Newest bid first; page, page size and `order` come from the shared list query. |
+| `SetProxyBidDto` | class | `auction.dto.ts:228` | Newest bid first; page, page size and `order` come from the shared list query. |
+| `PUBLIC_LOT_STATES` | const | `auction.dto.ts:240` |  |
+| `PublicLotState` | type | `auction.dto.ts:241` |  |
+| `PublicLotListQueryDto` | class | `auction.dto.ts:243` |  |
+| `BIDDER_FILTERS` | const | `auction.dto.ts:260` |  |
+| `BidderFilter` | type | `auction.dto.ts:261` |  |
+| `BidderListQueryDto` | class | `auction.dto.ts:264` | Oldest first by default: a queue is worked from the top. |
+| `BidderDecisionDto` | class | `auction.dto.ts:281` |  |
+| `RecordStrikeDto` | class | `auction.dto.ts:305` |  |
+| `VoidStrikeDto` | class | `auction.dto.ts:319` |  |
+| `AppealDto` | class | `auction.dto.ts:327` |  |
 | `MAX_EVENT_BIDS` | const | `lot-live.ts:16` | Bids carried by one event. |
 | `LiveBid` | interface | `lot-live.ts:18` | Bids carried by one event. |
 | `LotPublicOutcome` | type | `lot-live.ts:28` | How a lot ended, as the public may see it: never the reserve, only whether it was sold. |

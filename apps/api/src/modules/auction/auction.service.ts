@@ -23,11 +23,13 @@ import { documentNumber, documentNumberPrefix } from '../../core/settings/docume
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
+import { provisionBidder } from './bidder-provision';
+import { eligibility, INELIGIBLE_MESSAGES, parseRegistrationMode, type BidderStatus, type RegistrationMode, type TrustPolicy } from './bidder-trust';
 import {
   antiSnipeExtensionMs,
   bidCanonical,
-  bidderAlias,
   minimumNextBid,
   parseBidRules,
   resolveProxy,
@@ -47,8 +49,6 @@ import { eventForAcceptedBids } from './lot-live';
 const AUCTION_NUMBER_LOCK_NAMESPACE = 8_241_170;
 /** Serialises every writer of one lot's price: the lock key is the lot id. */
 const BID_LOT_LOCK_NAMESPACE = 8_241_171;
-/** Serialises first-bid provisioning of bidders within one auction, so aliases stay "Bidder 1, 2, 3…" with no gap or repeat. */
-const BIDDER_LOCK_NAMESPACE = 8_241_172;
 
 /**
  * How long one bid may wait for a database connection and then run, in
@@ -191,6 +191,8 @@ interface LotRow {
   /** Milliseconds of anti-snipe extension this lot has used. */
   extendedMs: number;
   bidRules: unknown;
+  /** How the auction vets who may bid; read with the lot so the gate sees the rule as it is under the lot's lock. */
+  registration: string;
   createdById: string;
   /** The database clock when the row was read, under the lot's lock. */
   now: Date;
@@ -243,6 +245,7 @@ export class AuctionService {
     private readonly config: AppConfigService,
     private readonly audit: AuditService,
     private readonly realtime: AuctionRealtimeService,
+    private readonly bidders: AuctionBidderService,
   ) {}
 
   async list(query: AuctionListQueryDto) {
@@ -307,6 +310,8 @@ export class AuctionService {
     const endsAt = new Date(dto.endsAt);
     this.assertWindow(startsAt, endsAt);
     if (dto.outletLocationId) await this.assertLocation(dto.outletLocationId);
+    // The auction holds its own value from here on; the Setting is only the default for a new one.
+    const registration = dto.registration ?? parseRegistrationMode(await this.settings.get<unknown>(SettingKey.AuctionRegistrationDefault));
 
     const auction = await this.prisma.$transaction(async (tx) => {
       const number = await nextAuctionNumber(tx, this.settings, this.config);
@@ -320,6 +325,7 @@ export class AuctionService {
           currency: BRAND.locale.currency,
           terms: dto.terms?.trim() || null,
           outletLocationId: dto.outletLocationId ?? null,
+          registration,
           createdById: actorId,
         },
       });
@@ -330,7 +336,7 @@ export class AuctionService {
       action: 'auction.created',
       entity: 'Auction',
       entityId: auction.id,
-      data: { number: auction.number, title: auction.title },
+      data: { number: auction.number, title: auction.title, registration: auction.registration },
     });
     this.logger.log(`Auction ${auction.number} drafted by ${actorId}`);
     return auction;
@@ -357,6 +363,7 @@ export class AuctionService {
           endsAt,
           terms: dto.terms === undefined ? undefined : dto.terms.trim() || null,
           outletLocationId: dto.outletLocationId,
+          registration: dto.registration,
         },
       });
       return { before: current, after: updated };
@@ -368,8 +375,8 @@ export class AuctionService {
       entity: 'Auction',
       entityId: id,
       data: {
-        before: { title: before.title, startsAt: before.startsAt, endsAt: before.endsAt, outletLocationId: before.outletLocationId },
-        after: { title: after.title, startsAt: after.startsAt, endsAt: after.endsAt, outletLocationId: after.outletLocationId },
+        before: { title: before.title, startsAt: before.startsAt, endsAt: before.endsAt, outletLocationId: before.outletLocationId, registration: before.registration },
+        after: { title: after.title, startsAt: after.startsAt, endsAt: after.endsAt, outletLocationId: after.outletLocationId, registration: after.registration },
       },
     });
     return after;
@@ -554,7 +561,10 @@ export class AuctionService {
    * leaves nothing, so a retry with the same key is safe.
    */
   async placeBid(input: PlaceBidInput): Promise<PlaceBidResult> {
-    const result = await this.inBidTransaction(input.lotId, (tx) => this.placeBidOnce(tx, input));
+    // Read before the transaction opens, never inside it: a Setting that is not cached is read on another pool connection, and a
+    // crowd of first-time bidders each holding one while waiting for a second would starve the pool until every one of them timed out.
+    const policy = await this.bidders.policy();
+    const result = await this.inBidTransaction(input.lotId, (tx) => this.placeBidOnce(tx, input, policy));
     // Only after the commit, and never waited on: the price is a fact in
     // Postgres whether or not anyone is told (AuctionRealtimeService).
     if (!result.replayed) this.announce(result.lot, [result.bid, ...(result.autoBid ? [result.autoBid] : [])]);
@@ -600,7 +610,7 @@ export class AuctionService {
     const rows = await tx.$queryRaw<LotRow[]>`
       SELECT l."id", l."auctionId", l."status" AS "lotStatus", l."startPriceMinor", l."currentBidMinor",
              l."leaderBidderId", l."bidSeq", l."endsAt" AS "lotEndsAt", l."extendedMs",
-             a."status" AS "auctionStatus", COALESCE(l."endsAt", a."endsAt") AS "endsAt", a."bidRules", a."createdById",
+             a."status" AS "auctionStatus", COALESCE(l."endsAt", a."endsAt") AS "endsAt", a."bidRules", a."registration", a."createdById",
              clock_timestamp() AS "now"
       FROM "AuctionLot" l
       JOIN "Auction" a ON a."id" = l."auctionId"
@@ -611,7 +621,7 @@ export class AuctionService {
     return row;
   }
 
-  private async placeBidOnce(tx: Prisma.TransactionClient, input: PlaceBidInput): Promise<PlaceBidResult> {
+  private async placeBidOnce(tx: Prisma.TransactionClient, input: PlaceBidInput, policy: TrustPolicy): Promise<PlaceBidResult> {
     const { lotId, amountMinor, idempotencyKey, user } = input;
     const row = await this.lockLotRow(tx, lotId);
 
@@ -642,7 +652,7 @@ export class AuctionService {
 
     // 2. The lot and the clock; 3. who may bid.
     this.assertBiddable(row);
-    this.assertMayBid(user, row, existingBidder);
+    await this.assertMayBid(tx, user, row, existingBidder, policy);
     if (existingBidder) await this.assertWithinBidRate(tx, lotId, existingBidder.id, row.now);
 
     // 4. Nobody outbids themselves: it would only raise the price.
@@ -696,19 +706,20 @@ export class AuctionService {
    * puts them under it. Never more than one, however far apart the maxima.
    */
   async setProxyBid(input: SetProxyBidInput): Promise<ProxyBidResult> {
-    const result = await this.inBidTransaction(input.lotId, (tx) => this.setProxyBidOnce(tx, input));
+    const policy = await this.bidders.policy(); // before the transaction, for the reason given in placeBid()
+    const result = await this.inBidTransaction(input.lotId, (tx) => this.setProxyBidOnce(tx, input, policy));
     if (result.autoBid) this.announce(result.lot, [result.autoBid]);
     return result;
   }
 
-  private async setProxyBidOnce(tx: Prisma.TransactionClient, input: SetProxyBidInput): Promise<ProxyBidResult> {
+  private async setProxyBidOnce(tx: Prisma.TransactionClient, input: SetProxyBidInput, policy: TrustPolicy): Promise<ProxyBidResult> {
     const { lotId, maxMinor, user } = input;
     const row = await this.lockLotRow(tx, lotId);
     const rules = parseBidRules(row.bidRules);
 
     this.assertBiddable(row);
     const existingBidder = await tx.bidder.findUnique({ where: { auctionId_userId: { auctionId: row.auctionId, userId: user.id } } });
-    this.assertMayBid(user, row, existingBidder);
+    await this.assertMayBid(tx, user, row, existingBidder, policy);
 
     // A leader's maximum need only reach what they already stand at; anyone
     // else's must reach the next bid they could place.
@@ -879,29 +890,38 @@ export class AuctionService {
   }
 
   /**
-   * Staff who run auctions never bid on them, and the author of an auction is
-   * named by data, not by role (doc 234 §5.7). A bidder who is not approved
-   * (WO-234.5) cannot bid either.
+   * Whether this caller may bid on this lot: the one pure rule in
+   * `bidder-trust.ts`, so the page's "you can bid" and this refusal cannot
+   * drift. Staff who run auctions never bid on them, and the author of an
+   * auction is named by data, not by role (doc 234 §5.7). Under `OPEN` a person
+   * with no `Bidder` row yet is eligible, because their first bid registers
+   * them, unless they are at the strike threshold; only then is the strike count
+   * read, so the hot path of an existing bidder adds no query.
    */
-  private assertMayBid(
+  private async assertMayBid(
+    tx: Prisma.TransactionClient,
     user: { id: string; permissions: readonly string[] },
     row: LotRow,
     bidder: { status: string } | null,
-  ): void {
-    if (user.permissions.includes('auction.manage') || row.createdById === user.id) {
-      throw new ForbiddenException({
-        statusCode: 403,
-        code: 'BIDDER_NOT_ELIGIBLE',
-        message: 'Staff who run this auction cannot bid on it. Use a separate customer account to bid.',
-      });
-    }
-    if (bidder && bidder.status !== 'APPROVED') {
-      throw new ForbiddenException({
-        statusCode: 403,
-        code: 'BIDDER_NOT_ELIGIBLE',
-        message: 'This account is not approved to bid in this auction. Contact the auction organiser.',
-      });
-    }
+    policy: TrustPolicy,
+  ): Promise<void> {
+    const runsAuction = user.permissions.includes('auction.manage') || row.createdById === user.id;
+    const mode: RegistrationMode = parseRegistrationMode(row.registration, 'OPEN');
+    const reviewDue =
+      !runsAuction && bidder === null && mode === 'OPEN' ? (await this.bidders.strikeState(tx, user.id, row.now, policy)).reviewDue : false;
+    const verdict = eligibility({
+      runsAuction,
+      mode,
+      bidderStatus: bidder ? (bidder.status as BidderStatus) : null,
+      reviewDue,
+    });
+    if (verdict.eligible) return;
+    throw new ForbiddenException({
+      statusCode: 403,
+      code: 'BIDDER_NOT_ELIGIBLE',
+      message: INELIGIBLE_MESSAGES[verdict.reason],
+      details: { why: verdict.reason },
+    });
   }
 
   private encryptMax(maxMinor: number): string {
@@ -1058,13 +1078,9 @@ export class AuctionService {
     };
   }
 
-  /** "Bidder N", N one more than the auction's bidders so far, taken under a lock so two first bids never share one. */
+  /** The first bid under an `OPEN` auction registers the bidder, approved: see `provisionBidder`. */
   private async provisionBidder(tx: Prisma.TransactionClient, auctionId: string, userId: string) {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(${BIDDER_LOCK_NAMESPACE}::int, hashtext(${auctionId}))`;
-    const existing = await tx.bidder.findUnique({ where: { auctionId_userId: { auctionId, userId } } });
-    if (existing) return existing;
-    const ordinal = (await tx.bidder.count({ where: { auctionId } })) + 1;
-    return tx.bidder.create({ data: { auctionId, userId, alias: bidderAlias(ordinal) } });
+    return (await provisionBidder(tx, auctionId, userId, 'APPROVED')).bidder;
   }
 
   private isUniqueViolation(error: unknown): boolean {

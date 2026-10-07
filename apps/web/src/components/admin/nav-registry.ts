@@ -226,7 +226,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     key: 'auctions',
     label: 'Auctions',
     href: '/admin/auctions',
-    permissions: ['auction.view', 'auction.manage', 'auction.publish'],
+    permissions: ['auction.view', 'auction.manage', 'auction.publish', 'auction.bidders.manage'],
     group: 'orders',
     module: 'auction',
   },

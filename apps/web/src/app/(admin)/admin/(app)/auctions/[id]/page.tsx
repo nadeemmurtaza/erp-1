@@ -17,10 +17,14 @@ import {
   MetricStrip,
   PageHeader,
   Section,
+  Segmented,
 } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { AuctionBidLedger } from '@/components/admin/auction-bid-ledger';
+import { AuctionBidders } from '@/components/admin/auction-bidders';
+import { bidderStripValue, type BidderSummary } from '@/lib/auction-bidders';
+import { REGISTRATION_CHOICES, registrationChoice, type AuctionRegistrationMode } from '@/lib/auction-registration-admin';
 import { auctionClosesAt, describeExtension, describeOutcome, lotEndsAt, type LotOutcomeView } from '@/lib/auction-lots';
 
 interface Lot {
@@ -53,6 +57,8 @@ interface AuctionDetail {
   startsAt: string;
   endsAt: string;
   terms: string | null;
+  /** Who may bid: set at creation, changed only while the auction is a draft. */
+  registration: AuctionRegistrationMode;
   lots: Lot[];
 }
 
@@ -88,6 +94,8 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const { can } = useAdminSession();
   const canManage = can('auction.manage');
   const canPublish = can('auction.publish');
+  const canDecideBidders = can('auction.bidders.manage');
+  const stripDate = (text: string) => (canDecideBidders ? <span className="text-xl">{text}</span> : text);
 
   const [auction, setAuction] = useState<AuctionDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -104,6 +112,8 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const [startsAt, setStartsAt] = useState('');
   const [endsAt, setEndsAt] = useState('');
   const [terms, setTerms] = useState('');
+  const [registration, setRegistration] = useState<AuctionRegistrationMode>('APPROVAL');
+  const [bidderSummary, setBidderSummary] = useState<BidderSummary | null>(null);
 
   const [lotOpen, setLotOpen] = useState(false);
   const [editingLot, setEditingLot] = useState<Lot | null>(null);
@@ -127,6 +137,21 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
     load();
   }, [load]);
 
+  /** The counts behind the "Bidders" figure: one cheap read, for the people who may see it, and again after each act on a bidder. */
+  const loadBidderSummary = useCallback(async () => {
+    if (!canDecideBidders) return;
+    try {
+      setBidderSummary(await adminFetch<BidderSummary>(`/admin/auctions/${id}/bidders/summary`));
+    } catch {
+      // The figure then reads "—" and the panel says it could not load, with a way to try again; the rest of the page is unaffected.
+      setBidderSummary(null);
+    }
+  }, [id, canDecideBidders]);
+
+  useEffect(() => {
+    void loadBidderSummary();
+  }, [loadBidderSummary]);
+
   /** Runs one write, reloads the page's data, and puts any refusal where the person is looking. */
   const run = async (write: () => Promise<unknown>, onError: (message: string) => void = setError) => {
     setBusy(true);
@@ -147,6 +172,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
     setStartsAt(toLocalInput(current.startsAt));
     setEndsAt(toLocalInput(current.endsAt));
     setTerms(current.terms ?? '');
+    setRegistration(current.registration);
     setFormError(null);
     setEditOpen(true);
   };
@@ -157,7 +183,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
       () =>
         adminFetch(`/admin/auctions/${id}`, {
           method: 'PATCH',
-          body: { title: title.trim(), startsAt: new Date(startsAt).toISOString(), endsAt: new Date(endsAt).toISOString(), terms: terms.trim() },
+          body: { title: title.trim(), startsAt: new Date(startsAt).toISOString(), endsAt: new Date(endsAt).toISOString(), terms: terms.trim(), registration },
         }),
       setFormError,
     );
@@ -289,9 +315,33 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
         label="Auction summary"
         className="mb-6"
         items={[
-          { key: 'opens', label: 'Opens', value: formatDateTime(auction.startsAt) },
-          { key: 'closes', label: auction.status === 'OPEN' ? 'Closes' : 'Closed', value: formatDateTime(auctionClosesAt(auction.lots, auction.endsAt)) },
+          // A date and a time at the strip's 40 px figure size broke at the hyphens into five lines once a fourth figure narrowed the cells (1024 px with the sidebar), so with four figures a date is set one step down and wraps at the comma; with three (no `auction.bidders.manage`) it keeps the strip's own size.
+          { key: 'opens', label: 'Opens', value: stripDate(formatDateTime(auction.startsAt)) },
+          {
+            key: 'closes',
+            label: auction.status === 'OPEN' ? 'Closes' : 'Closed',
+            value: stripDate(formatDateTime(auctionClosesAt(auction.lots, auction.endsAt))),
+          },
           { key: 'lots', label: 'Lots on sale', value: String(onSale.length) },
+          // Only for someone who may decide on bidders: for everyone else the strip is three figures and closes over the gap.
+          ...(canDecideBidders
+            ? [
+                {
+                  key: 'bidders',
+                  label: 'Bidders',
+                  value: bidderStripValue(bidderSummary),
+                  detail: (
+                    <AuctionBidders
+                      auctionId={id}
+                      summary={bidderSummary}
+                      lots={auction.lots.filter((lot) => lot.status !== 'WITHDRAWN')}
+                      onChanged={() => void loadBidderSummary()}
+                      onChangeWhoMayBid={editable ? () => openEdit(auction) : undefined}
+                    />
+                  ),
+                },
+              ]
+            : []),
         ]}
       />
 
@@ -420,6 +470,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
         }
         className="mt-8"
       >
+        <p className="mb-3 text-sm">Who may bid: {registrationChoice(auction.registration).label}</p>
         {auction.terms ? (
           <p className="max-w-prose whitespace-pre-line text-sm">{auction.terms}</p>
         ) : (
@@ -531,6 +582,18 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
           </Field>
           <Field label="Closes">
             {(control) => <input {...control} type="datetime-local" className="field-input w-full" value={endsAt} onChange={(e) => setEndsAt(e.target.value)} />}
+          </Field>
+          <Field label="Who may bid" hint={registrationChoice(registration).hint}>
+            {(control) => (
+              <Segmented
+                kind="choice"
+                id={control.id}
+                label="Who may bid"
+                options={REGISTRATION_CHOICES.map((choice) => ({ value: choice.value, label: choice.label }))}
+                value={registration}
+                onChange={setRegistration}
+              />
+            )}
           </Field>
           <Field label="Terms" hint="Bidders accept these on every lot page." error={formError}>
             {(control) => <textarea {...control} className="field-input w-full" rows={4} maxLength={5000} value={terms} onChange={(e) => setTerms(e.target.value)} />}

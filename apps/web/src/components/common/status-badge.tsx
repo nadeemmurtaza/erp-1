@@ -36,6 +36,8 @@ const TONES: Record<string, BadgeTone> = {
   ARCHIVED: 'danger',
   LOST: 'danger',
   REJECTED: 'danger',
+  // BidderStatus (launchpad-apps/234-auction-app.md, WO-234.5) — an organiser's "no" to a registration; reversible by approving.
+  DECLINED: 'danger',
   // doc 14 (managed-services) — a hosting/agency tenant TenantStatus that
   // ended badly; suspension is reversible (a status flip, not a delete)
   // but still reads as "attention needed", same tone as PAST_DUE elsewhere.

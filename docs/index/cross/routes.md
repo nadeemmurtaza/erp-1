@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **896** endpoints across **164** controllers, with the access rule that actually guards each one.
+All **904** endpoints across **165** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -222,14 +222,20 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (19)
+### [`auction`](../modules/auction.md) (27)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/auctions` | `auction.view` `auction.manage` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
+| GET | `/admin/auctions` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
 | POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` | Draft an auction |
-| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` | `AuctionController.get` | One auction with its lots |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.get` | One auction with its lots |
 | PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` | Edit a draft auction |
+| GET | `/admin/auctions/:id/bidders` | `auction.bidders.manage` | `AuctionBidderController.list` | The auction’s bidders, oldest first, with who they are and their strikes |
+| GET | `/admin/auctions/:id/bidders/:bidderId` | `auction.bidders.manage` | `AuctionBidderController.detail` | One bidder: who they are, whether their identity is verified, their strikes and… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/decision` | `auction.bidders.manage` | `AuctionBidderController.decide` | Approve, decline or suspend a bidder, or keep a decision they appealed. A refus… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes` | `auction.bidders.manage` | `AuctionBidderController.recordStrike` | Record a strike against the person behind a bidder. It flags at the threshold a… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes/:strikeId/void` | `auction.bidders.manage` | `AuctionBidderController.voidStrike` | Void a strike with a reason; it stays on record and stops counting |
+| GET | `/admin/auctions/:id/bidders/summary` | `auction.bidders.manage` | `AuctionBidderController.summary` | How many bidders are waiting, approved, stopped, or waiting on an appeal |
 | POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` | Cancel a draft or scheduled auction, with a reason |
 | POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` | Add a lot to a draft auction |
 | PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` | Edit a lot on a draft auction |
@@ -238,6 +244,8 @@ never authorization.
 | POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
+| POST | `/auctions/:auctionId/appeal` | signed-in | `AuctionBidController.appeal` | Ask the organiser to look again at a declined or suspended place, once for each… |
+| POST | `/auctions/:auctionId/registration` | signed-in | `AuctionBidController.join` | Join an auction to bid in it: approved at once, or waiting for the organiser, a… |
 | POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` | Place a bid on an open lot; a retry with the same idempotency key returns the a… |
 | GET | `/auctions/lots/:lotId/me` | signed-in | `AuctionBidController.me` | Whether you lead this lot and may bid on it |
 | GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` | Your own maximum on a lot. Nobody else’s is readable through any route |

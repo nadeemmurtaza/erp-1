@@ -40,6 +40,8 @@ describe('Auction bidding (e2e)', () => {
         title: TITLE,
         startsAt: new Date(Date.now() + 3_600_000).toISOString(),
         endsAt: new Date(Date.now() + 7_200_000).toISOString(),
+        // The bidding rules are the subject here, not who may bid: the first bid registers the bidder.
+        registration: 'OPEN',
       },
       ACTOR,
     );

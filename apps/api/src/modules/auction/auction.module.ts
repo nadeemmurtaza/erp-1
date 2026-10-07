@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuctionBidController } from './auction-bid.controller';
+import { AuctionBidderController } from './auction-bidder.controller';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionLifecycleCron } from './auction-lifecycle.cron';
 import { AuctionLifecycleService } from './auction-lifecycle.service';
 import { AuctionPublicController } from './auction-public.controller';
@@ -14,11 +16,19 @@ import { AuctionService } from './auction.service';
  * concept at all. Imports no other module — `SettingsModule`, `AuditModule`
  * and the config are global — and the later work orders reach orders, stock
  * and payments through the `AuctionOrderSink` and `AuctionLotSource`
- * extension points and domain events, never an import.
+ * extension points and domain events, never an import. Who is verified is read
+ * through the core `IdentityVerificationStatusRegistry`, the same way.
  */
 @Module({
-  controllers: [AuctionController, AuctionBidController, AuctionPublicController],
-  providers: [AuctionService, AuctionLifecycleService, AuctionLifecycleCron, AuctionPublicService, AuctionRealtimeService],
+  controllers: [AuctionController, AuctionBidderController, AuctionBidController, AuctionPublicController],
+  providers: [
+    AuctionService,
+    AuctionBidderService,
+    AuctionLifecycleService,
+    AuctionLifecycleCron,
+    AuctionPublicService,
+    AuctionRealtimeService,
+  ],
   exports: [AuctionService],
 })
 export class AuctionModule {}

@@ -143,9 +143,9 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   },
   {
     // launchpad-apps/234-auction-app.md WO-234.1 — the three keys the admin
-    // foundation uses. The rest of doc 234 §13 (adjust, bidders.manage,
-    // integrity.review, seal.open, settings.manage) arrive with the work
-    // orders that first guard something with them.
+    // foundation uses. The rest of doc 234 §13 (adjust, integrity.review,
+    // seal.open, settings.manage) arrive with the work orders that first guard
+    // something with them; `bidders.manage` arrived with WO-234.5, below.
     key: 'auction.view',
     label: 'View auctions and their lots',
     category: 'Sales',
@@ -162,6 +162,15 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     // automatically the person who commits the business to it.
     key: 'auction.publish',
     label: 'Schedule an auction so it opens to bidding at its start time',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
+    // WO-234.5. Decides who may bid and shows a bidder's name, email and phone,
+    // which is why it is its own key: the person who drafts or schedules a sale
+    // does not automatically get to see or vet the people bidding on it.
+    key: 'auction.bidders.manage',
+    label: 'Approve, decline and suspend bidders, record strikes, and answer appeals',
     category: 'Sales',
     sensitivity: 'high',
   },
@@ -992,6 +1001,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'auction.view',
       'auction.manage',
       'auction.publish',
+      'auction.bidders.manage',
       'pos.manage',
       'pos.operate',
       'pos.instalments.cancel',
@@ -1403,6 +1413,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'auction.view',
     'auction.manage',
     'auction.publish',
+    'auction.bidders.manage',
     'fulfilment.view',
     'fulfilment.manage',
     'bom.view',

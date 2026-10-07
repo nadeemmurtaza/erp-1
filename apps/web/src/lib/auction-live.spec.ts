@@ -16,6 +16,7 @@ import {
   newerView,
   parseAmountToMinor,
   shownPriceMinor,
+  spread,
   standingOf,
   timeState,
   type LiveBid,
@@ -354,6 +355,14 @@ describe('describeBidFailure', () => {
     expect(describeBidFailure(refusal(503, { message: 'bid was not placed' }))).toMatchObject({ key: 'busy', refresh: true });
   });
 
+  it('carries why a person may not bid, so the page can show the right card, and drops a cause it does not know', () => {
+    for (const why of ['RUNS_AUCTION', 'NOT_REGISTERED', 'PENDING', 'DECLINED', 'SUSPENDED']) {
+      expect(describeBidFailure(refusal(403, { code: 'BIDDER_NOT_ELIGIBLE', details: { why } }))).toMatchObject({ key: 'notEligible', why });
+    }
+    expect(describeBidFailure(refusal(403, { code: 'BIDDER_NOT_ELIGIBLE', details: { why: 'BANNED' } })).why).toBeUndefined();
+    expect(describeBidFailure(refusal(403, { code: 'BIDDER_NOT_ELIGIBLE' })).why).toBeUndefined();
+  });
+
   it('calls anything else, including a request that never arrived, a network failure, and never asks for a new key', () => {
     expect(describeBidFailure(new TypeError('Failed to fetch'))).toEqual({ key: 'network', refresh: false, newKey: false });
     expect(describeBidFailure(refusal(500, { message: 'boom' }))).toMatchObject({ key: 'network', newKey: false });
@@ -361,5 +370,21 @@ describe('describeBidFailure', () => {
 
   it('ignores a detail that is not a number', () => {
     expect(describeBidFailure(refusal(409, { code: 'BID_TOO_LOW', details: { minimumNextBidMinor: 'lots' } })).minimumNextBidMinor).toBeUndefined();
+  });
+});
+
+describe('spread', () => {
+  it('stays within 20 % either side of the wait, at both ends of the random range', () => {
+    expect(spread(20_000, () => 0)).toBe(16_000);
+    expect(spread(20_000, () => 0.5)).toBe(20_000);
+    expect(spread(20_000, () => 0.999999)).toBe(24_000);
+  });
+
+  it('never leaves the 16 000 to 24 000 band over a thousand real draws', () => {
+    for (let draw = 0; draw < 1_000; draw += 1) {
+      const wait = spread(20_000);
+      expect(wait).toBeGreaterThanOrEqual(16_000);
+      expect(wait).toBeLessThanOrEqual(24_000);
+    }
   });
 });

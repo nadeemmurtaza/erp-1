@@ -3,7 +3,7 @@
 
 # Migrations
 
-**123** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**125** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -156,6 +156,8 @@ nothing here fails a build.
 | 2026-10-02 | `wo234_1_auction_permissions` | 3 | INSERT |  |
 | 2026-10-02 | `wo234_2_bidding` | 16 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Auction, AuctionLot, Bid, Bidder |
 | 2026-10-02 | `wo234_3_proxy_and_close` | 9 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX | AuctionLot, AuctionResult, ProxyBid |
+| 2026-10-03 | `wo234_5_bidder_trust` | 9 | ALTER TYPE, CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX | Auction, Bidder, BidderStrike |
+| 2026-10-03 | `wo234_5_bidders_permission` | 4 | INSERT |  |
 
 
 ---

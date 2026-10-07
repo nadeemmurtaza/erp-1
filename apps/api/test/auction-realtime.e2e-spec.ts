@@ -45,7 +45,7 @@ describe('Auction public pages and live stream (e2e)', () => {
   /** An OPEN auction (flipped directly) with one lot, ending in `endsInMs`. */
   const openLot = async (opts: { reservePriceMinor?: number; endsInMs?: number; title?: string } = {}) => {
     const auction = await asAdmin(api().post('/api/v1/admin/auctions'))
-      .send({ title: opts.title ?? '[e2e] public auction', startsAt: hours(24), endsAt: hours(48), terms: 'Collect within 7 days.' })
+      .send({ title: opts.title ?? '[e2e] public auction', startsAt: hours(24), endsAt: hours(48), terms: 'Collect within 7 days.', registration: 'OPEN' })
       .expect(201);
     const lot = await asAdmin(api().post(`/api/v1/admin/auctions/${auction.body.id}/lots`))
       .send({ title: 'Pallet of denim', startPriceMinor: 100_000, ...(opts.reservePriceMinor ? { reservePriceMinor: opts.reservePriceMinor } : {}) })
@@ -230,12 +230,24 @@ describe('Auction public pages and live stream (e2e)', () => {
       await openIt();
       await api().get(`/api/v1/auctions/lots/${lotId}/me`).expect(401);
 
-      expect((await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200)).body).toEqual({ alias: null, participating: false, leading: false, eligible: true });
+      expect((await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200)).body).toEqual({
+        alias: null,
+        participating: false,
+        leading: false,
+        eligible: true,
+        registration: { mode: 'OPEN', status: 'NONE', alias: null, joinedAt: null, decisionReason: null, appeal: 'NONE', appealText: null },
+      });
       await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey: key() }).expect(201);
-      expect((await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200)).body).toEqual({ alias: 'Bidder 1', participating: true, leading: true, eligible: true });
+      expect((await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200)).body).toMatchObject({
+        alias: 'Bidder 1',
+        participating: true,
+        leading: true,
+        eligible: true,
+        registration: { mode: 'OPEN', status: 'APPROVED', alias: 'Bidder 1', appeal: 'NONE' },
+      });
 
       const staff = await asAdmin(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200);
-      expect(staff.body).toMatchObject({ eligible: false, reason: { code: 'BIDDER_NOT_ELIGIBLE' } });
+      expect(staff.body).toMatchObject({ eligible: false, reason: { code: 'BIDDER_NOT_ELIGIBLE', why: 'RUNS_AUCTION' } });
     });
   });
 

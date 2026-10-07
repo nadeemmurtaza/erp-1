@@ -3,9 +3,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionPublicService } from './auction-public.service';
 import { AuctionService } from './auction.service';
-import { PlaceBidDto, SetProxyBidDto } from './dto/auction.dto';
+import { AppealDto, PlaceBidDto, SetProxyBidDto } from './dto/auction.dto';
 
 /**
  * Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2).
@@ -27,6 +28,7 @@ export class AuctionBidController {
   constructor(
     private readonly auctions: AuctionService,
     private readonly publicLots: AuctionPublicService,
+    private readonly bidders: AuctionBidderService,
   ) {}
 
   @Post('lots/:lotId/bids')
@@ -62,6 +64,27 @@ export class AuctionBidController {
   @ApiOperation({ summary: 'Your own maximum on a lot. Nobody else’s is readable through any route' })
   getProxy(@Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
     return this.auctions.getProxyBid(lotId, user.id);
+  }
+
+  /**
+   * Joining an auction (WO-234.5): 10 a minute per client address. A person
+   * joins once per auction, so ten lets an office behind one address register
+   * several people while a script is held to one every six seconds. Idempotent,
+   * so a second tab or a retry returns the place the caller already has.
+   */
+  @Post(':auctionId/registration')
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @ApiOperation({ summary: 'Join an auction to bid in it: approved at once, or waiting for the organiser, as the auction decides' })
+  join(@Param('auctionId') auctionId: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.bidders.join(auctionId, { id: user.id, permissions: user.permissions });
+  }
+
+  /** An appeal is written once, so 5 a minute per client address; one open appeal per decision is enforced on the bidder. */
+  @Post(':auctionId/appeal')
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @ApiOperation({ summary: 'Ask the organiser to look again at a declined or suspended place, once for each decision' })
+  appeal(@Param('auctionId') auctionId: string, @Body() dto: AppealDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.bidders.appeal(auctionId, { id: user.id, permissions: user.permissions }, dto.message);
   }
 
   /** Whether the caller leads this lot and may bid on it, for the page to say "you are winning" and to explain a refusal before the bid. */

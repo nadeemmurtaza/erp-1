@@ -113,7 +113,7 @@ describe('Auction admin routes (e2e)', () => {
 
     /** The test schedules an auction through the API and flips it to OPEN itself; the open job has its own spec (`auction-lifecycle.e2e-spec.ts`). */
     const openLot = async () => {
-      const auction = await asAdmin(api().post('/api/v1/admin/auctions')).send({ title: '[e2e] http bidding', startsAt: when(24), endsAt: when(48) }).expect(201);
+      const auction = await asAdmin(api().post('/api/v1/admin/auctions')).send({ title: '[e2e] http bidding', startsAt: when(24), endsAt: when(48), registration: 'OPEN' }).expect(201);
       const lot = await asAdmin(api().post(`/api/v1/admin/auctions/${auction.body.id}/lots`))
         .send({ title: 'Pallet', startPriceMinor: 100_000, reservePriceMinor: 900_000 })
         .expect(201);

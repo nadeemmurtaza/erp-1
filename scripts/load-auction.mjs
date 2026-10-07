@@ -178,7 +178,7 @@ async function main() {
     await call('/admin/auctions', {
       method: 'POST',
       token: admin,
-      body: { title: `[load test] ${new Date().toISOString()}`, startsAt: new Date(Date.now() + 24 * hour).toISOString(), endsAt: new Date(Date.now() + 48 * hour).toISOString() },
+      body: { title: `[load test] ${new Date().toISOString()}`, startsAt: new Date(Date.now() + 24 * hour).toISOString(), endsAt: new Date(Date.now() + 48 * hour).toISOString(), registration: 'OPEN' },
     })
   ).json;
   const lot = (await call(`/admin/auctions/${auction.id}/lots`, { method: 'POST', token: admin, body: { title: 'Load-test lot', startPriceMinor: START_PRICE_MINOR } })).json;

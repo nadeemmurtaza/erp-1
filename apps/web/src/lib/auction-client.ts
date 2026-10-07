@@ -2,7 +2,7 @@
 
 import { API_URL, request } from './api-client';
 import { customerFetch, getCustomerToken } from './customer-client';
-import type { LiveBid, PublicLot, PublicLotSummary, ViewerLotState } from './auction-live';
+import type { LiveBid, PublicLot, PublicLotSummary, RegistrationView, ViewerLotState } from './auction-live';
 
 /**
  * The storefront's calls to the Auction API (launchpad-apps/234-auction-app.md
@@ -80,4 +80,18 @@ export function setProxyBid(lotId: string, maxMinor: number): Promise<ProxyResul
 
 export function fetchProxyBid(lotId: string): Promise<{ maxMinor: number | null }> {
   return customerFetch<{ maxMinor: number | null }>(`/auctions/lots/${encodeURIComponent(lotId)}/proxy`);
+}
+
+/**
+ * Joins an auction: a place as a bidder, approved at once or waiting for the
+ * organiser, as the auction's rule says. Safe to repeat: a second call returns
+ * the place the first one made.
+ */
+export function joinAuction(auctionId: string): Promise<RegistrationView> {
+  return customerFetch<RegistrationView>(`/auctions/${encodeURIComponent(auctionId)}/registration`, { method: 'POST', body: {} });
+}
+
+/** Asks the organiser to look again at a decline or a suspension. One appeal for each decision. */
+export function sendAppeal(auctionId: string, message: string): Promise<RegistrationView> {
+  return customerFetch<RegistrationView>(`/auctions/${encodeURIComponent(auctionId)}/appeal`, { method: 'POST', body: { message } });
 }

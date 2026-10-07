@@ -6,6 +6,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
 import { AuctionService } from './auction.service';
 import { bidCanonical } from './bidding';
@@ -25,6 +26,8 @@ describe('AuctionService bidding', () => {
   let updateResult: number;
   let writes: string[];
   let realtime: { publish: jest.Mock };
+  let bidders: { strikeState: jest.Mock; policy: jest.Mock };
+  const POLICY = { strikesToReview: 3, strikeWindowMs: 365 * 86_400_000 };
 
   const NOW = new Date('2026-10-02T12:00:00.000Z');
   const user = { id: 'u-bidder', permissions: [] as string[] };
@@ -40,6 +43,7 @@ describe('AuctionService bidding', () => {
   beforeEach(async () => {
     writes = [];
     realtime = { publish: jest.fn() };
+    bidders = { strikeState: jest.fn().mockResolvedValue({ inWindow: 0, reviewDue: false }), policy: jest.fn().mockResolvedValue(POLICY) };
     updateResult = 1;
     lotRow = {
       id: 'l1',
@@ -108,6 +112,7 @@ describe('AuctionService bidding', () => {
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1', get: () => 'k'.repeat(32) } },
         { provide: AuditService, useValue: { record: jest.fn() } },
         { provide: AuctionRealtimeService, useValue: realtime },
+        { provide: AuctionBidderService, useValue: bidders },
       ],
     }).compile();
     service = module.get(AuctionService);
@@ -191,7 +196,7 @@ describe('AuctionService bidding', () => {
     it('numbers a new bidder after the auction’s existing ones', async () => {
       prisma.bidder.count.mockResolvedValue(6);
       await service.placeBid(input());
-      expect(prisma.bidder.create).toHaveBeenCalledWith({ data: { auctionId: 'a1', userId: 'u-bidder', alias: 'Bidder 7' } });
+      expect(prisma.bidder.create).toHaveBeenCalledWith({ data: { auctionId: 'a1', userId: 'u-bidder', alias: 'Bidder 7', status: 'APPROVED' } });
     });
 
     it('reuses the bidder a returning bidder already is', async () => {
@@ -293,11 +298,90 @@ describe('AuctionService bidding', () => {
       wroteNothing();
     });
 
-    it('refuses a bidder who is suspended', async () => {
+    it('refuses a bidder who is suspended, and says why in a code the page can act on', async () => {
       prisma.bidder.findUnique.mockResolvedValue(bidder({ status: 'SUSPENDED' }));
       const error = await refusal(service.placeBid(input()));
-      expect(error.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE' });
+      expect(error.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE', details: { why: 'SUSPENDED' } });
       wroteNothing();
+    });
+
+    it.each([
+      ['PENDING', 'PENDING'],
+      ['DECLINED', 'DECLINED'],
+    ])('refuses a bidder whose registration is %s, naming %s', async (status, why) => {
+      prisma.bidder.findUnique.mockResolvedValue(bidder({ status }));
+      const error = await refusal(service.placeBid(input()));
+      expect(error.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE', details: { why } });
+      wroteNothing();
+    });
+
+    describe('who may bid, as the auction decides (WO-234.5)', () => {
+      it.each(['VERIFIED', 'APPROVAL'])('makes someone with no place in a %s auction join first, and creates no bidder', async (registration) => {
+        lotRow = { ...lotRow, registration };
+        const error = await refusal(service.placeBid(input()));
+        expect(error.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE', details: { why: 'NOT_REGISTERED' } });
+        expect(prisma.bidder.create).not.toHaveBeenCalled();
+        expect(bidders.strikeState).not.toHaveBeenCalled();
+        wroteNothing();
+      });
+
+      it('lets an approved bidder bid in an APPROVAL auction without reading their strikes', async () => {
+        lotRow = { ...lotRow, registration: 'APPROVAL' };
+        prisma.bidder.findUnique.mockResolvedValue(bidder());
+        await expect(service.placeBid(input())).resolves.toMatchObject({ replayed: false });
+        expect(bidders.strikeState).not.toHaveBeenCalled();
+      });
+
+      it('registers a first bid under an OPEN auction, reading the strikes only because they have no place yet', async () => {
+        lotRow = { ...lotRow, registration: 'OPEN' };
+        await service.placeBid(input());
+        expect(bidders.strikeState).toHaveBeenCalledTimes(1);
+        expect(bidders.strikeState).toHaveBeenCalledWith(prisma, 'u-bidder', NOW, POLICY);
+        expect(prisma.bidder.create).toHaveBeenCalled();
+      });
+
+      /**
+       * The regression this pins: the strike policy is two Settings, and a Setting that is not in the cache is read on another
+       * pool connection. Read from inside the bid transaction, a crowd of first-time bidders each held a connection while waiting for
+       * a second, the pool emptied, and every one of them timed out. It is read before the transaction opens, for a bid and a maximum.
+       */
+      it.each([
+        ['a bid', () => service.placeBid(input())],
+        ['a standing maximum', () => service.setProxyBid({ lotId: 'l1', maxMinor: 500_000, user })],
+      ])('reads the policy before the transaction opens for %s, and never from inside it', async (_name, act) => {
+        lotRow = { ...lotRow, registration: 'OPEN' };
+        const order: string[] = [];
+        bidders.policy.mockImplementation(async () => {
+          order.push('policy');
+          return POLICY;
+        });
+        prisma.$transaction.mockImplementation((arg: any) => {
+          order.push('transaction');
+          return Array.isArray(arg) ? Promise.all(arg) : arg(prisma);
+        });
+        await act();
+        expect(order).toEqual(['policy', 'transaction']);
+      });
+
+      it('makes a person at the strike threshold join and wait even under OPEN: their first bid is refused and creates no bidder', async () => {
+        lotRow = { ...lotRow, registration: 'OPEN' };
+        bidders.strikeState.mockResolvedValue({ inWindow: 3, reviewDue: true });
+        const error = await refusal(service.placeBid(input()));
+        expect(error.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE', details: { why: 'NOT_REGISTERED' } });
+        expect(prisma.bidder.create).not.toHaveBeenCalled();
+        wroteNothing();
+      });
+
+      it('treats an auction row that carries no rule as OPEN, which is what it ran under before the rule existed', async () => {
+        lotRow = { ...lotRow, registration: undefined };
+        await expect(service.placeBid(input())).resolves.toMatchObject({ replayed: false });
+      });
+
+      it('does not let reaching the threshold take an approved bidder off the lot: only a decision does', async () => {
+        bidders.strikeState.mockResolvedValue({ inWindow: 5, reviewDue: true });
+        prisma.bidder.findUnique.mockResolvedValue(bidder());
+        await expect(service.placeBid(input())).resolves.toMatchObject({ replayed: false });
+      });
     });
 
     it('refuses the leader bidding against themselves, and names the minimum', async () => {
@@ -500,6 +584,18 @@ describe('AuctionService bidding', () => {
 
         const staff = await refusal(service.setProxyBid(set({ user: { id: 'u-staff', permissions: ['auction.manage'] } })));
         expect(staff).toBeInstanceOf(ForbiddenException);
+        expect(prisma.proxyBid.create).not.toHaveBeenCalled();
+      });
+
+      it('applies the same rule to a maximum: not joined, waiting and suspended are each refused with their reason', async () => {
+        lotRow = { ...lotRow, registration: 'APPROVAL' };
+        const notJoined = await refusal(service.setProxyBid(set()));
+        expect(notJoined.getResponse()).toMatchObject({ details: { why: 'NOT_REGISTERED' } });
+        for (const status of ['PENDING', 'SUSPENDED'] as const) {
+          prisma.bidder.findUnique.mockResolvedValue(bidder({ status }));
+          const refused = await refusal(service.setProxyBid(set()));
+          expect(refused.getResponse()).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE', details: { why: status } });
+        }
         expect(prisma.proxyBid.create).not.toHaveBeenCalled();
       });
 

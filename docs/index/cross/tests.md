@@ -3,7 +3,7 @@
 
 # Tests
 
-**403** spec files, **4,359** cases. What is already pinned down — and what is not.
+**409** spec files, **4,513** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (29)
+## End-to-end (30)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -39,6 +39,7 @@ regression or an N+1.
 |---|---|---|
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
 | `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
+| `apps/api/test/auction-bidders.e2e-spec.ts` | 19 | Auction bidders (e2e) · joining · under load · a customer through the routes: join, wait, be approved, bid · decisions… |
 | `apps/api/test/auction-bidding.e2e-spec.ts` | 11 | Auction bidding (e2e) |
 | `apps/api/test/auction-http.e2e-spec.ts` | 10 | Auction admin routes (e2e) · bidding |
 | `apps/api/test/auction-lifecycle.e2e-spec.ts` | 23 | Auction proxy, anti-snipe and close job (e2e) · the open job · anti-snipe · proxy bidding · the close job · an outage |
@@ -68,7 +69,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (374)
+## Unit and integration (379)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -161,12 +162,14 @@ regression or an N+1.
 | `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
 | `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
 | `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
-| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 47 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves un… |
+| `apps/api/src/modules/auction/auction-bidder.service.spec.ts` | auction | 44 | AuctionBidderService · joining an auction · an appeal · a staff decision · reading the Settings, wh… |
+| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 53 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · who may bid, as the a… |
 | `apps/api/src/modules/auction/auction-lifecycle.service.spec.ts` | auction | 6 | AuctionLifecycleService · AuctionLifecycleCron |
 | `apps/api/src/modules/auction/auction-public.controller.spec.ts` | auction | 3 | AuctionPublicController stream |
-| `apps/api/src/modules/auction/auction-public.service.spec.ts` | auction | 31 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
+| `apps/api/src/modules/auction/auction-public.service.spec.ts` | auction | 36 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
 | `apps/api/src/modules/auction/auction-realtime.service.spec.ts` | auction | 21 | AuctionRealtimeService · a stream · publishing · another node’s events, off Redis |
-| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unsch… |
+| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 41 | AuctionService · create · who may bid (WO-234.5) · list · get · update · addLot · updateLot · withd… |
+| `apps/api/src/modules/auction/bidder-trust.spec.ts` | auction | 29 | eligibility · decideRegistration · nextBidderStatus · appealState · registrationView · strike polic… |
 | `apps/api/src/modules/auction/bidding.spec.ts` | auction | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlia… |
 | `apps/api/src/modules/auction/lot-live.spec.ts` | auction | 9 | mergeLiveEvents · eventForAcceptedBids |
 | `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
@@ -394,8 +397,11 @@ regression or an N+1.
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
 | `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
-| `apps/web/src/lib/auction-live.spec.ts` | web | 46 | the server clock · countdownParts and countdownUnits · timeState · applyLiveEvent · eventFromAccept… |
+| `apps/web/src/lib/auction-bidders.spec.ts` | web | 21 | the queue the page opens on · what staff may do to a bidder · strikes · what follows an act · descr… |
+| `apps/web/src/lib/auction-live.spec.ts` | web | 49 | the server clock · countdownParts and countdownUnits · timeState · applyLiveEvent · eventFromAccept… |
 | `apps/web/src/lib/auction-lots.spec.ts` | web | 11 | lotEndsAt · auctionClosesAt · describeExtension · describeOutcome |
+| `apps/web/src/lib/auction-messages.spec.ts` | web | 3 | the auction messages |
+| `apps/web/src/lib/auction-registration.spec.ts` | web | 19 | registrationCard · needsRegistrationPoll · the polling parameters · withRegistration · describeRegi… |
 | `apps/web/src/lib/calendar.spec.ts` | web | 38 | leap years and month lengths · parseIso / toIso · addDays / addMonths / addYears · weekday and orde… |
 | `apps/web/src/lib/copy.spec.ts` | web | 32 | normalizeCopyValue (CPY-3) · copyText (CPY-3, CPY-5) · nextCopy (CPY-1, CPY-2, CPY-5) · selectConte… |
 | `apps/web/src/lib/date-parse.spec.ts` | web | 35 | the formats the field must understand (MNU-2) · day order follows the deployment locale · impossibl… |

@@ -3,7 +3,7 @@
 
 # Schema: `auction.prisma`
 
-6 models · 5 enums. Owned by module [`auction`](../modules/auction.md).
+7 models · 6 enums. Owned by module [`auction`](../modules/auction.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Auction`  <sub>`apps/api/prisma/schema/auction.prisma:55`</sub>
+### `Auction`  <sub>`apps/api/prisma/schema/auction.prisma:69`</sub>
 
 > One auction event.
 
@@ -38,6 +38,7 @@ against a real database.
 | `currency` | `String` |  |  |
 | `terms` | `String?` | optional |  |
 | `bidRules` | `Json?` | optional |  |
+| `registration` | `AuctionRegistration` |  | @default(OPEN) |
 | `createdById` | `String` |  |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
@@ -46,7 +47,7 @@ against a real database.
 
 Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@index([outletLocationId])`
 
-### `AuctionLot`  <sub>`apps/api/prisma/schema/auction.prisma:95`</sub>
+### `AuctionLot`  <sub>`apps/api/prisma/schema/auction.prisma:113`</sub>
 
 > One thing being sold within an auction.
 
@@ -77,7 +78,7 @@ Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@inde
 
 Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
-### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:224`</sub>
+### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:275`</sub>
 
 > How a lot ended (doc 234 §5.5).
 
@@ -93,7 +94,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 | `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
 | `bidder` | `Bidder?` | relation, optional | @relation(fields: [topBidderId], references: [id]) |
 
-### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:169`</sub>
+### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:220`</sub>
 
 > One accepted bid: a record, never edited and never deleted (doc 234 §5.2).
 
@@ -114,7 +115,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
 Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey])` · `@@index([bidderId, acceptedAt])`
 
-### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:146`</sub>
+### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:167`</sub>
 
 > A person bidding in one auction.
 
@@ -125,15 +126,41 @@ Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey]
 | `userId` | `String` |  |  |
 | `alias` | `String` |  |  |
 | `status` | `BidderStatus` |  | @default(APPROVED) |
+| `decidedById` | `String?` | optional |  |
+| `decidedAt` | `DateTime?` | optional |  |
+| `decisionReason` | `String?` | optional |  |
+| `appealText` | `String?` | optional |  |
+| `appealedAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `auction` | `Auction` | relation | @relation(fields: [auctionId], references: [id]) |
 | `bids` | `Bid[]` |  |  |
 | `proxies` | `ProxyBid[]` |  |  |
 | `results` | `AuctionResult[]` |  |  |
+| `strikes` | `BidderStrike[]` |  |  |
 
-Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])`
+Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@@index([auctionId, status, createdAt])`
 
-### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:198`</sub>
+### `BidderStrike`  <sub>`apps/api/prisma/schema/auction.prisma:196`</sub>
+
+> A mark against a person (WO-234.5), recorded by staff with a reason and, when there is one, the lot it concerns.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `userId` | `String` |  |  |
+| `bidderId` | `String` |  |  |
+| `lotId` | `String?` | optional |  |
+| `reason` | `String` |  |  |
+| `recordedById` | `String` |  |  |
+| `recordedAt` | `DateTime` |  | @default(now()) |
+| `voidedAt` | `DateTime?` | optional |  |
+| `voidedById` | `String?` | optional |  |
+| `voidReason` | `String?` | optional |  |
+| `bidder` | `Bidder` | relation | @relation(fields: [bidderId], references: [id]) |
+
+Indexes: `@@index([userId, recordedAt])` · `@@index([bidderId])`
+
+### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:249`</sub>
 
 > A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to this.
 
@@ -163,6 +190,16 @@ Indexes: `@@unique([lotId, bidderId])`
 | `CLOSED` |  |
 | `WITHDRAWN` |  |
 
+### `AuctionRegistration`  <sub>`apps/api/prisma/schema/auction.prisma:57`</sub>
+
+> How an auction vets who may bid (WO-234.5).
+
+| Value | Meaning |
+|---|---|
+| `OPEN` |  |
+| `VERIFIED` |  |
+| `APPROVAL` |  |
+
 ### `AuctionStatus`  <sub>`apps/api/prisma/schema/auction.prisma:15`</sub>
 
 | Value | Meaning |
@@ -177,7 +214,7 @@ Indexes: `@@unique([lotId, bidderId])`
 
 ### `AuctionType`  <sub>`apps/api/prisma/schema/auction.prisma:9`</sub>
 
-> Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.3).
+> Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5).
 
 | Value | Meaning |
 |---|---|
@@ -185,15 +222,16 @@ Indexes: `@@unique([lotId, bidderId])`
 | `SEALED_BID` |  |
 | `REVERSE` |  |
 
-### `BidderStatus`  <sub>`apps/api/prisma/schema/auction.prisma:43`</sub>
+### `BidderStatus`  <sub>`apps/api/prisma/schema/auction.prisma:45`</sub>
 
-> APPROVED is the only value written today: the first bid provisions the bidder.
+> Where a bidder stands in one auction (WO-234.5).
 
 | Value | Meaning |
 |---|---|
 | `PENDING` |  |
 | `APPROVED` |  |
 | `SUSPENDED` |  |
+| `DECLINED` |  |
 
 ### `BidKind`  <sub>`apps/api/prisma/schema/auction.prisma:34`</sub>
 

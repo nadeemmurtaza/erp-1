@@ -74,13 +74,40 @@ export interface PublicLotSummary {
   outcome?: { kind: 'SOLD'; finalMinor: number } | { kind: 'NOT_SOLD' };
 }
 
+/** How an auction vets who may bid (`Auction.registration` in the API). */
+export type RegistrationMode = 'OPEN' | 'VERIFIED' | 'APPROVAL';
+
+/** Where a person stands in one auction. `NONE` is "has not joined". */
+export type RegistrationStatus = 'NONE' | 'PENDING' | 'APPROVED' | 'DECLINED' | 'SUSPENDED';
+
+/** One word per cause of "may not bid": what the API says and what the page picks its card from. */
+export type IneligibleWhy = 'RUNS_AUCTION' | 'NOT_REGISTERED' | 'PENDING' | 'DECLINED' | 'SUSPENDED';
+
+/** A bidder gets one appeal for each decision: `NONE` before, `WAITING` for an answer, `KEPT` once the organiser has kept the decision. */
+export type AppealState = 'NONE' | 'WAITING' | 'KEPT';
+
+/** A person's own place in one auction, as `registrationView` in the API tells it. */
+export interface RegistrationView {
+  mode: RegistrationMode;
+  status: RegistrationStatus;
+  alias: string | null;
+  joinedAt: string | null;
+  /** The organiser's own words, for a declined or suspended bidder. Shown as written, never translated. */
+  decisionReason: string | null;
+  appeal: AppealState;
+  /** The bidder's own open appeal, echoed back to them. */
+  appealText: string | null;
+}
+
 export interface ViewerLotState {
   alias: string | null;
   /** Whether they have a bid or a standing maximum on this lot. An alias is per auction, so it alone does not say so. */
   participating: boolean;
   leading: boolean;
   eligible: boolean;
-  reason?: { code: 'BIDDER_NOT_ELIGIBLE'; message: string };
+  /** Why not, as a code. The `message` is English for a caller who is not a page; the page tells it in the shopper's language from `why`. */
+  reason?: { code: 'BIDDER_NOT_ELIGIBLE'; why: IneligibleWhy; message: string };
+  registration?: RegistrationView;
 }
 
 /** A lot only moves forward through its phases, so an event for an earlier one than the page shows is out of date. */
@@ -267,6 +294,18 @@ export function shownPriceMinor(lot: Pick<PublicLot, 'currentBidMinor' | 'startP
 /** How many digits follow the point in a whole currency unit: 2 where there are 100 minor units. */
 const FRACTION_DIGITS = Math.max(0, String(MINOR_UNITS_PER_MAJOR).length - 1);
 
+/** The longest an appeal may be, in characters: the API's own limit (`MAX_APPEAL_LENGTH`), counted on the page so the limit is never a surprise. */
+export const MAX_APPEAL_LENGTH = 1_000;
+
+/**
+ * A wait spread ±20 % around `ms`, so a thousand pages that started waiting
+ * together (a stream that dropped, a decision everyone is waiting on) do not all
+ * ask in the same second. `random` is a parameter so the bounds can be tested.
+ */
+export function spread(ms: number, random: () => number = Math.random): number {
+  return Math.round(ms * (0.8 + random() * 0.4));
+}
+
 /** The most a bid or a maximum may be, in minor units: the API's own ceiling. */
 export const MAX_AMOUNT_MINOR = 1_000_000_000_000_000;
 
@@ -312,11 +351,20 @@ export interface BidFailure {
   minimumNextBidMinor?: number;
   /** The least a maximum may be, when the refusal says one. */
   minimumMaxMinor?: number;
+  /** Why the person may not bid, when the refusal says so (`notEligible`). */
+  why?: IneligibleWhy;
   retryAfterSeconds?: number;
   /** The page's view of the lot is out of date: read it again. */
   refresh: boolean;
   /** The request key was used up for another amount: the next attempt needs a new one. */
   newKey: boolean;
+}
+
+const INELIGIBLE_WHY: readonly IneligibleWhy[] = ['RUNS_AUCTION', 'NOT_REGISTERED', 'PENDING', 'DECLINED', 'SUSPENDED'];
+
+function ineligibleWhy(body: unknown): IneligibleWhy | undefined {
+  const why = (body as { details?: { why?: unknown } } | null)?.details?.why;
+  return INELIGIBLE_WHY.find((known) => known === why);
 }
 
 function detail(body: unknown, name: string): number | undefined {
@@ -350,7 +398,7 @@ export function describeBidFailure(error: unknown): BidFailure {
     case 'AUCTION_ENDED':
       return { ...base, key: 'closed', refresh: true };
     case 'BIDDER_NOT_ELIGIBLE':
-      return { ...base, key: 'notEligible' };
+      return { ...base, key: 'notEligible', why: ineligibleWhy(body) };
     case 'BID_RATE_LIMITED':
       return { ...base, key: 'rateLimited', retryAfterSeconds };
     case 'IDEMPOTENCY_KEY_REUSED':

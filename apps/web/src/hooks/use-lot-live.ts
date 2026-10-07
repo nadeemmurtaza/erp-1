@@ -10,6 +10,7 @@ import {
   clockOffset,
   needsRefresh,
   newerView,
+  spread,
   type LotLiveEvent,
   type PublicLot,
 } from '@/lib/auction-live';
@@ -25,11 +26,6 @@ export type LiveConnection = 'connecting' | 'live' | 'polling';
 
 /** The wait before asking for a stream again after one is refused: the server's own `retry:` of 5 000 ms. */
 const RECONNECT_MS = 5_000;
-
-/** A wait spread ±20% around `ms`, so a thousand pages that lost the stream together do not all come back in one second. */
-function spread(ms: number): number {
-  return Math.round(ms * (0.8 + Math.random() * 0.4));
-}
 
 /**
  * One lot, kept current (launchpad-apps/234-auction-app.md §6): read once, then

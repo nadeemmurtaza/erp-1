@@ -1004,6 +1004,70 @@
       "signedOut": "Your session has ended. Sign in again to bid.",
       "busy": "The auction is busy and your bid was not placed. Try again.",
       "network": "We could not confirm your bid. Look at the history, then press the button again. Repeating it is safe: the same bid is never placed twice."
+    },
+    "registration": {
+      "join": {
+        "title": "Join this auction to bid",
+        "body": {
+          "OPEN": "Joining is free and needs no deposit. The organiser will look at your request before you can bid.",
+          "VERIFIED": "Joining is free and needs no deposit. Verified customers bid at once. Everyone else waits for the organiser to approve them.",
+          "APPROVAL": "Joining is free and needs no deposit. The organiser approves everyone before they can bid."
+        },
+        "action": "Join this auction",
+        "joining": "Joining…"
+      },
+      "approved": {
+        "title": "You can bid in this auction",
+        "body": "You will show to other bidders as {alias}."
+      },
+      "pending": {
+        "title": "Waiting for the organiser",
+        "body": "The organiser must approve you before you can bid. This page checks again every {seconds, plural, one {# second} other {# seconds}} and when you return to this tab.",
+        "since": "You joined {date}"
+      },
+      "declined": {
+        "title": "You were not approved for this auction",
+        "reasonLabel": "Reason from the organiser"
+      },
+      "suspended": {
+        "title": "Your bidding is suspended in this auction",
+        "body": "Bids you already placed stand. You cannot place new ones."
+      },
+      "appeal": {
+        "label": "Ask the organiser to look again",
+        "hint": "Required. Say why. Up to {max} characters.",
+        "count": "{count} of {max}",
+        "send": "Send appeal",
+        "sending": "Sending…"
+      },
+      "appealSent": {
+        "title": "Appeal sent",
+        "body": "The organiser will read it and decide. This page checks again every {seconds, plural, one {# second} other {# seconds}}.",
+        "yours": "Your appeal"
+      },
+      "kept": {
+        "title": "The organiser kept this decision",
+        "body": "You can send one appeal for each decision.",
+        "action": "Contact us"
+      },
+      "staff": {
+        "title": "You run this auction",
+        "body": "Staff who run this auction cannot bid on it. Use a separate customer account to bid."
+      },
+      "error": {
+        "network": "We could not reach the server, so nothing was sent. Check your connection and press the button again.",
+        "rateLimited": "You are going too fast. Wait {seconds, plural, one {# second} other {# seconds}} and try again.",
+        "rateLimitedNow": "You are going too fast. Wait a moment and try again.",
+        "ended": "This auction has ended, so it is not taking new bidders.",
+        "unavailable": "This auction is not taking bidders at the moment, so there is nothing to send. See the other lots.",
+        "changed": "Your place in this auction changed while you were on this page. We have updated what you see.",
+        "signedOut": "Your session has ended. Sign in again to continue.",
+        "generic": "We could not save that. Nothing was changed. Try again.",
+        "signedOutAction": "Sign in"
+      },
+      "action": {
+        "others": "See other lots"
+      }
     }
   }
 }

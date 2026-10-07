@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { PublicLotListQueryDto } from './dto/auction.dto';
 import { AuctionPublicService, LOT_PAGE_CACHE_MS } from './auction-public.service';
+import type { AuctionBidderService } from './auction-bidder.service';
 import type { AuctionRealtimeService } from './auction-realtime.service';
 import type { LotLiveEvent } from './lot-live';
 
@@ -13,6 +14,7 @@ import type { LotLiveEvent } from './lot-live';
 describe('AuctionPublicService', () => {
   let service: AuctionPublicService;
   let prisma: any;
+  let bidders: { strikeState: jest.Mock; policy: jest.Mock };
   let listener: ((event: LotLiveEvent) => void) | undefined;
   let lotRow: any;
   let bidRows: any[];
@@ -69,7 +71,8 @@ describe('AuctionPublicService', () => {
         return () => undefined;
       },
     } as unknown as AuctionRealtimeService;
-    service = new AuctionPublicService(prisma, realtime);
+    bidders = { strikeState: jest.fn().mockResolvedValue({ inWindow: 0, reviewDue: false }), policy: jest.fn().mockResolvedValue({ strikesToReview: 3, strikeWindowMs: 365 * 86_400_000 }) };
+    service = new AuctionPublicService(prisma, realtime, bidders as unknown as AuctionBidderService);
     service.onModuleInit();
   });
 
@@ -226,21 +229,27 @@ describe('AuctionPublicService', () => {
       prisma.auctionLot.findUnique.mockResolvedValue({
         status: 'OPEN',
         leaderBidderId: 'p1',
-        auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner' },
+        auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner', registration: 'OPEN' },
         ...over,
       });
     };
 
     it('says a first-time visitor may bid, with no alias yet and not leading', async () => {
       withLot();
-      expect(await service.viewerState('l1', customer)).toEqual({ alias: null, participating: false, leading: false, eligible: true });
+      expect(await service.viewerState('l1', customer)).toEqual({
+        alias: null,
+        participating: false,
+        leading: false,
+        eligible: true,
+        registration: { mode: 'OPEN', status: 'NONE', alias: null, joinedAt: null, decisionReason: null, appeal: 'NONE', appealText: null },
+      });
     });
 
     it('says a bidder leads when the lot’s leader is them, with their alias', async () => {
       withLot();
       prisma.bidder.findUnique.mockResolvedValue({ id: 'p1', alias: 'Bidder 5', status: 'APPROVED' });
       prisma.bid.findFirst.mockResolvedValue({ id: 'b1' });
-      expect(await service.viewerState('l1', customer)).toEqual({ alias: 'Bidder 5', participating: true, leading: true, eligible: true });
+      expect(await service.viewerState('l1', customer)).toMatchObject({ alias: 'Bidder 5', participating: true, leading: true, eligible: true });
     });
 
     it('says an outbid bidder is not leading, and is in the contest', async () => {
@@ -253,7 +262,7 @@ describe('AuctionPublicService', () => {
     it('says a bidder with an alias from another lot of the auction is not in this lot’s contest', async () => {
       withLot({ leaderBidderId: 'someone-else' });
       prisma.bidder.findUnique.mockResolvedValue({ id: 'p1', alias: 'Bidder 5', status: 'APPROVED' });
-      expect(await service.viewerState('l1', customer)).toEqual({ alias: 'Bidder 5', participating: false, leading: false, eligible: true });
+      expect(await service.viewerState('l1', customer)).toMatchObject({ alias: 'Bidder 5', participating: false, leading: false, eligible: true });
     });
 
     it('counts a standing maximum as being in the contest even with no bid placed yet', async () => {
@@ -266,17 +275,98 @@ describe('AuctionPublicService', () => {
     it('explains why staff who run the auction, and its author, cannot bid, before they try', async () => {
       withLot();
       const staff = await service.viewerState('l1', { id: 'u-staff', permissions: ['auction.manage'] });
-      expect(staff).toMatchObject({ eligible: false, reason: { code: 'BIDDER_NOT_ELIGIBLE' } });
+      expect(staff).toMatchObject({ eligible: false, reason: { code: 'BIDDER_NOT_ELIGIBLE', why: 'RUNS_AUCTION' } });
       expect(staff.reason!.message).toContain('Staff who run this auction');
       expect(await service.viewerState('l1', { id: 'u-owner', permissions: [] })).toMatchObject({ eligible: false });
     });
 
-    it('explains a bidder who is not approved', async () => {
+    it('explains a bidder who is suspended, and shows them the organiser’s reason', async () => {
       withLot();
-      prisma.bidder.findUnique.mockResolvedValue({ id: 'p1', alias: 'Bidder 5', status: 'SUSPENDED' });
+      prisma.bidder.findUnique.mockResolvedValue({
+        id: 'p1',
+        alias: 'Bidder 5',
+        status: 'SUSPENDED',
+        createdAt: new Date('2026-10-01T09:00:00Z'),
+        decisionReason: 'The last lot was not paid for.',
+        appealText: null,
+        appealedAt: null,
+      });
       const state = await service.viewerState('l1', customer);
-      expect(state).toMatchObject({ eligible: false, alias: 'Bidder 5' });
-      expect(state.reason!.message).toContain('not approved');
+      expect(state).toMatchObject({
+        eligible: false,
+        alias: 'Bidder 5',
+        reason: { code: 'BIDDER_NOT_ELIGIBLE', why: 'SUSPENDED' },
+        registration: { status: 'SUSPENDED', decisionReason: 'The last lot was not paid for.', appeal: 'NONE' },
+      });
+    });
+
+    describe('registration, as the auction decides (WO-234.5)', () => {
+      const joinedRow = (over: Record<string, unknown> = {}) => ({
+        id: 'p1',
+        alias: 'Bidder 5',
+        status: 'PENDING',
+        createdAt: new Date('2026-10-01T09:00:00Z'),
+        decisionReason: null,
+        appealText: null,
+        appealedAt: null,
+        ...over,
+      });
+
+      it.each(['VERIFIED', 'APPROVAL'])('tells someone who has not joined a %s auction to join, with the mode so the page can say how', async (registration) => {
+        withLot({ auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner', registration } });
+        const state = await service.viewerState('l1', customer);
+        expect(state).toMatchObject({
+          eligible: false,
+          reason: { why: 'NOT_REGISTERED' },
+          registration: { mode: registration, status: 'NONE' },
+        });
+        expect(bidders.strikeState).not.toHaveBeenCalled();
+      });
+
+      it('says a registration is waiting, with when they joined', async () => {
+        withLot({ auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner', registration: 'APPROVAL' } });
+        prisma.bidder.findUnique.mockResolvedValue(joinedRow());
+        expect(await service.viewerState('l1', customer)).toMatchObject({
+          eligible: false,
+          reason: { why: 'PENDING' },
+          registration: { status: 'PENDING', joinedAt: new Date('2026-10-01T09:00:00Z') },
+        });
+      });
+
+      it('shows a declined bidder their reason, and a waiting appeal back to its writer', async () => {
+        withLot({ auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner', registration: 'APPROVAL' } });
+        prisma.bidder.findUnique.mockResolvedValue(
+          joinedRow({ status: 'DECLINED', decisionReason: 'We could not match your name.', appealText: 'It is on my ID as written.', appealedAt: new Date() }),
+        );
+        expect(await service.viewerState('l1', customer)).toMatchObject({
+          reason: { why: 'DECLINED' },
+          registration: { status: 'DECLINED', decisionReason: 'We could not match your name.', appeal: 'WAITING', appealText: 'It is on my ID as written.' },
+        });
+      });
+
+      it('says a kept decision is final, with no text to echo', async () => {
+        withLot({ auction: { id: 'a1', status: 'OPEN', createdById: 'u-owner', registration: 'APPROVAL' } });
+        prisma.bidder.findUnique.mockResolvedValue(joinedRow({ status: 'SUSPENDED', decisionReason: 'Kept.', appealText: null, appealedAt: new Date() }));
+        expect(await service.viewerState('l1', customer)).toMatchObject({ registration: { appeal: 'KEPT', appealText: null } });
+      });
+
+      it('reads the strike count only for someone with no place under an OPEN auction, and tells a person at the threshold to join', async () => {
+        withLot();
+        bidders.strikeState.mockResolvedValue({ inWindow: 3, reviewDue: true });
+        expect(await service.viewerState('l1', customer)).toMatchObject({ eligible: false, reason: { why: 'NOT_REGISTERED' } });
+        expect(bidders.strikeState).toHaveBeenCalledTimes(1);
+
+        bidders.strikeState.mockClear();
+        prisma.bidder.findUnique.mockResolvedValue(joinedRow({ status: 'APPROVED' }));
+        expect(await service.viewerState('l1', customer)).toMatchObject({ eligible: true });
+        expect(bidders.strikeState).not.toHaveBeenCalled();
+      });
+
+      it('never shows an approved bidder a reason, even one left from an earlier decision', async () => {
+        withLot();
+        prisma.bidder.findUnique.mockResolvedValue(joinedRow({ status: 'APPROVED', decisionReason: 'ID checked' }));
+        expect((await service.viewerState('l1', customer)).registration.decisionReason).toBeNull();
+      });
     });
 
     it('is a 404 for a lot a visitor may not know exists', async () => {

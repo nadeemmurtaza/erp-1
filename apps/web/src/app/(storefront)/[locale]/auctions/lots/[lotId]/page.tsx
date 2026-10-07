@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { BidHistory } from '@/components/storefront/auction/bid-history';
 import { LotPageSkeleton } from '@/components/storefront/auction/lot-skeleton';
 import { LotBidding } from '@/components/storefront/auction/lot-bidding';
+import { LotJoin } from '@/components/storefront/auction/lot-registration';
 import { LotClock, LotFigure, LotOutcome } from '@/components/storefront/auction/lot-status';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 import { Button, Disclosure, EmptyState } from '@/components/ui';
@@ -84,6 +85,7 @@ export default function LotPage() {
           <LotFigure lot={lot} connection={connection} />
           <LotClock lot={lot} offsetMs={offsetMs} now={now} />
           {lot.phase === 'OPEN' ? <LotBidding lot={lot} lotViewer={lotViewer} offsetMs={offsetMs} now={now} applyEvent={applyEvent} refresh={refresh} /> : null}
+          {lot.phase === 'UPCOMING' ? <LotJoin lot={lot} lotViewer={lotViewer} /> : null}
           <LotOutcome lot={lot} viewerAlias={viewerAlias} />
         </aside>
 

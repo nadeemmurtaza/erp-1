@@ -14,6 +14,7 @@ import {
 } from 'class-validator';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 import { MAX_PRICE_MINOR } from '../bidding';
+import { BIDDER_DECISIONS, REGISTRATION_MODES, type BidderDecision, type BidderStatus, type RegistrationMode } from '../bidder-trust';
 
 /**
  * The largest price or bid, in minor units (doc 234 §12). The columns are
@@ -27,6 +28,11 @@ export const MAX_MINOR = MAX_PRICE_MINOR;
 export const CREATABLE_AUCTION_TYPES = ['ENGLISH'] as const;
 
 export const AUCTION_STATUSES = ['DRAFT', 'SCHEDULED', 'OPEN', 'CLOSING', 'CLOSED', 'SETTLED', 'CANCELLED'] as const;
+
+/** Longest reason a staff member writes for a decision or a strike, and the bidder reads (doc 234 §12). */
+export const MAX_REASON_LENGTH = 500;
+/** Longest appeal a bidder writes. */
+export const MAX_APPEAL_LENGTH = 1_000;
 
 export class CreateAuctionDto {
   @ApiPropertyOptional({ enum: CREATABLE_AUCTION_TYPES, default: 'ENGLISH' })
@@ -59,6 +65,16 @@ export class CreateAuctionDto {
   @IsString()
   @MaxLength(5000)
   terms?: string;
+
+  @ApiPropertyOptional({
+    enum: REGISTRATION_MODES,
+    description:
+      'Who may bid. OPEN: any signed-in customer. VERIFIED: customers with a verified identity bid at once, everyone else waits for approval. ' +
+      'APPROVAL: everyone waits for approval. Left out, the Setting `auction.registration_default` applies.',
+  })
+  @IsOptional()
+  @IsIn(REGISTRATION_MODES)
+  registration?: RegistrationMode;
 }
 
 export class UpdateAuctionDto {
@@ -90,6 +106,14 @@ export class UpdateAuctionDto {
   @IsString()
   @MaxLength(5000)
   terms?: string;
+
+  @ApiPropertyOptional({
+    enum: REGISTRATION_MODES,
+    description: 'Who may bid, changed while the auction is a draft.',
+  })
+  @IsOptional()
+  @IsIn(REGISTRATION_MODES)
+  registration?: RegistrationMode;
 }
 
 export class CancelAuctionDto {
@@ -231,4 +255,79 @@ export class PublicLotListQueryDto extends PaginationQueryDto {
   @IsString()
   @MaxLength(80)
   override q?: string;
+}
+
+export const BIDDER_FILTERS = ['waiting', 'approved', 'stopped', 'appeals'] as const;
+export type BidderFilter = (typeof BIDDER_FILTERS)[number];
+
+/** Oldest first by default: a queue is worked from the top. Page, page size and `order` come from the shared list query. */
+export class BidderListQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    enum: BIDDER_FILTERS,
+    description: 'waiting: registrations to decide. approved. stopped: suspended or declined. appeals: a suspended or declined bidder who is waiting for an answer. Left out: everyone.',
+  })
+  @IsOptional()
+  @IsIn(BIDDER_FILTERS)
+  filter?: BidderFilter;
+
+  @ApiPropertyOptional({ enum: ['asc', 'desc'], default: 'asc' })
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  override order: 'asc' | 'desc' = 'asc';
+}
+
+const BIDDER_STATUSES = ['PENDING', 'APPROVED', 'SUSPENDED', 'DECLINED'] as const;
+
+export class BidderDecisionDto {
+  @ApiProperty({ enum: BIDDER_DECISIONS })
+  @IsIn(BIDDER_DECISIONS)
+  decision!: BidderDecision;
+
+  @ApiProperty({
+    enum: BIDDER_STATUSES,
+    description:
+      'The status the staff member was looking at. If the bidder has moved on since, the decision is refused (409) instead of ' +
+      'landing on a state nobody chose it for.',
+  })
+  @IsIn(BIDDER_STATUSES)
+  expectedStatus!: BidderStatus;
+
+  @ApiPropertyOptional({
+    maxLength: MAX_REASON_LENGTH,
+    description: 'Required for a decline, a suspension and keeping a decision. The bidder reads it, so it is written for them.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(MAX_REASON_LENGTH)
+  reason?: string;
+}
+
+export class RecordStrikeDto {
+  @ApiProperty({ maxLength: MAX_REASON_LENGTH, description: 'What happened. Kept on record and in the audit trail.' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(MAX_REASON_LENGTH)
+  reason!: string;
+
+  @ApiPropertyOptional({ description: 'The lot it concerns, when there is one. Must belong to this auction.' })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  lotId?: string;
+}
+
+export class VoidStrikeDto {
+  @ApiProperty({ maxLength: MAX_REASON_LENGTH, description: 'Why the strike was a mistake. The strike stays on record, marked void.' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(MAX_REASON_LENGTH)
+  reason!: string;
+}
+
+export class AppealDto {
+  @ApiProperty({ maxLength: MAX_APPEAL_LENGTH, description: 'Why the decision should be looked at again.' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(MAX_APPEAL_LENGTH)
+  message!: string;
 }

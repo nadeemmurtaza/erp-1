@@ -2,7 +2,9 @@ import { Injectable, Logger, NotFoundException, type OnModuleInit } from '@nestj
 import { paginated } from '../../core/common/dto/pagination.dto';
 import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
+import { eligibility, INELIGIBLE_MESSAGES, parseRegistrationMode, registrationView, type IneligibleReason, type RegistrationView } from './bidder-trust';
 import { minimumNextBid, parseBidRules } from './bidding';
 import type { PublicLotListQueryDto } from './dto/auction.dto';
 import { MAX_EVENT_BIDS, type LiveBid, type LotLiveEvent, type LotPublicOutcome } from './lot-live';
@@ -81,7 +83,10 @@ export interface ViewerLotState {
   participating: boolean;
   leading: boolean;
   eligible: boolean;
-  reason?: { code: 'BIDDER_NOT_ELIGIBLE'; message: string };
+  /** Why not, from the one rule `placeBid()` also uses (`eligibility()`): the page tells it in the shopper's language from `why`. */
+  reason?: { code: 'BIDDER_NOT_ELIGIBLE'; why: IneligibleReason; message: string };
+  /** The caller's own place in this auction: joined or not, waiting, declined, suspended, and any appeal. Never anyone else's. */
+  registration: RegistrationView;
 }
 
 interface LotPageRow {
@@ -117,6 +122,7 @@ export class AuctionPublicService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly realtime: AuctionRealtimeService,
+    private readonly bidders: AuctionBidderService,
   ) {}
 
   onModuleInit(): void {
@@ -347,7 +353,11 @@ export class AuctionPublicService implements OnModuleInit {
   async viewerState(lotId: string, user: { id: string; permissions: readonly string[] }): Promise<ViewerLotState> {
     const lot = await this.prisma.auctionLot.findUnique({
       where: { id: lotId },
-      select: { status: true, leaderBidderId: true, auction: { select: { id: true, status: true, createdById: true } } },
+      select: {
+        status: true,
+        leaderBidderId: true,
+        auction: { select: { id: true, status: true, createdById: true, registration: true } },
+      },
     });
     if (!lot || lot.status === 'WITHDRAWN' || lot.auction.status === 'DRAFT' || lot.auction.status === 'CANCELLED') {
       throw new NotFoundException('Lot not found.');
@@ -357,25 +367,23 @@ export class AuctionPublicService implements OnModuleInit {
     const leading = bidder !== null && lot.leaderBidderId === bidder.id;
     const participating = bidder === null ? false : (await this.hasStakeInLot(lotId, bidder.id));
 
-    if (user.permissions.includes('auction.manage') || lot.auction.createdById === user.id) {
-      return {
-        alias,
-        participating,
-        leading,
-        eligible: false,
-        reason: { code: 'BIDDER_NOT_ELIGIBLE', message: 'Staff who run this auction cannot bid on it. Use a separate customer account to bid.' },
-      };
-    }
-    if (bidder && bidder.status !== 'APPROVED') {
-      return {
-        alias,
-        participating,
-        leading,
-        eligible: false,
-        reason: { code: 'BIDDER_NOT_ELIGIBLE', message: 'This account is not approved to bid in this auction. Contact the auction organiser.' },
-      };
-    }
-    return { alias, participating, leading, eligible: true };
+    const mode = parseRegistrationMode(lot.auction.registration, 'OPEN');
+    const runsAuction = user.permissions.includes('auction.manage') || lot.auction.createdById === user.id;
+    // Only someone with no row under an open auction needs the strike count: it decides whether their first bid would register them.
+    const reviewDue =
+      !runsAuction && bidder === null && mode === 'OPEN' ? (await this.bidders.strikeState(this.prisma, user.id, new Date(), await this.bidders.policy())).reviewDue : false;
+    const verdict = eligibility({ runsAuction, mode, bidderStatus: bidder?.status ?? null, reviewDue });
+    const registration = registrationView(mode, bidder);
+
+    if (verdict.eligible) return { alias, participating, leading, eligible: true, registration };
+    return {
+      alias,
+      participating,
+      leading,
+      eligible: false,
+      reason: { code: 'BIDDER_NOT_ELIGIBLE', why: verdict.reason, message: INELIGIBLE_MESSAGES[verdict.reason] },
+      registration,
+    };
   }
 
   /** A bid or a standing maximum, either one: the two ways a bidder can be in a lot's contest. */

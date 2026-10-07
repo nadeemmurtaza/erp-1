@@ -426,11 +426,136 @@ Known costs and gaps, stated rather than hidden:
   this work order, so the person sees the state on the lot page (refreshed every
   20 s while waiting) and staff see a count on the auction page. The first
   consumer of a `bidder decided` event would be `notify`; none is published until
-  then, as with `auction.lot_closed`.
+  then. (`auction.lot_closed` is published from WO-234.6.)
 - **A suspended leader still leads.** Their bids stand until WO-234.9 can void
   them, which matters on a lot that closes before then.
 - **B2B accounts, `Party` conflict barring, `expiresAt`, deposits and lot-value
   caps are not built;** each is named in §8 of doc 234 with the work order that
   owns it.
 - **Strikes are entered by staff.** Nothing records "did not pay" until
-  settlement exists (WO-234.6), which will call the same method.
+  settlement exists. (WO-234.6 records it itself, with `recordUnpaidWinStrike`: a
+  sibling method on the same service and the same table, with no author, because
+  the person the strike is about is never the person who recorded it.)
+
+
+### ADR-086 addendum (2026-10-07) — WO-234.6 settlement: what a winner owes, and exact parameters
+
+Built: `AuctionSettlement` and `AuctionSettlementPayment`; `Order.sourceType` and
+`sourceRef` (unique together); the `AuctionOrderSink` extension point in
+`core/extension-points/`, implemented by `AuctionOrderSinkService` in `orders`;
+the `auction.lot_closed` domain event; `AuctionSettlementService` with its
+subscriber, its 60-second sweep and its staff routes under
+`admin/auctions/:id/settlements`; the permission `auction.settle` (catalogue, the
+"Sales & payments" bundle, and a migration granting it to the live Admin role);
+three Settings; the winner's card and the one-line cost on the storefront lot page;
+the admin "Winners" figure, list and dialogs. Three additive migrations, none of
+which rewrites a row; no new dependency. The `auction` module imports no other
+module: orders are reached through the extension point, payments and cancellations
+through the domain events `payment.succeeded` and `order.cancelled`.
+
+Decisions, each with the alternative it displaced:
+
+- **The auction does not make orders; it asks the one thing that does.** The
+  alternative, `auction` importing `OrdersService`, would make orders a hard
+  dependency of an optional module and add a `KNOWN_MODULE_COUPLINGS` entry for a
+  write that has no need to share a transaction. A retry after a crash is safe
+  without one: the order is keyed on `(sourceType, sourceRef)`, so asking twice
+  returns the first.
+- **A debt is a row per attempt, not a flag on the result.** `(lotId, attempt)` is
+  unique: attempt 1 is the winner, attempt 2 the next bidder staff offered it to.
+  The displaced shape, one settlement per lot that is edited when the lot moves to
+  someone else, would lose the first buyer's lapse and strike the moment it is
+  re-offered.
+- **A payment is counted by its own id.** `AuctionSettlementPayment` has the
+  payment's id as its primary key, so a second delivery of `payment.succeeded` is a
+  unique-key conflict inside the transaction and counts nothing. The displaced
+  option, summing the order's payments on each event, is correct only while no
+  payment is ever edited.
+- **One lock per settlement serialises a payment against a lapse.** A payment
+  racing the sweep is the only way to strike someone who paid. Both take
+  `pg_advisory_xact_lock` in namespace 8 241 173 on the settlement's id and both
+  re-read the status under it. The namespace is separate from the lot (8 241 171) so
+  a flood of bids does not queue behind a payment.
+- **The sweep waits ten minutes past the stated deadline before it lapses a win.**
+  The buyer is shown the deadline. A payment staff approved a moment earlier takes
+  one trip through the outbox to arrive, and the outbox retries a failing delivery
+  for about four minutes; striking someone for a delay between two systems is the
+  worse error, and it costs a person nothing to be told a little late.
+- **A lapse strikes once, with no author, and cancels the order.** It is a fact the
+  system found, not an act a person did, so `BidderStrike.recordedById` is nullable
+  and `settlementId` is unique: the second sweep that reaches the same win cannot
+  record a second strike. The order and its payment are cancelled best-effort; if
+  the order cannot be cancelled the lapse stands and the reason is written on the
+  row for staff, because a debt that cannot be released must not keep the lot
+  hostage.
+- **Cancelling a win is not a strike.** Staff cancel a win when the fault is the
+  shop's or the buyer's circumstance. It requires a reason, nobody may cancel their
+  own, and a paid win cannot be cancelled here (it is refunded from the order).
+- **Offering to the next bidder is staff's act, at the bidder's own bid.** The
+  displaced option, automatic cascading, sells a lot to someone who has not
+  noticed it is theirs, and at a price they may have forgotten. The offer is
+  one-time per bidder, never while the first win is owed, and shows who and at what
+  before anything is written.
+- **The premium and the payment window are frozen onto the auction at
+  `schedule()`.** What a bidder was told when they decided to bid is what they pay.
+  The displaced option, reading the Setting at close, makes an edit made during the
+  sale change the price of lots already bid on. The lot page states both before
+  anyone bids.
+- **The premium is part of the order's total, apart in the lines.** Premium income
+  is therefore not separated from sales in the books. That is a named gap, owned by
+  WO-234.11, not a decision.
+- **A failed invoice waits; it never blocks a close.** `INVOICE_FAILED` carries the
+  reason, creates nothing and replays when the cause is fixed. The close itself has
+  already committed and published; nothing downstream can roll a sale back.
+
+| Parameter | Exact value | Applies to | Why this number (not smaller or larger) | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Payment window | 72 hours from the invoice; Setting `auction.payment_window_hours`, whole number 1 to 720, copied onto the auction at `schedule()` | the win's deadline | Covers a weekend bank transfer; shorter penalises honest buyers, longer ties up the lot; 720 hours (30 days) is the ceiling because beyond it a lot is relisted, not waited on | `paymentDueAt()` in `settlement.ts`, `parseBidRules()` | malformed → 72 |
+| Buyer's premium | 0 basis points by default, 0 to 5 000; Setting `auction.buyer_premium_bps`, copied onto the auction at `schedule()`; rounded half up to a whole minor unit | the invoice total | An auction that was shown without a premium must stay that way; above half the price is a typo | `settlementAmounts()` (BigInt) | malformed → 0 |
+| Expiry grace | 600 000 ms (10 minutes) past the deadline | the sweep | The outbox retries a failing delivery for about four minutes; ten lets the slowest honest payment land first | `EXPIRY_GRACE_MS` | a payment after the lapse is counted, audited `auction.payment_after_end`, flagged for staff |
+| Sweep | every 60 000 ms, at most 50 lapses and 50 stalled invoices per run; a run is skipped while the last still goes | the lapse job | A minute is far finer than an hours-long window and coarser than the 15 s lot job; 50 a run is 3 000 an hour | `AuctionSettlementCron` | a failing win is logged and left for the next run; two nodes cost a wasted query, never a double strike |
+| Stalled invoice retry | 120 000 ms in `INVOICING` | the same sweep | Far longer than an invoice takes, far shorter than the window | `STALLED_INVOICING_MS` | shows as "to fix"; staff can replay |
+| Invoice delivery retry | the outbox's own: 8 attempts, backoff, batch 25 every 2 000 ms | `auction.lot_closed` | The existing dispatcher's parameters, unchanged | `OutboxDispatcher` | after the last attempt the event is dead-lettered and the stalled retry still repairs the win |
+| Largest invoice | 2 147 483 647 minor units | the order | The order's money columns are `Int`; the auction's are `BIGINT` | `MAX_ORDER_MINOR` | `INVOICE_FAILED` stating the limit |
+| Settlement lock | one `pg_advisory_xact_lock` per settlement, namespace 8 241 173 | payment, lapse, cancel, offer | Serialises the only races that can strike a buyer who paid | `lock()` | waits, then re-reads; a stale screen gets 409 `SETTLEMENT_CHANGED` |
+| Cancellation reason | 1 to 500 characters | cancel | A sentence a person reads; the audit row stores it | DTO `@MaxLength` | 400 naming the limit |
+| Invoice-wait refresh | 5 000 ms for the first 12 reads (60 s), then 20 000 ms, only while the buyer's invoice is missing or being made | the lot page's own state read | The invoice normally exists within seconds; after a minute something is wrong and a slower poll is enough | `settlementPollMs()` | the page keeps showing "preparing" |
+| Settlements list | 20 a page, 100 at most | the staff list | The shared pagination limits | `PaginationQueryDto` | none |
+
+Pillars touched: architecture (one extension point, three events, no new
+coupling; the pure rules in `settlement.ts` and the page's helpers are testable
+without a render or a database), scalable (indexes `(lotId, attempt)` unique,
+`(auctionId, status, createdAt)`, `(status, dueAt)`, `(orderId)`, each named for
+the query it serves; the sweep is batched; "who would be offered" for a page of
+rows is two grouped queries, not one per row), secure by design (`auction.settle`
+on every staff route, checked server-side; the winner's route finds their debt by
+`(lotId, userId)` from the token and takes no id from the request; the list carries
+aliases, never a name, email or phone; nobody acts on their own win), stable and
+reliable (the order keyed on `(sourceType, sourceRef)`, the payment keyed on its
+id, a lock per settlement, predicate-on-write on every state change, the
+transactional outbox for delivery, a sweep that repairs a crash between claiming
+and ordering), observable (`Logger` lines for each invoice, lapse, cancel and offer
+with the settlement id and no personal data; `recordEvidence()` inside the
+transaction for paid, lapsed, cancelled and offered, `record()` for the retryable
+states invoiced and invoice failed).
+
+Known costs and gaps, stated rather than hidden:
+
+- **Staff are not told when an invoice fails.** The "to fix" figure and the list
+  show it; nothing messages anyone. A message to the holders of `auction.settle`
+  would be the first consumer of a staff-facing notification and is not built here.
+- **No tax on an auction invoice, and no separate premium income.** The premium is
+  inside the order's total; both belong to the ledger work in WO-234.11.
+- **A consignor's payable, stock release and relisting are not built** (WO-234.11).
+  A lot with no stock source moves no stock.
+- **Orders cap at 2 147 483 647 minor units.** A larger win is `INVOICE_FAILED`
+  with the limit stated.
+- **A payment in the instant before the order's id is written down is not
+  counted.** The 120 s stalled retry repairs the invoice, not that one payment;
+  staff see the order paid and the win unpaid and replay it. The window is a few
+  milliseconds wide.
+- **Cancelling the order at a lapse is best-effort.** If it fails the lapse stands
+  and the reason is on the row.
+- **`expireDue()` lapses every overdue win in the database.** The end-to-end test
+  therefore runs only against a development or CI database, never one holding real
+  sales.

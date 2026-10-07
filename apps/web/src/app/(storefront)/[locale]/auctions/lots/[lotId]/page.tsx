@@ -7,6 +7,7 @@ import { BidHistory } from '@/components/storefront/auction/bid-history';
 import { LotPageSkeleton } from '@/components/storefront/auction/lot-skeleton';
 import { LotBidding } from '@/components/storefront/auction/lot-bidding';
 import { LotJoin } from '@/components/storefront/auction/lot-registration';
+import { LotCosts } from '@/components/storefront/auction/lot-settlement';
 import { LotClock, LotFigure, LotOutcome } from '@/components/storefront/auction/lot-status';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 import { Button, Disclosure, EmptyState } from '@/components/ui';
@@ -29,7 +30,7 @@ export default function LotPage() {
   const { lotId } = useParams<{ lotId: string }>();
   const { lot, load, connection, offsetMs, refresh, applyEvent } = useLotLive(lotId);
   const { user } = useCustomerSession();
-  const lotViewer = useLotViewer(lotId, user !== null);
+  const lotViewer = useLotViewer(lotId, user !== null, lot ? { phase: lot.phase, outcome: lot.outcome } : null);
   const now = useNow(1_000, lot !== null && lot.phase !== 'CLOSED');
 
   useEffect(() => {
@@ -84,9 +85,10 @@ export default function LotPage() {
         <aside className="card grid gap-5 p-5 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
           <LotFigure lot={lot} connection={connection} />
           <LotClock lot={lot} offsetMs={offsetMs} now={now} />
+          <LotCosts lot={lot} />
           {lot.phase === 'OPEN' ? <LotBidding lot={lot} lotViewer={lotViewer} offsetMs={offsetMs} now={now} applyEvent={applyEvent} refresh={refresh} /> : null}
           {lot.phase === 'UPCOMING' ? <LotJoin lot={lot} lotViewer={lotViewer} /> : null}
-          <LotOutcome lot={lot} viewerAlias={viewerAlias} />
+          <LotOutcome lot={lot} viewerAlias={viewerAlias} settlement={lotViewer.viewer?.settlement} />
         </aside>
 
         <div className="grid gap-8 lg:col-start-1 lg:row-start-1">

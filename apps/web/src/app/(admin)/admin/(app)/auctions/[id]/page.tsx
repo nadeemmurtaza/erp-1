@@ -23,7 +23,9 @@ import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { AuctionBidLedger } from '@/components/admin/auction-bid-ledger';
 import { AuctionBidders } from '@/components/admin/auction-bidders';
+import { AuctionSettlements } from '@/components/admin/auction-settlements';
 import { bidderStripValue, type BidderSummary } from '@/lib/auction-bidders';
+import { settlementStripValue, type SettlementSummary } from '@/lib/auction-settlements';
 import { REGISTRATION_CHOICES, registrationChoice, type AuctionRegistrationMode } from '@/lib/auction-registration-admin';
 import { auctionClosesAt, describeExtension, describeOutcome, lotEndsAt, type LotOutcomeView } from '@/lib/auction-lots';
 
@@ -95,7 +97,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const canManage = can('auction.manage');
   const canPublish = can('auction.publish');
   const canDecideBidders = can('auction.bidders.manage');
-  const stripDate = (text: string) => (canDecideBidders ? <span className="text-xl">{text}</span> : text);
+  const canSettle = can('auction.settle');
 
   const [auction, setAuction] = useState<AuctionDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -114,6 +116,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const [terms, setTerms] = useState('');
   const [registration, setRegistration] = useState<AuctionRegistrationMode>('APPROVAL');
   const [bidderSummary, setBidderSummary] = useState<BidderSummary | null>(null);
+  const [settlementSummary, setSettlementSummary] = useState<SettlementSummary | null>(null);
 
   const [lotOpen, setLotOpen] = useState(false);
   const [editingLot, setEditingLot] = useState<Lot | null>(null);
@@ -151,6 +154,27 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     void loadBidderSummary();
   }, [loadBidderSummary]);
+
+  // Only a sale that has opened can have a winner, so a draft, a scheduled or a cancelled one has no such figure and the strip closes over the gap.
+  const owesSomething = auction !== null && (auction.status === 'OPEN' || auction.status === 'CLOSED' || auction.status === 'SETTLED');
+  const showSettlements = canSettle && owesSomething;
+  // The sale's own facts and the people it concerns are two rows, not one: five cells in one row left each under 150 px at 1024 (with the sidebar), so a date broke at its hyphens and "approved" ran under the next figure. Each row is at most three cells and so always fits; a row with none of its figures closes over the gap.
+  const showPeople = canDecideBidders || showSettlements;
+
+  /** The counts behind the "Winners" figure, read for the people who may see it, and again after each act on a win. */
+  const loadSettlementSummary = useCallback(async () => {
+    if (!showSettlements) return;
+    try {
+      setSettlementSummary(await adminFetch<SettlementSummary>(`/admin/auctions/${id}/settlements/summary`));
+    } catch {
+      // The figure then reads "—" and the panel says it could not load, with a way to try again; the rest of the page is unaffected.
+      setSettlementSummary(null);
+    }
+  }, [id, showSettlements]);
+
+  useEffect(() => {
+    void loadSettlementSummary();
+  }, [loadSettlementSummary]);
 
   /** Runs one write, reloads the page's data, and puts any refusal where the person is looking. */
   const run = async (write: () => Promise<unknown>, onError: (message: string) => void = setError) => {
@@ -313,37 +337,64 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
 
       <MetricStrip
         label="Auction summary"
-        className="mb-6"
+        className={showPeople ? 'mb-3' : 'mb-6'}
         items={[
-          // A date and a time at the strip's 40 px figure size broke at the hyphens into five lines once a fourth figure narrowed the cells (1024 px with the sidebar), so with four figures a date is set one step down and wraps at the comma; with three (no `auction.bidders.manage`) it keeps the strip's own size.
-          { key: 'opens', label: 'Opens', value: stripDate(formatDateTime(auction.startsAt)) },
+          { key: 'opens', label: 'Opens', value: formatDateTime(auction.startsAt) },
           {
             key: 'closes',
             label: auction.status === 'OPEN' ? 'Closes' : 'Closed',
-            value: stripDate(formatDateTime(auctionClosesAt(auction.lots, auction.endsAt))),
+            value: formatDateTime(auctionClosesAt(auction.lots, auction.endsAt)),
           },
           { key: 'lots', label: 'Lots on sale', value: String(onSale.length) },
-          // Only for someone who may decide on bidders: for everyone else the strip is three figures and closes over the gap.
-          ...(canDecideBidders
-            ? [
-                {
-                  key: 'bidders',
-                  label: 'Bidders',
-                  value: bidderStripValue(bidderSummary),
-                  detail: (
-                    <AuctionBidders
-                      auctionId={id}
-                      summary={bidderSummary}
-                      lots={auction.lots.filter((lot) => lot.status !== 'WITHDRAWN')}
-                      onChanged={() => void loadBidderSummary()}
-                      onChangeWhoMayBid={editable ? () => openEdit(auction) : undefined}
-                    />
-                  ),
-                },
-              ]
-            : []),
         ]}
       />
+
+      {showPeople ? (
+        <MetricStrip
+          label="Bidders and winners"
+          className="mb-6"
+          items={[
+            // Only for someone who may decide on bidders; only for someone who may settle, and only once the sale has opened.
+            ...(canDecideBidders
+              ? [
+                  {
+                    key: 'bidders',
+                    label: 'Bidders',
+                    value: bidderStripValue(bidderSummary),
+                    detail: (
+                      <AuctionBidders
+                        auctionId={id}
+                        summary={bidderSummary}
+                        lots={auction.lots.filter((lot) => lot.status !== 'WITHDRAWN')}
+                        onChanged={() => void loadBidderSummary()}
+                        onChangeWhoMayBid={editable ? () => openEdit(auction) : undefined}
+                      />
+                    ),
+                  },
+                ]
+              : []),
+            ...(showSettlements
+              ? [
+                  {
+                    key: 'winners',
+                    label: 'Winners',
+                    value: settlementStripValue(settlementSummary),
+                    detail: (
+                      <AuctionSettlements
+                        auctionId={id}
+                        summary={settlementSummary}
+                        onChanged={() => {
+                          void loadSettlementSummary();
+                          void load();
+                        }}
+                      />
+                    ),
+                  },
+                ]
+              : []),
+          ]}
+        />
+      ) : null}
 
       <Section
         title="Lots"

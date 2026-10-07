@@ -4,6 +4,7 @@ import { Prisma } from '../../../core/prisma/client';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
+import { AuctionSettlementService, type WinnerSettlementView } from './auction-settlement.service';
 import { eligibility, INELIGIBLE_MESSAGES, parseRegistrationMode, registrationView, type IneligibleReason, type RegistrationView } from './bidder-trust';
 import { minimumNextBid, parseBidRules } from './bidding';
 import type { PublicLotListQueryDto } from './dto/auction.dto';
@@ -40,7 +41,18 @@ export interface PublicLotView {
   title: string;
   description: string | null;
   quantity: number;
-  auction: { id: string; number: string; title: string; status: string; startsAt: string; terms: string | null };
+  auction: {
+    id: string;
+    number: string;
+    title: string;
+    status: string;
+    startsAt: string;
+    terms: string | null;
+    /** The buyer's premium the winner pays on top of the winning bid, in basis points (1 000 is 10%), frozen when the sale was scheduled. 0 means none. Told before anyone bids. */
+    buyerPremiumBps: number;
+    /** How many hours a winner has to pay, frozen when the sale was scheduled. */
+    paymentWindowHours: number;
+  };
   phase: PublicLotPhase;
   startPriceMinor: number;
   currentBidMinor: number | null;
@@ -87,6 +99,8 @@ export interface ViewerLotState {
   reason?: { code: 'BIDDER_NOT_ELIGIBLE'; why: IneligibleReason; message: string };
   /** The caller's own place in this auction: joined or not, waiting, declined, suspended, and any appeal. Never anyone else's. */
   registration: RegistrationView;
+  /** What the caller owes for winning this lot, once it has closed in their favour; their own, never another bidder's. Null before then. */
+  settlement: WinnerSettlementView | null;
 }
 
 interface LotPageRow {
@@ -123,6 +137,7 @@ export class AuctionPublicService implements OnModuleInit {
     private readonly prisma: PrismaService,
     private readonly realtime: AuctionRealtimeService,
     private readonly bidders: AuctionBidderService,
+    private readonly settlement: AuctionSettlementService,
   ) {}
 
   onModuleInit(): void {
@@ -280,6 +295,8 @@ export class AuctionPublicService implements OnModuleInit {
         status: auction.status,
         startsAt: auction.startsAt.toISOString(),
         terms: auction.terms,
+        buyerPremiumBps: rules.buyerPremiumBps,
+        paymentWindowHours: Math.round(rules.paymentWindowMs / 3_600_000),
       },
       phase,
       startPriceMinor: Number(lot.startPriceMinor),
@@ -374,8 +391,10 @@ export class AuctionPublicService implements OnModuleInit {
       !runsAuction && bidder === null && mode === 'OPEN' ? (await this.bidders.strikeState(this.prisma, user.id, new Date(), await this.bidders.policy())).reviewDue : false;
     const verdict = eligibility({ runsAuction, mode, bidderStatus: bidder?.status ?? null, reviewDue });
     const registration = registrationView(mode, bidder);
+    // Only a bidder with a row can have won; a lot nobody has closed has no debt to look for.
+    const settlement = bidder === null ? null : await this.settlement.forWinner(lotId, user.id);
 
-    if (verdict.eligible) return { alias, participating, leading, eligible: true, registration };
+    if (verdict.eligible) return { alias, participating, leading, eligible: true, registration, settlement };
     return {
       alias,
       participating,
@@ -383,6 +402,7 @@ export class AuctionPublicService implements OnModuleInit {
       eligible: false,
       reason: { code: 'BIDDER_NOT_ELIGIBLE', why: verdict.reason, message: INELIGIBLE_MESSAGES[verdict.reason] },
       registration,
+      settlement,
     };
   }
 

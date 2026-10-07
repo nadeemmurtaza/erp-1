@@ -67,18 +67,18 @@ enum AuctionRegistration {
 /// from one branch. Plain strings, not relations, matching how `Order` and
 /// `WalletAccount` already hold the same two ids.
 model Auction {
-  id               String        @id @default(cuid())
+  id               String              @id @default(cuid())
   /// "AUC-2026-0001" — documentNumber(), node-prefixed on a replica so two
   /// nodes never mint the same number (doc 234 §15, adoption test).
-  number           String        @unique
+  number           String              @unique
   organizationId   String?
   outletLocationId String?
   /// Only ENGLISH can be created today; the other two values exist so the
   /// column never needs altering when sealed-bid (WO-234.7) and reverse
   /// (WO-234.8) arrive. AuctionService.create() refuses them until then.
-  type             AuctionType   @default(ENGLISH)
+  type             AuctionType         @default(ENGLISH)
   title            String
-  status           AuctionStatus @default(DRAFT)
+  status           AuctionStatus       @default(DRAFT)
   startsAt         DateTime
   endsAt           DateTime
   currency         String
@@ -94,8 +94,8 @@ model Auction {
   /// Setting `auction.registration_default` (APPROVAL) for a new one.
   registration     AuctionRegistration @default(OPEN)
   createdById      String
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
 
   lots    AuctionLot[]
   bidders Bidder[]
@@ -147,10 +147,11 @@ model AuctionLot {
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
-  auction Auction        @relation(fields: [auctionId], references: [id])
-  bids    Bid[]
-  proxies ProxyBid[]
-  result  AuctionResult?
+  auction     Auction             @relation(fields: [auctionId], references: [id])
+  bids        Bid[]
+  proxies     ProxyBid[]
+  result      AuctionResult?
+  settlements AuctionSettlement[]
 
   @@unique([auctionId, lotNo])
   @@index([auctionId, status])
@@ -177,11 +178,12 @@ model Bidder {
   appealedAt     DateTime?
   createdAt      DateTime     @default(now())
 
-  auction Auction         @relation(fields: [auctionId], references: [id])
-  bids    Bid[]
-  proxies ProxyBid[]
-  results AuctionResult[]
-  strikes BidderStrike[]
+  auction     Auction             @relation(fields: [auctionId], references: [id])
+  bids        Bid[]
+  proxies     ProxyBid[]
+  results     AuctionResult[]
+  strikes     BidderStrike[]
+  settlements AuctionSettlement[]
 
   @@unique([auctionId, userId])
   @@unique([auctionId, alias])
@@ -199,7 +201,11 @@ model BidderStrike {
   bidderId     String
   lotId        String?
   reason       String
-  recordedById String
+  /// The staff member who recorded it. Null for a strike the system recorded
+  /// itself when a payment window passed (WO-234.6): then `settlementId` names
+  /// the settlement, and is unique so a retried sweep cannot strike twice.
+  recordedById String?
+  settlementId String?   @unique
   recordedAt   DateTime  @default(now())
   voidedAt     DateTime?
   voidedById   String?
@@ -283,4 +289,80 @@ model AuctionResult {
 
   lot    AuctionLot @relation(fields: [lotId], references: [id])
   bidder Bidder?    @relation(fields: [topBidderId], references: [id])
+}
+
+/// Where a settlement stands (WO-234.6, doc 234 §9). INVOICING: claimed, the
+/// order not yet made (a sweep retries one stuck here). INVOICE_FAILED: the
+/// order could not be made and `failureReason` says why; staff Replay it once
+/// that is fixed. AWAITING_PAYMENT: the order exists and the window is running.
+/// PAID: what was received reached what is owed. EXPIRED: the window passed
+/// unpaid; the order was cancelled and a strike recorded. CANCELLED: staff
+/// ended it, or its order was cancelled elsewhere; no strike.
+enum AuctionSettlementStatus {
+  INVOICING
+  INVOICE_FAILED
+  AWAITING_PAYMENT
+  PAID
+  EXPIRED
+  CANCELLED
+}
+
+/// What a winning lot owes: one row per lot per offer (WO-234.6). `attempt` 1 is
+/// the winner; a staff-made offer to the next highest bidder is attempt 2, and
+/// so on, so `(lotId, attempt)` is the "second copy of the write" guard (doc 234
+/// §15). Money is BIGINT minor units like every other auction column; the order
+/// it becomes is limited to 32 bits, which the sink reports as INVOICE_FAILED.
+model AuctionSettlement {
+  id             String                  @id @default(cuid())
+  lotId          String
+  auctionId      String
+  bidderId       String
+  /// The portal account that owes it, copied from the bidder at the moment of
+  /// the win: a Bidder is per auction, and the order and the strike follow the person.
+  userId         String
+  attempt        Int                     @default(1)
+  status         AuctionSettlementStatus @default(INVOICING)
+  currency       String
+  hammerMinor    BigInt
+  /// The buyer's premium rate this auction was scheduled with, in basis points,
+  /// and what it came to on this win (rounded half up, never negative).
+  premiumBps     Int                     @default(0)
+  premiumMinor   BigInt                  @default(0)
+  totalMinor     BigInt
+  /// Sum of the payments received against the order (AuctionSettlementPayment).
+  paidMinor      BigInt                  @default(0)
+  dueAt          DateTime
+  orderId        String?
+  orderNumber    String?
+  failureReason  String?
+  resolvedAt     DateTime?
+  resolvedById   String?
+  resolutionNote String?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+
+  lot      AuctionLot                 @relation(fields: [lotId], references: [id])
+  bidder   Bidder                     @relation(fields: [bidderId], references: [id])
+  payments AuctionSettlementPayment[]
+
+  @@unique([lotId, attempt])
+  // The staff list: one auction's settlements by status, newest first.
+  @@index([auctionId, status, createdAt])
+  // The sweep: what is due, and what is stuck invoicing.
+  @@index([status, dueAt])
+  @@index([orderId])
+}
+
+/// One payment counted against a settlement (WO-234.6). `payment.succeeded`
+/// fires once per payment row and is delivered at least once, so the payment's
+/// own id is the key: the second delivery finds the row and adds nothing.
+model AuctionSettlementPayment {
+  paymentId    String   @id
+  settlementId String
+  amountMinor  BigInt
+  receivedAt   DateTime @default(now())
+
+  settlement AuctionSettlement @relation(fields: [settlementId], references: [id])
+
+  @@index([settlementId])
 }

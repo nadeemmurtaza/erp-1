@@ -384,6 +384,17 @@ export const SettingKey = {
   AuctionStrikesToReview: 'auction.strikes_to_review',
   /** How many days back a strike still counts. Read live. */
   AuctionStrikeWindowDays: 'auction.strike_window_days',
+  /**
+   * launchpad-apps/234-auction-app.md §9, §12 (WO-234.6) — the buyer's premium, in basis
+   * points of the winning bid (1 000 = 10%), added to what a winner owes. Copied onto an
+   * auction when it is scheduled, so a later change never alters what bidders were shown.
+   * 0 (the default) means no premium. Whole number, 0 to 5 000.
+   */
+  AuctionBuyerPremiumBps: 'auction.buyer_premium_bps',
+  /** How many hours a winner has to pay before the win lapses (doc 234 §12). Copied onto an auction when it is scheduled. Whole number, 1 to 720. */
+  AuctionPaymentWindowHours: 'auction.payment_window_hours',
+  /** The payment method key an auction winner's order is created with (`bank_transfer`, `cod`, …). Read when the order is made, so changing it fixes a replay. */
+  AuctionSettlementPaymentMethod: 'auction.settlement_payment_method',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -597,4 +608,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.AuctionRegistrationDefault]: 'APPROVAL',
   [SettingKey.AuctionStrikesToReview]: 3,
   [SettingKey.AuctionStrikeWindowDays]: 365,
+  [SettingKey.AuctionBuyerPremiumBps]: 0,
+  [SettingKey.AuctionPaymentWindowHours]: 72,
+  [SettingKey.AuctionSettlementPaymentMethod]: 'bank_transfer',
 };

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-555 files · 97,804 lines
+555 files · 98,034 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -97,14 +97,14 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 89 | 12,430 | doc |
+| `docs/implementation/decisions` | 89 | 12,555 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
 | `docs/implementation/integrations-connectivity` | 26 | 8,217 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
-| `docs/implementation/launchpad-apps` | 5 | 1,252 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 1,357 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
 | `docs/implementation/pos-hardware` | 4 | 645 | doc |
@@ -133,9 +133,9 @@ has a bug.
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
+| `docs/implementation/launchpad-apps/234-auction-app.md` | 779 | doc |  |
 | `docs/implementation/README.md` | 701 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
-| `docs/implementation/launchpad-apps/234-auction-app.md` | 674 | doc |  |
 | `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md` | 661 | doc |  |
 
 

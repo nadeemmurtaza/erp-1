@@ -1,5 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AuditService } from '../../../core/audit/audit.service';
+import { DomainEvent } from '../../../core/events/domain-events';
+import { EventBusService } from '../../../core/events/event-bus.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { AuctionPublicService } from './auction-public.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
@@ -40,6 +42,8 @@ export type CloseOutcome = 'closed' | 'extended' | 'skipped';
 interface CloseRow {
   id: string;
   auctionId: string;
+  lotNo: number;
+  auctionNumber: string;
   lotStatus: string;
   auctionStatus: string;
   currentBidMinor: bigint | null;
@@ -71,6 +75,7 @@ export class AuctionLifecycleService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly events: EventBusService,
     private readonly publicLots: AuctionPublicService,
     private readonly realtime: AuctionRealtimeService,
   ) {}
@@ -161,7 +166,7 @@ export class AuctionLifecycleService {
     const result = await this.prisma.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(${BID_LOT_LOCK_NAMESPACE}::int, hashtext(${lotId}))`;
       const rows = await tx.$queryRaw<CloseRow[]>`
-        SELECT l."id", l."auctionId", l."status" AS "lotStatus", l."currentBidMinor", l."reservePriceMinor",
+        SELECT l."id", l."auctionId", l."lotNo", a."number" AS "auctionNumber", l."status" AS "lotStatus", l."currentBidMinor", l."reservePriceMinor",
                l."leaderBidderId", l."bidSeq",
                a."status" AS "auctionStatus", COALESCE(l."endsAt", a."endsAt") AS "endsAt",
                clock_timestamp() AS "now"
@@ -204,6 +209,22 @@ export class AuctionLifecycleService {
           closedAt: row.now,
         },
       });
+      // In the same transaction as the result, so a lot that closed is always announced
+      // (the outbox delivers it at least once): the settlement subscriber turns a win into a debt.
+      await this.events.publish(
+        DomainEvent.AuctionLotClosed,
+        {
+          lotId,
+          auctionId: row.auctionId,
+          auctionNumber: row.auctionNumber,
+          lotNo: row.lotNo,
+          topBidderId: outcome.topBidderId,
+          topBidMinor: outcome.topBidMinor,
+          reserveMet: outcome.reserveMet,
+          closedAt: row.now.toISOString(),
+        },
+        tx,
+      );
 
       const remaining = await tx.auctionLot.count({ where: { auctionId: row.auctionId, status: { in: ['OPEN', 'PENDING'] } } });
       const auctionClosed = remaining === 0 && (await tx.auction.updateMany({ where: { id: row.auctionId, status: 'OPEN' }, data: { status: 'CLOSED' } })).count > 0;

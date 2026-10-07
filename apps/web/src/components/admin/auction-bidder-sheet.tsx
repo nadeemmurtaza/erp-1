@@ -366,7 +366,8 @@ export function AuctionBidderSheet({
                     <li key={strike.id} className="grid gap-1 text-sm">
                       <p className="text-xs text-neutral-900/60">
                         {formatDateTime(strike.recordedAt)}
-                        {strike.recordedBy ? ` by ${strike.recordedBy}` : ''}
+                        {/* No author means the system recorded it: a win that lapsed unpaid (WO-234.6). */}
+                        {` by ${strike.recordedBy ?? 'the system'}`}
                         {lotName(strike.lotId) ? `, ${lotName(strike.lotId)}` : ''}
                         {strike.auction.id !== auctionId ? `, ${strike.auction.number}` : ''}
                       </p>

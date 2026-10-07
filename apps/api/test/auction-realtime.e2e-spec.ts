@@ -236,6 +236,8 @@ describe('Auction public pages and live stream (e2e)', () => {
         leading: false,
         eligible: true,
         registration: { mode: 'OPEN', status: 'NONE', alias: null, joinedAt: null, decisionReason: null, appeal: 'NONE', appealText: null },
+        // Nothing owed: this person has never bid on the lot (WO-234.6).
+        settlement: null,
       });
       await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey: key() }).expect(201);
       expect((await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/me`)).expect(200)).body).toMatchObject({

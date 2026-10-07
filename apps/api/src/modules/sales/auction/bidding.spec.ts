@@ -22,6 +22,8 @@ const rules: BidRules = {
   antiSnipeWindowMs: 120_000,
   antiSnipeExtendMs: 120_000,
   maxExtensionMs: 1_800_000,
+  buyerPremiumBps: 0,
+  paymentWindowMs: 72 * 3_600_000,
 };
 
 describe('default rules', () => {
@@ -72,7 +74,7 @@ describe('minimumNextBid', () => {
 
 describe('parseBidRules', () => {
   it('reads a stored snapshot', () => {
-    const stored = { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000 };
+    const stored = { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000, buyerPremiumBps: 1_000, paymentWindowMs: 48 * 3_600_000 };
     expect(parseBidRules(stored)).toEqual(stored);
   });
 
@@ -96,6 +98,22 @@ describe('parseBidRules', () => {
     expect(parseBidRules({ antiSnipeExtendMs: 0 }).antiSnipeExtendMs).toBe(0);
     expect(parseBidRules({ antiSnipeExtendMs: -1 }).antiSnipeExtendMs).toBe(DEFAULT_BID_RULES.antiSnipeExtendMs);
     expect(parseBidRules({ maxExtensionMs: 365 * 24 * 3_600_000 }).maxExtensionMs).toBe(DEFAULT_BID_RULES.maxExtensionMs);
+  });
+
+  it('reads a snapshot written before settlement existed as no premium and a 72-hour window', () => {
+    const before = parseBidRules({ incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000 });
+    expect(before.buyerPremiumBps).toBe(0);
+    expect(before.paymentWindowMs).toBe(72 * 3_600_000);
+  });
+
+  it('accepts no premium but not a negative one or one above half the price, and keeps the window between an hour and thirty days', () => {
+    expect(parseBidRules({ buyerPremiumBps: 0 }).buyerPremiumBps).toBe(0);
+    expect(parseBidRules({ buyerPremiumBps: 5_000 }).buyerPremiumBps).toBe(5_000);
+    expect(parseBidRules({ buyerPremiumBps: 5_001 }).buyerPremiumBps).toBe(0);
+    expect(parseBidRules({ buyerPremiumBps: -1 }).buyerPremiumBps).toBe(0);
+    expect(parseBidRules({ paymentWindowMs: 3_600_000 }).paymentWindowMs).toBe(3_600_000);
+    expect(parseBidRules({ paymentWindowMs: 3_599_999 }).paymentWindowMs).toBe(72 * 3_600_000);
+    expect(parseBidRules({ paymentWindowMs: 31 * 24 * 3_600_000 }).paymentWindowMs).toBe(72 * 3_600_000);
   });
 });
 

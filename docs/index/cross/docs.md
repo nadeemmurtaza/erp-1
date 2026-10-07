@@ -3400,7 +3400,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md`  <sub>437 lines</sub>
+### `docs/implementation/decisions/ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md`  <sub>562 lines</sub>
 
 _no second-level headings_
 
@@ -4330,7 +4330,7 @@ _no second-level headings_
 - 12. Acceptance criteria  <sub>:195</sub>
 - 13. Work orders  <sub>:205</sub>
 
-### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>674 lines</sub>
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>779 lines</sub>
 
 - 1. Objective  <sub>:9</sub>
 - 2. Audiences and what each really needs  <sub>:16</sub>
@@ -4341,14 +4341,14 @@ _no second-level headings_
 - 7. Sealed bids and confidentiality  <sub>:198</sub>
 - 8. Bidder trust and money  <sub>:208</sub>
 - 9. After the bidding  <sub>:284</sub>
-- 10. Extension points (so industries can sell by auction without editing it)  <sub>:311</sub>
-- 11. Screens (one main job per page)  <sub>:320</sub>
-- 12. Parameters (proposals to confirm)  <sub>:471</sub>
-- 13. Permissions  <sub>:517</sub>
-- 14. Legal and regulatory caution (not decided here)  <sub>:534</sub>
-- 15. Scope lenses  <sub>:543</sub>
-- 16. Acceptance criteria  <sub>:598</sub>
-- 17. Work orders  <sub>:671</sub>
+- 10. Extension points (so industries can sell by auction without editing it)  <sub>:367</sub>
+- 11. Screens (one main job per page)  <sub>:376</sub>
+- 12. Parameters (proposals to confirm)  <sub>:527</sub>
+- 13. Permissions  <sub>:581</sub>
+- 14. Legal and regulatory caution (not decided here)  <sub>:599</sub>
+- 15. Scope lenses  <sub>:608</sub>
+- 16. Acceptance criteria  <sub>:696</sub>
+- 17. Work orders  <sub>:776</sub>
 
 ### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
 

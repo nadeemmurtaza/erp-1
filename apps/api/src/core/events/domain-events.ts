@@ -183,6 +183,14 @@ export const DomainEvent = {
   BankFacilityMarkupAccrued: 'bank_facility.markup_accrued',
   /** BulletinsService.publish() (tasks-notifications-support/61-policy-communications-bulletin.md, WO-61.3). BulletinNotificationListener is the only subscriber — resolves the audience through AudienceService.resolve() exactly as NotifyService does, and sends through NotificationsService, never a second delivery mechanism. */
   BulletinPublished: 'notify.bulletin_published',
+
+  /**
+   * launchpad-apps/234-auction-app.md §9 (WO-234.6). A lot's end, written in the same transaction as its
+   * AuctionResult, so a crash can never leave a closed lot nobody is told about. The auction's own settlement
+   * subscriber turns a lot with a winner into an invoice; any other module may subscribe (a loyalty scheme, a
+   * sourcing report). Published for every closed lot, with `reserveMet` and no `winnerUserId` when nobody won.
+   */
+  AuctionLotClosed: 'auction.lot_closed',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -728,6 +736,7 @@ export interface DomainEventPayloads {
   [DomainEvent.BankFacilityRepaymentRecorded]: BankFacilityRepaymentRecordedPayload;
   [DomainEvent.BankFacilityMarkupAccrued]: BankFacilityMarkupAccruedPayload;
   [DomainEvent.BulletinPublished]: BulletinPublishedPayload;
+  [DomainEvent.AuctionLotClosed]: AuctionLotClosedPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -806,4 +815,18 @@ export interface BulletinPublishedPayload {
   bulletinId: string;
   /** NULL means the whole organization — see Bulletin.audienceOrgUnitId. */
   audienceOrgUnitId: string | null;
+}
+
+export interface AuctionLotClosedPayload {
+  lotId: string;
+  auctionId: string;
+  auctionNumber: string;
+  lotNo: number;
+  /** The highest bidder, whether or not they won; null when there were no bids. */
+  topBidderId: string | null;
+  topBidMinor: number | null;
+  /** The reserve was reached. Only then does the top bidder owe anything. */
+  reserveMet: boolean;
+  /** ISO — the moment the lot closed. */
+  closedAt: string;
 }

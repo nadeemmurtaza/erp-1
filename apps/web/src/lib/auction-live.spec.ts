@@ -38,7 +38,7 @@ const lot = (over: Partial<PublicLot> = {}): PublicLot => ({
   title: 'Pallet of denim',
   description: null,
   quantity: 1,
-  auction: { id: 'a-1', number: 'AUC-2026-0001', title: 'October clearance', status: 'OPEN', startsAt: '2026-10-10T10:00:00.000Z', terms: null },
+  auction: { id: 'a-1', number: 'AUC-2026-0001', title: 'October clearance', status: 'OPEN', startsAt: '2026-10-10T10:00:00.000Z', terms: null, buyerPremiumBps: 0, paymentWindowHours: 72 },
   phase: 'OPEN',
   startPriceMinor: 100_000,
   currentBidMinor: null,

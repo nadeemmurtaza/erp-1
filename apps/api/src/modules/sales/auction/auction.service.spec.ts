@@ -427,7 +427,7 @@ describe('AuctionService', () => {
         where: { id: 'a1' },
         data: {
           status: 'SCHEDULED',
-          bidRules: { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000 },
+          bidRules: { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000, buyerPremiumBps: 0, paymentWindowMs: 259_200_000 },
         },
       });
     });

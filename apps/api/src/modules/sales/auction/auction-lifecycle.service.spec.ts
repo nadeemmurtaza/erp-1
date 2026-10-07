@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuditService } from '../../../core/audit/audit.service';
+import { EventBusService } from '../../../core/events/event-bus.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { AuctionLifecycleCron } from './auction-lifecycle.cron';
 import { AuctionLifecycleService } from './auction-lifecycle.service';
@@ -27,6 +28,7 @@ describe('AuctionLifecycleService', () => {
         { provide: AuditService, useValue: audit },
         { provide: AuctionPublicService, useValue: { liveSnapshot: jest.fn() } },
         { provide: AuctionRealtimeService, useValue: { publish: jest.fn() } },
+        { provide: EventBusService, useValue: { publish: jest.fn() } },
       ],
     }).compile();
     service = module.get(AuctionLifecycleService);

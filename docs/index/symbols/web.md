@@ -101,7 +101,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AuctionDetailPage` | default | :92 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
+| `page.tsx` | `AuctionDetailPage` | default | :94 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
@@ -1295,7 +1295,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `LotPage` | default | :27 | The lot page (launchpad-apps/234-auction-app.md §11, WO-234.4): the money page, and its one job is… |
+| `page.tsx` | `LotPage` | default | :28 | The lot page (launchpad-apps/234-auction-app.md §11, WO-234.4): the money page, and its one job is… |
 
 ### `apps/web/src/app/(storefront)/[locale]/blog`
 
@@ -1460,6 +1460,7 @@ Every top-level export in `web`, with the line to open.
 | `auction-bidder-sheet.tsx` | `SheetLot` | interface | :26 |  |
 | `auction-bidder-sheet.tsx` | `AuctionBidderSheet` | function | :48 | launchpad-apps/234-auction-app.md §8 (WO-234.5) — one bidder, as a side sheet over the auction page… |
 | `auction-bidders.tsx` | `AuctionBidders` | function | :38 | launchpad-apps/234-auction-app.md §8, §11 (WO-234.5) — who has joined this auction and who needs a… |
+| `auction-settlements.tsx` | `AuctionSettlements` | function | :51 | launchpad-apps/234-auction-app.md §9, §11 (WO-234.6) — what this auction's winners owe, as the pane… |
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
@@ -1899,11 +1900,13 @@ Every top-level export in `web`, with the line to open.
 | `lot-registration.tsx` | `RegistrationApproved` | function | :266 | The line a person sees above the bid box when the organiser has just let them in (their join was ap… |
 | `lot-registration.tsx` | `useLetIn` | function | :287 | Whether the organiser's yes arrived while the person was on this page: they joined and were let in… |
 | `lot-registration.tsx` | `LotJoin` | function | :305 | Joining before bidding opens. |
+| `lot-settlement.tsx` | `LotSettlement` | function | :21 | What a winner owes and where to pay it (launchpad-apps/234-auction-app.md §9, §11, WO-234.6). |
+| `lot-settlement.tsx` | `LotCosts` | function | :124 | The one line that says what winning costs, before anyone bids: the buyer's premium on top of the wi… |
 | `lot-skeleton.tsx` | `LotPageSkeleton` | function | :4 | The lot page's first-load placeholder: the title, then the panel and the history, in the boxes they… |
-| `lot-status.tsx` | `LotFigure` | function | :18 | The lot's price: the one figure the page is about. |
-| `lot-status.tsx` | `LotClock` | function | :53 | Time on the lot, counted against the server's clock. |
-| `lot-status.tsx` | `LotStanding` | function | :100 | Where a signed-in bidder stands: leading or outbid, in words. |
-| `lot-status.tsx` | `LotOutcome` | function | :124 | How a closed lot ended, and the way on. |
+| `lot-status.tsx` | `LotFigure` | function | :20 | The lot's price: the one figure the page is about. |
+| `lot-status.tsx` | `LotClock` | function | :55 | Time on the lot, counted against the server's clock. |
+| `lot-status.tsx` | `LotStanding` | function | :102 | Where a signed-in bidder stands: leading or outbid, in words. |
+| `lot-status.tsx` | `LotOutcome` | function | :130 | How a closed lot ended, and the way on. |
 
 ### `apps/web/src/components/ui`
 
@@ -2068,8 +2071,8 @@ Every top-level export in `web`, with the line to open.
 | `use-lot-live.ts` | `LotLoad` | type | :18 |  |
 | `use-lot-live.ts` | `LiveConnection` | type | :25 | `live`: the server is pushing changes. |
 | `use-lot-live.ts` | `useLotLive` | function | :44 | One lot, kept current (launchpad-apps/234-auction-app.md §6): read once, then followed over the ser… |
-| `use-lot-viewer.ts` | `useLotViewer` | function | :25 | What the signed-in customer is to one lot: their alias once they have bid, whether they may bid at… |
-| `use-lot-viewer.ts` | `LotViewer` | type | :79 |  |
+| `use-lot-viewer.ts` | `useLotViewer` | function | :31 | What the signed-in customer is to one lot: their alias once they have bid, whether they may bid at… |
+| `use-lot-viewer.ts` | `LotViewer` | type | :91 |  |
 | `use-now.ts` | `useNow` | function | :14 | This machine's clock, re-read every `intervalMs` while `active`. |
 | `use-order-status-label.ts` | `useOrderStatusLabel` | function | :17 | An order status in the reader's language. |
 | `use-popover.ts` | `PopoverCloseReason` | type | :49 | Lifts a floating panel out of whatever contains it and keeps it next to its trigger (MNU-4). |
@@ -2166,44 +2169,44 @@ Every top-level export in `web`, with the line to open.
 | `auction-client.ts` | `fetchProxyBid` | function | :81 |  |
 | `auction-client.ts` | `joinAuction` | function | :90 | Joins an auction: a place as a bidder, approved at once or waiting for the organiser, as the auctio… |
 | `auction-client.ts` | `sendAppeal` | function | :95 | Asks the organiser to look again at a decline or a suspension. |
-| `auction-live.ts` | `LotPhase` | type | :15 | What the public lot page does with what the Auction API tells it (launchpad-apps/234-auction-app.md… |
-| `auction-live.ts` | `LiveBid` | interface | :17 |  |
-| `auction-live.ts` | `LotOutcome` | type | :26 |  |
-| `auction-live.ts` | `PublicLot` | interface | :30 |  |
-| `auction-live.ts` | `LotLiveEvent` | interface | :50 |  |
-| `auction-live.ts` | `PublicLotSummary` | interface | :63 |  |
-| `auction-live.ts` | `RegistrationMode` | type | :78 | How an auction vets who may bid (`Auction.registration` in the API). |
-| `auction-live.ts` | `RegistrationStatus` | type | :81 | Where a person stands in one auction. |
-| `auction-live.ts` | `IneligibleWhy` | type | :84 | One word per cause of "may not bid": what the API says and what the page picks its card from. |
-| `auction-live.ts` | `AppealState` | type | :87 | A bidder gets one appeal for each decision: `NONE` before, `WAITING` for an answer, `KEPT` once the… |
-| `auction-live.ts` | `RegistrationView` | interface | :90 | A person's own place in one auction, as `registrationView` in the API tells it. |
-| `auction-live.ts` | `ViewerLotState` | interface | :102 |  |
-| `auction-live.ts` | `PAGE_BIDS` | const | :117 | Bids a page keeps: the API's own page size. |
-| `auction-live.ts` | `CLOSING_SOON_MS` | const | :125 | Under this long to go, a lot reads "closing soon". |
-| `auction-live.ts` | `POLL_FALLBACK_MS` | const | :128 | How often a page that has no stream asks for the lot instead. |
-| `auction-live.ts` | `REFRESH_MIN_GAP_MS` | const | :135 | The least time between two refreshes of the page the live path asks for itself (an event that skipp… |
-| `auction-live.ts` | `clockOffset` | function | :138 | How far the server's clock is ahead of this one (negative when behind), from a `serverTime` receive… |
-| `auction-live.ts` | `msUntil` | function | :143 | Milliseconds until `iso` on the server's clock, given the offset and this machine's `now`. |
-| `auction-live.ts` | `CountdownParts` | interface | :147 |  |
-| `auction-live.ts` | `countdownParts` | function | :155 | Whole days, hours, minutes and seconds in a span, floored; a span at or below zero is all zeros. |
-| `auction-live.ts` | `countdownUnits` | function | :170 | The two largest units that are not zero, for a countdown that fits a card: "2d 4h", "4h 12m", "12m… |
-| `auction-live.ts` | `TimeState` | type | :184 | What the page says about time on an open lot. |
-| `auction-live.ts` | `timeState` | function | :186 | What the page says about time on an open lot. |
-| `auction-live.ts` | `applyLiveEvent` | function | :200 | One live event folded into the page. |
-| `auction-live.ts` | `AcceptedLike` | interface | :224 | What a bid or a maximum answers with, as far as the page uses it. |
-| `auction-live.ts` | `eventFromAccepted` | function | :236 | The live event for the bids one request just placed, so the page moves on the moment the answer arr… |
-| `auction-live.ts` | `needsRefresh` | function | :259 | Whether the page is missing a bid it was told about: the lot is at a higher `bidSeq` than the newes… |
-| `auction-live.ts` | `newerView` | function | :268 | The newer of two reads of one lot. |
-| `auction-live.ts` | `Standing` | type | :274 |  |
-| `auction-live.ts` | `standingOf` | function | :284 | Where a signed-in bidder stands on a lot. |
-| `auction-live.ts` | `shownPriceMinor` | function | :290 | The price a lot shows: the current bid, else where bidding starts. |
-| `auction-live.ts` | `MAX_APPEAL_LENGTH` | const | :298 | The longest an appeal may be, in characters: the API's own limit (`MAX_APPEAL_LENGTH`), counted on… |
-| `auction-live.ts` | `spread` | function | :305 | A wait spread ±20 % around `ms`, so a thousand pages that started waiting together (a stream that d… |
-| `auction-live.ts` | `MAX_AMOUNT_MINOR` | const | :310 | The most a bid or a maximum may be, in minor units: the API's own ceiling. |
-| `auction-live.ts` | `parseAmountToMinor` | function | :318 | What a person typed as an amount, in minor units, or null when it is not one. |
-| `auction-live.ts` | `amountForInput` | function | :329 | An amount in minor units as the box shows it: whole units with no trailing zeros, a fraction only w… |
-| `auction-live.ts` | `BidFailure` | interface | :335 | What the API said about a refusal, as a message key and the numbers its sentence needs. |
-| `auction-live.ts` | `describeBidFailure` | function | :383 | Turns whatever a bid or a maximum threw into a sentence's worth of facts. |
+| `auction-live.ts` | `LotPhase` | type | :16 | What the public lot page does with what the Auction API tells it (launchpad-apps/234-auction-app.md… |
+| `auction-live.ts` | `LiveBid` | interface | :18 |  |
+| `auction-live.ts` | `LotOutcome` | type | :27 |  |
+| `auction-live.ts` | `PublicLot` | interface | :31 |  |
+| `auction-live.ts` | `LotLiveEvent` | interface | :62 |  |
+| `auction-live.ts` | `PublicLotSummary` | interface | :75 |  |
+| `auction-live.ts` | `RegistrationMode` | type | :90 | How an auction vets who may bid (`Auction.registration` in the API). |
+| `auction-live.ts` | `RegistrationStatus` | type | :93 | Where a person stands in one auction. |
+| `auction-live.ts` | `IneligibleWhy` | type | :96 | One word per cause of "may not bid": what the API says and what the page picks its card from. |
+| `auction-live.ts` | `AppealState` | type | :99 | A bidder gets one appeal for each decision: `NONE` before, `WAITING` for an answer, `KEPT` once the… |
+| `auction-live.ts` | `RegistrationView` | interface | :102 | A person's own place in one auction, as `registrationView` in the API tells it. |
+| `auction-live.ts` | `ViewerLotState` | interface | :114 |  |
+| `auction-live.ts` | `PAGE_BIDS` | const | :131 | Bids a page keeps: the API's own page size. |
+| `auction-live.ts` | `CLOSING_SOON_MS` | const | :139 | Under this long to go, a lot reads "closing soon". |
+| `auction-live.ts` | `POLL_FALLBACK_MS` | const | :142 | How often a page that has no stream asks for the lot instead. |
+| `auction-live.ts` | `REFRESH_MIN_GAP_MS` | const | :149 | The least time between two refreshes of the page the live path asks for itself (an event that skipp… |
+| `auction-live.ts` | `clockOffset` | function | :152 | How far the server's clock is ahead of this one (negative when behind), from a `serverTime` receive… |
+| `auction-live.ts` | `msUntil` | function | :157 | Milliseconds until `iso` on the server's clock, given the offset and this machine's `now`. |
+| `auction-live.ts` | `CountdownParts` | interface | :161 |  |
+| `auction-live.ts` | `countdownParts` | function | :169 | Whole days, hours, minutes and seconds in a span, floored; a span at or below zero is all zeros. |
+| `auction-live.ts` | `countdownUnits` | function | :184 | The two largest units that are not zero, for a countdown that fits a card: "2d 4h", "4h 12m", "12m… |
+| `auction-live.ts` | `TimeState` | type | :198 | What the page says about time on an open lot. |
+| `auction-live.ts` | `timeState` | function | :200 | What the page says about time on an open lot. |
+| `auction-live.ts` | `applyLiveEvent` | function | :214 | One live event folded into the page. |
+| `auction-live.ts` | `AcceptedLike` | interface | :238 | What a bid or a maximum answers with, as far as the page uses it. |
+| `auction-live.ts` | `eventFromAccepted` | function | :250 | The live event for the bids one request just placed, so the page moves on the moment the answer arr… |
+| `auction-live.ts` | `needsRefresh` | function | :273 | Whether the page is missing a bid it was told about: the lot is at a higher `bidSeq` than the newes… |
+| `auction-live.ts` | `newerView` | function | :282 | The newer of two reads of one lot. |
+| `auction-live.ts` | `Standing` | type | :288 |  |
+| `auction-live.ts` | `standingOf` | function | :298 | Where a signed-in bidder stands on a lot. |
+| `auction-live.ts` | `shownPriceMinor` | function | :304 | The price a lot shows: the current bid, else where bidding starts. |
+| `auction-live.ts` | `MAX_APPEAL_LENGTH` | const | :312 | The longest an appeal may be, in characters: the API's own limit (`MAX_APPEAL_LENGTH`), counted on… |
+| `auction-live.ts` | `spread` | function | :319 | A wait spread ±20 % around `ms`, so a thousand pages that started waiting together (a stream that d… |
+| `auction-live.ts` | `MAX_AMOUNT_MINOR` | const | :324 | The most a bid or a maximum may be, in minor units: the API's own ceiling. |
+| `auction-live.ts` | `parseAmountToMinor` | function | :332 | What a person typed as an amount, in minor units, or null when it is not one. |
+| `auction-live.ts` | `amountForInput` | function | :343 | An amount in minor units as the box shows it: whole units with no trailing zeros, a fraction only w… |
+| `auction-live.ts` | `BidFailure` | interface | :349 | What the API said about a refusal, as a message key and the numbers its sentence needs. |
+| `auction-live.ts` | `describeBidFailure` | function | :397 | Turns whatever a bid or a maximum threw into a sentence's worth of facts. |
 | `auction-lots.ts` | `LotTiming` | interface | :7 | What an auction's lots say about when they end and how they ended (launchpad-apps/234-auction-app.m… |
 | `auction-lots.ts` | `LotOutcomeView` | interface | :15 |  |
 | `auction-lots.ts` | `lotEndsAt` | function | :24 | When bidding on a lot ends: its own end if it has one, else the auction's. |
@@ -2222,6 +2225,37 @@ Every top-level export in `web`, with the line to open.
 | `auction-registration.ts` | `withRegistration` | function | :90 | The viewer as it is the moment a join or an appeal is answered, before the page has read it again:… |
 | `auction-registration.ts` | `RegistrationFailure` | interface | :101 | What a join or an appeal that did not work should say, as a key under `auction.registration.error`,… |
 | `auction-registration.ts` | `describeRegistrationFailure` | function | :114 | Turns whatever a join or an appeal threw into a key. |
+| `auction-settlement.ts` | `WinnerSettlementStatus` | type | :12 | What the lot page tells a winner about paying (launchpad-apps/234-auction-app.md §9, §11, WO-234.6)… |
+| `auction-settlement.ts` | `WinnerSettlement` | interface | :14 |  |
+| `auction-settlement.ts` | `SettlementCard` | type | :28 | What the winner's card says. |
+| `auction-settlement.ts` | `settlementCard` | function | :53 | The card for the viewer's debt, or `null` when there is nothing to say. |
+| `auction-settlement.ts` | `expectsSettlement` | function | :81 | Whether the closed lot's result names this viewer as its buyer. |
+| `auction-settlement.ts` | `needsSettlementPoll` | function | :90 | Whether the page should keep reading the viewer: while the person is the buyer and the invoice has… |
+| `auction-settlement.ts` | `settlementPollMs` | function | :104 | How long a page waiting for its invoice leaves before the next read, in milliseconds, after `reads`… |
+| `auction-settlement.ts` | `SETTLEMENT_FAST_POLL_MS` | const | :108 |  |
+| `auction-settlement.ts` | `SETTLEMENT_FAST_READS` | const | :109 |  |
+| `auction-settlement.ts` | `SETTLEMENT_SLOW_POLL_MS` | const | :110 |  |
+| `auction-settlement.ts` | `premiumPercent` | const | :113 | The premium as a percentage of the winning bid, for a sentence: 1 000 basis points is 10. |
+| `auction-settlements.ts` | `SettlementStatus` | type | :15 | What the admin auction page does with the settlements API (launchpad-apps/ 234-auction-app.md §9, §… |
+| `auction-settlements.ts` | `SettlementFilter` | type | :16 |  |
+| `auction-settlements.ts` | `MAX_CANCEL_REASON_LENGTH` | const | :19 | The longest a cancellation reason may be: the API's own limit (`MAX_REASON_LENGTH`), counted on the… |
+| `auction-settlements.ts` | `SettlementRow` | interface | :21 | The longest a cancellation reason may be: the API's own limit (`MAX_REASON_LENGTH`), counted on the… |
+| `auction-settlements.ts` | `SettlementSummary` | interface | :47 |  |
+| `auction-settlements.ts` | `SettlementAct` | type | :54 |  |
+| `auction-settlements.ts` | `settlementActs` | function | :57 | The acts a win allows, in the order the buttons appear. |
+| `auction-settlements.ts` | `defaultSettlementFilter` | function | :66 | The view a staff member lands on: what is still owed or needs fixing, else the history. |
+| `auction-settlements.ts` | `settlementFilterOptions` | function | :70 |  |
+| `auction-settlements.ts` | `settlementStripValue` | function | :80 | The strip cell's one figure: what needs a person first, else what is owed, else how many were paid. |
+| `auction-settlements.ts` | `settlementStatusWord` | function | :89 | The word on a status badge. |
+| `auction-settlements.ts` | `settlementTone` | function | :107 | The tone a status wears. |
+| `auction-settlements.ts` | `amountBreakdown` | function | :124 | The line under a row's amount: the bid and the premium apart, so staff can see what was added. |
+| `auction-settlements.ts` | `leftToPay` | function | :129 | What is still owed on an unpaid win, shown only once part has been paid. |
+| `auction-settlements.ts` | `receivedAfterEnd` | function | :137 | Money received on a win that had already ended: the one state staff must act on outside this panel… |
+| `auction-settlements.ts` | `settlementActLabel` | function | :142 | The act's button: a verb and its object, never "Yes" or "OK" (`DNG-2`). |
+| `auction-settlements.ts` | `offerNextConsequence` | function | :155 | What an offer to the next bidder will do, for the confirmation: the person, the price, and what hap… |
+| `auction-settlements.ts` | `settlementSuccess` | function | :164 | What follows a successful act, saying what happened to which win (`SUC-1`). |
+| `auction-settlements.ts` | `describeSettlementLoadFailure` | function | :184 | What a failed read says: never the server's own words, which can be "Internal server error". |
+| `auction-settlements.ts` | `describeSettlementFailure` | function | :196 | What went wrong with an act, as what happened, why and what to do next. |
 | `calendar.ts` | `DateOrder` | type | :14 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement b… |
 | `calendar.ts` | `Ymd` | interface | :16 |  |
 | `calendar.ts` | `MIN_YEAR` | const | :23 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |

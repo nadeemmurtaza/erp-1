@@ -3,7 +3,7 @@
 
 # Schema: `auction.prisma`
 
-7 models · 6 enums. Owned by module [`auction`](../modules/auction.md).
+9 models · 7 enums. Owned by module [`auction`](../modules/auction.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -75,10 +75,11 @@ Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@inde
 | `bids` | `Bid[]` |  |  |
 | `proxies` | `ProxyBid[]` |  |  |
 | `result` | `AuctionResult?` | optional |  |
+| `settlements` | `AuctionSettlement[]` |  |  |
 
 Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
-### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:275`</sub>
+### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:281`</sub>
 
 > How a lot ended (doc 234 §5.5).
 
@@ -94,7 +95,55 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 | `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
 | `bidder` | `Bidder?` | relation, optional | @relation(fields: [topBidderId], references: [id]) |
 
-### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:220`</sub>
+### `AuctionSettlement`  <sub>`apps/api/prisma/schema/auction.prisma:315`</sub>
+
+> What a winning lot owes: one row per lot per offer (WO-234.6).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `lotId` | `String` |  |  |
+| `auctionId` | `String` |  |  |
+| `bidderId` | `String` |  |  |
+| `userId` | `String` |  |  |
+| `attempt` | `Int` |  | @default(1) |
+| `status` | `AuctionSettlementStatus` |  | @default(INVOICING) |
+| `currency` | `String` |  |  |
+| `hammerMinor` | `BigInt` |  |  |
+| `premiumBps` | `Int` |  | @default(0) |
+| `premiumMinor` | `BigInt` |  | @default(0) |
+| `totalMinor` | `BigInt` |  |  |
+| `paidMinor` | `BigInt` |  | @default(0) |
+| `dueAt` | `DateTime` |  |  |
+| `orderId` | `String?` | optional |  |
+| `orderNumber` | `String?` | optional |  |
+| `failureReason` | `String?` | optional |  |
+| `resolvedAt` | `DateTime?` | optional |  |
+| `resolvedById` | `String?` | optional |  |
+| `resolutionNote` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
+| `bidder` | `Bidder` | relation | @relation(fields: [bidderId], references: [id]) |
+| `payments` | `AuctionSettlementPayment[]` |  |  |
+
+Indexes: `@@unique([lotId, attempt])` · `@@index([auctionId, status, createdAt])` · `@@index([status, dueAt])` · `@@index([orderId])`
+
+### `AuctionSettlementPayment`  <sub>`apps/api/prisma/schema/auction.prisma:359`</sub>
+
+> One payment counted against a settlement (WO-234.6).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `paymentId` | `String` | id | @id |
+| `settlementId` | `String` |  |  |
+| `amountMinor` | `BigInt` |  |  |
+| `receivedAt` | `DateTime` |  | @default(now()) |
+| `settlement` | `AuctionSettlement` | relation | @relation(fields: [settlementId], references: [id]) |
+
+Indexes: `@@index([settlementId])`
+
+### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:226`</sub>
 
 > One accepted bid: a record, never edited and never deleted (doc 234 §5.2).
 
@@ -115,7 +164,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
 Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey])` · `@@index([bidderId, acceptedAt])`
 
-### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:167`</sub>
+### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:168`</sub>
 
 > A person bidding in one auction.
 
@@ -137,10 +186,11 @@ Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey]
 | `proxies` | `ProxyBid[]` |  |  |
 | `results` | `AuctionResult[]` |  |  |
 | `strikes` | `BidderStrike[]` |  |  |
+| `settlements` | `AuctionSettlement[]` |  |  |
 
 Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@@index([auctionId, status, createdAt])`
 
-### `BidderStrike`  <sub>`apps/api/prisma/schema/auction.prisma:196`</sub>
+### `BidderStrike`  <sub>`apps/api/prisma/schema/auction.prisma:198`</sub>
 
 > A mark against a person (WO-234.5), recorded by staff with a reason and, when there is one, the lot it concerns.
 
@@ -151,7 +201,8 @@ Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@
 | `bidderId` | `String` |  |  |
 | `lotId` | `String?` | optional |  |
 | `reason` | `String` |  |  |
-| `recordedById` | `String` |  |  |
+| `recordedById` | `String?` | optional |  |
+| `settlementId` | `String?` | unique, optional | @unique |
 | `recordedAt` | `DateTime` |  | @default(now()) |
 | `voidedAt` | `DateTime?` | optional |  |
 | `voidedById` | `String?` | optional |  |
@@ -160,7 +211,7 @@ Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@
 
 Indexes: `@@index([userId, recordedAt])` · `@@index([bidderId])`
 
-### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:249`</sub>
+### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:255`</sub>
 
 > A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to this.
 
@@ -199,6 +250,19 @@ Indexes: `@@unique([lotId, bidderId])`
 | `OPEN` |  |
 | `VERIFIED` |  |
 | `APPROVAL` |  |
+
+### `AuctionSettlementStatus`  <sub>`apps/api/prisma/schema/auction.prisma:301`</sub>
+
+> Where a settlement stands (WO-234.6, doc 234 §9).
+
+| Value | Meaning |
+|---|---|
+| `INVOICING` |  |
+| `INVOICE_FAILED` |  |
+| `AWAITING_PAYMENT` |  |
+| `PAID` |  |
+| `EXPIRED` |  |
+| `CANCELLED` |  |
 
 ### `AuctionStatus`  <sub>`apps/api/prisma/schema/auction.prisma:15`</sub>
 

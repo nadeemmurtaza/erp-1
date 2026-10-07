@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchProxyBid, fetchViewerState } from '@/lib/auction-client';
-import { spread, type ViewerLotState } from '@/lib/auction-live';
+import { spread, type LotOutcome, type ViewerLotState } from '@/lib/auction-live';
 import { REGISTRATION_POLL_MS, VIEWER_MIN_GAP_MS, needsRegistrationPoll } from '@/lib/auction-registration';
+import { expectsSettlement, needsSettlementPoll, settlementPollMs } from '@/lib/auction-settlement';
 
 /**
  * What the signed-in customer is to one lot: their alias once they have bid,
@@ -21,8 +22,13 @@ import { REGISTRATION_POLL_MS, VIEWER_MIN_GAP_MS, needsRegistrationPoll } from '
  * pushed to the bidder (notifications are not built), so this read is how they
  * find out. If a read fails the last answer stays on screen and the next tick
  * tries again.
+ *
+ * `result` is the lot's phase and public outcome. When it names this person as
+ * the buyer, the invoice is made a few seconds after the close, so until it
+ * appears the hook asks every 5 s for a minute and every 20 s after that
+ * (`settlementPollMs`), on the same visibility and one-second rules.
  */
-export function useLotViewer(lotId: string, signedIn: boolean) {
+export function useLotViewer(lotId: string, signedIn: boolean, result: { phase: string; outcome?: LotOutcome } | null = null) {
   const [viewer, setViewer] = useState<ViewerLotState | null>(null);
   const [myMax, setMyMax] = useState<number | null>(null);
 
@@ -54,24 +60,30 @@ export function useLotViewer(lotId: string, signedIn: boolean) {
     };
   }, [lotId, signedIn]);
 
-  const waiting = signedIn && needsRegistrationPoll(viewer);
+  const expectingSettlement = result !== null && expectsSettlement(result.outcome, result.phase, viewer?.alias ?? null);
+  const waitingOnOrganiser = signedIn && needsRegistrationPoll(viewer);
+  const waitingOnInvoice = signedIn && needsSettlementPoll(viewer, expectingSettlement);
+  const waiting = waitingOnOrganiser || waitingOnInvoice;
   useEffect(() => {
     if (!waiting) return;
     let timer: number | undefined;
+    let reads = 0;
     const readIfDue = () => {
       if (document.visibilityState === 'visible' && Date.now() - lastReadAt.current >= VIEWER_MIN_GAP_MS) reload();
     };
+    const delay = () => spread(waitingOnInvoice ? settlementPollMs(reads) : REGISTRATION_POLL_MS);
     const tick = () => {
+      reads += 1;
       readIfDue();
-      timer = window.setTimeout(tick, spread(REGISTRATION_POLL_MS));
+      timer = window.setTimeout(tick, delay());
     };
-    timer = window.setTimeout(tick, spread(REGISTRATION_POLL_MS));
+    timer = window.setTimeout(tick, delay());
     document.addEventListener('visibilitychange', readIfDue);
     return () => {
       window.clearTimeout(timer);
       document.removeEventListener('visibilitychange', readIfDue);
     };
-  }, [waiting, reload]);
+  }, [waiting, waitingOnInvoice, reload]);
 
   return { viewer, setViewer, myMax, setMyMax, reload };
 }

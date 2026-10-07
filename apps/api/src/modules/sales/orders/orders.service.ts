@@ -1378,7 +1378,7 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
  * reserved is simply skipped, the same way a gap appears after any failed
  * insert on an auto-increment key.
  */
-async function nextOrderNumber(
+export async function nextOrderNumber(
   prisma: PrismaService,
   settings: SettingsService,
   config: AppConfigService,

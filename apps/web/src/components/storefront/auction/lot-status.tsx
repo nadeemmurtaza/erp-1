@@ -9,6 +9,8 @@ import { useCountdownLabel } from '@/hooks/use-countdown-label';
 import { useFreshOnChange } from '@/hooks/use-fresh-on-change';
 import type { LiveConnection } from '@/hooks/use-lot-live';
 import { msUntil, shownPriceMinor, timeState, type PublicLot, type Standing } from '@/lib/auction-live';
+import { expectsSettlement, settlementCard, type WinnerSettlement } from '@/lib/auction-settlement';
+import { LotSettlement } from './lot-settlement';
 
 /**
  * The lot's price: the one figure the page is about. A closed lot that sold
@@ -120,12 +122,28 @@ export function LotStanding({ standing, minimumMinor }: { standing: Standing; mi
   return null;
 }
 
-/** How a closed lot ended, and the way on. */
-export function LotOutcome({ lot, viewerAlias }: { lot: PublicLot; viewerAlias: string | null }) {
+/**
+ * How a closed lot ended, and the way on. A buyer (or a bidder the lot was
+ * offered to afterwards) sees what they owe in place of the sold line: the line
+ * says what happened to the lot, the card says what happens to them next.
+ */
+export function LotOutcome({ lot, viewerAlias, settlement }: { lot: PublicLot; viewerAlias: string | null; settlement?: WinnerSettlement | null }) {
   const t = useTranslations('auction.outcome');
   const locale = useLocale() as Locale;
   const outcome = lot.outcome;
   if (lot.phase !== 'CLOSED' || !outcome) return null;
+
+  const card = settlementCard(settlement, expectsSettlement(outcome, lot.phase, viewerAlias));
+  if (card) {
+    return (
+      <div className="grid gap-4">
+        <LotSettlement card={card} />
+        <Link href={ROUTES.storefront.auctions} className="btn-secondary justify-self-start">
+          {t('action')}
+        </Link>
+      </div>
+    );
+  }
 
   const won = outcome.kind === 'SOLD' && viewerAlias !== null && outcome.topBidderAlias === viewerAlias;
   const text =

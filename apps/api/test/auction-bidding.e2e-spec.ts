@@ -216,6 +216,9 @@ describe('Auction bidding (e2e)', () => {
       antiSnipeWindowMs: 120_000,
       antiSnipeExtendMs: 120_000,
       maxExtensionMs: 1_800_000,
+      // Frozen with the rest from WO-234.6: what a winner will be charged and how long they have to pay.
+      buyerPremiumBps: 0,
+      paymentWindowMs: 72 * 3_600_000,
     });
 
     await prisma.auction.update({ where: { id: auctionId }, data: { bidRules: { incrementBps: 2_000, minStepMinor: 100 } } });

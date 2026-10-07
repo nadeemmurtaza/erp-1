@@ -3,18 +3,19 @@
 
 # Module: `orders`
 
-Pack **core** · enabled by the `MODULES` allowlist · 21 files
+Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 
 
 Source: `apps/api/src/modules/sales/orders/`
 
-## Files (21 · 3,858 lines)
+## Files (22 · 4,052 lines)
 
 All paths relative to `apps/api/src/modules/sales/orders`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `auction-order-sink.ts` | module | 190 | 2 | An order's money columns are 32-bit integers (minor units). |
 | `backorder.listener.spec.ts` | unit test | 84 | — |  |
 | `backorder.listener.ts` | event subscriber | 70 | 1 | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a manual adj… |
 | `cod-risk.cron.spec.ts` | unit test | 84 | — |  |
@@ -33,8 +34,8 @@ All paths relative to `apps/api/src/modules/sales/orders`.
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `orders-pos.service.spec.ts` | unit test | 441 | — |  |
 | `orders.controller.ts` | controller | 155 | 2 |  |
-| `orders.module.ts` | nest module | 57 | 1 |  |
-| `orders.service.ts` | service | 1400 | 4 |  |
+| `orders.module.ts` | nest module | 61 | 1 |  |
+| `orders.service.ts` | service | 1400 | 5 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -61,7 +62,7 @@ All paths relative to `apps/api/src/modules/sales/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:545`, `orders.service.ts:806` |
+| `OrderPlaced` | `order.placed` | `auction-order-sink.ts:139`, `orders.service.ts:545`, `orders.service.ts:806` |
 | `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:833`, `orders.service.ts:1018` |
 | `OrderCancelled` | `order.cancelled` | `orders.service.ts:1018` |
 | `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:777` |
@@ -83,12 +84,12 @@ All paths relative to `apps/api/src/modules/sales/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `CityCodRiskStat` | 5 | :329 | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus t… |
-| `Order` | 56 | :35 |  |
-| `OrderItem` | 38 | :159 |  |
-| `OrderNumberCounter` | 2 | :357 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :246 |  |
-| `Shipment` | 26 | :270 |  |
+| `CityCodRiskStat` | 5 | :337 | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus t… |
+| `Order` | 58 | :35 |  |
+| `OrderItem` | 38 | :167 |  |
+| `OrderNumberCounter` | 2 | :365 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :254 |  |
+| `Shipment` | 26 | :278 |  |
 
 
 Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
@@ -108,7 +109,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`OrdersModule`** (`orders.module.ts`)
 - imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`, `PricingModule`, `CatalogModule`
 - controllers: `OrdersController`, `OrdersAdminController`, `InstalmentPlanController`
-- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`, `InstalmentPlanService`, `OrderFeedSource`
+- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`, `InstalmentPlanService`, `OrderFeedSource`, `AuctionOrderSinkService`
 - exports: `OrdersService`
 
 
@@ -163,6 +164,8 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `MAX_ORDER_MINOR` | const | `auction-order-sink.ts:20` | An order's money columns are 32-bit integers (minor units). |
+| `AuctionOrderSinkService` | class | `auction-order-sink.ts:33` | Makes `orders` the thing an auction asks for an invoice (doc 234 §9, §10): an order for one winner, `PENDING`… |
 | `BackorderListener` | class | `backorder.listener.ts:21` | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a… |
 | `CodRiskCron` | class | `cod-risk.cron.ts:17` | WO-9.4 (09-ai-layer.md) — nightly recompute of CityCodRiskStat, the cached input CodRiskService reads at plac… |
 | `CodRiskScoreInput` | interface | `cod-risk.service.ts:8` |  |
@@ -182,11 +185,12 @@ check there before adding another.
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:35` |  |
 | `OrdersAdminController` | class | `orders.controller.ts:107` |  |
-| `OrdersModule` | class | `orders.module.ts:56` |  |
+| `OrdersModule` | class | `orders.module.ts:60` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:43` |  |
 | `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:61` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
 | `PlaceFromPosInput` | interface | `orders.service.ts:67` |  |
 | `OrdersService` | class | `orders.service.ts:117` |  |
+| `nextOrderNumber` | function | `orders.service.ts:1381` | Sequential order numbers per year: YSN-2026-0001, the prefix from BRAND — or, once this deployment is part of… |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

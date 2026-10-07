@@ -29,6 +29,10 @@ export type BidRules = {
   antiSnipeExtendMs: number;
   /** The most anti-snipe may add to one lot in total, so a bidding war ends. */
   maxExtensionMs: number;
+  /** The buyer's premium, in basis points of the winning bid: 1 000 is 10%. 0 means none (doc 234 §9). */
+  buyerPremiumBps: number;
+  /** How long a winner has to pay before the win lapses, in milliseconds (doc 234 §12). */
+  paymentWindowMs: number;
 };
 
 /**
@@ -47,9 +51,19 @@ export const DEFAULT_BID_RULES: BidRules = {
   antiSnipeWindowMs: 120_000,
   antiSnipeExtendMs: 120_000,
   maxExtensionMs: 1_800_000,
+  // No premium unless the shop sets one: an auction that was scheduled before the
+  // premium existed was shown to its bidders without one, and must stay that way.
+  buyerPremiumBps: 0,
+  // 72 hours covers a weekend bank transfer; shorter penalises honest buyers, longer
+  // ties the lot up (doc 234 §12).
+  paymentWindowMs: 72 * 3_600_000,
 };
 
 const MAX_DURATION_MS = 7 * 24 * 3_600_000;
+/** A premium above half the price is a typo, not a policy. */
+export const MAX_PREMIUM_BPS = 5_000;
+export const MIN_PAYMENT_WINDOW_MS = 3_600_000;
+export const MAX_PAYMENT_WINDOW_MS = 30 * 24 * 3_600_000;
 
 const isCount = (value: unknown, min: number, max: number): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value >= min && value <= max;
@@ -65,6 +79,8 @@ export function parseBidRules(raw: unknown): BidRules {
     antiSnipeWindowMs: pick('antiSnipeWindowMs', 0, MAX_DURATION_MS),
     antiSnipeExtendMs: pick('antiSnipeExtendMs', 0, MAX_DURATION_MS),
     maxExtensionMs: pick('maxExtensionMs', 0, MAX_DURATION_MS),
+    buyerPremiumBps: pick('buyerPremiumBps', 0, MAX_PREMIUM_BPS),
+    paymentWindowMs: pick('paymentWindowMs', MIN_PAYMENT_WINDOW_MS, MAX_PAYMENT_WINDOW_MS),
   };
 }
 

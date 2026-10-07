@@ -973,6 +973,46 @@
       "reserveNotMet": "This lot did not sell. The highest bid did not reach the seller’s minimum.",
       "action": "See live lots"
     },
+    "settlement": {
+      "costs": {
+        "withPremium": "The winner pays a {percent}% buyer’s premium on top of the winning bid, and has {hours, plural, one {# hour} other {# hours}} to pay.",
+        "noPremium": "The winner has {hours, plural, one {# hour} other {# hours}} to pay."
+      },
+      "preparing": {
+        "title": "Preparing your invoice",
+        "body": "You won this lot. Your invoice will appear here in a moment."
+      },
+      "delayed": {
+        "title": "Your invoice is taking longer than usual",
+        "body": "You do not need to do anything. It will appear here as soon as it is ready."
+      },
+      "pay": {
+        "title": "You won this lot",
+        "offeredTitle": "This lot is now yours",
+        "offeredBody": "The first buyer did not pay, so the lot was offered to you at your highest bid.",
+        "winningBid": "Your bid",
+        "premium": "Buyer’s premium",
+        "total": "Total to pay",
+        "left": "Left to pay",
+        "dueBy": "Pay by {date}.",
+        "action": "Pay for this order"
+      },
+      "paid": {
+        "title": "Paid. Thank you.",
+        "body": "We received {amount} for this lot.",
+        "action": "View your order"
+      },
+      "lapsed": {
+        "title": "This win has lapsed",
+        "body": "The payment window ended on {date} without payment, so the lot is no longer yours.",
+        "paid": "We received {amount} after the deadline. Please contact us and we will sort it out.",
+        "action": "Contact us"
+      },
+      "cancelled": {
+        "title": "This win was cancelled",
+        "body": "Nothing more is owed for this lot."
+      }
+    },
     "history": {
       "title": "Bid history",
       "empty": "No bids yet. Yours can be the first.",

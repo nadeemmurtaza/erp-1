@@ -182,6 +182,17 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Sales',
     sensitivity: 'high',
   },
+  {
+    // WO-234.6. Sees what each winning bidder owes and acts on it: replay an
+    // invoice that could not be made, end an unpaid win, offer the lot to the
+    // next bidder. Its own key because ending a win and offering a lot onward
+    // change who gets the goods and what they cost, which neither drafting an
+    // auction nor vetting its bidders should do by itself.
+    key: 'auction.settle',
+    label: 'See what auction winners owe, replay an invoice, cancel an unpaid win, and offer a lot to the next bidder',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
 
   {
     key: 'stitching.jobs.view_queue',
@@ -1010,6 +1021,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'auction.manage',
       'auction.publish',
       'auction.bidders.manage',
+      'auction.settle',
       'pos.manage',
       'pos.operate',
       'pos.instalments.cancel',
@@ -1423,6 +1435,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'auction.manage',
     'auction.publish',
     'auction.bidders.manage',
+    'auction.settle',
     'fulfilment.view',
     'fulfilment.manage',
     'bom.view',

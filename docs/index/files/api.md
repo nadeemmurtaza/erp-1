@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,257 tracked files in `apps/api`, by directory.
+All 1,272 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -39,7 +39,7 @@ All 1,257 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
-| `auction.prisma` | prisma schema | 287 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5). |
+| `auction.prisma` | prisma schema | 369 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5). |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -69,7 +69,7 @@ All 1,257 tracked files in `apps/api`, by directory.
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `notify.prisma` | prisma schema | 238 | Internal notifications, meetings and escalation |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
-| `orders.prisma` | prisma schema | 361 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 369 | Orders and shipments. |
 | `org-structure.prisma` | prisma schema | 132 | The org tree: offices, regions, departments — whatever shape a client's |
 | `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
@@ -819,6 +819,24 @@ All 1,257 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 30 |  |
 
+### `apps/api/prisma/schema/migrations/20261007090000_order_source_ref` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
+### `apps/api/prisma/schema/migrations/20261007100000_wo234_6_settlement` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 81 |  |
+
+### `apps/api/prisma/schema/migrations/20261007100100_wo234_6_settle_permission` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 29 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1009,24 +1027,25 @@ All 1,257 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `contract-analyzer.ts` | module | 399 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
-| `domain-events.ts` | module | 810 | The catalogue of domain events. |
+| `domain-events.ts` | module | 833 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `event-contracts.spec.ts` | unit test | 268 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (11)
+### `apps/api/src/core/extension-points` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `auction-order-sink.registry.ts` | registry | 113 |  |
 | `branch-policy.registry.spec.ts` | unit test | 44 |  |
 | `branch-policy.registry.ts` | registry | 68 |  |
 | `camera-people-count.registry.ts` | registry | 34 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `employee-offboarding.registry.ts` | registry | 39 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 52 |  |
+| `extension-points.module.ts` | nest module | 55 |  |
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 | `task-source.registry.ts` | registry | 63 |  |
@@ -1214,7 +1233,7 @@ All 1,257 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 51 |  |
-| `settings.defaults.ts` | module | 601 |  |
+| `settings.defaults.ts` | module | 615 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -1979,41 +1998,50 @@ All 1,257 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/sales/auction` (25)
+### `apps/api/src/modules/sales/auction` (34)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auction-bid.controller.ts` | controller | 97 |  |
 | `auction-bidder.controller.ts` | controller | 75 |  |
 | `auction-bidder.service.spec.ts` | unit test | 575 |  |
-| `auction-bidder.service.ts` | service | 531 |  |
+| `auction-bidder.service.ts` | service | 558 |  |
 | `auction-bidding.service.spec.ts` | unit test | 719 |  |
 | `auction-lifecycle.cron.ts` | scheduled job | 41 |  |
-| `auction-lifecycle.service.spec.ts` | unit test | 108 |  |
-| `auction-lifecycle.service.ts` | service | 251 |  |
+| `auction-lifecycle.service.spec.ts` | unit test | 110 |  |
+| `auction-lifecycle.service.ts` | service | 272 |  |
 | `auction-public.controller.spec.ts` | unit test | 74 |  |
 | `auction-public.controller.ts` | controller | 88 |  |
-| `auction-public.service.spec.ts` | unit test | 447 |  |
-| `auction-public.service.ts` | service | 413 |  |
+| `auction-public.service.spec.ts` | unit test | 461 |  |
+| `auction-public.service.ts` | service | 433 |  |
 | `auction-realtime.service.spec.ts` | unit test | 301 |  |
 | `auction-realtime.service.ts` | service | 315 |  |
-| `auction.controller.ts` | controller | 121 |  |
-| `auction.module.ts` | nest module | 35 |  |
+| `auction-settlement.controller.spec.ts` | unit test | 33 |  |
+| `auction-settlement.controller.ts` | controller | 56 |  |
+| `auction-settlement.cron.ts` | scheduled job | 39 |  |
+| `auction-settlement.service.ts` | service | 770 |  |
+| `auction-settlement.subscriber.ts` | event subscriber | 38 |  |
+| `auction.controller.ts` | controller | 122 |  |
+| `auction.module.ts` | nest module | 42 |  |
 | `auction.service.spec.ts` | unit test | 539 |  |
-| `auction.service.ts` | service | 1144 |  |
+| `auction.service.ts` | service | 1148 |  |
 | `bidder-provision.ts` | module | 30 |  |
 | `bidder-trust.spec.ts` | unit test | 237 |  |
 | `bidder-trust.ts` | module | 205 | The pure half of bidder trust (launchpad-apps/234-auction-app.md §8, §15, WO-234.5): who may bid, how a registration is… |
-| `bidding.spec.ts` | unit test | 297 |  |
-| `bidding.ts` | module | 236 |  |
+| `bidding.spec.ts` | unit test | 315 |  |
+| `bidding.ts` | module | 252 |  |
 | `lot-live.spec.ts` | unit test | 99 |  |
 | `lot-live.ts` | module | 104 | What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4). |
+| `settlement-messages.spec.ts` | unit test | 42 |  |
+| `settlement-messages.ts` | module | 70 | What a winner is told, in their language (WO-234.6). |
+| `settlement.spec.ts` | unit test | 129 |  |
+| `settlement.ts` | module | 98 | What a won lot owes, and what may happen to the debt next (doc 234 §9, WO-234.6). |
 
 ### `apps/api/src/modules/sales/auction/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.dto.ts` | dto | 334 |  |
+| `auction.dto.ts` | dto | 362 |  |
 
 ### `apps/api/src/modules/sales/cart` (6)
 
@@ -2121,10 +2149,11 @@ All 1,257 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 233 |  |
 
-### `apps/api/src/modules/sales/orders` (19)
+### `apps/api/src/modules/sales/orders` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `auction-order-sink.ts` | module | 190 |  |
 | `backorder.listener.spec.ts` | unit test | 84 |  |
 | `backorder.listener.ts` | event subscriber | 70 |  |
 | `cod-risk.cron.spec.ts` | unit test | 84 |  |
@@ -2141,7 +2170,7 @@ All 1,257 tracked files in `apps/api`, by directory.
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 441 |  |
 | `orders.controller.ts` | controller | 155 |  |
-| `orders.module.ts` | nest module | 57 |  |
+| `orders.module.ts` | nest module | 61 |  |
 | `orders.service.ts` | service | 1400 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
@@ -2737,17 +2766,18 @@ All 1,257 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (36)
+### `apps/api/test` (37)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 371 |  |
 | `auction-bidders.e2e-spec.ts` | e2e test | 507 |  |
-| `auction-bidding.e2e-spec.ts` | e2e test | 262 |  |
+| `auction-bidding.e2e-spec.ts` | e2e test | 265 |  |
 | `auction-http.e2e-spec.ts` | e2e test | 234 |  |
 | `auction-lifecycle.e2e-spec.ts` | e2e test | 424 |  |
-| `auction-realtime.e2e-spec.ts` | e2e test | 408 |  |
+| `auction-realtime.e2e-spec.ts` | e2e test | 410 |  |
+| `auction-settlement.e2e-spec.ts` | e2e test | 464 |  |
 | `auction.e2e-spec.ts` | e2e test | 114 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |

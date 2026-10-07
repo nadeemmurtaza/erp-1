@@ -275,7 +275,7 @@ export class AuctionBidderService {
       this.prisma.bidderStrike.count({ where: { userId: bidder.userId, voidedAt: null, recordedAt: { gte: strikeWindowStart(now, policy) } } }),
       this.isVerified(bidder.userId),
     ]);
-    const staff = await this.peopleById([...new Set(strikes.flatMap((s) => [s.recordedById, ...(s.voidedById ? [s.voidedById] : [])]))]);
+    const staff = await this.peopleById([...new Set(strikes.flatMap((s) => [...(s.recordedById ? [s.recordedById] : []), ...(s.voidedById ? [s.voidedById] : [])]))]);
     const nameOf = (id: string | null) => (id ? (staff.get(id)?.name ?? staff.get(id)?.email ?? null) : null);
 
     return {
@@ -386,6 +386,33 @@ export class AuctionBidderService {
     });
     this.logger.log(`Strike recorded against ${outcome.alias} in ${outcome.number} by ${actor.id}: ${outcome.inWindow} in the window${outcome.reviewDue ? ', review due' : ''}`);
     return this.detail(auctionId, bidderId, actor);
+  }
+
+  /**
+   * Records the strike for a win left unpaid (WO-234.6), on the settlement's
+   * own transaction so the strike and the expiry commit together or not at all.
+   * It has no staff author, and `settlementId` is unique, so a retried sweep
+   * finds the strike already there and writes nothing. Returns whether it wrote
+   * one. Like a staff strike it only counts toward the review flag: it never
+   * suspends anyone (§8).
+   */
+  async recordUnpaidWinStrike(
+    tx: Prisma.TransactionClient,
+    input: { settlementId: string; bidderId: string; userId: string; lotId: string; alias: string; auctionId: string; auctionNumber: string; reason: string },
+  ): Promise<boolean> {
+    const already = await tx.bidderStrike.findUnique({ where: { settlementId: input.settlementId }, select: { id: true } });
+    if (already) return false;
+    const strike = await tx.bidderStrike.create({
+      data: { userId: input.userId, bidderId: input.bidderId, lotId: input.lotId, reason: input.reason, recordedById: null, settlementId: input.settlementId },
+    });
+    await this.audit.recordEvidence(tx, {
+      actorId: null,
+      action: 'auction.strike_recorded',
+      entity: 'Bidder',
+      entityId: input.bidderId,
+      data: { auctionId: input.auctionId, number: input.auctionNumber, alias: input.alias, strikeId: strike.id, lotId: input.lotId, reason: input.reason, settlementId: input.settlementId, source: 'unpaid_win' },
+    });
+    return true;
   }
 
   /** Voids a strike with a reason. The strike stays on record, marked void, and stops counting. */

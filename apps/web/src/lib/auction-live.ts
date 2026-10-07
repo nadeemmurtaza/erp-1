@@ -1,4 +1,5 @@
 import { ApiError, MINOR_UNITS_PER_MAJOR, toMajor, toMinor } from '@newax/shared';
+import type { WinnerSettlement } from './auction-settlement';
 
 /**
  * What the public lot page does with what the Auction API tells it
@@ -33,7 +34,18 @@ export interface PublicLot {
   title: string;
   description: string | null;
   quantity: number;
-  auction: { id: string; number: string; title: string; status: string; startsAt: string; terms: string | null };
+  auction: {
+    id: string;
+    number: string;
+    title: string;
+    status: string;
+    startsAt: string;
+    terms: string | null;
+    /** The buyer's premium the winner pays on top of the winning bid, in basis points (1 000 is 10%). 0 means none. */
+    buyerPremiumBps: number;
+    /** Hours a winner has to pay. */
+    paymentWindowHours: number;
+  };
   phase: LotPhase;
   startPriceMinor: number;
   currentBidMinor: number | null;
@@ -108,6 +120,8 @@ export interface ViewerLotState {
   /** Why not, as a code. The `message` is English for a caller who is not a page; the page tells it in the shopper's language from `why`. */
   reason?: { code: 'BIDDER_NOT_ELIGIBLE'; why: IneligibleWhy; message: string };
   registration?: RegistrationView;
+  /** What the viewer owes for winning this lot (or being offered it afterwards). Their own only; null before there is one. */
+  settlement?: WinnerSettlement | null;
 }
 
 /** A lot only moves forward through its phases, so an event for an earlier one than the page shows is out of date. */

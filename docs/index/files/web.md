@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 578 tracked files in `apps/web`, by directory.
+All 584 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 578 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 1074 |  |
-| `ur.json` | json | 1074 |  |
+| `en.json` | json | 1114 |  |
+| `ur.json` | json | 1114 |  |
 
 ### `apps/web/public` (1)
 
@@ -152,7 +152,7 @@ All 578 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 645 |  |
+| `page.tsx` | page | 696 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -1338,7 +1338,7 @@ All 578 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 112 |  |
+| `page.tsx` | page | 114 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/blog` (1)
 
@@ -1476,14 +1476,15 @@ All 578 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (29)
+### `apps/web/src/components/admin` (30)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 488 |  |
 | `auction-bid-ledger.tsx` | component | 154 |  |
-| `auction-bidder-sheet.tsx` | component | 416 |  |
+| `auction-bidder-sheet.tsx` | component | 417 |  |
 | `auction-bidders.tsx` | component | 253 |  |
+| `auction-settlements.tsx` | component | 341 |  |
 | `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
@@ -1694,7 +1695,7 @@ All 578 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/storefront/auction` (7)
+### `apps/web/src/components/storefront/auction` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1703,8 +1704,9 @@ All 578 tracked files in `apps/web`, by directory.
 | `lot-bidding.tsx` | component | 404 |  |
 | `lot-card.tsx` | component | 85 |  |
 | `lot-registration.tsx` | component | 315 |  |
+| `lot-settlement.tsx` | component | 138 |  |
 | `lot-skeleton.tsx` | component | 26 |  |
-| `lot-status.tsx` | component | 151 |  |
+| `lot-status.tsx` | component | 169 |  |
 
 ### `apps/web/src/components/ui` (44)
 
@@ -1785,7 +1787,7 @@ All 578 tracked files in `apps/web`, by directory.
 | `use-exit-transition.ts` | hook | 41 |  |
 | `use-fresh-on-change.ts` | hook | 33 |  |
 | `use-lot-live.ts` | hook | 175 |  |
-| `use-lot-viewer.ts` | hook | 80 |  |
+| `use-lot-viewer.ts` | hook | 92 |  |
 | `use-now.ts` | hook | 26 |  |
 | `use-order-status-label.ts` | hook | 23 |  |
 | `use-popover.ts` | hook | 230 |  |
@@ -1802,7 +1804,7 @@ All 578 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (46)
+### `apps/web/src/lib` (50)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1814,13 +1816,17 @@ All 578 tracked files in `apps/web`, by directory.
 | `auction-bidders.ts` | utility | 234 |  |
 | `auction-client.ts` | utility | 98 |  |
 | `auction-live.spec.ts` | unit test | 391 |  |
-| `auction-live.ts` | utility | 418 |  |
+| `auction-live.ts` | utility | 432 |  |
 | `auction-lots.spec.ts` | unit test | 70 |  |
 | `auction-lots.ts` | utility | 64 | What an auction's lots say about when they end and how they ended (launchpad-apps/234-auction-app.md §5.4, §5.5). |
 | `auction-messages.spec.ts` | unit test | 41 |  |
 | `auction-registration-admin.ts` | utility | 20 | The three ways an auction can vet who may bid (launchpad-apps/ 234-auction-app.md §8, WO-234.5), in the words the organ… |
 | `auction-registration.spec.ts` | unit test | 157 |  |
 | `auction-registration.ts` | utility | 140 |  |
+| `auction-settlement.spec.ts` | unit test | 118 |  |
+| `auction-settlement.ts` | utility | 114 |  |
+| `auction-settlements.spec.ts` | unit test | 176 |  |
+| `auction-settlements.ts` | utility | 218 |  |
 | `calendar.spec.ts` | unit test | 291 |  |
 | `calendar.ts` | utility | 292 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement by day, week, month a… |
 | `cart-client.ts` | utility | 99 |  |

@@ -3,6 +3,7 @@ import { PublicLotListQueryDto } from './dto/auction.dto';
 import { AuctionPublicService, LOT_PAGE_CACHE_MS } from './auction-public.service';
 import type { AuctionBidderService } from './auction-bidder.service';
 import type { AuctionRealtimeService } from './auction-realtime.service';
+import type { AuctionSettlementService } from './auction-settlement.service';
 import type { LotLiveEvent } from './lot-live';
 
 /**
@@ -15,6 +16,7 @@ describe('AuctionPublicService', () => {
   let service: AuctionPublicService;
   let prisma: any;
   let bidders: { strikeState: jest.Mock; policy: jest.Mock };
+  let settlement: { forWinner: jest.Mock };
   let listener: ((event: LotLiveEvent) => void) | undefined;
   let lotRow: any;
   let bidRows: any[];
@@ -72,7 +74,8 @@ describe('AuctionPublicService', () => {
       },
     } as unknown as AuctionRealtimeService;
     bidders = { strikeState: jest.fn().mockResolvedValue({ inWindow: 0, reviewDue: false }), policy: jest.fn().mockResolvedValue({ strikesToReview: 3, strikeWindowMs: 365 * 86_400_000 }) };
-    service = new AuctionPublicService(prisma, realtime, bidders as unknown as AuctionBidderService);
+    settlement = { forWinner: jest.fn().mockResolvedValue(null) };
+    service = new AuctionPublicService(prisma, realtime, bidders as unknown as AuctionBidderService, settlement as unknown as AuctionSettlementService);
     service.onModuleInit();
   });
 
@@ -242,7 +245,18 @@ describe('AuctionPublicService', () => {
         leading: false,
         eligible: true,
         registration: { mode: 'OPEN', status: 'NONE', alias: null, joinedAt: null, decisionReason: null, appeal: 'NONE', appealText: null },
+        settlement: null,
       });
+      expect(settlement.forWinner).not.toHaveBeenCalled(); // no bidder row, so nothing to look up
+    });
+
+    it('hands a bidder only their own debt on the lot, looked up by their account', async () => {
+      withLot({ status: 'CLOSED' });
+      prisma.bidder.findUnique.mockResolvedValue({ id: 'p1', alias: 'Bidder 5', status: 'APPROVED' });
+      const owed = { status: 'AWAITING_PAYMENT', attempt: 1, currency: 'PKR', hammerMinor: 1_000_000, premiumMinor: 100_000, totalMinor: 1_100_000, paidMinor: 0, dueAt: new Date('2026-10-13T12:00:00Z'), orderNumber: 'ORD-1' };
+      settlement.forWinner.mockResolvedValue(owed);
+      expect(await service.viewerState('l1', customer)).toMatchObject({ settlement: owed });
+      expect(settlement.forWinner).toHaveBeenCalledWith('l1', 'u-bidder');
     });
 
     it('says a bidder leads when the lot’s leader is them, with their alias', async () => {

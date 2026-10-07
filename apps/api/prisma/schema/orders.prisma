@@ -109,6 +109,13 @@ model Order {
   /// (WO-9.3); never shown to the customer.
   codRiskReasonEn   String?
 
+  /// Which other module asked for this order and by what key (an auction
+  /// settlement, WO-234.6). Null for every checkout and point-of-sale order.
+  /// Unique together, so asking twice for the same thing yields the first order
+  /// and never a second: the guard against a retry after a crash.
+  sourceType String?
+  sourceRef  String?
+
   user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
   sourceCart              Cart?                    @relation(fields: [sourceCartId], references: [id], onDelete: SetNull)
@@ -135,6 +142,7 @@ model Order {
   /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
   loyaltyTransactions     LoyaltyTransaction[]
 
+  @@unique([sourceType, sourceRef])
   @@index([status, placedAt])
   @@index([userId])
   @@index([contactId])

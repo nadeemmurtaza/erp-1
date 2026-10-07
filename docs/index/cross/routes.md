@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **908** endpoints across **166** controllers, with the access rule that actually guards each one.
+All **913** endpoints across **167** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -223,13 +223,13 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (27)
+### [`auction`](../modules/auction.md) (32)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/auctions` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
+| GET | `/admin/auctions` | `auction.view` `auction.manage` `auction.bidders.manage` `auction.settle` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
 | POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` | Draft an auction |
-| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` `auction.bidders.manage` | `AuctionController.get` | One auction with its lots |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` `auction.bidders.manage` `auction.settle` | `AuctionController.get` | One auction with its lots |
 | PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` | Edit a draft auction |
 | GET | `/admin/auctions/:id/bidders` | `auction.bidders.manage` | `AuctionBidderController.list` | The auction’s bidders, oldest first, with who they are and their strikes |
 | GET | `/admin/auctions/:id/bidders/:bidderId` | `auction.bidders.manage` | `AuctionBidderController.detail` | One bidder: who they are, whether their identity is verified, their strikes and… |
@@ -244,6 +244,11 @@ never authorization.
 | GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` | Re-walk a lot’s bid chain and say whether anything was inserted, edited or remo… |
 | POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
+| GET | `/admin/auctions/:id/settlements` | `auction.settle` | `AuctionSettlementController.list` | The auction’s wins with what each owes, its order and its deadline, newest first |
+| POST | `/admin/auctions/:id/settlements/:settlementId/cancel` | `auction.settle` | `AuctionSettlementController.cancel` | End an unpaid win with no strike, for a reason staff write down; its order is c… |
+| POST | `/admin/auctions/:id/settlements/:settlementId/offer-next` | `auction.settle` | `AuctionSettlementController.offerNext` | Offer the lot to the next highest bidder at their own highest bid, with a new o… |
+| POST | `/admin/auctions/:id/settlements/:settlementId/replay` | `auction.settle` | `AuctionSettlementController.replay` | Try the invoice again for a win whose invoice failed or stalled |
+| GET | `/admin/auctions/:id/settlements/summary` | `auction.settle` | `AuctionSettlementController.summary` | How many wins are awaiting payment, need attention, are paid, or have ended |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
 | POST | `/auctions/:auctionId/appeal` | signed-in | `AuctionBidController.appeal` | Ask the organiser to look again at a declined or suspended place, once for each… |
 | POST | `/auctions/:auctionId/registration` | signed-in | `AuctionBidController.join` | Join an auction to bid in it: approved at once, or waiting for the organiser, a… |

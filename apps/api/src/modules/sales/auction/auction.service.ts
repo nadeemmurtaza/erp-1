@@ -1019,12 +1019,14 @@ export class AuctionService {
   }
 
   private async currentBidRules(): Promise<BidRules> {
-    const [incrementBps, minStepMinor, windowSeconds, extendSeconds, maxExtensionSeconds] = await Promise.all([
+    const [incrementBps, minStepMinor, windowSeconds, extendSeconds, maxExtensionSeconds, buyerPremiumBps, paymentWindowHours] = await Promise.all([
       this.settings.get<number>(SettingKey.AuctionBidIncrementBps),
       this.settings.get<number>(SettingKey.AuctionBidMinStepMinor),
       this.settings.get<number>(SettingKey.AuctionAntiSnipeWindowSeconds),
       this.settings.get<number>(SettingKey.AuctionAntiSnipeExtendSeconds),
       this.settings.get<number>(SettingKey.AuctionMaxExtensionSeconds),
+      this.settings.get<number>(SettingKey.AuctionBuyerPremiumBps),
+      this.settings.get<number>(SettingKey.AuctionPaymentWindowHours),
     ]);
     // Settings are in seconds, the rules in milliseconds; a value that is not a
     // whole number of seconds is dropped by `parseBidRules` and gets the default.
@@ -1036,6 +1038,8 @@ export class AuctionService {
       antiSnipeWindowMs: toMs(windowSeconds),
       antiSnipeExtendMs: toMs(extendSeconds),
       maxExtensionMs: toMs(maxExtensionSeconds),
+      buyerPremiumBps,
+      paymentWindowMs: typeof paymentWindowHours === 'number' && Number.isFinite(paymentWindowHours) ? Math.round(paymentWindowHours * 3_600_000) : undefined,
     });
   }
 

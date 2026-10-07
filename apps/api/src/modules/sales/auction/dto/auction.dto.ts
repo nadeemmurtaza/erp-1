@@ -331,3 +331,31 @@ export class AppealDto {
   @MaxLength(MAX_APPEAL_LENGTH)
   message!: string;
 }
+
+export const SETTLEMENT_FILTERS = ['open', 'ended', 'all'] as const;
+export type SettlementFilter = (typeof SETTLEMENT_FILTERS)[number];
+
+/** Newest first: what just closed is what staff look at. Page, page size and `order` come from the shared list query. */
+export class SettlementListQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    enum: SETTLEMENT_FILTERS,
+    default: 'open',
+    description: 'open: still owed, or an invoice to fix. ended: paid, lapsed or cancelled. all: everything.',
+  })
+  @IsOptional()
+  @IsIn(SETTLEMENT_FILTERS)
+  filter?: SettlementFilter;
+
+  @ApiPropertyOptional({ enum: ['asc', 'desc'], default: 'desc' })
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  override order: 'asc' | 'desc' = 'desc';
+}
+
+export class CancelSettlementDto {
+  @ApiProperty({ maxLength: MAX_REASON_LENGTH, description: 'Why the win is being cancelled without a strike. Kept on record and in the audit trail.' })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(MAX_REASON_LENGTH)
+  reason!: string;
+}

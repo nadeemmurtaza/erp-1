@@ -151,7 +151,7 @@ export default function AdminCategoriesPage() {
 
   return (
     <>
-      <div className="mb-1 flex items-start justify-between gap-4">
+      <div className="mb-1 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <h1 className="text-xl font-semibold text-neutral-900">Categories</h1>
         <button type="button" onClick={openPresetPicker} className="btn-secondary shrink-0">
           Start from a template

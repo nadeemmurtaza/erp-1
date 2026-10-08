@@ -131,7 +131,7 @@ export default function FinancePnlPage() {
             Every figure is a query over the general ledger — click one to see the accounts behind it.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <label className="sr-only" htmlFor="pnl-month">Month</label>
           <input
             id="pnl-month"
@@ -156,8 +156,8 @@ export default function FinancePnlPage() {
       {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
 
       {current ? (
-        <div className="grid gap-6 lg:grid-cols-[1fr_14rem]">
-          <MetricStrip label="Profit and loss summary" items={metrics} />
+        <div className="grid gap-6 xl:grid-cols-[1fr_14rem]">
+          <MetricStrip label="Profit and loss summary" items={metrics} className="min-w-0" />
           <div className="card flex flex-col items-center justify-center p-4">
             <GaugeChart percent={Math.max(0, Math.min(100, netMarginPercent))} caption="Net margin" />
           </div>

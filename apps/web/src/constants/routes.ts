@@ -28,6 +28,9 @@ export const ROUTES = {
     wishlist: '/wishlist',
     stitching: '/stitching',
     stitchingOrder: (number: string) => `/stitching/${number}`,
+    /** launchpad-apps/234-auction-app.md — off by default (module: 'auction'); see header.tsx's own module gate. */
+    auctions: '/auctions',
+    auctionLot: (lotId: string) => `/auctions/lots/${lotId}`,
 
     login: '/login',
     register: '/register',
@@ -161,6 +164,10 @@ export const ROUTES = {
     /** 167-bank-facility-management.md. */
     bankFacilities: '/admin/bank-facilities',
     bankFacility: (id: string) => `/admin/bank-facilities/${id}`,
+
+    /** launchpad-apps/234-auction-app.md. */
+    auctions: '/admin/auctions',
+    auction: (id: string) => `/admin/auctions/${id}`,
 
     /** 37-scalability-future-upgrades.md. */
     featureFlags: '/admin/feature-flags',

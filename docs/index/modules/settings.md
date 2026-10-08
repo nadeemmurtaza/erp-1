@@ -11,13 +11,13 @@ Pack **core** · always on · 5 files
 
 Source: `apps/api/src/modules/system/settings/`
 
-## Files (5 · 471 lines)
+## Files (5 · 472 lines)
 
 All paths relative to `apps/api/src/modules/system/settings/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `settings.dto.ts` | dto | 113 | 4 |  |
+| `settings.dto.ts` | dto | 114 | 4 |  |
 | `settings-admin.controller.ts` | controller | 80 | 1 |  |
 | `settings-admin.module.ts` | nest module | 10 | 1 |  |
 | `settings-admin.service.spec.ts` | unit test | 107 | — |  |
@@ -90,8 +90,8 @@ check there before adding another.
 |---|---|---|---|
 | `AuditLogQueryDto` | class | `settings.dto.ts:18` |  |
 | `UpdateMediaSettingsDto` | class | `settings.dto.ts:54` |  |
-| `UpdateAiSettingsDto` | class | `settings.dto.ts:75` |  |
-| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:92` |  |
+| `UpdateAiSettingsDto` | class | `settings.dto.ts:76` |  |
+| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:93` |  |
 | `SettingsAdminController` | class | `settings-admin.controller.ts:14` |  |
 | `SettingsAdminModule` | class | `settings-admin.module.ts:9` |  |
 | `AuditLogQuery` | interface | `settings-admin.service.ts:13` |  |

@@ -119,7 +119,7 @@ export default function RagQueryConsolePage() {
                 ))}
               </select>
             </label>
-            <label className="field-label min-w-[20rem] flex-1">
+            <label className="field-label min-w-[min(20rem,100%)] flex-1">
               Question
               <input
                 className="field-input"

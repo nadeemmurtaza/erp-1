@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "593ccca1f618d3dc",
+  "contentHash": "1151c2e19902bc96",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -81,6 +81,7 @@
     "docs/index/data/accounts.md",
     "docs/index/data/approvals.md",
     "docs/index/data/attendance.md",
+    "docs/index/data/auction.md",
     "docs/index/data/bank-facilities.md",
     "docs/index/data/bom.md",
     "docs/index/data/bpmn-workflows.md",
@@ -154,6 +155,7 @@
     "docs/index/modules/addresses.md",
     "docs/index/modules/analytics.md",
     "docs/index/modules/attendance.md",
+    "docs/index/modules/auction.md",
     "docs/index/modules/bankfacilities.md",
     "docs/index/modules/bom.md",
     "docs/index/modules/bpmn-workflows.md",
@@ -223,18 +225,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2793,
-    "lines": 430350,
-    "routes": 881,
-    "controllers": 162,
-    "models": 315,
-    "enums": 146,
-    "migrations": 122,
-    "events": 72,
-    "permissions": 131,
-    "screens": 279,
-    "crons": 30,
-    "specs": 398,
+    "files": 2901,
+    "lines": 453288,
+    "routes": 916,
+    "controllers": 167,
+    "models": 325,
+    "enums": 153,
+    "migrations": 132,
+    "events": 73,
+    "permissions": 135,
+    "screens": 286,
+    "crons": 32,
+    "specs": 430,
     "designLaws": 192
   }
 }

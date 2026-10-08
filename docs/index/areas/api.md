@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,216 files · 163,112 lines
+1,279 files · 176,797 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -17,7 +17,7 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 
 ## Go deeper
 
-- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`accounts`](../modules/accounts.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`attendance`](../modules/attendance.md) · [`bankfacilities`](../modules/bankfacilities.md) · [`bom`](../modules/bom.md) · [`bpmn-workflows`](../modules/bpmn-workflows.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`custom-fields`](../modules/custom-fields.md) · [`embeds`](../modules/embeds.md) · [`entity-attributes`](../modules/entity-attributes.md) · [`example-hello-world-pack`](../modules/example-hello-world-pack.md) · [`feature-flags`](../modules/feature-flags.md) · [`finance`](../modules/finance.md) · [`fragments`](../modules/fragments.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`hr`](../modules/hr.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`loyalty`](../modules/loyalty.md) · [`managed-services`](../modules/managed-services.md) · [`marketing`](../modules/marketing.md) · [`marketplace`](../modules/marketplace.md) · [`measurements`](../modules/measurements.md) · [`metadata-forms`](../modules/metadata-forms.md) · [`notification-preferences`](../modules/notification-preferences.md) · [`notify`](../modules/notify.md) · [`onsitemessages`](../modules/onsitemessages.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`orgstructure`](../modules/orgstructure.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`planning`](../modules/planning.md) · [`pos`](../modules/pos.md) · [`pricing`](../modules/pricing.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`rag`](../modules/rag.md) · [`receivables`](../modules/receivables.md) · [`recommendations`](../modules/recommendations.md) · [`reports`](../modules/reports.md) · [`resilience`](../modules/resilience.md) · [`reviews`](../modules/reviews.md) · [`search`](../modules/search.md) · [`settings`](../modules/settings.md) · [`settlements`](../modules/settlements.md) · [`stitching`](../modules/stitching.md) · [`support`](../modules/support.md) · [`tasks`](../modules/tasks.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md) · [`wallet`](../modules/wallet.md) · [`wishlist`](../modules/wishlist.md)
+- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`accounts`](../modules/accounts.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`attendance`](../modules/attendance.md) · [`auction`](../modules/auction.md) · [`bankfacilities`](../modules/bankfacilities.md) · [`bom`](../modules/bom.md) · [`bpmn-workflows`](../modules/bpmn-workflows.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`custom-fields`](../modules/custom-fields.md) · [`embeds`](../modules/embeds.md) · [`entity-attributes`](../modules/entity-attributes.md) · [`example-hello-world-pack`](../modules/example-hello-world-pack.md) · [`feature-flags`](../modules/feature-flags.md) · [`finance`](../modules/finance.md) · [`fragments`](../modules/fragments.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`hr`](../modules/hr.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`loyalty`](../modules/loyalty.md) · [`managed-services`](../modules/managed-services.md) · [`marketing`](../modules/marketing.md) · [`marketplace`](../modules/marketplace.md) · [`measurements`](../modules/measurements.md) · [`metadata-forms`](../modules/metadata-forms.md) · [`notification-preferences`](../modules/notification-preferences.md) · [`notify`](../modules/notify.md) · [`onsitemessages`](../modules/onsitemessages.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`orgstructure`](../modules/orgstructure.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`planning`](../modules/planning.md) · [`pos`](../modules/pos.md) · [`pricing`](../modules/pricing.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`rag`](../modules/rag.md) · [`receivables`](../modules/receivables.md) · [`recommendations`](../modules/recommendations.md) · [`reports`](../modules/reports.md) · [`resilience`](../modules/resilience.md) · [`reviews`](../modules/reviews.md) · [`search`](../modules/search.md) · [`settings`](../modules/settings.md) · [`settlements`](../modules/settlements.md) · [`stitching`](../modules/stitching.md) · [`support`](../modules/support.md) · [`tasks`](../modules/tasks.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md) · [`wallet`](../modules/wallet.md) · [`wishlist`](../modules/wishlist.md)
 - **Core subsystems (L2):** [`action-hub`](../core/action-hub.md) · [`ai`](../core/ai.md) · [`approvals`](../core/approvals.md) · [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`cache`](../core/cache.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`crm`](../core/crm.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`feature-flags`](../core/feature-flags.md) · [`feed`](../core/feed.md) · [`health`](../core/health.md) · [`idempotency`](../core/idempotency.md) · [`intent`](../core/intent.md) · [`launchpad`](../core/launchpad.md) · [`metrics`](../core/metrics.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`redis`](../core/redis.md) · [`replication`](../core/replication.md) · [`resilience`](../core/resilience.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`slo`](../core/slo.md) · [`storage`](../core/storage.md) · [`throttling`](../core/throttling.md) · [`time`](../core/time.md) · [`versioning`](../core/versioning.md)
 - **Every route:** [cross/routes.md](../cross/routes.md)
 - **Every table:** [cross/data-model.md](../cross/data-model.md)
@@ -30,11 +30,11 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 176 | 17,805 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 187 | 18,678 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 229 | 28,956 | unit test, service, module, controller |
-| `apps/api/src/modules` | 764 | 102,769 | doc, unit test, service, controller |
-| `apps/api/test` | 30 | 9,192 | e2e test, unit test, module |
+| `apps/api/src/core` | 232 | 29,438 | unit test, service, module, controller |
+| `apps/api/src/modules` | 805 | 112,415 | doc, unit test, service, controller |
+| `apps/api/test` | 38 | 11,876 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
 
@@ -52,20 +52,20 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/api/prisma/seed.ts` | 3,199 | module |  |
-| `apps/api/src/modules/money/analytics/analytics.service.ts` | 2,590 | service |  |
+| `apps/api/src/modules/money/analytics/analytics.service.ts` | 2,593 | service |  |
 | `apps/api/src/modules/sales/orders/orders.service.ts` | 1,400 | service |  |
+| `apps/api/src/modules/sales/auction/auction.service.ts` | 1,152 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
+| `apps/api/src/core/events/domain-events.ts` | 833 | module | The catalogue of domain events. |
 | `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | 823 | unit test |  |
-| `apps/api/src/core/events/domain-events.ts` | 810 | module | The catalogue of domain events. |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
-| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts` | 770 | service |  |
-| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts` | 751 | service |  |
+| `apps/api/src/modules/sales/auction/auction-settlement.service.ts` | 770 | service |  |
 
 
 ---

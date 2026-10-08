@@ -55,12 +55,22 @@ describe('RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)'
     expect(new Set(databases).size).toBe(databases.length);
   });
 
+  it('puts realtime on its own database, and gives a subscriber its own connection — a subscribed connection can run no other command', () => {
+    expect(service.client('realtime').options.db).toBe(2);
+    const subscriber = service.subscriber('realtime');
+    expect(subscriber).not.toBe(service.client('realtime'));
+    expect(subscriber).toBe(service.subscriber('realtime'));
+    expect(subscriber.options.db).toBe(2);
+    expect(subscriber.status).toBe('wait');
+  });
+
   it('says, per keyspace, what the API does while it cannot connect', async () => {
     await service.onModuleInit();
 
     const notReady = logged.filter((line) => /not ready after 2000 ms/.test(line));
     expect(notReady.find((line) => line.includes('"rateLimit"'))).toContain('Sign-in and routes with their own rate limit answer 503');
     expect(notReady.find((line) => line.includes('"cache"'))).toContain('served from Postgres');
+    expect(notReady.find((line) => line.includes('"realtime"'))).toContain('falls back to polling every 5 s');
   });
 
   it('boots anyway after the bounded wait — Redis is never a boot dependency', async () => {

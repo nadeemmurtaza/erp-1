@@ -66,6 +66,12 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // 167-bank-facility-management.md — the mirror concern to receivables:
   // what the business itself owes a bank, not what it is owed.
   bankfacilities: 'core',
+  // launchpad-apps/234-auction-app.md — a capability module, not a sector pack:
+  // B2B and B2C auctions cut across every sector (this file's own "business
+  // models... are capability modules in core" rule above). Industry packs feed
+  // it lots through the AuctionLotSource extension point, so core never
+  // imports a pack.
+  auction: 'core',
   bom: 'core',
   cart: 'core',
   catalog: 'core',

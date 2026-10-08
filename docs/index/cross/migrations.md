@@ -3,7 +3,7 @@
 
 # Migrations
 
-**122** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**132** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -155,6 +155,16 @@ nothing here fails a build.
 | 2026-09-30 | `wo213_1_partner_fact_inbox` | 9 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PartnerFactInbox, TradingPartner |
 | 2026-09-30 | `wo213_2_purchase_order_source_fact` | 3 | ALTER TABLE, CREATE UNIQUE INDEX | PurchaseOrder |
 | 2026-10-02 | `launchpad_manage_permission` | 2 | INSERT |  |
+| 2026-10-02 | `wo234_1_auction_foundation` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Auction, AuctionLot |
+| 2026-10-02 | `wo234_1_auction_permissions` | 3 | INSERT |  |
+| 2026-10-02 | `wo234_2_bidding` | 16 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Auction, AuctionLot, Bid, Bidder |
+| 2026-10-02 | `wo234_3_proxy_and_close` | 9 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX | AuctionLot, AuctionResult, ProxyBid |
+| 2026-10-03 | `wo234_5_bidder_trust` | 9 | ALTER TYPE, CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX | Auction, Bidder, BidderStrike |
+| 2026-10-03 | `wo234_5_bidders_permission` | 4 | INSERT |  |
+| 2026-10-07 | `order_source_ref` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | Order |
+| 2026-10-07 | `wo234_6_settlement` | 15 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | AuctionSettlement, AuctionSettlementPayment, BidderStrike |
+| 2026-10-07 | `wo234_6_settle_permission` | 4 | INSERT |  |
+| 2026-10-09 | `wo234_12_lot_images` | 3 | CREATE TABLE, CREATE INDEX, ALTER TABLE | AuctionLotImage |
 
 
 ---

@@ -3,7 +3,7 @@
 
 # Core: `common`
 
-Shared platform — available to every module, part of no feature · 8 files
+Shared platform — available to every module, part of no feature · 10 files
 
 
 > FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (8 · 639 lines)
+## Files (10 · 870 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -24,8 +24,10 @@ All paths relative to `apps/api/src/core/common`.
 | `cost-fields.spec.ts` | unit test | 44 | — |  |
 | `cost-fields.ts` | module | 98 | 7 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
-| `all-exceptions.filter.spec.ts` | unit test | 83 | — |  |
-| `all-exceptions.filter.ts` | module | 169 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
+| `all-exceptions.filter.spec.ts` | unit test | 143 | — |  |
+| `all-exceptions.filter.ts` | module | 198 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
+| `hash-chain.spec.ts` | unit test | 59 | — |  |
+| `hash-chain.ts` | module | 83 | 7 | What a chain's first record is chained to. |
 | `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
 
 
@@ -61,13 +63,14 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `aging.spec.ts` | 7 | ageMovements |
 | `cost-fields.spec.ts` | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `all-exceptions.filter.spec.ts` | 5 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an over-limit request body |
+| `all-exceptions.filter.spec.ts` | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an over-limit request bod… |
+| `hash-chain.spec.ts` | 8 | hash chain |
 
 
 ## Every export in this unit
@@ -89,7 +92,14 @@ check there before adding another.
 | `PaginationQueryDto` | class | `pagination.dto.ts:12` | Every list endpoint takes these. |
 | `PaginatedResult` | interface | `pagination.dto.ts:47` |  |
 | `paginated` | function | `pagination.dto.ts:59` |  |
-| `AllExceptionsFilter` | class | `all-exceptions.filter.ts:32` | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right… |
+| `AllExceptionsFilter` | class | `all-exceptions.filter.ts:60` | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right… |
+| `CHAIN_START` | const | `hash-chain.ts:16` | What a chain's first record is chained to. |
+| `canonicalize` | function | `hash-chain.ts:23` | A stable text form of a record's values. |
+| `chainHash` | function | `hash-chain.ts:28` | `SHA-256(prevHash ‖ canonical)`, hex. |
+| `ChainLink` | interface | `hash-chain.ts:36` |  |
+| `ChainVerdict` | interface | `hash-chain.ts:43` |  |
+| `ChainWalker` | class | `hash-chain.ts:57` | Walks links one at a time, so a caller reading a long chain in pages never holds all of it. |
+| `verifyChain` | function | `hash-chain.ts:75` | Walks every link in order and says whether the chain is intact. |
 | `VOID_ORDER_STATUSES` | const | `sales-revenue.ts:16` | The one place "does this order count as revenue" is decided. |
 
 

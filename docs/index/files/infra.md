@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 64 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 65 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -43,7 +43,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ci.yml` | yaml | 184 |  |
+| `ci.yml` | yaml | 203 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
 
 ### `deploy` (3)
@@ -73,7 +73,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (26)
+### `scripts` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -97,10 +97,11 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 224 |  |
-| `check-tells.mjs` | script | 648 |  |
+| `check-tells.mjs` | script | 658 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
+| `load-auction.mjs` | script | 312 |  |
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 723 | scripts/sync-client.mjs — the Extractor. |
 

@@ -836,7 +836,7 @@ All 555 tracked files in `docs/*`, by directory.
 | `ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | doc | 2065 |  |
 | `ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md` | doc | 52 |  |
 | `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
-| `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
+| `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 562 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
@@ -957,7 +957,7 @@ All 555 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `232-launchpad-and-app-manifest.md` | doc | 236 |  |
 | `233-mail-app.md` | doc | 208 |  |
-| `234-auction-app.md` | doc | 265 |  |
+| `234-auction-app.md` | doc | 928 |  |
 | `235-vault-and-work-credit-app.md` | doc | 55 |  |
 | `README.md` | doc | 79 |  |
 

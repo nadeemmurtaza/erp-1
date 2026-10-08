@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { AuctionsFooterLink } from './auction/auctions-link';
 import { Logo } from './logo';
 import { ROUTES } from '@/constants/routes';
 import type { CmsMenuLink } from '@/types/api';
@@ -100,6 +101,7 @@ export function Footer({
                   {t('stitchingService')}
                 </Link>
               </li>
+              <AuctionsFooterLink className="text-sm text-neutral-200 hover:text-white transition-colors block" />
               {footerAboutMenu.map((item) => (
                 <li key={item.id}>
                   <FooterCmsLink item={item} />

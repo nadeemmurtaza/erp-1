@@ -143,6 +143,7 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
+| `auction.ts` | `MAX_LOT_PHOTOS` | const | :14 | Photographs one lot may have (WO-234.12, doc 234 §12). |
 | `brand.ts` | `BRAND` | const | :649 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :663 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
@@ -169,14 +170,15 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `SHOP_TIME_ZONE` | const | :76 | The shop's wall clock. |
 | `constants.ts` | `formatDate` | function | :79 | e.g. |
 | `constants.ts` | `formatDateTime` | function | :91 | e.g. |
-| `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
-| `constants.ts` | `formatMonthShort` | function | :128 | A month's short name on its own — "Sept". |
-| `constants.ts` | `formatWeekdayShort` | function | :137 | A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. |
-| `constants.ts` | `formatNumber` | function | :154 | A plain count, grouped for the locale — 6017 -> "6,017". |
-| `constants.ts` | `formatMoney` | function | :159 | Formats integer paisa as a display string, e.g. |
-| `constants.ts` | `formatMoneyIn` | function | :182 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
-| `constants.ts` | `formatBytes` | function | :199 | A byte count as a human-readable size, e.g. |
-| `constants.ts` | `IMPORT_ROW_CAP` | const | :220 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
+| `constants.ts` | `formatDateTimeSeconds` | function | :107 | e.g. |
+| `constants.ts` | `formatDateShort` | function | :125 | A chart axis tick — "7 Sept". |
+| `constants.ts` | `formatMonthShort` | function | :144 | A month's short name on its own — "Sept". |
+| `constants.ts` | `formatWeekdayShort` | function | :153 | A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. |
+| `constants.ts` | `formatNumber` | function | :170 | A plain count, grouped for the locale — 6017 -> "6,017". |
+| `constants.ts` | `formatMoney` | function | :175 | Formats integer paisa as a display string, e.g. |
+| `constants.ts` | `formatMoneyIn` | function | :198 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
+| `constants.ts` | `formatBytes` | function | :215 | A byte count as a human-readable size, e.g. |
+| `constants.ts` | `IMPORT_ROW_CAP` | const | :236 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
 | `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
 | `content-blocks.ts` | `ContentBlockType` | type | :27 |  |
@@ -255,6 +257,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./onsite-messaging` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
+| `index.ts` | `*` | re-export |  | from `./auction` |
 | `index.ts` | `*` | re-export |  | from `./launchpad` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
 | `index.ts` | `*` | re-export |  | from `./segment-filter` |
@@ -283,14 +286,14 @@ Every top-level export in `packages`, with the line to open.
 | `launchpad.ts` | `LaunchpadAudience` | type | :32 | Who the app serves. |
 | `launchpad.ts` | `LaunchpadStage` | type | :35 | `RESERVED` is declared for a later release and is never shown. |
 | `launchpad.ts` | `LaunchpadIconKey` | type | :38 | The glyphs a tile can use; the web app maps each to a lucide icon. |
-| `launchpad.ts` | `LaunchpadAppModule` | interface | :51 |  |
-| `launchpad.ts` | `LaunchpadApp` | interface | :58 |  |
-| `launchpad.ts` | `LaunchpadContext` | interface | :80 | What the server needs to know about this deployment and tenant. |
-| `launchpad.ts` | `LaunchpadHiddenReason` | type | :90 | Why an app is not shown. |
-| `launchpad.ts` | `launchpadHiddenReason` | function | :97 |  |
-| `launchpad.ts` | `ResolvedLaunchpadApp` | interface | :114 | Modules an app lists that are off — the web app drops entries owned by these. |
-| `launchpad.ts` | `resolveLaunchpad` | function | :124 | The apps this deployment and tenant may show, in order. |
-| `launchpad.ts` | `LAUNCHPAD_APPS` | const | :144 | The first-party apps that exist today, each a grouping of nav entries the admin sidebar already has. |
+| `launchpad.ts` | `LaunchpadAppModule` | interface | :52 |  |
+| `launchpad.ts` | `LaunchpadApp` | interface | :59 |  |
+| `launchpad.ts` | `LaunchpadContext` | interface | :81 | What the server needs to know about this deployment and tenant. |
+| `launchpad.ts` | `LaunchpadHiddenReason` | type | :91 | Why an app is not shown. |
+| `launchpad.ts` | `launchpadHiddenReason` | function | :98 |  |
+| `launchpad.ts` | `ResolvedLaunchpadApp` | interface | :115 | Modules an app lists that are off — the web app drops entries owned by these. |
+| `launchpad.ts` | `resolveLaunchpad` | function | :125 | The apps this deployment and tenant may show, in order. |
+| `launchpad.ts` | `LAUNCHPAD_APPS` | const | :145 | The first-party apps that exist today, each a grouping of nav entries the admin sidebar already has. |
 | `markdown-suggestion.ts` | `MarkdownSuggestionInput` | interface | :22 |  |
 | `markdown-suggestion.ts` | `MarkdownSuggestionResult` | interface | :36 |  |
 | `markdown-suggestion.ts` | `computeMarkdownSuggestion` | function | :51 | Null when there is no honest basis for a suggestion at all: no stock to clear, or no real cost (cos… |
@@ -302,16 +305,16 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :925 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :927 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :937 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :944 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :1201 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1457 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1476 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1490 |  |
-| `permissions.ts` | `PermissionEffect` | type | :1491 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :1494 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :969 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :971 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :981 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :988 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :1250 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1511 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1530 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1544 |  |
+| `permissions.ts` | `PermissionEffect` | type | :1545 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :1548 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

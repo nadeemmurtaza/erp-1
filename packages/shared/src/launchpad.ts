@@ -46,6 +46,7 @@ export type LaunchpadIconKey =
   | 'manufacturing'
   | 'workshop'
   | 'fulfilment'
+  | 'auction'
   | 'settings';
 
 export interface LaunchpadAppModule {
@@ -137,7 +138,7 @@ export function resolveLaunchpad(
 /**
  * The first-party apps that exist today, each a grouping of nav entries the
  * admin sidebar already has. An app whose modules are not built yet (Mail,
- * Auction, Vault & Work Credit, Hospitality, Housing Society) is NOT listed:
+ * Vault & Work Credit, Hospitality, Housing Society) is NOT listed:
  * a tile that cannot work is worse than no tile. Add an app here in the same
  * change that ships its module.
  */
@@ -218,6 +219,23 @@ export const LAUNCHPAD_APPS: readonly LaunchpadApp[] = [
     entries: ['shipments', 'manifests', 'tracking', 'rto', 'shipping-settings'],
     stage: 'STABLE',
     sortOrder: 40,
+  },
+  {
+    key: 'auction',
+    label: 'Auctions',
+    description: 'Timed auctions with live bidding, approved bidders and winner invoices.',
+    iconKey: 'auction',
+    tier: 'CORE',
+    sectors: [],
+    // C2C is not carried: it stays reserved until escrow, reputation and
+    // disputes exist (doc 232 §4, doc 234 §3).
+    audiences: ['B2C', 'B2B'],
+    modules: [{ key: 'auction', required: true }],
+    entries: ['auctions'],
+    // BETA, not STABLE: v1 has no outbid or result emails, My Bids or Watchlist
+    // (doc 234 §17). Flip to STABLE when those ship.
+    stage: 'BETA',
+    sortOrder: 45,
   },
   {
     key: 'finance',

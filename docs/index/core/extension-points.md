@@ -3,7 +3,7 @@
 
 # Core: `extension-points`
 
-Shared platform — available to every module, part of no feature · 11 files
+Shared platform — available to every module, part of no feature · 12 files
 
 
 
@@ -12,19 +12,20 @@ Source: `apps/api/src/core/extension-points/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (11 · 555 lines)
+## Files (12 · 671 lines)
 
 All paths relative to `apps/api/src/core/extension-points`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `auction-order-sink.registry.ts` | registry | 113 | 7 | One line of what an auction winner owes, in minor units of the invoice's currency. |
 | `branch-policy.registry.spec.ts` | unit test | 44 | — |  |
 | `branch-policy.registry.ts` | registry | 68 | 2 |  |
 | `camera-people-count.registry.ts` | registry | 34 | 2 |  |
 | `cart-line-validator.registry.ts` | registry | 64 | 2 | What a validator is: given a garment's field definitions and the values a customer supplied, either return the values i… |
 | `employee-offboarding.registry.ts` | registry | 39 | 3 |  |
 | `entity-enrichment.registry.ts` | registry | 45 | 2 | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or even knowing… |
-| `extension-points.module.ts` | nest module | 52 | 1 |  |
+| `extension-points.module.ts` | nest module | 55 | 1 |  |
 | `identity-verification-status.registry.ts` | registry | 36 | 2 |  |
 | `stock-intake.registry.ts` | registry | 71 | 3 |  |
 | `task-source.registry.ts` | registry | 63 | 3 | What a registered event turns into, once its mapping resolves it. |
@@ -57,8 +58,8 @@ _none_
 **`ExtensionPointsModule`** (`extension-points.module.ts`)
 - imports: —
 - controllers: —
-- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`
-- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`
+- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`, `AuctionOrderSinkRegistry`
+- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`, `AuctionOrderSinkRegistry`
 
 
 
@@ -74,6 +75,13 @@ _none_
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `AuctionInvoiceLine` | interface | `auction-order-sink.registry.ts:8` | One line of what an auction winner owes, in minor units of the invoice's currency. |
+| `AuctionInvoiceRequest` | interface | `auction-order-sink.registry.ts:17` |  |
+| `AuctionInvoice` | interface | `auction-order-sink.registry.ts:35` |  |
+| `AuctionOrderSink` | interface | `auction-order-sink.registry.ts:47` | What a module that owns orders offers an auction (doc 234 §9, §10). |
+| `AuctionInvoiceRejectedError` | class | `auction-order-sink.registry.ts:58` | A request the sink understood and will not do, with a code a person can act on. |
+| `AuctionOrderSinkUnavailableError` | class | `auction-order-sink.registry.ts:69` | No module has registered as the sink: the deployment has no orders module, or has not started it. |
+| `AuctionOrderSinkRegistry` | class | `auction-order-sink.registry.ts:91` | Lets the Auction app turn a win into an order without importing `orders` (doc 234 §10, CLAUDE.md "modules are… |
 | `BranchPolicyHandler` | interface | `branch-policy.registry.ts:3` |  |
 | `BranchPolicyRegistry` | class | `branch-policy.registry.ts:41` | Lets `purchasing` (always-on) ask "is this user's branch allowed to purchase locally?" without importing `org… |
 | `CameraPeopleCountProvider` | interface | `camera-people-count.registry.ts:3` |  |
@@ -85,7 +93,7 @@ _none_
 | `EmployeeOffboardingRegistry` | class | `employee-offboarding.registry.ts:26` | Lets `users` (core, always-on) ask "does this person still hold company equipment?" before deactivating their… |
 | `EntityEnricher` | interface | `entity-enrichment.registry.ts:19` | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or ev… |
 | `EntityEnrichmentRegistry` | class | `entity-enrichment.registry.ts:24` |  |
-| `ExtensionPointsModule` | class | `extension-points.module.ts:51` |  |
+| `ExtensionPointsModule` | class | `extension-points.module.ts:54` |  |
 | `IdentityVerificationStatusProvider` | interface | `identity-verification-status.registry.ts:3` |  |
 | `IdentityVerificationStatusRegistry` | class | `identity-verification-status.registry.ts:24` | Lets a module ask "is this user verified?" without importing `identity-verification` — a module switched off… |
 | `StockIntakeMove` | interface | `stock-intake.registry.ts:4` |  |

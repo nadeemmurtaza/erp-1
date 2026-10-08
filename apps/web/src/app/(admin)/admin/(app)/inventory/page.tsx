@@ -134,7 +134,7 @@ export default function AdminInventoryPage() {
       <FilterBar
         filters={[{ key: 'search', type: 'search', placeholder: 'Search SKU or product' }]}
         trailing={
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {STOCK_FILTERS.map((f) => (
               <button
                 key={f}

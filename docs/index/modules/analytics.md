@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 Source: `apps/api/src/modules/money/analytics/`
 
-## Files (20 · 6,336 lines)
+## Files (20 · 6,342 lines)
 
 All paths relative to `apps/api/src/modules/money/analytics`.
 
@@ -27,8 +27,8 @@ All paths relative to `apps/api/src/modules/money/analytics`.
 | `analytics.orders.spec.ts` | unit test | 204 | — |  |
 | `analytics.products.spec.ts` | unit test | 265 | — |  |
 | `analytics.purchasing.spec.ts` | unit test | 388 | — |  |
-| `analytics.sales.spec.ts` | unit test | 154 | — |  |
-| `analytics.service.ts` | service | 2590 | 39 |  |
+| `analytics.sales.spec.ts` | unit test | 157 | — |  |
+| `analytics.service.ts` | service | 2593 | 39 |  |
 | `analytics.summary.spec.ts` | unit test | 97 | — |  |
 | `analytics.workshop.spec.ts` | unit test | 185 | — |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |

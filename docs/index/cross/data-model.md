@@ -3,7 +3,7 @@
 
 # Data model
 
-All **315** Prisma models and **146** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **325** Prisma models and **153** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,6 +29,7 @@ against a real database.
 | [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
+| [`auction.prisma`](../data/auction.md) | 10 | 7 | [`auction`](../modules/auction.md) | Auction, AuctionLot, AuctionLotImage, AuctionResult, AuctionSettlement, AuctionSettlementPayment, Bid, Bidder, BidderStrike, Prox… |
 | [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | [`bom.prisma`](../data/bom.md) | 6 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionLineLot, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
@@ -110,6 +111,12 @@ against a real database.
 | [`AttendanceDevice`](../data/attendance.md#attendancedevice) | `attendance` | 11 | 1 | id | A biometric terminal or kiosk that punches on behalf of employees at one unit. |
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
+| [`Auction`](../data/auction.md#auction) | `auction` | 18 | 0 | id | One auction event. |
+| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 24 | 1 | id | One thing being sold within an auction. |
+| [`AuctionLotImage`](../data/auction.md#auctionlotimage) | `auction` | 7 | 1 | id | A photograph of a lot (WO-234.12). |
+| [`AuctionResult`](../data/auction.md#auctionresult) | `auction` | 9 | 2 | id | How a lot ended (doc 234 §5.5). |
+| [`AuctionSettlement`](../data/auction.md#auctionsettlement) | `auction` | 25 | 2 | id | What a winning lot owes: one row per lot per offer (WO-234.6). |
+| [`AuctionSettlementPayment`](../data/auction.md#auctionsettlementpayment) | `auction` | 5 | 1 | paymentId | One payment counted against a settlement (WO-234.6). |
 | [`Audience`](../data/notify.md#audience) | `notify` | 9 | 0 | id | Who a message goes to, stored as a specification, not a list of user ids — "the finance d… |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`B2BAccount`](../data/accounts.md#b2baccount) | `accounts` | 8 | 0 | id | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholes… |
@@ -123,6 +130,9 @@ against a real database.
 | [`BankFacilityRepayment`](../data/bank-facilities.md#bankfacilityrepayment) | `bank-facilities` | 9 | 1 | id | A repayment against principal, accrued markup, or both — either component may be zero but… |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
 | [`BannerTranslation`](../data/content.md#bannertranslation) | `content` | 7 | 1 | id |  |
+| [`Bid`](../data/auction.md#bid) | `auction` | 12 | 2 | id | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
+| [`Bidder`](../data/auction.md#bidder) | `auction` | 17 | 1 | id | A person bidding in one auction. |
+| [`BidderStrike`](../data/auction.md#bidderstrike) | `auction` | 12 | 1 | id | A mark against a person (WO-234.5), recorded by staff with a reason and, when there is on… |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
 | [`BlogPost`](../data/content.md#blogpost) | `content` | 13 | 1 | id |  |
@@ -245,7 +255,7 @@ against a real database.
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 56 | 5 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 58 | 5 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 38 | 4 | id |  |
@@ -307,6 +317,7 @@ against a real database.
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 56 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
+| [`ProxyBid`](../data/auction.md#proxybid) | `auction` | 9 | 2 | id | A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that kee… |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 27 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`PurchaseRequisition`](../data/purchasing.md#purchaserequisition) | `purchasing` | 12 | 2 | id |  |
@@ -431,9 +442,16 @@ against a real database.
 | [`AttendanceExceptionReason`](../data/attendance.md#attendanceexceptionreason) | `attendance` | `NO_MATCHING_SHIFT` `OUTSIDE_ROSTER` `WRONG_UNIT` `WHILE_ON_LEAVE` `DUPLICATE_SUSPECTED` `MISSING_COUNTERPART` |
 | [`AttendanceKind`](../data/attendance.md#attendancekind) | `attendance` | `IN` `OUT` `BREAK_START` `BREAK_END` `ADJUSTMENT` |
 | [`AttendanceSource`](../data/attendance.md#attendancesource) | `attendance` | `DEVICE` `SELF` `MANAGER` `IMPORT` |
+| [`AuctionLotStatus`](../data/auction.md#auctionlotstatus) | `auction` | `PENDING` `OPEN` `CLOSED` `WITHDRAWN` |
+| [`AuctionRegistration`](../data/auction.md#auctionregistration) | `auction` | `OPEN` `VERIFIED` `APPROVAL` |
+| [`AuctionSettlementStatus`](../data/auction.md#auctionsettlementstatus) | `auction` | `INVOICING` `INVOICE_FAILED` `AWAITING_PAYMENT` `PAID` `EXPIRED` `CANCELLED` |
+| [`AuctionStatus`](../data/auction.md#auctionstatus) | `auction` | `DRAFT` `SCHEDULED` `OPEN` `CLOSING` `CLOSED` `SETTLED` `CANCELLED` |
+| [`AuctionType`](../data/auction.md#auctiontype) | `auction` | `ENGLISH` `SEALED_BID` `REVERSE` |
 | [`B2BOrderRequestStatus`](../data/accounts.md#b2borderrequeststatus) | `accounts` | `PENDING` `APPROVED` `REJECTED` `CONVERTED` |
 | [`BankFacilityStatus`](../data/bank-facilities.md#bankfacilitystatus) | `bank-facilities` | `ACTIVE` `CLOSED` |
 | [`BankFacilityType`](../data/bank-facilities.md#bankfacilitytype) | `bank-facilities` | `TERM_LOAN` `RUNNING_FINANCE` `OVERDRAFT` `LETTER_OF_CREDIT` `BANK_GUARANTEE` |
+| [`BidderStatus`](../data/auction.md#bidderstatus) | `auction` | `PENDING` `APPROVED` `SUSPENDED` `DECLINED` |
+| [`BidKind`](../data/auction.md#bidkind) | `auction` | `MANUAL` `PROXY_AUTO` `SEALED` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`BulletinCategory`](../data/notify.md#bulletincategory) | `notify` | `POLICY` `MEMO` `NOTICE` `HR_ANNOUNCEMENT` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |

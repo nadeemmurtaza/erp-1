@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **72** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **73** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -32,8 +32,8 @@ order" is a new file, not an edit to checkout.
 |---|---|---|---|
 | `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `crm`, `accounting`, `orders`, `stitching`, `example-hello-world-pack` |
 | `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `loyalty`, `orders` |
-| `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
-| `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
+| `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `auction`, `orders` |
+| `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `auction`, `payments` |
 | `payment.failed` | `PaymentFailed` | `payments` | `payments` |
 | `payment.awaiting_approval` | `PaymentAwaitingApproval` | `payments` | _none_ |
 | `payment.refunded` | `PaymentRefunded` | `payments` | `accounting`, `payments` |
@@ -102,6 +102,7 @@ order" is a new file, not an edit to checkout.
 | `bank_facility.repayment_recorded` | `BankFacilityRepaymentRecorded` | `accounting`, `bankfacilities` | `accounting` |
 | `bank_facility.markup_accrued` | `BankFacilityMarkupAccrued` | `accounting`, `bankfacilities` | `accounting` |
 | `notify.bulletin_published` | `BulletinPublished` | `notify` | `notify` |
+| `auction.lot_closed` | `AuctionLotClosed` | `auction` | `auction` |
 
 
 ## Detail
@@ -115,6 +116,7 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:58` | `accounting` |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:165` | `accounting` |
+| `apps/api/src/modules/sales/orders/auction-order-sink.ts:139` | `orders` |
 | `apps/api/src/modules/sales/orders/orders.service.ts:545` | `orders` |
 | `apps/api/src/modules/sales/orders/orders.service.ts:806` | `orders` |
 
@@ -167,6 +169,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `onCancelled()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:71` | `crm` |
+| `onOrderCancelled()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:33` | `auction` |
 | `onCancelled()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:161` | `orders` |
 
 ### `payment.succeeded`
@@ -190,6 +193,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `onPaymentSucceeded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:123` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:28` | `auction` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
@@ -1325,6 +1329,23 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onBulletinPublished()` | `apps/api/src/modules/customers/notify/bulletin-notification.listener.ts:26` | `notify` |
+
+### `auction.lot_closed`
+
+> launchpad-apps/234-auction-app.md §9 (WO-234.6).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/auction/auction-lifecycle.service.ts:215` | `auction` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onLotClosed()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:23` | `auction` |
 
 
 ---

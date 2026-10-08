@@ -86,8 +86,11 @@ describe('AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel', () => {
 
   describe('salesAov', () => {
     it('computes the median from the actual order-value distribution, not just the mean', async () => {
-      await makeOrder({ grandTotal: 100_00 });
-      await makeOrder({ grandTotal: 100_00 });
+      // This reads every order in the window of a database other specs share, and an auction e2e
+      // leaves an invoice of Rs 1,000 behind a moment after it closes a lot. Nine small orders to one
+      // outlier keep the median on the small value whatever strays turn up, where two small to one
+      // outlier tipped the median to the mean the moment a single stray arrived.
+      for (let order = 0; order < 9; order += 1) await makeOrder({ grandTotal: 100_00 });
       await makeOrder({ grandTotal: 1_000_00 }); // one large outlier
 
       const result = await service.salesAov(7);

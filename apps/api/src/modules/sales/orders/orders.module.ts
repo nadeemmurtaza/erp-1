@@ -11,6 +11,7 @@ import { CodRiskCron } from './cod-risk.cron';
 import { InstalmentPlanController } from './instalment-plan.controller';
 import { InstalmentPlanService } from './instalment-plan.service';
 import { OrderFeedSource } from './order-feed.source';
+import { AuctionOrderSinkService } from './auction-order-sink';
 
 import { InventoryModule } from '../../supply-chain/inventory/inventory.module';
 import { TaxModule } from '../../money/tax/tax.module';
@@ -50,6 +51,9 @@ import { CatalogModule } from '../../merchandising/catalog/catalog.module';
     CodRiskCron,
     InstalmentPlanService,
     OrderFeedSource,
+    // Registers itself as the invoicing sink for the Auction app (doc 234 §9,
+    // WO-234.6) through core's AuctionOrderSinkRegistry; nothing here imports it.
+    AuctionOrderSinkService,
   ],
   exports: [OrdersService],
 })

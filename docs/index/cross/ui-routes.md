@@ -3,7 +3,7 @@
 
 # Screens
 
-All **279** routable files across the web app, the till and the mobile app.
+All **286** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -31,7 +31,7 @@ URL, which CLAUDE.md counts as not shipped.
 
 ## Every screen
 
-### admin (184)
+### admin (187)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -49,6 +49,9 @@ URL, which CLAUDE.md counts as not shipped.
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
 | `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
 | `/admin/attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx` |
+| `/admin/auctions` | loading | server | `apps/web/src/app/(admin)/admin/(app)/auctions/loading.tsx` |
+| `/admin/auctions` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/page.tsx` |
+| `/admin/auctions/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
 | `/admin/b2b-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx` |
 | `/admin/b2b-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx` |
@@ -265,7 +268,7 @@ URL, which CLAUDE.md counts as not shipped.
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (56)
+### storefront (60)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -293,6 +296,10 @@ URL, which CLAUDE.md counts as not shipped.
 | `/[locale]/account/support/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx` |
 | `/[locale]/account/support/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx` |
 | `/[locale]/account/wallet` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx` |
+| `/[locale]/auctions` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/loading.tsx` |
+| `/[locale]/auctions` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/page.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/loading.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx` |
 | `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
 | `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |

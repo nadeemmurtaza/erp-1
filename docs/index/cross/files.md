@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **2,793** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,901** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,216 | 163,112 | [files/api.md](../files/api.md) |
-| apps/web | 545 | 97,582 | [files/web.md](../files/web.md) |
+| apps/api | 1,279 | 176,797 | [files/api.md](../files/api.md) |
+| apps/web | 588 | 105,220 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 50 | 6,942 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 116 | 13,653 | [files/packages.md](../files/packages.md) |
-| docs/* | 555 | 97,028 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 64 | 33,175 | [files/infra.md](../files/infra.md) |
+| packages/* | 117 | 13,772 | [files/packages.md](../files/packages.md) |
+| docs/* | 555 | 98,183 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 65 | 33,516 | [files/infra.md](../files/infra.md) |
 | repository root files | 214 | 16,187 | [files/root.md](../files/root.md) |
 
 
@@ -29,30 +29,30 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 589 |
-| unit test | 374 |
-| page | 230 |
-| service | 214 |
-| module | 198 |
-| component | 196 |
-| controller | 152 |
-| dto | 137 |
-| migration | 122 |
-| nest module | 106 |
-| prisma schema | 65 |
-| script | 45 |
-| event subscriber | 38 |
-| utility | 38 |
-| scheduled job | 34 |
+| unit test | 398 |
+| page | 234 |
+| service | 221 |
+| component | 210 |
+| module | 209 |
+| controller | 157 |
+| dto | 138 |
+| migration | 132 |
+| nest module | 107 |
+| prisma schema | 66 |
+| utility | 47 |
+| script | 46 |
+| event subscriber | 39 |
+| scheduled job | 36 |
+| e2e test | 32 |
 | json | 31 |
 | react | 29 |
 | asset | 26 |
-| e2e test | 24 |
+| hook | 17 |
+| loading | 14 |
 | file | 13 |
-| hook | 12 |
+| registry | 13 |
 | yaml | 12 |
-| registry | 12 |
 | config | 12 |
-| loading | 11 |
 | guard | 9 |
 | constants | 8 |
 | layout | 6 |

@@ -48,7 +48,7 @@ export function PageHeader({
           ) : null}
         </div>
 
-        {action ? <div className="shrink-0">{action}</div> : null}
+        {action ? <div className="max-w-full">{action}</div> : null}
       </div>
     </header>
   );

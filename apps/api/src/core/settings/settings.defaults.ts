@@ -28,6 +28,8 @@ export interface DocumentPrefixes {
   stitchingOrder: string;
   stitchingJob: string;
   stockCount: string;
+  /** Auction (launchpad-apps/234-auction-app.md) — node-prefixed like the rest. */
+  auction: string;
   /** A legal sequence, not node-prefixed the way the rest are (R18/R6) — see accounting.service.ts. */
   journalEntry: string;
   /** Trading-partner document (WO-18.3+) — R6-style numbering, not R18's fiscal-year legal sequence. */
@@ -358,6 +360,41 @@ export const SettingKey = {
    * (named explicitly out of scope until real usage data justifies it).
    */
   SupportTicketSlaMinutes: 'support.ticket_sla_minutes',
+  /**
+   * launchpad-apps/234-auction-app.md §12 — what a raise on a lot must add to
+   * the current bid, in basis points (500 = 5%). Copied onto an auction when it
+   * is scheduled, so changing it here never alters an auction bidders can see.
+   */
+  AuctionBidIncrementBps: 'auction.bid_increment_bps',
+  /** The least a raise may add, in minor units (100 = one whole unit of a two-decimal currency). Copied onto an auction when it is scheduled. */
+  AuctionBidMinStepMinor: 'auction.bid_min_step_minor',
+  /** A bid this many seconds before a lot's end, or closer, moves the end (doc 234 §12). Copied onto an auction when it is scheduled. */
+  AuctionAntiSnipeWindowSeconds: 'auction.anti_snipe_window_seconds',
+  /** How many seconds a bid inside the window adds to the lot's end; 0 switches anti-snipe off. Copied onto an auction when it is scheduled. */
+  AuctionAntiSnipeExtendSeconds: 'auction.anti_snipe_extend_seconds',
+  /** The most seconds anti-snipe may add to one lot in total, so a bidding war ends. Copied onto an auction when it is scheduled. */
+  AuctionMaxExtensionSeconds: 'auction.max_extension_seconds',
+  /**
+   * launchpad-apps/234-auction-app.md §8, §12 — how a NEW auction vets who may
+   * bid when its creator names none: `OPEN`, `VERIFIED` or `APPROVAL`. Read once,
+   * when the auction is created; the auction then holds its own value.
+   */
+  AuctionRegistrationDefault: 'auction.registration_default',
+  /** Strikes (not voided, within the window below) at which a person is flagged for staff review (doc 234 §12). Read live: it is a policy on people, not a rule of one auction. */
+  AuctionStrikesToReview: 'auction.strikes_to_review',
+  /** How many days back a strike still counts. Read live. */
+  AuctionStrikeWindowDays: 'auction.strike_window_days',
+  /**
+   * launchpad-apps/234-auction-app.md §9, §12 (WO-234.6) — the buyer's premium, in basis
+   * points of the winning bid (1 000 = 10%), added to what a winner owes. Copied onto an
+   * auction when it is scheduled, so a later change never alters what bidders were shown.
+   * 0 (the default) means no premium. Whole number, 0 to 5 000.
+   */
+  AuctionBuyerPremiumBps: 'auction.buyer_premium_bps',
+  /** How many hours a winner has to pay before the win lapses (doc 234 §12). Copied onto an auction when it is scheduled. Whole number, 1 to 720. */
+  AuctionPaymentWindowHours: 'auction.payment_window_hours',
+  /** The payment method key an auction winner's order is created with (`bank_transfer`, `cod`, …). Read when the order is made, so changing it fixes a replay. */
+  AuctionSettlementPaymentMethod: 'auction.settlement_payment_method',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -425,6 +462,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stitchingOrder: 'STO',
       stitchingJob: 'JOB',
       stockCount: 'SC',
+      auction: 'AUC',
       journalEntry: 'JE',
       invoice: 'INV',
       quote: 'QTE',
@@ -551,4 +589,26 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   // ticket picked up before lunch never falsely breaches, short enough
   // that an unnoticed OPEN ticket surfaces the same day.
   [SettingKey.SupportTicketSlaMinutes]: 240,
+
+  /* 5% takes about fifteen raises to double a price; one whole currency unit
+   * is the smallest step a person would call a raise. Auction rules, §12. */
+  [SettingKey.AuctionBidIncrementBps]: 500,
+  [SettingKey.AuctionBidMinStepMinor]: toMinor(1),
+  /* Two minutes is long enough for a person to read "you were outbid" and
+   * answer, short enough that a lot does not run on; thirty minutes bounds a
+   * bidding war so staff and sellers can plan around it. Auction rules, §12. */
+  [SettingKey.AuctionAntiSnipeWindowSeconds]: 120,
+  [SettingKey.AuctionAntiSnipeExtendSeconds]: 120,
+  [SettingKey.AuctionMaxExtensionSeconds]: 1_800,
+  /* A new auction vets its bidders unless staff choose otherwise: one click on
+   * an open sale costs far less than an unvetted winner who does not pay.
+   * Three strikes in a year is a pattern rather than a slip, and a year is long
+   * enough for a pattern to show without one bad week following someone for
+   * ever. Doc 234 §12. */
+  [SettingKey.AuctionRegistrationDefault]: 'APPROVAL',
+  [SettingKey.AuctionStrikesToReview]: 3,
+  [SettingKey.AuctionStrikeWindowDays]: 365,
+  [SettingKey.AuctionBuyerPremiumBps]: 0,
+  [SettingKey.AuctionPaymentWindowHours]: 72,
+  [SettingKey.AuctionSettlementPaymentMethod]: 'bank_transfer',
 };

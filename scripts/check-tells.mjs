@@ -351,6 +351,16 @@ export const BASELINE = {
     // The mobile tab bar uses four emoji as its icons (thread, bag, scissors, person). A real fix needs an icon
     // set chosen for the app, which is a design decision, not a swap: designer.
     'apps/mobile/app/(tabs)/_layout.tsx': 4,
+    // Ratings are drawn as the text star U+2605 repeated by the rating ('★'.repeat(n)), eight times across six
+    // files, written before this check existed. They are text, not a picture, but they are the glyph-as-icon
+    // this rule names. The fix is one `Rating` component (web) and its mobile twin with an accessible
+    // label, not eight local swaps: designer. Held here so the count may shrink and may not grow.
+    'apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx': 1,
+    'apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx': 1,
+    'apps/web/src/components/admin/dashboard/metric-card.tsx': 1,
+    'apps/web/src/components/storefront/product-reviews.tsx': 2,
+    'apps/mobile/app/product/[slug].tsx': 2,
+    'apps/mobile/app/reviews.tsx': 1,
   },
   buzzword: {},
   'vague-success': {},

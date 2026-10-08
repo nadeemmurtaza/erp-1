@@ -229,6 +229,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'orders',
     module: 'fulfilment',
   },
+  // launchpad-apps/234-auction-app.md — off by default (modules.registry.ts), so
+  // `moduleOn()` drops it for any deployment that has not enabled `auction`.
+  {
+    key: 'auctions',
+    label: 'Auctions',
+    href: '/admin/auctions',
+    permissions: ['auction.view', 'auction.manage', 'auction.publish', 'auction.bidders.manage', 'auction.settle'],
+    group: 'orders',
+    module: 'auction',
+  },
 
   // Group: Fulfilment (WO-6.8)
   {

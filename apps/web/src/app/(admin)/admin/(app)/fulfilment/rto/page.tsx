@@ -102,7 +102,7 @@ function RateTable({
   useName?: boolean;
 }) {
   return (
-    <div>
+    <div className="min-w-0">
       <h2 className="mb-3 text-sm font-semibold text-neutral-900">{title}</h2>
       <DataTable
         rows={rows?.slice(0, 10) ?? null}

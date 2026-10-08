@@ -149,6 +149,50 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Sales',
     sensitivity: 'high',
   },
+  {
+    // launchpad-apps/234-auction-app.md WO-234.1 — the three keys the admin
+    // foundation uses. The rest of doc 234 §13 (adjust, integrity.review,
+    // seal.open, settings.manage) arrive with the work orders that first guard
+    // something with them; `bidders.manage` arrived with WO-234.5, below.
+    key: 'auction.view',
+    label: 'View auctions and their lots',
+    category: 'Sales',
+    sensitivity: 'low',
+  },
+  {
+    key: 'auction.manage',
+    label: 'Create and edit auctions and lots, and cancel an auction before it opens',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    // Separate from `auction.manage` so the person who drafts a sale is not
+    // automatically the person who commits the business to it.
+    key: 'auction.publish',
+    label: 'Schedule an auction so it opens to bidding at its start time',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
+    // WO-234.5. Decides who may bid and shows a bidder's name, email and phone,
+    // which is why it is its own key: the person who drafts or schedules a sale
+    // does not automatically get to see or vet the people bidding on it.
+    key: 'auction.bidders.manage',
+    label: 'Approve, decline and suspend bidders, record strikes, and answer appeals',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
+    // WO-234.6. Sees what each winning bidder owes and acts on it: replay an
+    // invoice that could not be made, end an unpaid win, offer the lot to the
+    // next bidder. Its own key because ending a win and offering a lot onward
+    // change who gets the goods and what they cost, which neither drafting an
+    // auction nor vetting its bidders should do by itself.
+    key: 'auction.settle',
+    label: 'See what auction winners owe, replay an invoice, cancel an unpaid win, and offer a lot to the next bidder',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
 
   {
     key: 'stitching.jobs.view_queue',
@@ -969,10 +1013,15 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, wholesale pricing, and running auctions.',
     permissions: [
       'orders.manage',
       'payments.approve',
+      'auction.view',
+      'auction.manage',
+      'auction.publish',
+      'auction.bidders.manage',
+      'auction.settle',
       'pos.manage',
       'pos.operate',
       'pos.instalments.cancel',
@@ -1382,6 +1431,11 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'finance.facilities.view',
     'finance.facilities.manage',
     'finance.facilities.approve_drawdown',
+    'auction.view',
+    'auction.manage',
+    'auction.publish',
+    'auction.bidders.manage',
+    'auction.settle',
     'fulfilment.view',
     'fulfilment.manage',
     'bom.view',

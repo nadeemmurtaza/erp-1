@@ -32,20 +32,20 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,216 | 163,112 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 545 | 97,582 | Next.js — admin console and customer storefront in one app |
-| `docs` | 555 | 97,028 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,279 | 176,797 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
+| `docs` | 555 | 98,183 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 37 | 23,355 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
-| `scripts` | 29 | 11,434 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 77 | 9,979 | brand, money, permissions, measurements, entities |
+| `scripts` | 30 | 11,756 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 78 | 10,098 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 50 | 6,942 | Expo — customer mobile app |
 | `packages/desktop-runtime` | 21 | 2,891 |  |
 | `apps/pos` | 33 | 2,671 | Next.js PWA — offline-first point of sale |
 | `.claude` | 28 | 1,892 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
-| `.github` | 3 | 356 | CI and deployment workflows |
+| `.github` | 3 | 375 | CI and deployment workflows |
 | `packages/config` | 4 | 101 | shared tsconfig and eslint bases |
 | `.junie` | 1 | 81 |  |
 | `.cursor` | 1 | 0 |  |
@@ -65,6 +65,7 @@ Each is independent: no module imports another except through a named
 | [`addresses`](modules/addresses.md) | core | always on | 4 | — |
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 26 | — |
 | [`attendance`](modules/attendance.md) | core | MODULES allowlist | 17 | 4 |
+| [`auction`](modules/auction.md) | core | MODULES allowlist | 35 | 10 |
 | [`bankfacilities`](modules/bankfacilities.md) | core | MODULES allowlist | 10 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 22 | 6 |
 | [`bpmn-workflows`](modules/bpmn-workflows.md) | core | always on | 2 | 1 |
@@ -141,11 +142,11 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`auth`](core/auth.md) | 48 |  |
 | [`cache`](core/cache.md) | 4 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
-| [`common`](core/common.md) | 8 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
+| [`common`](core/common.md) | 10 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 7 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
-| [`extension-points`](core/extension-points.md) | 11 |  |
+| [`extension-points`](core/extension-points.md) | 12 |  |
 | [`feature-flags`](core/feature-flags.md) | 3 |  |
 | [`feed`](core/feed.md) | 5 |  |
 | [`health`](core/health.md) | 3 |  |

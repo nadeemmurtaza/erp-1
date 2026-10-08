@@ -3,7 +3,7 @@
 
 # Background work
 
-**30** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**32** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -34,6 +34,8 @@ runs on every node that has its module enabled.
 | `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/people/attendance/attendance-partition.cron.ts:31` |  |
 | `0 4 * * *` | `sweep()` | `orgstructure` | `apps/api/src/modules/people/orgstructure/org-access.cron.ts:17` |  |
 | `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/people/payroll/leave-accrual.cron.ts:25` |  |
+| `*/15 * * * * *` | `run()` | `auction` | `apps/api/src/modules/sales/auction/auction-lifecycle.cron.ts:24` |  |
+| `0 * * * * *` | `run()` | `auction` | `apps/api/src/modules/sales/auction/auction-settlement.cron.ts:22` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/sales/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/sales/giftcards/store-credit-reconcile.cron.ts:16` |  |
 | `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/sales/orders/cod-risk.cron.ts:22` |  |

@@ -17,7 +17,6 @@ describe('AuctionLotImageService', () => {
   let nextId: number;
 
   const file = { buffer: Buffer.from('img'), originalname: 'front.jpg', mimetype: 'image/jpeg' };
-  const view = (rows = stored) => rows.map(({ id, url, order }) => ({ id, url, order })).sort((a, b) => a.order - b.order);
 
   beforeEach(() => {
     auctionStatus = 'DRAFT';

@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 40 files
 
 Source: `apps/api/src/modules/sales/auction/`
 
-## Files (40 · 9,434 lines)
+## Files (40 · 9,433 lines)
 
 All paths relative to `apps/api/src/modules/sales/auction`.
 
@@ -26,7 +26,7 @@ All paths relative to `apps/api/src/modules/sales/auction`.
 | `auction-lifecycle.service.spec.ts` | unit test | 110 | — |  |
 | `auction-lifecycle.service.ts` | service | 272 | 4 | How late a lot may be found before the delay is treated as an outage, in milliseconds. |
 | `auction-lock.ts` | module | 18 | 1 | Takes the auction's row lock and returns the status read under it. |
-| `auction-lot-image.service.spec.ts` | unit test | 195 | — |  |
+| `auction-lot-image.service.spec.ts` | unit test | 194 | — |  |
 | `auction-lot-image.service.ts` | service | 184 | 3 | A photograph as staff see it. |
 | `auction-public.controller.spec.ts` | unit test | 74 | — |  |
 | `auction-public.controller.ts` | controller | 88 | 2 | The status and headers of a server-sent-events response, sent before the first frame. |

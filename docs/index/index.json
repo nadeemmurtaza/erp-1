@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2901,
-    "lines": 453216,
+    "lines": 453215,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -1378,8 +1378,8 @@
     },
     "api": {
       "files": 1279,
-      "lines": 176795,
-      "bytes": 7058362,
+      "lines": 176794,
+      "bytes": 7058238,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -75910,8 +75910,8 @@
       "path": "apps/api/src/modules/sales/auction/auction-lot-image.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 195,
-      "bytes": 10069,
+      "lines": 194,
+      "bytes": 9945,
       "doc": "",
       "symbols": []
     },

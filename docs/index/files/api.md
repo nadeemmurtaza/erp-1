@@ -2017,7 +2017,7 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `auction-lifecycle.service.spec.ts` | unit test | 110 |  |
 | `auction-lifecycle.service.ts` | service | 272 |  |
 | `auction-lock.ts` | module | 18 |  |
-| `auction-lot-image.service.spec.ts` | unit test | 195 |  |
+| `auction-lot-image.service.spec.ts` | unit test | 194 |  |
 | `auction-lot-image.service.ts` | service | 184 |  |
 | `auction-public.controller.spec.ts` | unit test | 74 |  |
 | `auction-public.controller.ts` | controller | 88 |  |

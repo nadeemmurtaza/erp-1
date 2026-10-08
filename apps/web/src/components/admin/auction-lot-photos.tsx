@@ -44,7 +44,7 @@ export function LotPhotoSlot({ lotNo, images, onOpen }: { lotNo: number; images:
       )}
     >
       {picture ?? <ImagePlus aria-hidden="true" className="h-icon-md w-icon-md" />}
-      {images.length > 0 ? <span className="absolute bottom-0 end-0 bg-neutral-900 px-1 text-xs text-white">{images.length}</span> : null}
+      {images.length > 0 ? <span className="absolute bottom-0 end-0 bg-accent px-1 text-xs text-white">{images.length}</span> : null}
     </button>
   );
 }

@@ -1711,7 +1711,7 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `analytics.orders.spec.ts` | unit test | 204 |  |
 | `analytics.products.spec.ts` | unit test | 265 |  |
 | `analytics.purchasing.spec.ts` | unit test | 388 |  |
-| `analytics.sales.spec.ts` | unit test | 154 |  |
+| `analytics.sales.spec.ts` | unit test | 157 |  |
 | `analytics.service.ts` | service | 2593 |  |
 | `analytics.summary.spec.ts` | unit test | 97 |  |
 | `analytics.workshop.spec.ts` | unit test | 185 |  |

@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-584 files · 104,681 lines
+588 files · 105,220 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -26,18 +26,18 @@ through `@newax/shared`'s `BRAND`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/web` | 9 | 477 | file, script, json, module |
-| `apps/web/messages` | 2 | 2,228 | json |
+| `apps/web/messages` | 2 | 2,240 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 255 | 50,199 | page, loading, layout, error |
-| `apps/web/src/components` | 211 | 38,135 | component, unit test, loading |
+| `apps/web/src/app` | 255 | 50,227 | page, loading, layout, error |
+| `apps/web/src/components` | 213 | 38,487 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 6 | 502 | constants |
 | `apps/web/src/hooks` | 15 | 1,132 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 50 | 9,031 | utility, unit test |
+| `apps/web/src/lib` | 52 | 9,178 | utility, unit test |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 2,176 | types |
 | `apps/web/src/utils` | 6 | 369 | unit test, utility |
@@ -69,16 +69,16 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/globals.css` | 1,519 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 1,430 | page |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 1,221 | component |  |
-| `apps/web/messages/en.json` | 1,114 | json |  |
-| `apps/web/messages/ur.json` | 1,114 | json |  |
+| `apps/web/messages/en.json` | 1,120 | json |  |
+| `apps/web/messages/ur.json` | 1,120 | json |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 845 | page |  |
 | `apps/web/src/components/design-system/motion-specimens.tsx` | 809 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 780 | page |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 754 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` | 720 | page |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 713 | component |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
-| `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` | 696 | page |  |
 
 
 ---

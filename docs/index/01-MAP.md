@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,272 | 175,896 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 584 | 104,681 | Next.js — admin console and customer storefront in one app |
-| `docs` | 555 | 98,034 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,279 | 176,795 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
+| `docs` | 555 | 98,113 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 37 | 23,355 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 30 | 11,756 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 77 | 10,064 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 78 | 10,098 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 50 | 6,942 | Expo — customer mobile app |
 | `packages/desktop-runtime` | 21 | 2,891 |  |
 | `apps/pos` | 33 | 2,671 | Next.js PWA — offline-first point of sale |
@@ -65,7 +65,7 @@ Each is independent: no module imports another except through a named
 | [`addresses`](modules/addresses.md) | core | always on | 4 | — |
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 26 | — |
 | [`attendance`](modules/attendance.md) | core | MODULES allowlist | 17 | 4 |
-| [`auction`](modules/auction.md) | core | MODULES allowlist | 32 | 9 |
+| [`auction`](modules/auction.md) | core | MODULES allowlist | 35 | 10 |
 | [`bankfacilities`](modules/bankfacilities.md) | core | MODULES allowlist | 10 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 22 | 6 |
 | [`bpmn-workflows`](modules/bpmn-workflows.md) | core | always on | 2 | 1 |

@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatDateTime, formatMoney, type Locale } from '@newax/shared';
@@ -23,6 +25,8 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
   const tLot = useTranslations('auction.lot');
   const locale = useLocale() as Locale;
   const countdown = useCountdownLabel();
+  // A photograph that cannot be fetched is left out, not shown as a broken image (ITG-3); the card reads fine without it.
+  const [coverLost, setCoverLost] = useState(false);
 
   const left = lot.phase === 'OPEN' && now > 0 ? msUntil(lot.endsAt, offsetMs, now) : null;
   const sold = lot.outcome?.kind === 'SOLD' ? lot.outcome : null;
@@ -42,6 +46,19 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
       href={ROUTES.storefront.auctionLot(lot.lotId)}
       className="group lift card-lit flex min-h-[10rem] w-full flex-col gap-3 p-5"
     >
+      {lot.coverUrl && !coverLost ? (
+        // Pulled out to the card's inset (`--inset` 0.5rem) so the corner of the picture follows the card's (CRD-5). The title below names it, so the picture itself is decoration.
+        <div className="media-concentric relative -mx-3 -mt-3 aspect-[4/3] overflow-hidden bg-neutral-50">
+          <Image
+            src={lot.coverUrl}
+            alt=""
+            fill
+            sizes="(min-width: 1536px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover"
+            onError={() => setCoverLost(true)}
+          />
+        </div>
+      ) : null}
       <div className="flex items-start justify-between gap-3">
         <p className="eyebrow min-w-0">
           {t('lot', { number: lot.lotNo })} · {lot.auction.title}

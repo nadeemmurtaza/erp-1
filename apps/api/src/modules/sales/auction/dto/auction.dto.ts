@@ -1,5 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
   IsDateString,
   IsIn,
   IsInt,
@@ -14,6 +17,7 @@ import {
 } from 'class-validator';
 import { PaginationQueryDto } from '../../../../core/common/dto/pagination.dto';
 import { MAX_PRICE_MINOR } from '../bidding';
+import { MAX_LOT_PHOTOS } from '../lot-photos';
 import { BIDDER_DECISIONS, REGISTRATION_MODES, type BidderDecision, type BidderStatus, type RegistrationMode } from '../bidder-trust';
 
 /**
@@ -358,4 +362,14 @@ export class CancelSettlementDto {
   @IsNotEmpty()
   @MaxLength(MAX_REASON_LENGTH)
   reason!: string;
+}
+
+export class ReorderLotImagesDto {
+  @ApiProperty({ type: [String], description: 'Every photo of the lot, once, in the order wanted. The first is the cover.' })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(MAX_LOT_PHOTOS)
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  imageIds!: string[];
 }

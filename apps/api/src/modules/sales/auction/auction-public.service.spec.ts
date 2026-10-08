@@ -39,6 +39,7 @@ describe('AuctionPublicService', () => {
     extendedMs: 0,
     status: 'OPEN',
     result: null,
+    images: [{ url: '/files/auction-lots/front.webp' }, { url: '/files/auction-lots/side.webp' }],
     auction: {
       id: 'a1',
       number: 'AUC-2026-0001',
@@ -102,6 +103,17 @@ describe('AuctionPublicService', () => {
         [3, 'Bidder 1', 130_000, 'PROXY_AUTO'],
       ]);
       expect(view.outcome).toBeUndefined();
+    });
+
+    it('lists the photographs, cover first, as addresses and nothing else', async () => {
+      const view = await service.lotPage('l1');
+      expect(view.images).toEqual([{ url: '/files/auction-lots/front.webp' }, { url: '/files/auction-lots/side.webp' }]);
+      expect(prisma.auctionLot.findUnique.mock.calls[0][0].include.images).toEqual({ orderBy: { order: 'asc' }, select: { url: true } });
+    });
+
+    it('gives a lot with no photographs an empty list, never a missing field', async () => {
+      lotRow = lot({ images: [] });
+      expect((await service.lotPage('l1')).images).toEqual([]);
     });
 
     it('never carries the reserve, an account, a user id or a key, however it is looked for', async () => {
@@ -400,6 +412,7 @@ describe('AuctionPublicService', () => {
       startPriceMinor: 100_000n,
       currentBidMinor: 150_000n,
       bidSeq: 4,
+      coverUrl: null,
       auctionId: 'a1',
       auctionTitle: 'Autumn clearance',
       startsAt: new Date('2026-10-10T08:00:00.000Z'),
@@ -416,6 +429,7 @@ describe('AuctionPublicService', () => {
         lotNo: 1,
         title: 'Pallet',
         auction: { id: 'a1', title: 'Autumn clearance' },
+        coverUrl: null,
         phase: 'OPEN',
         startsAt: '2026-10-10T08:00:00.000Z',
         endsAt: AUCTION_END.toISOString(),
@@ -426,6 +440,14 @@ describe('AuctionPublicService', () => {
       expect(result.meta).toMatchObject({ page: 1, pageSize: 20, total: 1 });
       expect(result.serverTime).toBe('2026-10-10T09:30:00.000Z');
       expect(() => JSON.stringify(result)).not.toThrow();
+    });
+
+    it('carries the first photograph as the cover, and null for a lot with none', async () => {
+      prisma.$queryRaw
+        .mockResolvedValueOnce([row({ coverUrl: '/files/auction-lots/front.webp' }), row({ id: 'l2', coverUrl: null })])
+        .mockResolvedValueOnce([{ total: 2n }]);
+      const result = await service.listLots(query());
+      expect(result.data.map((lot) => lot.coverUrl)).toEqual(['/files/auction-lots/front.webp', null]);
     });
 
     it('lists ended lots as sold at a price only when the reserve was met, and as not sold otherwise', async () => {

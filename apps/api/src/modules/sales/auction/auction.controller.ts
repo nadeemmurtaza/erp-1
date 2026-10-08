@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../../core/auth/decorators';
+import { MAX_IMAGE_BYTES } from '../../../core/storage/storage.service';
+import { AuctionLotImageService, type UploadedLotPhoto } from './auction-lot-image.service';
 import { AuctionService } from './auction.service';
 import {
   AuctionListQueryDto,
@@ -9,6 +12,7 @@ import {
   CancelAuctionDto,
   CreateAuctionDto,
   CreateAuctionLotDto,
+  ReorderLotImagesDto,
   UpdateAuctionDto,
   UpdateAuctionLotDto,
 } from './dto/auction.dto';
@@ -28,7 +32,10 @@ import {
 @ApiTags('admin/auctions')
 @Controller('admin/auctions')
 export class AuctionController {
-  constructor(private readonly auctions: AuctionService) {}
+  constructor(
+    private readonly auctions: AuctionService,
+    private readonly photos: AuctionLotImageService,
+  ) {}
 
   @Get()
   @RequirePermission('auction.view', 'auction.manage', 'auction.bidders.manage', 'auction.settle')
@@ -82,6 +89,47 @@ export class AuctionController {
   @ApiOperation({ summary: 'Withdraw a lot from a draft auction — kept on record, never deleted' })
   withdrawLot(@Param('id') id: string, @Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
     return this.auctions.withdrawLot(id, lotId, user.id);
+  }
+
+  @Post(':id/lots/:lotId/images')
+  @RequirePermission('auction.manage')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  // The size is refused while the file arrives, so an oversized upload is never held whole in memory; the storage service checks the same number again after reading it.
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: MAX_IMAGE_BYTES, files: 1 } }))
+  @ApiOperation({ summary: 'Add a photo to a lot of a draft auction (at most 10 a lot)' })
+  addPhoto(
+    @Param('id') id: string,
+    @Param('lotId') lotId: string,
+    @UploadedFile() file: UploadedLotPhoto | undefined,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!file) throw new BadRequestException('Choose an image file to upload.');
+    return this.photos.add(id, lotId, file, user.id);
+  }
+
+  @Patch(':id/lots/:lotId/images/order')
+  @RequirePermission('auction.manage')
+  @ApiOperation({ summary: 'Put a lot’s photos in order; the first is the cover. List every photo, once' })
+  reorderPhotos(
+    @Param('id') id: string,
+    @Param('lotId') lotId: string,
+    @Body() dto: ReorderLotImagesDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.photos.reorder(id, lotId, dto.imageIds, user.id);
+  }
+
+  @Delete(':id/lots/:lotId/images/:imageId')
+  @RequirePermission('auction.manage')
+  @ApiOperation({ summary: 'Remove a photo from a lot of a draft auction; returns the photos that are left' })
+  removePhoto(
+    @Param('id') id: string,
+    @Param('lotId') lotId: string,
+    @Param('imageId') imageId: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.photos.remove(id, lotId, imageId, user.id);
   }
 
   @Get(':id/lots/:lotId/bids')

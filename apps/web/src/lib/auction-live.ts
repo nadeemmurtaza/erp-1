@@ -34,6 +34,8 @@ export interface PublicLot {
   title: string;
   description: string | null;
   quantity: number;
+  /** The lot's photographs, cover first; empty for a lot with none. */
+  images: Array<{ url: string }>;
   auction: {
     id: string;
     number: string;
@@ -77,6 +79,8 @@ export interface PublicLotSummary {
   lotNo: number;
   title: string;
   auction: { id: string; title: string };
+  /** The lot's first photograph, or null when it has none. */
+  coverUrl: string | null;
   phase: LotPhase;
   startsAt: string;
   endsAt: string;

@@ -3,7 +3,7 @@
 
 # Tests
 
-**426** spec files, **4,722** cases. What is already pinned down — and what is not.
+**430** spec files, **4,768** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (31)
+## End-to-end (32)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -43,6 +43,7 @@ regression or an N+1.
 | `apps/api/test/auction-bidding.e2e-spec.ts` | 11 | Auction bidding (e2e) |
 | `apps/api/test/auction-http.e2e-spec.ts` | 10 | Auction admin routes (e2e) · bidding |
 | `apps/api/test/auction-lifecycle.e2e-spec.ts` | 23 | Auction proxy, anti-snipe and close job (e2e) · the open job · anti-snipe · proxy bidding · the close job · an outage |
+| `apps/api/test/auction-lot-photos.e2e-spec.ts` | 10 | Auction lot photos (e2e) |
 | `apps/api/test/auction-realtime.e2e-spec.ts` | 14 | Auction public pages and live stream (e2e) · with no sign-in · the live stream · between nodes, through Redis |
 | `apps/api/test/auction-settlement.e2e-spec.ts` | 15 | Auction settlement (e2e) · invoicing a win · payment · a win nobody pays for · an invoice that cannot be made · what st… |
 | `apps/api/test/auction.e2e-spec.ts` | 5 | Auction foundation (e2e) |
@@ -70,7 +71,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (395)
+## Unit and integration (398)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -240,14 +241,16 @@ regression or an N+1.
 | `apps/api/src/modules/sales/auction/auction-bidder.service.spec.ts` | auction | 44 | AuctionBidderService · joining an auction · an appeal · a staff decision · reading the Settings, wh… |
 | `apps/api/src/modules/sales/auction/auction-bidding.service.spec.ts` | auction | 53 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · who may bid, as the a… |
 | `apps/api/src/modules/sales/auction/auction-lifecycle.service.spec.ts` | auction | 6 | AuctionLifecycleService · AuctionLifecycleCron |
+| `apps/api/src/modules/sales/auction/auction-lot-image.service.spec.ts` | auction | 16 | AuctionLotImageService · add · reorder · remove |
 | `apps/api/src/modules/sales/auction/auction-public.controller.spec.ts` | auction | 3 | AuctionPublicController stream |
-| `apps/api/src/modules/sales/auction/auction-public.service.spec.ts` | auction | 37 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
+| `apps/api/src/modules/sales/auction/auction-public.service.spec.ts` | auction | 40 | AuctionPublicService · the lot page · how a lot ended · the cache · a live snapshot · viewerState ·… |
 | `apps/api/src/modules/sales/auction/auction-realtime.service.spec.ts` | auction | 21 | AuctionRealtimeService · a stream · publishing · another node’s events, off Redis |
 | `apps/api/src/modules/sales/auction/auction-settlement.controller.spec.ts` | auction | 2 | auction settlement permissions |
 | `apps/api/src/modules/sales/auction/auction.service.spec.ts` | auction | 41 | AuctionService · create · who may bid (WO-234.5) · list · get · update · addLot · updateLot · withd… |
 | `apps/api/src/modules/sales/auction/bidder-trust.spec.ts` | auction | 29 | eligibility · decideRegistration · nextBidderStatus · appealState · registrationView · strike polic… |
 | `apps/api/src/modules/sales/auction/bidding.spec.ts` | auction | 42 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlia… |
 | `apps/api/src/modules/sales/auction/lot-live.spec.ts` | auction | 9 | mergeLiveEvents · eventForAcceptedBids |
+| `apps/api/src/modules/sales/auction/lot-photos.spec.ts` | auction | 7 | lot photos (WO-234.12) · nextPhotoPosition · checkPhotoOrder · closeGap |
 | `apps/api/src/modules/sales/auction/settlement-messages.spec.ts` | auction | 5 | wonNotice · lapsedNotice |
 | `apps/api/src/modules/sales/auction/settlement.spec.ts` | auction | 18 | premiumFor · settlementAmounts · paymentDueAt and isCovered · invoiceLines · settlementActions · pi… |
 | `apps/api/src/modules/sales/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
@@ -413,6 +416,7 @@ regression or an N+1.
 | `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
 | `apps/web/src/lib/auction-bidders.spec.ts` | web | 21 | the queue the page opens on · what staff may do to a bidder · strikes · what follows an act · descr… |
 | `apps/web/src/lib/auction-live.spec.ts` | web | 49 | the server clock · countdownParts and countdownUnits · timeState · applyLiveEvent · eventFromAccept… |
+| `apps/web/src/lib/auction-lot-photos.spec.ts` | web | 10 | auction lot photos · photoLimitReason · roomForPhotos · movePhoto · moveFocusTarget · renumber · cl… |
 | `apps/web/src/lib/auction-lots.spec.ts` | web | 11 | lotEndsAt · auctionClosesAt · describeExtension · describeOutcome |
 | `apps/web/src/lib/auction-messages.spec.ts` | web | 3 | the auction messages |
 | `apps/web/src/lib/auction-registration.spec.ts` | web | 19 | registrationCard · needsRegistrationPoll · the polling parameters · withRegistration · describeRegi… |

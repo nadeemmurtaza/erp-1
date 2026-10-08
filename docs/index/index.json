@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2889,
-    "lines": 451665,
-    "routes": 913,
+    "files": 2901,
+    "lines": 453216,
+    "routes": 916,
     "controllers": 167,
-    "models": 324,
+    "models": 325,
     "enums": 153,
-    "migrations": 131,
+    "migrations": 132,
     "events": 73,
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 426,
+    "specs": 430,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1272,
-      "lines": 175896,
-      "bytes": 7014542,
+      "files": 1279,
+      "lines": 176795,
+      "bytes": 7058362,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1395,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 584,
-      "lines": 104681,
-      "bytes": 3898425,
+      "files": 588,
+      "lines": 105220,
+      "bytes": 3922074,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 555,
-      "lines": 98034,
-      "bytes": 6080817,
+      "lines": 98113,
+      "bytes": 6092527,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 116,
-      "lines": 13738,
-      "bytes": 513352,
+      "files": 117,
+      "lines": 13772,
+      "bytes": 514622,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1544,6 +1544,9 @@
         "apps/api/src/modules/sales/auction/auction-lifecycle.cron.ts",
         "apps/api/src/modules/sales/auction/auction-lifecycle.service.spec.ts",
         "apps/api/src/modules/sales/auction/auction-lifecycle.service.ts",
+        "apps/api/src/modules/sales/auction/auction-lock.ts",
+        "apps/api/src/modules/sales/auction/auction-lot-image.service.spec.ts",
+        "apps/api/src/modules/sales/auction/auction-lot-image.service.ts",
         "apps/api/src/modules/sales/auction/auction-public.controller.spec.ts",
         "apps/api/src/modules/sales/auction/auction-public.controller.ts",
         "apps/api/src/modules/sales/auction/auction-public.service.spec.ts",
@@ -1567,12 +1570,14 @@
         "apps/api/src/modules/sales/auction/dto/auction.dto.ts",
         "apps/api/src/modules/sales/auction/lot-live.spec.ts",
         "apps/api/src/modules/sales/auction/lot-live.ts",
+        "apps/api/src/modules/sales/auction/lot-photos.spec.ts",
+        "apps/api/src/modules/sales/auction/lot-photos.ts",
         "apps/api/src/modules/sales/auction/settlement-messages.spec.ts",
         "apps/api/src/modules/sales/auction/settlement-messages.ts",
         "apps/api/src/modules/sales/auction/settlement.spec.ts",
         "apps/api/src/modules/sales/auction/settlement.ts"
       ],
-      "routes": 32,
+      "routes": 35,
       "page": "docs/index/modules/auction.md"
     },
     {
@@ -4532,7 +4537,7 @@
       "controller": "AuctionController",
       "handler": "list",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 36,
+      "line": 43,
       "access": "auction.view | auction.manage | auction.bidders.manage | auction.settle",
       "permissions": [
         "auction.view",
@@ -4551,7 +4556,7 @@
       "controller": "AuctionController",
       "handler": "create",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 50,
+      "line": 57,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4567,7 +4572,7 @@
       "controller": "AuctionController",
       "handler": "get",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 43,
+      "line": 50,
       "access": "auction.view | auction.manage | auction.bidders.manage | auction.settle",
       "permissions": [
         "auction.view",
@@ -4586,7 +4591,7 @@
       "controller": "AuctionController",
       "handler": "update",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 57,
+      "line": 64,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4698,7 +4703,7 @@
       "controller": "AuctionController",
       "handler": "cancel",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 118,
+      "line": 166,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4714,7 +4719,7 @@
       "controller": "AuctionController",
       "handler": "addLot",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 64,
+      "line": 71,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4730,7 +4735,7 @@
       "controller": "AuctionController",
       "handler": "updateLot",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 71,
+      "line": 78,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4746,7 +4751,7 @@
       "controller": "AuctionController",
       "handler": "listBids",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 90,
+      "line": 138,
       "access": "auction.view | auction.manage",
       "permissions": [
         "auction.view",
@@ -4763,7 +4768,7 @@
       "controller": "AuctionController",
       "handler": "verifyBids",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 97,
+      "line": 145,
       "access": "auction.view | auction.manage",
       "permissions": [
         "auction.view",
@@ -4775,12 +4780,60 @@
     },
     {
       "method": "POST",
+      "path": "/admin/auctions/:id/lots/:lotId/images",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "addPhoto",
+      "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
+      "line": 101,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a photo to a lot of a draft auction (at most 10 a lot)"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/auctions/:id/lots/:lotId/images/:imageId",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "removePhoto",
+      "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
+      "line": 126,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a photo from a lot of a draft auction; returns the photos that are left"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/auctions/:id/lots/:lotId/images/order",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "reorderPhotos",
+      "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
+      "line": 114,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Put a lot’s photos in order; the first is the cover. List every photo, once"
+    },
+    {
+      "method": "POST",
       "path": "/admin/auctions/:id/lots/:lotId/withdraw",
       "module": "auction",
       "controller": "AuctionController",
       "handler": "withdrawLot",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 83,
+      "line": 90,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4796,7 +4849,7 @@
       "controller": "AuctionController",
       "handler": "schedule",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 104,
+      "line": 152,
       "access": "auction.publish",
       "permissions": [
         "auction.publish"
@@ -4892,7 +4945,7 @@
       "controller": "AuctionController",
       "handler": "unschedule",
       "file": "apps/api/src/modules/sales/auction/auction.controller.ts",
-      "line": 111,
+      "line": 159,
       "access": "auction.publish",
       "permissions": [
         "auction.publish"
@@ -18027,6 +18080,9 @@
         "PATCH /admin/auctions/:id/lots/:lotId",
         "GET /admin/auctions/:id/lots/:lotId/bids",
         "GET /admin/auctions/:id/lots/:lotId/bids/verify",
+        "POST /admin/auctions/:id/lots/:lotId/images",
+        "DELETE /admin/auctions/:id/lots/:lotId/images/:imageId",
+        "PATCH /admin/auctions/:id/lots/:lotId/images/order",
         "POST /admin/auctions/:id/lots/:lotId/withdraw"
       ],
       "uiSites": 3,
@@ -22818,6 +22874,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "images",
+          "type": "AuctionLotImage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -22826,9 +22889,69 @@
       ]
     },
     {
+      "name": "AuctionLotImage",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 167,
+      "doc": "A photograph of a lot (WO-234.12).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lotId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "url",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storageKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lot",
+          "type": "AuctionLot",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([lotId, order])"
+      ]
+    },
+    {
       "name": "AuctionResult",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 281,
+      "line": 301,
       "doc": "How a lot ended (doc 234 §5.5).",
       "fields": [
         {
@@ -22900,7 +23023,7 @@
     {
       "name": "AuctionSettlement",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 315,
+      "line": 335,
       "doc": "What a winning lot owes: one row per lot per offer (WO-234.6).",
       "fields": [
         {
@@ -23089,7 +23212,7 @@
     {
       "name": "AuctionSettlementPayment",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 359,
+      "line": 379,
       "doc": "One payment counted against a settlement (WO-234.6).",
       "fields": [
         {
@@ -24107,7 +24230,7 @@
     {
       "name": "Bid",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 226,
+      "line": 246,
       "doc": "One accepted bid: a record, never edited and never deleted (doc 234 §5.2).",
       "fields": [
         {
@@ -24204,7 +24327,7 @@
     {
       "name": "Bidder",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 168,
+      "line": 188,
       "doc": "A person bidding in one auction.",
       "fields": [
         {
@@ -24336,7 +24459,7 @@
     {
       "name": "BidderStrike",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 198,
+      "line": 218,
       "doc": "A mark against a person (WO-234.5), recorded by staff with a reason and, when there is one, the lot it concerns.",
       "fields": [
         {
@@ -40823,7 +40946,7 @@
     {
       "name": "ProxyBid",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 255,
+      "line": 275,
       "doc": "A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to this.",
       "fields": [
         {
@@ -49867,7 +49990,7 @@
     {
       "name": "AuctionSettlementStatus",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 301,
+      "line": 321,
       "values": [
         "INVOICING",
         "INVOICE_FAILED",
@@ -53678,6 +53801,21 @@
         "INSERT"
       ],
       "tables": []
+    },
+    {
+      "folder": "20261009090000_wo234_12_lot_images",
+      "file": "apps/api/prisma/schema/migrations/20261009090000_wo234_12_lot_images/migration.sql",
+      "date": "2026-10-09",
+      "slug": "wo234_12_lot_images",
+      "statements": 3,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "AuctionLotImage"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -58985,6 +59123,18 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/sales/auction/auction-lot-image.service.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "AuctionLotImageService",
+        "add",
+        "reorder",
+        "remove"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/sales/auction/auction-public.controller.spec.ts",
       "module": "auction",
       "kind": "unit test",
@@ -58997,7 +59147,7 @@
       "file": "apps/api/src/modules/sales/auction/auction-public.service.spec.ts",
       "module": "auction",
       "kind": "unit test",
-      "cases": 37,
+      "cases": 40,
       "describes": [
         "AuctionPublicService",
         "the lot page",
@@ -59090,6 +59240,18 @@
       "describes": [
         "mergeLiveEvents",
         "eventForAcceptedBids"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/sales/auction/lot-photos.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "lot photos (WO-234.12)",
+        "nextPhotoPosition",
+        "checkPhotoOrder",
+        "closeGap"
       ]
     },
     {
@@ -60418,6 +60580,15 @@
       ]
     },
     {
+      "file": "apps/api/test/auction-lot-photos.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 10,
+      "describes": [
+        "Auction lot photos (e2e)"
+      ]
+    },
+    {
       "file": "apps/api/test/auction-realtime.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -61257,6 +61428,21 @@
         "amountForInput",
         "describeBidFailure",
         "spread"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/auction-lot-photos.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "auction lot photos",
+        "photoLimitReason",
+        "roomForPhotos",
+        "movePhoto",
+        "moveFocusTarget",
+        "renumber",
+        "clampPhotoIndex"
       ]
     },
     {
@@ -62563,8 +62749,8 @@
       "path": "apps/api/prisma/schema/auction.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 369,
-      "bytes": 15084,
+      "lines": 389,
+      "bytes": 15864,
       "doc": "Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5).",
       "symbols": []
     },
@@ -63897,6 +64083,15 @@
       "kind": "migration",
       "lines": 29,
       "bytes": 1629,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20261009090000_wo234_12_lot_images/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 28,
+      "bytes": 1151,
       "doc": "",
       "symbols": []
     },
@@ -68924,9 +69119,14 @@
       "area": "api",
       "kind": "service",
       "lines": 143,
-      "bytes": 5263,
+      "bytes": 5270,
       "doc": "",
       "symbols": [
+        {
+          "name": "MAX_IMAGE_BYTES",
+          "kind": "const",
+          "line": 10
+        },
         {
           "name": "StorageService",
           "kind": "class",
@@ -75692,6 +75892,55 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/sales/auction/auction-lock.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 18,
+      "bytes": 828,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "lockAuctionStatus",
+          "kind": "function",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/sales/auction/auction-lot-image.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 195,
+      "bytes": 10069,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/sales/auction/auction-lot-image.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 184,
+      "bytes": 8112,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotImageView",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "UploadedLotPhoto",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "AuctionLotImageService",
+          "kind": "class",
+          "line": 39
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/sales/auction/auction-public.controller.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -75724,8 +75973,8 @@
       "path": "apps/api/src/modules/sales/auction/auction-public.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 461,
-      "bytes": 22913,
+      "lines": 483,
+      "bytes": 24123,
       "doc": "",
       "symbols": []
     },
@@ -75733,8 +75982,8 @@
       "path": "apps/api/src/modules/sales/auction/auction-public.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 433,
-      "bytes": 19296,
+      "lines": 442,
+      "bytes": 19887,
       "doc": "",
       "symbols": [
         {
@@ -75760,17 +76009,17 @@
         {
           "name": "PublicLotSummary",
           "kind": "interface",
-          "line": 74
+          "line": 76
         },
         {
           "name": "ViewerLotState",
           "kind": "interface",
-          "line": 91
+          "line": 95
         },
         {
           "name": "AuctionPublicService",
           "kind": "class",
-          "line": 132
+          "line": 136
         }
       ]
     },
@@ -75926,14 +76175,14 @@
       "path": "apps/api/src/modules/sales/auction/auction.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 122,
-      "bytes": 5091,
+      "lines": 170,
+      "bytes": 7236,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionController",
           "kind": "class",
-          "line": 30
+          "line": 34
         }
       ]
     },
@@ -75941,14 +76190,14 @@
       "path": "apps/api/src/modules/sales/auction/auction.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 42,
-      "bytes": 2003,
+      "lines": 44,
+      "bytes": 2101,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionModule",
           "kind": "class",
-          "line": 41
+          "line": 43
         }
       ]
     },
@@ -75965,64 +76214,64 @@
       "path": "apps/api/src/modules/sales/auction/auction.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1148,
-      "bytes": 50854,
+      "lines": 1152,
+      "bytes": 50988,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionLotView",
           "kind": "type",
-          "line": 86
+          "line": 87
         },
         {
           "name": "AuctionDetail",
           "kind": "type",
-          "line": 96
+          "line": 99
         },
         {
           "name": "AuctionResultView",
           "kind": "interface",
-          "line": 103
+          "line": 106
         },
         {
           "name": "PlaceBidInput",
           "kind": "interface",
-          "line": 111
+          "line": 114
         },
         {
           "name": "BidView",
           "kind": "interface",
-          "line": 120
+          "line": 123
         },
         {
           "name": "LotPriceState",
           "kind": "interface",
-          "line": 130
+          "line": 133
         },
         {
           "name": "PlaceBidResult",
           "kind": "interface",
-          "line": 141
+          "line": 144
         },
         {
           "name": "SetProxyBidInput",
           "kind": "interface",
-          "line": 154
+          "line": 157
         },
         {
           "name": "ProxyBidResult",
           "kind": "interface",
-          "line": 161
+          "line": 164
         },
         {
           "name": "BidIntegrity",
           "kind": "interface",
-          "line": 169
+          "line": 172
         },
         {
           "name": "AuctionService",
           "kind": "class",
-          "line": 239
+          "line": 242
         }
       ]
     },
@@ -76318,149 +76567,154 @@
       "path": "apps/api/src/modules/sales/auction/dto/auction.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 362,
-      "bytes": 10532,
+      "lines": 376,
+      "bytes": 10932,
       "doc": "",
       "symbols": [
         {
           "name": "MAX_MINOR",
           "kind": "const",
-          "line": 25
+          "line": 29
         },
         {
           "name": "CREATABLE_AUCTION_TYPES",
           "kind": "const",
-          "line": 28
+          "line": 32
         },
         {
           "name": "AUCTION_STATUSES",
           "kind": "const",
-          "line": 30
+          "line": 34
         },
         {
           "name": "MAX_REASON_LENGTH",
           "kind": "const",
-          "line": 33
+          "line": 37
         },
         {
           "name": "MAX_APPEAL_LENGTH",
           "kind": "const",
-          "line": 35
+          "line": 39
         },
         {
           "name": "CreateAuctionDto",
           "kind": "class",
-          "line": 37
+          "line": 41
         },
         {
           "name": "UpdateAuctionDto",
           "kind": "class",
-          "line": 80
+          "line": 84
         },
         {
           "name": "CancelAuctionDto",
           "kind": "class",
-          "line": 119
+          "line": 123
         },
         {
           "name": "CreateAuctionLotDto",
           "kind": "class",
-          "line": 127
+          "line": 131
         },
         {
           "name": "UpdateAuctionLotDto",
           "kind": "class",
-          "line": 161
+          "line": 165
         },
         {
           "name": "AuctionListQueryDto",
           "kind": "class",
-          "line": 198
+          "line": 202
         },
         {
           "name": "PlaceBidDto",
           "kind": "class",
-          "line": 205
+          "line": 209
         },
         {
           "name": "BidListQueryDto",
           "kind": "class",
-          "line": 226
+          "line": 230
         },
         {
           "name": "SetProxyBidDto",
           "kind": "class",
-          "line": 228
+          "line": 232
         },
         {
           "name": "PUBLIC_LOT_STATES",
           "kind": "const",
-          "line": 240
+          "line": 244
         },
         {
           "name": "PublicLotState",
           "kind": "type",
-          "line": 241
+          "line": 245
         },
         {
           "name": "PublicLotListQueryDto",
           "kind": "class",
-          "line": 243
+          "line": 247
         },
         {
           "name": "BIDDER_FILTERS",
           "kind": "const",
-          "line": 260
+          "line": 264
         },
         {
           "name": "BidderFilter",
           "kind": "type",
-          "line": 261
+          "line": 265
         },
         {
           "name": "BidderListQueryDto",
           "kind": "class",
-          "line": 264
+          "line": 268
         },
         {
           "name": "BidderDecisionDto",
           "kind": "class",
-          "line": 281
+          "line": 285
         },
         {
           "name": "RecordStrikeDto",
           "kind": "class",
-          "line": 305
+          "line": 309
         },
         {
           "name": "VoidStrikeDto",
           "kind": "class",
-          "line": 319
+          "line": 323
         },
         {
           "name": "AppealDto",
           "kind": "class",
-          "line": 327
+          "line": 331
         },
         {
           "name": "SETTLEMENT_FILTERS",
           "kind": "const",
-          "line": 335
+          "line": 339
         },
         {
           "name": "SettlementFilter",
           "kind": "type",
-          "line": 336
+          "line": 340
         },
         {
           "name": "SettlementListQueryDto",
           "kind": "class",
-          "line": 339
+          "line": 343
         },
         {
           "name": "CancelSettlementDto",
           "kind": "class",
-          "line": 355
+          "line": 359
+        },
+        {
+          "name": "ReorderLotImagesDto",
+          "kind": "class",
+          "line": 367
         }
       ]
     },
@@ -76515,6 +76769,50 @@
           "name": "eventForAcceptedBids",
           "kind": "function",
           "line": 82
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/sales/auction/lot-photos.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 51,
+      "bytes": 2059,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/sales/auction/lot-photos.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 38,
+      "bytes": 1825,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LOT_PHOTO_FOLDER",
+          "kind": "const",
+          "line": 12
+        },
+        {
+          "name": "nextPhotoPosition",
+          "kind": "function",
+          "line": 15
+        },
+        {
+          "name": "PhotoOrderProblem",
+          "kind": "type",
+          "line": 19
+        },
+        {
+          "name": "checkPhotoOrder",
+          "kind": "function",
+          "line": 26
+        },
+        {
+          "name": "closeGap",
+          "kind": "function",
+          "line": 35
         }
       ]
     },
@@ -83543,6 +83841,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/test/auction-lot-photos.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 266,
+      "bytes": 14411,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/test/auction-realtime.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
@@ -88237,8 +88544,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 1114,
-      "bytes": 45355,
+      "lines": 1120,
+      "bytes": 45602,
       "doc": "",
       "symbols": []
     },
@@ -88246,8 +88553,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 1114,
-      "bytes": 64079,
+      "lines": 1120,
+      "bytes": 64379,
       "doc": "",
       "symbols": []
     },
@@ -88546,14 +88853,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 696,
-      "bytes": 28504,
+      "lines": 720,
+      "bytes": 29743,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionDetailPage",
           "kind": "default",
-          "line": 94
+          "line": 98
         }
       ]
     },
@@ -91696,14 +92003,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 114,
-      "bytes": 5096,
+      "lines": 118,
+      "bytes": 5557,
       "doc": "",
       "symbols": [
         {
           "name": "LotPage",
           "kind": "default",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -92641,6 +92948,31 @@
           "name": "AuctionBidders",
           "kind": "function",
           "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/auction-lot-photos.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 241,
+      "bytes": 11178,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PhotoLot",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "LotPhotoSlot",
+          "kind": "function",
+          "line": 29
+        },
+        {
+          "name": "AuctionLotPhotos",
+          "kind": "function",
+          "line": 65
         }
       ]
     },
@@ -93839,14 +94171,14 @@
       "path": "apps/web/src/components/admin/launchpad/app-icons.ts",
       "area": "web",
       "kind": "component",
-      "lines": 35,
-      "bytes": 816,
+      "lines": 37,
+      "bytes": 843,
       "doc": "",
       "symbols": [
         {
           "name": "LAUNCHPAD_ICONS",
           "kind": "const",
-          "line": 22
+          "line": 23
         }
       ]
     },
@@ -95229,14 +95561,29 @@
       "path": "apps/web/src/components/storefront/auction/lot-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 85,
-      "bytes": 3725,
+      "lines": 102,
+      "bytes": 4608,
       "doc": "",
       "symbols": [
         {
           "name": "LotCard",
           "kind": "function",
-          "line": 21
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/lot-gallery.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 92,
+      "bytes": 3701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotGallery",
+          "kind": "function",
+          "line": 22
         }
       ]
     },
@@ -97628,8 +97975,8 @@
       "path": "apps/web/src/lib/auction-live.spec.ts",
       "area": "web",
       "kind": "unit test",
-      "lines": 391,
-      "bytes": 17722,
+      "lines": 392,
+      "bytes": 17736,
       "doc": "",
       "symbols": []
     },
@@ -97637,8 +97984,8 @@
       "path": "apps/web/src/lib/auction-live.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 432,
-      "bytes": 17335,
+      "lines": 436,
+      "bytes": 17531,
       "doc": "",
       "symbols": [
         {
@@ -97664,172 +98011,231 @@
         {
           "name": "LotLiveEvent",
           "kind": "interface",
-          "line": 62
+          "line": 64
         },
         {
           "name": "PublicLotSummary",
           "kind": "interface",
-          "line": 75
+          "line": 77
         },
         {
           "name": "RegistrationMode",
           "kind": "type",
-          "line": 90
+          "line": 94
         },
         {
           "name": "RegistrationStatus",
           "kind": "type",
-          "line": 93
+          "line": 97
         },
         {
           "name": "IneligibleWhy",
           "kind": "type",
-          "line": 96
+          "line": 100
         },
         {
           "name": "AppealState",
           "kind": "type",
-          "line": 99
+          "line": 103
         },
         {
           "name": "RegistrationView",
           "kind": "interface",
-          "line": 102
+          "line": 106
         },
         {
           "name": "ViewerLotState",
           "kind": "interface",
-          "line": 114
+          "line": 118
         },
         {
           "name": "PAGE_BIDS",
           "kind": "const",
-          "line": 131
+          "line": 135
         },
         {
           "name": "CLOSING_SOON_MS",
           "kind": "const",
-          "line": 139
+          "line": 143
         },
         {
           "name": "POLL_FALLBACK_MS",
           "kind": "const",
-          "line": 142
+          "line": 146
         },
         {
           "name": "REFRESH_MIN_GAP_MS",
           "kind": "const",
-          "line": 149
+          "line": 153
         },
         {
           "name": "clockOffset",
           "kind": "function",
-          "line": 152
+          "line": 156
         },
         {
           "name": "msUntil",
           "kind": "function",
-          "line": 157
+          "line": 161
         },
         {
           "name": "CountdownParts",
           "kind": "interface",
-          "line": 161
+          "line": 165
         },
         {
           "name": "countdownParts",
           "kind": "function",
-          "line": 169
+          "line": 173
         },
         {
           "name": "countdownUnits",
           "kind": "function",
-          "line": 184
+          "line": 188
         },
         {
           "name": "TimeState",
           "kind": "type",
-          "line": 198
+          "line": 202
         },
         {
           "name": "timeState",
           "kind": "function",
-          "line": 200
+          "line": 204
         },
         {
           "name": "applyLiveEvent",
           "kind": "function",
-          "line": 214
+          "line": 218
         },
         {
           "name": "AcceptedLike",
           "kind": "interface",
-          "line": 238
+          "line": 242
         },
         {
           "name": "eventFromAccepted",
           "kind": "function",
-          "line": 250
+          "line": 254
         },
         {
           "name": "needsRefresh",
           "kind": "function",
-          "line": 273
+          "line": 277
         },
         {
           "name": "newerView",
           "kind": "function",
-          "line": 282
+          "line": 286
         },
         {
           "name": "Standing",
           "kind": "type",
-          "line": 288
+          "line": 292
         },
         {
           "name": "standingOf",
           "kind": "function",
-          "line": 298
+          "line": 302
         },
         {
           "name": "shownPriceMinor",
           "kind": "function",
-          "line": 304
+          "line": 308
         },
         {
           "name": "MAX_APPEAL_LENGTH",
           "kind": "const",
-          "line": 312
+          "line": 316
         },
         {
           "name": "spread",
           "kind": "function",
-          "line": 319
+          "line": 323
         },
         {
           "name": "MAX_AMOUNT_MINOR",
           "kind": "const",
-          "line": 324
+          "line": 328
         },
         {
           "name": "parseAmountToMinor",
           "kind": "function",
-          "line": 332
+          "line": 336
         },
         {
           "name": "amountForInput",
           "kind": "function",
-          "line": 343
+          "line": 347
         },
         {
           "name": "BidFailure",
           "kind": "interface",
-          "line": 349
+          "line": 353
         },
         {
           "name": "describeBidFailure",
           "kind": "function",
-          "line": 397
+          "line": 401
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/auction-lot-photos.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 78,
+      "bytes": 2876,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/auction-lot-photos.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 64,
+      "bytes": 2527,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotPhoto",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "photoLimitReason",
+          "kind": "function",
+          "line": 19
+        },
+        {
+          "name": "roomForPhotos",
+          "kind": "function",
+          "line": 26
+        },
+        {
+          "name": "movePhoto",
+          "kind": "function",
+          "line": 31
+        },
+        {
+          "name": "moveFocusTarget",
+          "kind": "function",
+          "line": 44
+        },
+        {
+          "name": "renumber",
+          "kind": "function",
+          "line": 50
+        },
+        {
+          "name": "photoPosition",
+          "kind": "function",
+          "line": 55
+        },
+        {
+          "name": "clampPhotoIndex",
+          "kind": "function",
+          "line": 60
         }
       ]
     },
@@ -105619,8 +106025,8 @@
       "path": "docs/implementation/launchpad-apps/234-auction-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 779,
-      "bytes": 93146,
+      "lines": 858,
+      "bytes": 104856,
       "doc": "",
       "symbols": []
     },
@@ -106910,6 +107316,21 @@
       ]
     },
     {
+      "path": "packages/shared/src/auction.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 15,
+      "bytes": 628,
+      "doc": "Constants the Auction app's API and web app must agree on (launchpad-apps/234-auction-app.md).",
+      "symbols": [
+        {
+          "name": "MAX_LOT_PHOTOS",
+          "kind": "const",
+          "line": 14
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
@@ -107851,8 +108272,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 51,
-      "bytes": 2038,
+      "lines": 52,
+      "bytes": 2065,
       "doc": "",
       "symbols": []
     },
@@ -107869,8 +108290,8 @@
       "path": "packages/shared/src/launchpad.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 362,
-      "bytes": 11735,
+      "lines": 380,
+      "bytes": 12350,
       "doc": "The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launchpad-and-app-manifest.md).",
       "symbols": [
         {
@@ -107896,42 +108317,42 @@
         {
           "name": "LaunchpadAppModule",
           "kind": "interface",
-          "line": 51
+          "line": 52
         },
         {
           "name": "LaunchpadApp",
           "kind": "interface",
-          "line": 58
+          "line": 59
         },
         {
           "name": "LaunchpadContext",
           "kind": "interface",
-          "line": 80
+          "line": 81
         },
         {
           "name": "LaunchpadHiddenReason",
           "kind": "type",
-          "line": 90
+          "line": 91
         },
         {
           "name": "launchpadHiddenReason",
           "kind": "function",
-          "line": 97
+          "line": 98
         },
         {
           "name": "ResolvedLaunchpadApp",
           "kind": "interface",
-          "line": 114
+          "line": 115
         },
         {
           "name": "resolveLaunchpad",
           "kind": "function",
-          "line": 124
+          "line": 125
         },
         {
           "name": "LAUNCHPAD_APPS",
           "kind": "const",
-          "line": 144
+          "line": 145
         }
       ]
     },

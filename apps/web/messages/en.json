@@ -926,7 +926,13 @@
       "opensIn": "Opens in",
       "closing": "Bidding time is up. Waiting for the final result.",
       "ended": "Bidding has ended",
-      "terms": "Auction terms"
+      "terms": "Auction terms",
+      "photos": {
+        "gallery": "Photos of lot {number}",
+        "photoAlt": "Lot {number}, {title}: photo {n} of {total}",
+        "showPhoto": "Show photo {n} of {total}",
+        "photoMissing": "This photo could not be loaded."
+      }
     },
     "standing": {
       "leading": "You have the highest bid",

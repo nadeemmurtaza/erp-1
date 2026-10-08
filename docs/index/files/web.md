@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 584 tracked files in `apps/web`, by directory.
+All 588 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 584 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 1114 |  |
-| `ur.json` | json | 1114 |  |
+| `en.json` | json | 1120 |  |
+| `ur.json` | json | 1120 |  |
 
 ### `apps/web/public` (1)
 
@@ -152,7 +152,7 @@ All 584 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 696 |  |
+| `page.tsx` | page | 720 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -1338,7 +1338,7 @@ All 584 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 114 |  |
+| `page.tsx` | page | 118 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/blog` (1)
 
@@ -1476,7 +1476,7 @@ All 584 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (30)
+### `apps/web/src/components/admin` (31)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1484,6 +1484,7 @@ All 584 tracked files in `apps/web`, by directory.
 | `auction-bid-ledger.tsx` | component | 154 |  |
 | `auction-bidder-sheet.tsx` | component | 417 |  |
 | `auction-bidders.tsx` | component | 253 |  |
+| `auction-lot-photos.tsx` | component | 241 |  |
 | `auction-settlements.tsx` | component | 341 |  |
 | `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
@@ -1589,7 +1590,7 @@ All 584 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-icons.ts` | component | 35 |  |
+| `app-icons.ts` | component | 37 |  |
 | `app-tile.tsx` | component | 39 |  |
 | `launchpad-screen.tsx` | component | 176 |  |
 | `launchpad.spec.ts` | unit test | 147 |  |
@@ -1695,14 +1696,15 @@ All 584 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/storefront/auction` (8)
+### `apps/web/src/components/storefront/auction` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auctions-link.tsx` | component | 28 |  |
 | `bid-history.tsx` | component | 49 |  |
 | `lot-bidding.tsx` | component | 404 |  |
-| `lot-card.tsx` | component | 85 |  |
+| `lot-card.tsx` | component | 102 |  |
+| `lot-gallery.tsx` | component | 92 |  |
 | `lot-registration.tsx` | component | 315 |  |
 | `lot-settlement.tsx` | component | 138 |  |
 | `lot-skeleton.tsx` | component | 26 |  |
@@ -1804,7 +1806,7 @@ All 584 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (50)
+### `apps/web/src/lib` (52)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1815,8 +1817,10 @@ All 584 tracked files in `apps/web`, by directory.
 | `auction-bidders.spec.ts` | unit test | 192 |  |
 | `auction-bidders.ts` | utility | 234 |  |
 | `auction-client.ts` | utility | 98 |  |
-| `auction-live.spec.ts` | unit test | 391 |  |
-| `auction-live.ts` | utility | 432 |  |
+| `auction-live.spec.ts` | unit test | 392 |  |
+| `auction-live.ts` | utility | 436 |  |
+| `auction-lot-photos.spec.ts` | unit test | 78 |  |
+| `auction-lot-photos.ts` | utility | 64 |  |
 | `auction-lots.spec.ts` | unit test | 70 |  |
 | `auction-lots.ts` | utility | 64 | What an auction's lots say about when they end and how they ended (launchpad-apps/234-auction-app.md §5.4, §5.5). |
 | `auction-messages.spec.ts` | unit test | 41 |  |

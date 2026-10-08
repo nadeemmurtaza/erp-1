@@ -22,11 +22,13 @@ import {
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { AuctionBidLedger } from '@/components/admin/auction-bid-ledger';
+import { AuctionLotPhotos, LotPhotoSlot } from '@/components/admin/auction-lot-photos';
 import { AuctionBidders } from '@/components/admin/auction-bidders';
 import { AuctionSettlements } from '@/components/admin/auction-settlements';
 import { bidderStripValue, type BidderSummary } from '@/lib/auction-bidders';
 import { settlementStripValue, type SettlementSummary } from '@/lib/auction-settlements';
 import { REGISTRATION_CHOICES, registrationChoice, type AuctionRegistrationMode } from '@/lib/auction-registration-admin';
+import type { LotPhoto } from '@/lib/auction-lot-photos';
 import { auctionClosesAt, describeExtension, describeOutcome, lotEndsAt, type LotOutcomeView } from '@/lib/auction-lots';
 
 interface Lot {
@@ -48,6 +50,8 @@ interface Lot {
   extendedMs: number;
   /** How the lot ended; null while it is open. `reserveMet` is sent only to a holder of auction.manage. */
   result?: (LotOutcomeView & { closedAt: string }) | null;
+  /** Its photographs, cover first. */
+  images: LotPhoto[];
   status: string;
 }
 
@@ -108,6 +112,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const [reason, setReason] = useState('');
   const [withdrawing, setWithdrawing] = useState<Lot | null>(null);
   const [ledgerLot, setLedgerLot] = useState<Lot | null>(null);
+  const [photoLotId, setPhotoLotId] = useState<string | null>(null);
 
   const [editOpen, setEditOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -139,6 +144,13 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     load();
   }, [load]);
+
+  /** Replaces one lot's photographs on the page, so the row behind the photo sheet agrees with it without a reload. */
+  const setLotImages = useCallback((lotId: string, update: (current: LotPhoto[]) => LotPhoto[]) => {
+    setAuction((current) =>
+      current ? { ...current, lots: current.lots.map((lot) => (lot.id === lotId ? { ...lot, images: update(lot.images) } : lot)) } : current,
+    );
+  }, []);
 
   /** The counts behind the "Bidders" figure: one cheap read, for the people who may see it, and again after each act on a bidder. */
   const loadBidderSummary = useCallback(async () => {
@@ -416,20 +428,23 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
               {
                 header: 'Lot',
                 cell: (lot) => (
-                  <span>
-                    {lot.title}
-                    {lot.status === 'WITHDRAWN' ? (
-                      <span className="ms-2">
-                        <StatusBadge status="WITHDRAWN" />
-                      </span>
-                    ) : null}
-                    {lot.description ? <span className="block text-xs text-neutral-900/60">{lot.description}</span> : null}
-                    {showBids && lot.status === 'OPEN' && lot.endsAt ? (
-                      <span className="block text-xs text-neutral-900/60">
-                        Ends {formatDateTime(lotEndsAt(lot, auction.endsAt))}
-                        {describeExtension(lot.extendedMs) ? ` (${describeExtension(lot.extendedMs)})` : ''}
-                      </span>
-                    ) : null}
+                  <span className="flex items-start gap-3">
+                    <LotPhotoSlot lotNo={lot.lotNo} images={lot.images} onOpen={editable && lot.status !== 'WITHDRAWN' ? () => setPhotoLotId(lot.id) : undefined} />
+                    <span className="min-w-0">
+                      {lot.title}
+                      {lot.status === 'WITHDRAWN' ? (
+                        <span className="ms-2">
+                          <StatusBadge status="WITHDRAWN" />
+                        </span>
+                      ) : null}
+                      {lot.description ? <span className="block text-xs text-neutral-900/60">{lot.description}</span> : null}
+                      {showBids && lot.status === 'OPEN' && lot.endsAt ? (
+                        <span className="block text-xs text-neutral-900/60">
+                          Ends {formatDateTime(lotEndsAt(lot, auction.endsAt))}
+                          {describeExtension(lot.extendedMs) ? ` (${describeExtension(lot.extendedMs)})` : ''}
+                        </span>
+                      ) : null}
+                    </span>
                   </span>
                 ),
               },
@@ -555,6 +570,15 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
       ) : null}
 
       <AuctionBidLedger auctionId={id} lot={ledgerLot} onClose={() => setLedgerLot(null)} />
+
+      {editable ? (
+        <AuctionLotPhotos
+          auctionId={id}
+          lot={auction.lots.find((lot) => lot.id === photoLotId) ?? null}
+          onClose={() => setPhotoLotId(null)}
+          onImages={setLotImages}
+        />
+      ) : null}
 
       <ConfirmDialog
         open={scheduleOpen}

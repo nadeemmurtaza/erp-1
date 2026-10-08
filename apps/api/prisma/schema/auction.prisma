@@ -152,9 +152,29 @@ model AuctionLot {
   proxies     ProxyBid[]
   result      AuctionResult?
   settlements AuctionSettlement[]
+  images      AuctionLotImage[]
 
   @@unique([auctionId, lotNo])
   @@index([auctionId, status])
+}
+
+/// A photograph of a lot (WO-234.12). Changed only while the auction is a draft,
+/// like the rest of what bidders are told about the lot, and removed by its row,
+/// never by deleting a lot (lots are withdrawn). `order` is 0 for the cover and
+/// stays contiguous (the service renumbers on removal); it is deliberately not
+/// unique so a reorder can write its rows in any sequence. `storageKey` is the
+/// driver's key, kept so removing the photo can remove the object.
+model AuctionLotImage {
+  id         String   @id @default(cuid())
+  lotId      String
+  url        String
+  storageKey String
+  order      Int
+  createdAt  DateTime @default(now())
+
+  lot AuctionLot @relation(fields: [lotId], references: [id])
+
+  @@index([lotId, order])
 }
 
 /// A person bidding in one auction. Registered by themselves (WO-234.5) or by

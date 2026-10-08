@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 116 tracked files in `packages/*`, by directory.
+All 117 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -86,12 +86,13 @@ All 116 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (56)
+### `packages/shared/src` (57)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-keys.spec.ts` | unit test | 231 |  |
 | `api-keys.ts` | module | 334 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
+| `auction.ts` | module | 15 | Constants the Auction app's API and web app must agree on (launchpad-apps/234-auction-app.md). |
 | `brand.ts` | module | 664 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
@@ -109,9 +110,9 @@ All 116 tracked files in `packages/*`, by directory.
 | `http-client.spec.ts` | unit test | 90 |  |
 | `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 51 |  |
+| `index.ts` | module | 52 |  |
 | `launchpad.spec.ts` | unit test | 133 |  |
-| `launchpad.ts` | module | 362 | The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launch… |
+| `launchpad.ts` | module | 380 | The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launch… |
 | `markdown-suggestion.spec.ts` | unit test | 86 |  |
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |

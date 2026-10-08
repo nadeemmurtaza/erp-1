@@ -26,7 +26,7 @@ All paths relative to `apps/api/src/core/storage`.
 | `storage.driver.ts` | driver | 35 | 3 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 | 1 |  |
 | `storage.service.spec.ts` | unit test | 224 | — |  |
-| `storage.service.ts` | service | 143 | 1 | Front door for file storage. |
+| `storage.service.ts` | service | 143 | 2 |  |
 
 
 ## HTTP routes (1)
@@ -90,6 +90,7 @@ check there before adding another.
 | `PutFileInput` | interface | `storage.driver.ts:17` |  |
 | `StorageDriver` | interface | `storage.driver.ts:25` |  |
 | `StorageModule` | class | `storage.module.ts:13` |  |
+| `MAX_IMAGE_BYTES` | const | `storage.service.ts:10` |  |
 | `StorageService` | class | `storage.service.ts:28` | Front door for file storage. |
 
 

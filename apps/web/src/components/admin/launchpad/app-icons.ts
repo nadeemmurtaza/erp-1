@@ -2,6 +2,7 @@ import {
   BarChart3,
   Boxes,
   Factory,
+  Gavel,
   Landmark,
   ListChecks,
   Scissors,
@@ -30,5 +31,6 @@ export const LAUNCHPAD_ICONS: Record<LaunchpadIconKey, typeof ShoppingCart> = {
   manufacturing: Factory,
   workshop: Scissors,
   fulfilment: Truck,
+  auction: Gavel,
   settings: Settings,
 };

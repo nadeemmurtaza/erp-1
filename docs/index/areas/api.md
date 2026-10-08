@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,272 files · 175,896 lines
+1,279 files · 176,795 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -30,11 +30,11 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 186 | 18,630 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 187 | 18,678 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
 | `apps/api/src/core` | 232 | 29,438 | unit test, service, module, controller |
-| `apps/api/src/modules` | 800 | 111,828 | doc, unit test, service, controller |
-| `apps/api/test` | 37 | 11,610 | e2e test, unit test, module |
+| `apps/api/src/modules` | 805 | 112,413 | doc, unit test, service, controller |
+| `apps/api/test` | 38 | 11,876 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
 
@@ -54,7 +54,7 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 | `apps/api/prisma/seed.ts` | 3,199 | module |  |
 | `apps/api/src/modules/money/analytics/analytics.service.ts` | 2,593 | service |  |
 | `apps/api/src/modules/sales/orders/orders.service.ts` | 1,400 | service |  |
-| `apps/api/src/modules/sales/auction/auction.service.ts` | 1,148 | service |  |
+| `apps/api/src/modules/sales/auction/auction.service.ts` | 1,152 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |

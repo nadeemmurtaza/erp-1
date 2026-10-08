@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { BidHistory } from '@/components/storefront/auction/bid-history';
 import { LotPageSkeleton } from '@/components/storefront/auction/lot-skeleton';
 import { LotBidding } from '@/components/storefront/auction/lot-bidding';
+import { LotGallery } from '@/components/storefront/auction/lot-gallery';
 import { LotJoin } from '@/components/storefront/auction/lot-registration';
 import { LotCosts } from '@/components/storefront/auction/lot-settlement';
 import { LotClock, LotFigure, LotOutcome } from '@/components/storefront/auction/lot-status';
@@ -81,8 +82,11 @@ export default function LotPage() {
       </header>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start xl:grid-cols-[minmax(0,1fr)_26rem]">
-        {/* The bid panel comes first in the page, so on a phone it sits straight under the title and a keyboard reaches it first; from lg it sits to the right. */}
-        <aside className="card grid gap-5 p-5 lg:sticky lg:top-24 lg:col-start-2 lg:row-start-1">
+        {/* Photos first on a phone, straight under the title; from lg they sit in the left column above the description and the bid panel stays beside both. */}
+        <LotGallery images={lot.images} lotNo={lot.lotNo} title={lot.title} className="lg:col-start-1 lg:row-start-1" />
+
+        {/* The bid panel comes before the description in the page, so on a phone it sits right under the photos and a keyboard reaches it first; from lg it sits to the right and runs alongside both. */}
+        <aside className="card grid gap-5 p-5 lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <LotFigure lot={lot} connection={connection} />
           <LotClock lot={lot} offsetMs={offsetMs} now={now} />
           <LotCosts lot={lot} />
@@ -91,7 +95,7 @@ export default function LotPage() {
           <LotOutcome lot={lot} viewerAlias={viewerAlias} settlement={lotViewer.viewer?.settlement} />
         </aside>
 
-        <div className="grid gap-8 lg:col-start-1 lg:row-start-1">
+        <div className={`grid gap-8 lg:col-start-1 ${lot.images.length > 0 ? 'lg:row-start-2' : 'lg:row-start-1'}`}>
           {lot.description || lot.quantity > 1 ? (
             <section className="grid max-w-prose gap-2">
               {lot.description ? <p className="whitespace-pre-line text-neutral-900/80">{lot.description}</p> : null}

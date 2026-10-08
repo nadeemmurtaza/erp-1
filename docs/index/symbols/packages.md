@@ -143,6 +143,7 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
+| `auction.ts` | `MAX_LOT_PHOTOS` | const | :14 | Photographs one lot may have (WO-234.12, doc 234 §12). |
 | `brand.ts` | `BRAND` | const | :649 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :663 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
@@ -256,6 +257,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./onsite-messaging` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
+| `index.ts` | `*` | re-export |  | from `./auction` |
 | `index.ts` | `*` | re-export |  | from `./launchpad` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
 | `index.ts` | `*` | re-export |  | from `./segment-filter` |
@@ -284,14 +286,14 @@ Every top-level export in `packages`, with the line to open.
 | `launchpad.ts` | `LaunchpadAudience` | type | :32 | Who the app serves. |
 | `launchpad.ts` | `LaunchpadStage` | type | :35 | `RESERVED` is declared for a later release and is never shown. |
 | `launchpad.ts` | `LaunchpadIconKey` | type | :38 | The glyphs a tile can use; the web app maps each to a lucide icon. |
-| `launchpad.ts` | `LaunchpadAppModule` | interface | :51 |  |
-| `launchpad.ts` | `LaunchpadApp` | interface | :58 |  |
-| `launchpad.ts` | `LaunchpadContext` | interface | :80 | What the server needs to know about this deployment and tenant. |
-| `launchpad.ts` | `LaunchpadHiddenReason` | type | :90 | Why an app is not shown. |
-| `launchpad.ts` | `launchpadHiddenReason` | function | :97 |  |
-| `launchpad.ts` | `ResolvedLaunchpadApp` | interface | :114 | Modules an app lists that are off — the web app drops entries owned by these. |
-| `launchpad.ts` | `resolveLaunchpad` | function | :124 | The apps this deployment and tenant may show, in order. |
-| `launchpad.ts` | `LAUNCHPAD_APPS` | const | :144 | The first-party apps that exist today, each a grouping of nav entries the admin sidebar already has. |
+| `launchpad.ts` | `LaunchpadAppModule` | interface | :52 |  |
+| `launchpad.ts` | `LaunchpadApp` | interface | :59 |  |
+| `launchpad.ts` | `LaunchpadContext` | interface | :81 | What the server needs to know about this deployment and tenant. |
+| `launchpad.ts` | `LaunchpadHiddenReason` | type | :91 | Why an app is not shown. |
+| `launchpad.ts` | `launchpadHiddenReason` | function | :98 |  |
+| `launchpad.ts` | `ResolvedLaunchpadApp` | interface | :115 | Modules an app lists that are off — the web app drops entries owned by these. |
+| `launchpad.ts` | `resolveLaunchpad` | function | :125 | The apps this deployment and tenant may show, in order. |
+| `launchpad.ts` | `LAUNCHPAD_APPS` | const | :145 | The first-party apps that exist today, each a grouping of nav entries the admin sidebar already has. |
 | `markdown-suggestion.ts` | `MarkdownSuggestionInput` | interface | :22 |  |
 | `markdown-suggestion.ts` | `MarkdownSuggestionResult` | interface | :36 |  |
 | `markdown-suggestion.ts` | `computeMarkdownSuggestion` | function | :51 | Null when there is no honest basis for a suggestion at all: no stock to clear, or no real cost (cos… |

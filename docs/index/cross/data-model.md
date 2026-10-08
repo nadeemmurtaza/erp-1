@@ -3,7 +3,7 @@
 
 # Data model
 
-All **324** Prisma models and **153** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **325** Prisma models and **153** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,7 +29,7 @@ against a real database.
 | [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
-| [`auction.prisma`](../data/auction.md) | 9 | 7 | [`auction`](../modules/auction.md) | Auction, AuctionLot, AuctionResult, AuctionSettlement, AuctionSettlementPayment, Bid, Bidder, BidderStrike, ProxyBid |
+| [`auction.prisma`](../data/auction.md) | 10 | 7 | [`auction`](../modules/auction.md) | Auction, AuctionLot, AuctionLotImage, AuctionResult, AuctionSettlement, AuctionSettlementPayment, Bid, Bidder, BidderStrike, Prox… |
 | [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | [`bom.prisma`](../data/bom.md) | 6 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionLineLot, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
@@ -112,7 +112,8 @@ against a real database.
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
 | [`Auction`](../data/auction.md#auction) | `auction` | 18 | 0 | id | One auction event. |
-| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 23 | 1 | id | One thing being sold within an auction. |
+| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 24 | 1 | id | One thing being sold within an auction. |
+| [`AuctionLotImage`](../data/auction.md#auctionlotimage) | `auction` | 7 | 1 | id | A photograph of a lot (WO-234.12). |
 | [`AuctionResult`](../data/auction.md#auctionresult) | `auction` | 9 | 2 | id | How a lot ended (doc 234 §5.5). |
 | [`AuctionSettlement`](../data/auction.md#auctionsettlement) | `auction` | 25 | 2 | id | What a winning lot owes: one row per lot per offer (WO-234.6). |
 | [`AuctionSettlementPayment`](../data/auction.md#auctionsettlementpayment) | `auction` | 5 | 1 | paymentId | One payment counted against a settlement (WO-234.6). |

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,272 tracked files in `apps/api`, by directory.
+All 1,279 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -39,7 +39,7 @@ All 1,272 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
-| `auction.prisma` | prisma schema | 369 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5). |
+| `auction.prisma` | prisma schema | 389 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5). |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -836,6 +836,12 @@ All 1,272 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 29 |  |
+
+### `apps/api/prisma/schema/migrations/20261009090000_wo234_12_lot_images` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 28 |  |
 
 ### `apps/api/src` (2)
 
@@ -1998,7 +2004,7 @@ All 1,272 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/sales/auction` (34)
+### `apps/api/src/modules/sales/auction` (39)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -2010,10 +2016,13 @@ All 1,272 tracked files in `apps/api`, by directory.
 | `auction-lifecycle.cron.ts` | scheduled job | 41 |  |
 | `auction-lifecycle.service.spec.ts` | unit test | 110 |  |
 | `auction-lifecycle.service.ts` | service | 272 |  |
+| `auction-lock.ts` | module | 18 |  |
+| `auction-lot-image.service.spec.ts` | unit test | 195 |  |
+| `auction-lot-image.service.ts` | service | 184 |  |
 | `auction-public.controller.spec.ts` | unit test | 74 |  |
 | `auction-public.controller.ts` | controller | 88 |  |
-| `auction-public.service.spec.ts` | unit test | 461 |  |
-| `auction-public.service.ts` | service | 433 |  |
+| `auction-public.service.spec.ts` | unit test | 483 |  |
+| `auction-public.service.ts` | service | 442 |  |
 | `auction-realtime.service.spec.ts` | unit test | 301 |  |
 | `auction-realtime.service.ts` | service | 315 |  |
 | `auction-settlement.controller.spec.ts` | unit test | 33 |  |
@@ -2021,10 +2030,10 @@ All 1,272 tracked files in `apps/api`, by directory.
 | `auction-settlement.cron.ts` | scheduled job | 39 |  |
 | `auction-settlement.service.ts` | service | 770 |  |
 | `auction-settlement.subscriber.ts` | event subscriber | 38 |  |
-| `auction.controller.ts` | controller | 122 |  |
-| `auction.module.ts` | nest module | 42 |  |
+| `auction.controller.ts` | controller | 170 |  |
+| `auction.module.ts` | nest module | 44 |  |
 | `auction.service.spec.ts` | unit test | 539 |  |
-| `auction.service.ts` | service | 1148 |  |
+| `auction.service.ts` | service | 1152 |  |
 | `bidder-provision.ts` | module | 30 |  |
 | `bidder-trust.spec.ts` | unit test | 237 |  |
 | `bidder-trust.ts` | module | 205 | The pure half of bidder trust (launchpad-apps/234-auction-app.md §8, §15, WO-234.5): who may bid, how a registration is… |
@@ -2032,6 +2041,8 @@ All 1,272 tracked files in `apps/api`, by directory.
 | `bidding.ts` | module | 252 |  |
 | `lot-live.spec.ts` | unit test | 99 |  |
 | `lot-live.ts` | module | 104 | What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4). |
+| `lot-photos.spec.ts` | unit test | 51 |  |
+| `lot-photos.ts` | module | 38 |  |
 | `settlement-messages.spec.ts` | unit test | 42 |  |
 | `settlement-messages.ts` | module | 70 | What a winner is told, in their language (WO-234.6). |
 | `settlement.spec.ts` | unit test | 129 |  |
@@ -2041,7 +2052,7 @@ All 1,272 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.dto.ts` | dto | 362 |  |
+| `auction.dto.ts` | dto | 376 |  |
 
 ### `apps/api/src/modules/sales/cart` (6)
 
@@ -2766,7 +2777,7 @@ All 1,272 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (37)
+### `apps/api/test` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -2776,6 +2787,7 @@ All 1,272 tracked files in `apps/api`, by directory.
 | `auction-bidding.e2e-spec.ts` | e2e test | 265 |  |
 | `auction-http.e2e-spec.ts` | e2e test | 234 |  |
 | `auction-lifecycle.e2e-spec.ts` | e2e test | 424 |  |
+| `auction-lot-photos.e2e-spec.ts` | e2e test | 266 |  |
 | `auction-realtime.e2e-spec.ts` | e2e test | 410 |  |
 | `auction-settlement.e2e-spec.ts` | e2e test | 464 |  |
 | `auction.e2e-spec.ts` | e2e test | 114 |  |

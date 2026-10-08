@@ -53,6 +53,8 @@ export interface PublicLotView {
     /** How many hours a winner has to pay, frozen when the sale was scheduled. */
     paymentWindowHours: number;
   };
+  /** The lot's photographs, cover first. Addresses only: nothing about how or by whom they were stored. */
+  images: Array<{ url: string }>;
   phase: PublicLotPhase;
   startPriceMinor: number;
   currentBidMinor: number | null;
@@ -76,6 +78,8 @@ export interface PublicLotSummary {
   lotNo: number;
   title: string;
   auction: { id: string; title: string };
+  /** The lot's first photograph, or null when it has none. */
+  coverUrl: string | null;
   phase: PublicLotPhase;
   /** When the auction opens: what an upcoming lot counts down to. */
   startsAt: string;
@@ -104,7 +108,7 @@ export interface ViewerLotState {
 }
 
 interface LotPageRow {
-  lot: Prisma.AuctionLotGetPayload<{ include: { result: true } }>;
+  lot: Prisma.AuctionLotGetPayload<{ include: { result: true; images: { select: { url: true } } } }>;
   auction: { id: string; number: string; title: string; status: string; startsAt: Date; endsAt: Date; terms: string | null; bidRules: unknown };
   bids: Array<{ seq: number; amountMinor: bigint; kind: LiveBid['kind']; acceptedAt: Date; alias: string }>;
   topAlias: string | null;
@@ -218,6 +222,7 @@ export class AuctionPublicService implements OnModuleInit {
           startPriceMinor: bigint;
           currentBidMinor: bigint | null;
           bidSeq: number;
+          coverUrl: string | null;
           auctionId: string;
           auctionTitle: string;
           startsAt: Date;
@@ -228,6 +233,7 @@ export class AuctionPublicService implements OnModuleInit {
         }>
       >`
         SELECT l."id", l."lotNo", l."title", l."startPriceMinor", l."currentBidMinor", l."bidSeq",
+               (SELECT i."url" FROM "AuctionLotImage" i WHERE i."lotId" = l."id" ORDER BY i."order" LIMIT 1) AS "coverUrl",
                a."id" AS "auctionId", a."title" AS "auctionTitle", a."startsAt",
                COALESCE(l."endsAt", a."endsAt") AS "endsAt", clock_timestamp() AS "dbNow" ${result}
         FROM "AuctionLot" l
@@ -252,6 +258,7 @@ export class AuctionPublicService implements OnModuleInit {
       lotNo: row.lotNo,
       title: row.title,
       auction: { id: row.auctionId, title: row.auctionTitle },
+      coverUrl: row.coverUrl,
       phase,
       startsAt: row.startsAt.toISOString(),
       endsAt: row.endsAt.toISOString(),
@@ -288,6 +295,7 @@ export class AuctionPublicService implements OnModuleInit {
       title: lot.title,
       description: lot.description,
       quantity: lot.quantity,
+      images: lot.images.map((image) => ({ url: image.url })),
       auction: {
         id: auction.id,
         number: auction.number,
@@ -324,6 +332,7 @@ export class AuctionPublicService implements OnModuleInit {
         where: { id: lotId },
         include: {
           result: true,
+          images: { orderBy: { order: 'asc' }, select: { url: true } },
           auction: { select: { id: true, number: true, title: true, status: true, startsAt: true, endsAt: true, terms: true, bidRules: true } },
         },
       }),

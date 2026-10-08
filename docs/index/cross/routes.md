@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **913** endpoints across **167** controllers, with the access rule that actually guards each one.
+All **916** endpoints across **167** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -223,7 +223,7 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (32)
+### [`auction`](../modules/auction.md) (35)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -242,6 +242,9 @@ never authorization.
 | PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` | Edit a lot on a draft auction |
 | GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` | A lot’s accepted bids, newest first, bidders by alias only |
 | GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` | Re-walk a lot’s bid chain and say whether anything was inserted, edited or remo… |
+| POST | `/admin/auctions/:id/lots/:lotId/images` | `auction.manage` | `AuctionController.addPhoto` | Add a photo to a lot of a draft auction (at most 10 a lot) |
+| DELETE | `/admin/auctions/:id/lots/:lotId/images/:imageId` | `auction.manage` | `AuctionController.removePhoto` | Remove a photo from a lot of a draft auction; returns the photos that are left |
+| PATCH | `/admin/auctions/:id/lots/:lotId/images/order` | `auction.manage` | `AuctionController.reorderPhotos` | Put a lot’s photos in order; the first is the cover. List every photo, once |
 | POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
 | GET | `/admin/auctions/:id/settlements` | `auction.settle` | `AuctionSettlementController.list` | The auction’s wins with what each owes, its order and its deadline, newest first |

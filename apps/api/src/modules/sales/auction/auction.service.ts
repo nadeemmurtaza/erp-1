@@ -24,6 +24,7 @@ import { documentPrefix } from '../../../core/settings/document-prefix';
 import { SettingKey } from '../../../core/settings/settings.defaults';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { AuctionBidderService } from './auction-bidder.service';
+import { lockAuctionStatus } from './auction-lock';
 import { AuctionRealtimeService } from './auction-realtime.service';
 import { provisionBidder } from './bidder-provision';
 import { eligibility, INELIGIBLE_MESSAGES, parseRegistrationMode, type BidderStatus, type RegistrationMode, type TrustPolicy } from './bidder-trust';
@@ -92,6 +93,8 @@ export type AuctionLotView = Omit<
   currentBidMinor: number | null;
   /** How the lot ended, once it has; absent on the lot you just wrote and while it is still open. */
   result?: AuctionResultView | null;
+  /** Its photographs, cover first; present on the auction page's read, absent on the lot you just wrote. */
+  images?: Array<{ id: string; url: string; order: number }>;
 };
 export type AuctionDetail = Auction & { lots: AuctionLotView[] };
 
@@ -279,7 +282,12 @@ export class AuctionService {
   async get(id: string, canSeeReserve: boolean): Promise<AuctionDetail> {
     const auction = await this.prisma.auction.findUnique({
       where: { id },
-      include: { lots: { orderBy: { lotNo: 'asc' }, include: { result: true } } },
+      include: {
+        lots: {
+          orderBy: { lotNo: 'asc' },
+          include: { result: true, images: { orderBy: { order: 'asc' }, select: { id: true, url: true, order: true } } },
+        },
+      },
     });
     if (!auction) throw new NotFoundException('Auction not found.');
 
@@ -1106,12 +1114,8 @@ export class AuctionService {
   }
 
   /** The row lock every mutation takes first; returns the status read under it. */
-  private async lockAuction(tx: Prisma.TransactionClient, id: string): Promise<AuctionStatus> {
-    const rows = await tx.$queryRaw<Array<{ status: AuctionStatus }>>`
-      SELECT "status" FROM "Auction" WHERE "id" = ${id} FOR UPDATE
-    `;
-    if (rows.length === 0) throw new NotFoundException('Auction not found.');
-    return rows[0].status;
+  private lockAuction(tx: Prisma.TransactionClient, id: string): Promise<AuctionStatus> {
+    return lockAuctionStatus(tx, id);
   }
 
   private async lockDraft(tx: Prisma.TransactionClient, id: string, message: string): Promise<void> {

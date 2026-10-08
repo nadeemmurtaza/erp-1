@@ -4,6 +4,7 @@ import { AuctionBidderController } from './auction-bidder.controller';
 import { AuctionBidderService } from './auction-bidder.service';
 import { AuctionLifecycleCron } from './auction-lifecycle.cron';
 import { AuctionLifecycleService } from './auction-lifecycle.service';
+import { AuctionLotImageService } from './auction-lot-image.service';
 import { AuctionPublicController } from './auction-public.controller';
 import { AuctionPublicService } from './auction-public.service';
 import { AuctionRealtimeService } from './auction-realtime.service';
@@ -30,6 +31,7 @@ import { AuctionService } from './auction.service';
     AuctionBidderService,
     AuctionLifecycleService,
     AuctionLifecycleCron,
+    AuctionLotImageService,
     AuctionPublicService,
     AuctionRealtimeService,
     AuctionSettlementService,

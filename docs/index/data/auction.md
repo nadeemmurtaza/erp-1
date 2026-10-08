@@ -3,7 +3,7 @@
 
 # Schema: `auction.prisma`
 
-9 models · 7 enums. Owned by module [`auction`](../modules/auction.md).
+10 models · 7 enums. Owned by module [`auction`](../modules/auction.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -76,10 +76,27 @@ Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@inde
 | `proxies` | `ProxyBid[]` |  |  |
 | `result` | `AuctionResult?` | optional |  |
 | `settlements` | `AuctionSettlement[]` |  |  |
+| `images` | `AuctionLotImage[]` |  |  |
 
 Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
-### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:281`</sub>
+### `AuctionLotImage`  <sub>`apps/api/prisma/schema/auction.prisma:167`</sub>
+
+> A photograph of a lot (WO-234.12).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `lotId` | `String` |  |  |
+| `url` | `String` |  |  |
+| `storageKey` | `String` |  |  |
+| `order` | `Int` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
+
+Indexes: `@@index([lotId, order])`
+
+### `AuctionResult`  <sub>`apps/api/prisma/schema/auction.prisma:301`</sub>
 
 > How a lot ended (doc 234 §5.5).
 
@@ -95,7 +112,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 | `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
 | `bidder` | `Bidder?` | relation, optional | @relation(fields: [topBidderId], references: [id]) |
 
-### `AuctionSettlement`  <sub>`apps/api/prisma/schema/auction.prisma:315`</sub>
+### `AuctionSettlement`  <sub>`apps/api/prisma/schema/auction.prisma:335`</sub>
 
 > What a winning lot owes: one row per lot per offer (WO-234.6).
 
@@ -129,7 +146,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 
 Indexes: `@@unique([lotId, attempt])` · `@@index([auctionId, status, createdAt])` · `@@index([status, dueAt])` · `@@index([orderId])`
 
-### `AuctionSettlementPayment`  <sub>`apps/api/prisma/schema/auction.prisma:359`</sub>
+### `AuctionSettlementPayment`  <sub>`apps/api/prisma/schema/auction.prisma:379`</sub>
 
 > One payment counted against a settlement (WO-234.6).
 
@@ -143,7 +160,7 @@ Indexes: `@@unique([lotId, attempt])` · `@@index([auctionId, status, createdAt]
 
 Indexes: `@@index([settlementId])`
 
-### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:226`</sub>
+### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:246`</sub>
 
 > One accepted bid: a record, never edited and never deleted (doc 234 §5.2).
 
@@ -164,7 +181,7 @@ Indexes: `@@index([settlementId])`
 
 Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey])` · `@@index([bidderId, acceptedAt])`
 
-### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:168`</sub>
+### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:188`</sub>
 
 > A person bidding in one auction.
 
@@ -190,7 +207,7 @@ Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey]
 
 Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@@index([auctionId, status, createdAt])`
 
-### `BidderStrike`  <sub>`apps/api/prisma/schema/auction.prisma:198`</sub>
+### `BidderStrike`  <sub>`apps/api/prisma/schema/auction.prisma:218`</sub>
 
 > A mark against a person (WO-234.5), recorded by staff with a reason and, when there is one, the lot it concerns.
 
@@ -211,7 +228,7 @@ Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])` · `@
 
 Indexes: `@@index([userId, recordedAt])` · `@@index([bidderId])`
 
-### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:255`</sub>
+### `ProxyBid`  <sub>`apps/api/prisma/schema/auction.prisma:275`</sub>
 
 > A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to this.
 
@@ -251,7 +268,7 @@ Indexes: `@@unique([lotId, bidderId])`
 | `VERIFIED` |  |
 | `APPROVAL` |  |
 
-### `AuctionSettlementStatus`  <sub>`apps/api/prisma/schema/auction.prisma:301`</sub>
+### `AuctionSettlementStatus`  <sub>`apps/api/prisma/schema/auction.prisma:321`</sub>
 
 > Where a settlement stands (WO-234.6, doc 234 §9).
 

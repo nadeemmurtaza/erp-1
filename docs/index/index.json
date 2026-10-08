@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2901,
-    "lines": 453218,
+    "lines": 453288,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -1402,8 +1402,8 @@
     },
     "docs": {
       "files": 555,
-      "lines": 98113,
-      "bytes": 6092527,
+      "lines": 98183,
+      "bytes": 6103329,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -106025,8 +106025,8 @@
       "path": "docs/implementation/launchpad-apps/234-auction-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 858,
-      "bytes": 104856,
+      "lines": 928,
+      "bytes": 115658,
       "doc": "",
       "symbols": []
     },

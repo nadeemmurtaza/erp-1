@@ -4330,7 +4330,7 @@ _no second-level headings_
 - 12. Acceptance criteria  <sub>:195</sub>
 - 13. Work orders  <sub>:205</sub>
 
-### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>858 lines</sub>
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>928 lines</sub>
 
 - 1. Objective  <sub>:10</sub>
 - 2. Audiences and what each really needs  <sub>:17</sub>
@@ -4348,7 +4348,7 @@ _no second-level headings_
 - 14. Legal and regulatory caution (not decided here)  <sub>:615</sub>
 - 15. Scope lenses  <sub>:624</sub>
 - 16. Acceptance criteria  <sub>:743</sub>
-- 17. Work orders  <sub>:825</sub>
+- 17. Work orders  <sub>:845</sub>
 
 ### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
 

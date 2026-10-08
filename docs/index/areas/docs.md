@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-555 files · 98,113 lines
+555 files · 98,183 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -104,7 +104,7 @@ has a bug.
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
 | `docs/implementation/integrations-connectivity` | 26 | 8,217 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
-| `docs/implementation/launchpad-apps` | 5 | 1,436 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 1,506 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
 | `docs/implementation/pos-hardware` | 4 | 645 | doc |
@@ -130,7 +130,7 @@ has a bug.
 | `docs/design/principles-laws/10-laws.md` | 942 | doc |  |
 | `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 940 | doc |  |
 | `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
-| `docs/implementation/launchpad-apps/234-auction-app.md` | 858 | doc |  |
+| `docs/implementation/launchpad-apps/234-auction-app.md` | 928 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 555 tracked files in `docs/*`, by directory.
+All 577 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,19 +558,20 @@ All 555 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (11)
+### `docs/implementation` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 131 |  |
+| `DECISIONS.md` | doc | 134 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 701 |  |
-| `RETAIL-ERP.md` | doc | 1099 |  |
+| `README.md` | doc | 710 |  |
+| `RETAIL-ERP.md` | doc | 1108 |  |
+| `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -735,11 +736,13 @@ All 555 tracked files in `docs/*`, by directory.
 | `182-14-why-newax-builds-and-owns-this.md` | doc | 286 |  |
 | `183-15-engineering-governance-two-agent-split.md` | doc | 233 |  |
 
-### `docs/implementation/content-marketing-search` (1)
+### `docs/implementation/content-marketing-search` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `08-content-marketing-search.md` | doc | 160 |  |
+| `08-content-marketing-search.md` | doc | 167 |  |
+| `251-checkout-abandonment-flow.md` | doc | 318 |  |
+| `252-video-block-chapters.md` | doc | 124 |  |
 
 ### `docs/implementation/customer-portal-loyalty` (1)
 
@@ -747,7 +750,7 @@ All 555 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (89)
+### `docs/implementation/decisions` (92)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -838,10 +841,13 @@ All 555 tracked files in `docs/*`, by directory.
 | `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 562 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
+| `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
+| `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 304 |  |
+| `ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md` | doc | 174 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
-### `docs/implementation/finance-accounting` (10)
+### `docs/implementation/finance-accounting` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -851,6 +857,8 @@ All 555 tracked files in `docs/*`, by directory.
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 253 |  |
 | `167-bank-facility-management.md` | doc | 296 |  |
+| `249-cheques-post-dated-cheques-printing.md` | doc | 997 |  |
+| `250-inter-branch-fund-transfers.md` | doc | 545 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
@@ -1016,6 +1024,25 @@ All 555 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
+
+### `docs/implementation/supply-chain-operations` (14)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `236-supply-chain-operations-architecture.md` | doc | 612 |  |
+| `237-warehouse-management.md` | doc | 523 |  |
+| `238-order-routing-omnichannel-fulfilment.md` | doc | 445 |  |
+| `239-supply-network-sourcing-rules.md` | doc | 231 |  |
+| `240-edi-gateway.md` | doc | 495 |  |
+| `241-retailer-vendor-compliance.md` | doc | 549 |  |
+| `242-multi-plant-manufacturing.md` | doc | 496 |  |
+| `243-quality-inspection-holds.md` | doc | 283 |  |
+| `244-rfid-phantom-inventory.md` | doc | 260 |  |
+| `245-field-sales-distribution-architecture.md` | doc | 380 |  |
+| `246-field-sales.md` | doc | 798 |  |
+| `247-field-tracking.md` | doc | 510 |  |
+| `248-customer-receipts-allocation.md` | doc | 586 |  |
+| `README.md` | doc | 51 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)
 

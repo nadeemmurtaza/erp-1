@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**590** markdown documents. These explain **why**; this index only says **where**.
+**612** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3029,7 +3029,7 @@ _no second-level headings_
 - Acceptance  <sub>:219</sub>
 - Out of scope  <sub>:228</sub>
 
-### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>160 lines</sub>
+### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>167 lines</sub>
 
 - Why  <sub>:27</sub>
 - Work orders  <sub>:35</sub>
@@ -3038,8 +3038,27 @@ _no second-level headings_
 - WO-8.3 — Search  <sub>:83</sub>
 - WO-8.4 — Campaigns and broadcasts  <sub>:107</sub>
 - WO-8.5 — Abandoned cart recovery  <sub>:126</sub>
-- WO-8.6 — On-site messaging  <sub>:142</sub>
-- Phase 8 exit criteria  <sub>:151</sub>
+- WO-8.6 — On-site messaging  <sub>:149</sub>
+- Phase 8 exit criteria  <sub>:158</sub>
+
+### `docs/implementation/content-marketing-search/251-checkout-abandonment-flow.md`  <sub>318 lines</sub>
+
+- 1. What's actually live today, verified against the code, not the doc  <sub>:15</sub>
+- 2. The decision  <sub>:47</sub>
+- 3. Work orders  <sub>:103</sub>
+- 4. Exact parameters  <sub>:125</sub>
+- 5. Acceptance criteria  <sub>:144</sub>
+- 6. Scope lenses  <sub>:170</sub>
+- Out of scope, named  <sub>:308</sub>
+
+### `docs/implementation/content-marketing-search/252-video-block-chapters.md`  <sub>124 lines</sub>
+
+- Why this is scoped on its own, not as part of a "VSL feature"  <sub>:13</sub>
+- Decision  <sub>:22</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance criteria  <sub>:58</sub>
+- Scope lenses  <sub>:71</sub>
+- Out of scope, named  <sub>:115</sub>
 
 ### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
@@ -3056,7 +3075,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>131 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>134 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3408,6 +3427,18 @@ _no second-level headings_
 
 _no second-level headings_
 
+### `docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md`  <sub>305 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md`  <sub>304 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md`  <sub>174 lines</sub>
+
+_no second-level headings_
+
 ### `docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md`  <sub>80 lines</sub>
 
 _no second-level headings_
@@ -3486,6 +3517,39 @@ _no second-level headings_
 - Work orders  <sub>:247</sub>
 - Acceptance  <sub>:267</sub>
 - Out of scope  <sub>:281</sub>
+
+### `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md`  <sub>997 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified in code, 2026-10-04)  <sub>:24</sub>
+- 1. Where this lives: a new `treasury` module (ADR-090)  <sub>:84</sub>
+- 2. The ledger shape: treasury accounts are a subsidiary ledger of Cash & Bank  <sub>:97</sub>
+- 3. The settlement rule: who posts what  <sub>:132</sub>
+- 4. Schema: `apps/api/prisma/schema/treasury.prisma` (new, hand-written forward-only migration)  <sub>:228</sub>
+- 5. Behaviour  <sub>:454</sub>
+- 6. Printing: the existing print-page idiom, with the layout as data  <sub>:547</sub>
+- 7. Parameters (exact)  <sub>:604</sub>
+- 8. Work orders  <sub>:622</sub>
+- 9. Acceptance criteria  <sub>:696</sub>
+- 10. Out of scope (named and sequenced, not silently skipped)  <sub>:736</sub>
+- 11. Open decisions for the owner  <sub>:753</sub>
+- Scope lenses  <sub>:787</sub>
+
+### `docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md`  <sub>545 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified in code, 2026-10-04)  <sub>:40</sub>
+- 1. Decisions this brief makes  <sub>:72</sub>
+- 2. Ledger effect  <sub>:97</sub>
+- 3. Schema: added to `treasury.prisma` (doc 249), hand-written forward-only migration  <sub>:110</sub>
+- 4. Behaviour  <sub>:189</sub>
+- 5. Bands and auto-approval  <sub>:247</sub>
+- 6. Parameters (exact)  <sub>:260</sub>
+- 7. Work orders  <sub>:272</sub>
+- 8. Acceptance criteria  <sub>:309</sub>
+- 9. Out of scope (named and sequenced)  <sub>:342</sub>
+- 10. Open decisions for the owner  <sub>:360</sub>
+- Scope lenses  <sub>:373</sub>
 
 ### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
 
@@ -4518,16 +4582,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>701 lines</sub>
+### `docs/implementation/README.md`  <sub>710 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:554</sub>
-- The two module groups  <sub>:583</sub>
-- How a work order runs  <sub>:620</sub>
-- Known gaps not yet owned by a phase  <sub>:638</sub>
-- When a brief is wrong  <sub>:665</sub>
-- Scope, honestly  <sub>:678</sub>
-- Gap-analysis roadmap references  <sub>:685</sub>
+- Dependency order  <sub>:563</sub>
+- The two module groups  <sub>:592</sub>
+- How a work order runs  <sub>:629</sub>
+- Known gaps not yet owned by a phase  <sub>:647</sub>
+- When a brief is wrong  <sub>:674</sub>
+- Scope, honestly  <sub>:687</sub>
+- Gap-analysis roadmap references  <sub>:694</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 
@@ -4667,18 +4731,26 @@ _no second-level headings_
 - Acceptance  <sub>:59</sub>
 - Out of scope  <sub>:65</sub>
 
-### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
+### `docs/implementation/RETAIL-ERP.md`  <sub>1,108 lines</sub>
 
-- Context  <sub>:15</sub>
-- Part 1 — The topology  <sub>:78</sub>
-- Part 2 — The rulings  <sub>:135</sub>
-- Part 3 — Accounting (the pillar)  <sub>:378</sub>
-- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:575</sub>
-- Part 5 — The modules  <sub>:755</sub>
-- Part 6 — Replication and the apps  <sub>:801</sub>
-- Part 7 — Roadmap  <sub>:865</sub>
-- Part 8 — The briefs this spawns  <sub>:946</sub>
-- Acceptance  <sub>:1006</sub>
+- Context  <sub>:24</sub>
+- Part 1 — The topology  <sub>:87</sub>
+- Part 2 — The rulings  <sub>:144</sub>
+- Part 3 — Accounting (the pillar)  <sub>:387</sub>
+- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:584</sub>
+- Part 5 — The modules  <sub>:764</sub>
+- Part 6 — Replication and the apps  <sub>:810</sub>
+- Part 7 — Roadmap  <sub>:874</sub>
+- Part 8 — The briefs this spawns  <sub>:955</sub>
+- Acceptance  <sub>:1015</sub>
+
+### `docs/implementation/RETAIL-VERTICAL-COVERAGE-MATRIX.md`  <sub>172 lines</sub>
+
+- Method  <sub>:44</sub>
+- Scorecard — RETAIL-ERP.md's own architecture, as built today  <sub>:55</sub>
+- Sector-pack breadth — the one place coverage is not high  <sub>:103</sub>
+- What's still really missing, prioritized by "blocks third-party independence"  <sub>:121</sub>
+- Bottom line  <sub>:151</sub>
 
 ### `docs/implementation/SDK-CONTRACT.md`  <sub>226 lines</sub>
 
@@ -4700,6 +4772,209 @@ _no second-level headings_
 - WO-6.7 — RTO  <sub>:300</sub>
 - WO-6.8 — Screens  <sub>:315</sub>
 - Phase 6 exit criteria  <sub>:325</sub>
+
+### `docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md`  <sub>612 lines</sub>
+
+- 1. Objective and the four profiles  <sub>:13</sub>
+- 2. Existing state (verified in code, 2026-10-04)  <sub>:35</sub>
+- 3. Node topology: DCs and plants, and the proposed rulings R27–R30  <sub>:58</sub>
+- 4. Packaging: eight capability modules, no new pack  <sub>:155</sub>
+- 5. EDI: its own module behind a gateway  <sub>:223</sub>
+- 6. How the modules talk  <sub>:265</sub>
+- 7. Profiles as `MODULES` presets  <sub>:323</sub>
+- 8. Documents this changes (proposed amendments, not made in this work)  <sub>:348</sub>
+- 9. Open decisions for the owner  <sub>:363</sub>
+- 10. Needs verification — never invented in this repository  <sub>:449</sub>
+- 11. The five pillars  <sub>:486</sub>
+- 12. Roadmap — tranches  <sub>:496</sub>
+- 13. Program acceptance (architecture-level; each brief has its own)  <sub>:577</sub>
+- 14. Out of scope (named and sequenced, not silently skipped)  <sub>:593</sub>
+
+### `docs/implementation/supply-chain-operations/237-warehouse-management.md`  <sub>523 lines</sub>
+
+- Objective  <sub>:7</sub>
+- Existing state (verified, 2026-10-04)  <sub>:16</sub>
+- 1. The rule this module keeps  <sub>:34</sub>
+- 2. Schema — `apps/api/prisma/schema/warehouse.prisma` (new, hand-written forward-only migration)  <sub>:74</sub>
+- 3. Behaviour  <sub>:198</sub>
+- 4. Parameters (exact)  <sub>:240</sub>
+- 5. Work orders  <sub>:250</sub>
+- 6. Files likely affected  <sub>:296</sub>
+- 7. Dependencies reused  <sub>:307</sub>
+- 8. Risks  <sub>:315</sub>
+- 9. Acceptance criteria  <sub>:326</sub>
+- 10. Out of scope  <sub>:348</sub>
+- Scope lenses  <sub>:356</sub>
+
+### `docs/implementation/supply-chain-operations/238-order-routing-omnichannel-fulfilment.md`  <sub>445 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:23</sub>
+- 1. Design  <sub>:46</sub>
+- 2. Schema — `apps/api/prisma/schema/order-routing.prisma` (new)  <sub>:144</sub>
+- 3. Parameters (exact)  <sub>:211</sub>
+- 4. Work orders  <sub>:223</sub>
+- 5. Files likely affected  <sub>:259</sub>
+- 6. Dependencies reused  <sub>:269</sub>
+- 7. Risks  <sub>:276</sub>
+- 8. Acceptance criteria  <sub>:287</sub>
+- 9. Out of scope  <sub>:309</sub>
+- Scope lenses  <sub>:315</sub>
+
+### `docs/implementation/supply-chain-operations/239-supply-network-sourcing-rules.md`  <sub>231 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:24</sub>
+- 1. Design  <sub>:36</sub>
+- 2. Schema — `apps/api/prisma/schema/supply-network.prisma` (new)  <sub>:69</sub>
+- 3. Parameters (exact)  <sub>:111</sub>
+- 4. Work orders  <sub>:118</sub>
+- 5. Acceptance criteria  <sub>:132</sub>
+- Scope lenses  <sub>:144</sub>
+
+### `docs/implementation/supply-chain-operations/240-edi-gateway.md`  <sub>495 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified, 2026-10-04)  <sub>:24</sub>
+- 1. What `edi` owns, and what it does not  <sub>:39</sub>
+- 2. Canonical documents (`packages/shared/src/edi/canonical.ts`)  <sub>:57</sub>
+- 3. The extension point  <sub>:80</sub>
+- 4. Schema — `apps/api/prisma/schema/edi.prisma` (new)  <sub>:156</sub>
+- 5. Inbound: store first, apply second  <sub>:230</sub>
+- 6. Outbound: durable, acknowledged, deadline-aware  <sub>:247</sub>
+- 7. The buy side: `tradingpartners` as a consumer  <sub>:262</sub>
+- 8. Parameters (exact)  <sub>:282</sub>
+- 9. Work orders  <sub>:297</sub>
+- 10. Files likely affected  <sub>:323</sub>
+- 11. Dependencies reused  <sub>:331</sub>
+- 12. Risks  <sub>:338</sub>
+- 13. Acceptance criteria  <sub>:349</sub>
+- 14. Out of scope  <sub>:369</sub>
+- Scope lenses  <sub>:376</sub>
+
+### `docs/implementation/supply-chain-operations/241-retailer-vendor-compliance.md`  <sub>549 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified, 2026-10-04)  <sub>:27</sub>
+- 1. Who is who  <sub>:44</sub>
+- 2. The flow  <sub>:54</sub>
+- 3. Retailer requirements as versioned data  <sub>:107</sub>
+- 4. Deductions and disputes  <sub>:171</sub>
+- 5. OTIF and sell-through  <sub>:212</sub>
+- 6. Schema — `apps/api/prisma/schema/vendor-compliance.prisma` (new)  <sub>:231</sub>
+- 7. Parameters (exact)  <sub>:301</sub>
+- 8. Work orders  <sub>:311</sub>
+- 9. Files likely affected  <sub>:345</sub>
+- 10. Dependencies reused  <sub>:354</sub>
+- 11. Risks  <sub>:361</sub>
+- 12. Acceptance criteria  <sub>:375</sub>
+- 13. Needs verification against each retailer's real documents  <sub>:400</sub>
+- 14. Out of scope  <sub>:410</sub>
+- Scope lenses  <sub>:418</sub>
+
+### `docs/implementation/supply-chain-operations/242-multi-plant-manufacturing.md`  <sub>496 lines</sub>
+
+- Objective  <sub>:11</sub>
+- Existing state (verified, 2026-10-04; gaps confirmed absent by grep, not inherited)  <sub>:27</sub>
+- 1. Who owns what  <sub>:43</sub>
+- 2. Design  <sub>:63</sub>
+- 3. Schema  <sub>:182</sub>
+- 4. Parameters (exact)  <sub>:240</sub>
+- 5. Work orders  <sub>:250</sub>
+- 6. Files likely affected  <sub>:293</sub>
+- 7. Dependencies reused  <sub>:302</sub>
+- 8. Risks  <sub>:310</sub>
+- 9. Acceptance criteria  <sub>:323</sub>
+- 10. Out of scope  <sub>:348</sub>
+- Scope lenses  <sub>:357</sub>
+
+### `docs/implementation/supply-chain-operations/243-quality-inspection-holds.md`  <sub>283 lines</sub>
+
+- Objective  <sub>:9</sub>
+- Existing state (verified, 2026-10-04)  <sub>:23</sub>
+- 1. Design  <sub>:35</sub>
+- 2. Schema — `apps/api/prisma/schema/quality.prisma` (new)  <sub>:81</sub>
+- 3. Work orders  <sub>:123</sub>
+- 4. Acceptance criteria  <sub>:148</sub>
+- 5. Out of scope  <sub>:167</sub>
+- Scope lenses  <sub>:175</sub>
+
+### `docs/implementation/supply-chain-operations/244-rfid-phantom-inventory.md`  <sub>260 lines</sub>
+
+- Objective  <sub>:7</sub>
+- Existing state (verified, 2026-10-04)  <sub>:18</sub>
+- 1. Design  <sub>:35</sub>
+- 2. Schema  <sub>:84</sub>
+- 3. Parameters (exact)  <sub>:111</sub>
+- 4. Work orders  <sub>:121</sub>
+- 5. Acceptance criteria  <sub>:143</sub>
+- Scope lenses  <sub>:157</sub>
+
+### `docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md`  <sub>380 lines</sub>
+
+- 1. Objective and the source material  <sub>:14</sub>
+- 2. Pack or capability? The test, applied  <sub>:46</sub>
+- 3. Does this overlap `pos`? In shape, not in actor  <sub>:111</sub>
+- 4. Does the existing sync give us offline booking? Mostly, once fixed. Plus one new piece.  <sub>:149</sub>
+- 5. Profile 5 as a `MODULES` preset  <sub>:194</sub>
+- 6. Efficiency: what is measured, and how  <sub>:210</sub>
+- 7. Roadmap — Tranche F  <sub>:232</sub>
+- 8. Open decisions for the owner  <sub>:289</sub>
+- 9. Needs verification — never invented here  <sub>:348</sub>
+- 10. Documents this changes (proposed, not made)  <sub>:370</sub>
+
+### `docs/implementation/supply-chain-operations/246-field-sales.md`  <sub>798 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified, 2026-10-04)  <sub>:29</sub>
+- 1. Design  <sub>:54</sub>
+- 2. Schema — `apps/api/prisma/schema/field-sales.prisma` (new, hand-written forward-only migration)  <sub>:232</sub>
+- 3. Money  <sub>:374</sub>
+- 4. Parameters (exact)  <sub>:415</sub>
+- 5. Work orders  <sub>:434</sub>
+- 6. Files likely affected  <sub>:509</sub>
+- 7. Dependencies reused  <sub>:519</sub>
+- 8. Risks  <sub>:529</sub>
+- 9. Acceptance criteria  <sub>:550</sub>
+- 10. Out of scope  <sub>:582</sub>
+- Scope lenses  <sub>:596</sub>
+
+### `docs/implementation/supply-chain-operations/247-field-tracking.md`  <sub>510 lines</sub>
+
+- Objective  <sub>:12</sub>
+- Existing state (verified, 2026-10-05)  <sub>:34</sub>
+- 1. Design  <sub>:57</sub>
+- 2. Schema — `apps/api/prisma/schema/field-tracking.prisma` (new, hand-written forward-only migration)  <sub>:144</sub>
+- 3. Permissions  <sub>:217</sub>
+- 4. Parameters (exact)  <sub>:228</sub>
+- 5. Work orders  <sub>:251</sub>
+- 6. Files likely affected  <sub>:293</sub>
+- 7. Dependencies reused  <sub>:302</sub>
+- 8. Risks  <sub>:309</sub>
+- 9. Acceptance criteria  <sub>:325</sub>
+- 10. Out of scope  <sub>:346</sub>
+- Scope lenses  <sub>:355</sub>
+
+### `docs/implementation/supply-chain-operations/248-customer-receipts-allocation.md`  <sub>586 lines</sub>
+
+- Objective  <sub>:21</sub>
+- Existing state (verified, 2026-10-05)  <sub>:38</sub>
+- 1. Design  <sub>:78</sub>
+- 2. Schema — added to `apps/api/prisma/schema/receivables.prisma` (hand-written forward-only migration)  <sub>:158</sub>
+- 3. Money  <sub>:235</sub>
+- 4. Parameters (exact)  <sub>:262</sub>
+- 5. Work orders  <sub>:274</sub>
+- 6. Files likely affected  <sub>:321</sub>
+- 7. Dependencies reused  <sub>:334</sub>
+- 8. Risks  <sub>:344</sub>
+- 9. Acceptance criteria  <sub>:358</sub>
+- 10. Out of scope  <sub>:387</sub>
+- Scope lenses  <sub>:399</sub>
+
+### `docs/implementation/supply-chain-operations/README.md`  <sub>51 lines</sub>
+
+- Read in this order  <sub>:19</sub>
+- Words that must not blur  <sub>:37</sub>
 
 ### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>224 lines</sub>
 

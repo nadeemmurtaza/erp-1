@@ -137,6 +137,13 @@ on the last step only — sending one immediately trains customers to abandon.
 Track recovered revenue explicitly. It is the one marketing number that is
 unambiguous.
 
+**Status note (added later):** this WO's own trigger — cart staleness alone
+— cannot tell a shopper who only added an item from one who reached
+checkout and abandoned there; both get the identical sequence today. See
+[`251-checkout-abandonment-flow.md`](./251-checkout-abandonment-flow.md)
+for the second flow this gap owes, built on top of this WO's machinery
+rather than replacing it.
+
 ---
 
 ## WO-8.6 — On-site messaging

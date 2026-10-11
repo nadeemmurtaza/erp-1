@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2901,
-    "lines": 453288,
+    "files": 2923,
+    "lines": 462474,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 555,
-      "lines": 98183,
-      "bytes": 6103329,
+      "files": 577,
+      "lines": 107369,
+      "bytes": 6704000,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -103379,8 +103379,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 131,
-      "bytes": 22000,
+      "lines": 134,
+      "bytes": 23304,
       "doc": "",
       "symbols": []
     },
@@ -103433,8 +103433,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 701,
-      "bytes": 107033,
+      "lines": 710,
+      "bytes": 109336,
       "doc": "",
       "symbols": []
     },
@@ -103442,8 +103442,17 @@
       "path": "docs/implementation/RETAIL-ERP.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1099,
-      "bytes": 64906,
+      "lines": 1108,
+      "bytes": 65463,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/RETAIL-VERTICAL-COVERAGE-MATRIX.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 172,
+      "bytes": 13134,
       "doc": "",
       "symbols": []
     },
@@ -104468,8 +104477,26 @@
       "path": "docs/implementation/content-marketing-search/08-content-marketing-search.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 160,
-      "bytes": 7068,
+      "lines": 167,
+      "bytes": 7460,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/content-marketing-search/251-checkout-abandonment-flow.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 318,
+      "bytes": 18896,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/content-marketing-search/252-video-block-chapters.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 124,
+      "bytes": 5712,
       "doc": "",
       "symbols": []
     },
@@ -105266,6 +105293,33 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 305,
+      "bytes": 19179,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 304,
+      "bytes": 16545,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 174,
+      "bytes": 8128,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md",
       "area": "docs",
       "kind": "doc",
@@ -105334,6 +105388,24 @@
       "kind": "doc",
       "lines": 296,
       "bytes": 16406,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 997,
+      "bytes": 62286,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 545,
+      "bytes": 34491,
       "doc": "",
       "symbols": []
     },
@@ -106279,6 +106351,132 @@
       "kind": "doc",
       "lines": 335,
       "bytes": 13392,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 612,
+      "bytes": 57870,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/237-warehouse-management.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 523,
+      "bytes": 32488,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/238-order-routing-omnichannel-fulfilment.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 445,
+      "bytes": 25224,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/239-supply-network-sourcing-rules.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 231,
+      "bytes": 12192,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/240-edi-gateway.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 495,
+      "bytes": 30848,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/241-retailer-vendor-compliance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 549,
+      "bytes": 32198,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/242-multi-plant-manufacturing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 496,
+      "bytes": 36890,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/243-quality-inspection-holds.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 283,
+      "bytes": 14861,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/244-rfid-phantom-inventory.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 260,
+      "bytes": 14906,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 380,
+      "bytes": 30105,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/246-field-sales.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 798,
+      "bytes": 50979,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/247-field-tracking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 510,
+      "bytes": 30844,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/248-customer-receipts-allocation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 586,
+      "bytes": 36760,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/README.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 51,
+      "bytes": 11579,
       "doc": "",
       "symbols": []
     },

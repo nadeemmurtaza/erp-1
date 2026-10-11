@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 579 tracked files in `docs/*`, by directory.
+All 580 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -565,7 +565,7 @@ All 579 tracked files in `docs/*`, by directory.
 | `00-HOUSE-RULES.md` | doc | 496 |  |
 | `253-distribution-stack-capability-map.md` | doc | 772 |  |
 | `254-office-replacement-program.md` | doc | 971 |  |
-| `DECISIONS.md` | doc | 134 |  |
+| `DECISIONS.md` | doc | 135 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -752,7 +752,7 @@ All 579 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (92)
+### `docs/implementation/decisions` (93)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -846,6 +846,7 @@ All 579 tracked files in `docs/*`, by directory.
 | `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
 | `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 304 |  |
 | `ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md` | doc | 174 |  |
+| `ADR-091-stored-files-private-by-default-signed-urls-on-the-local-driver.md` | doc | 159 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 

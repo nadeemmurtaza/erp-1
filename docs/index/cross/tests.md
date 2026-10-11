@@ -3,7 +3,7 @@
 
 # Tests
 
-**430** spec files, **4,768** cases. What is already pinned down — and what is not.
+**434** spec files, **4,805** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -71,7 +71,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (398)
+## Unit and integration (402)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -133,8 +133,12 @@ regression or an N+1.
 | `apps/api/src/core/settings/settings.service.spec.ts` | core/settings | 9 | SettingsService |
 | `apps/api/src/core/slo/request-outcome-prune.cron.spec.ts` | core/slo | 1 | RequestOutcomePruneCron — WO-38.3 |
 | `apps/api/src/core/slo/slo-recorder.service.spec.ts` | core/slo | 8 | SloRecorderService — WO-38.3 · time() · recordReplicationTick() · computeBudget() |
-| `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 3 | FilesController |
-| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.m… |
+| `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 16 | FilesController · H2 — rag-sources is never served · a public folder · an ungated folder (ADR-091 n… |
+| `apps/api/src/core/storage/local-storage.driver.spec.ts` | core/storage | 6 | LocalStorageDriver.signedUrlFor · buildKey |
+| `apps/api/src/core/storage/s3-storage.driver.spec.ts` | core/storage | 3 | S3StorageDriver · put · signedUrlFor |
+| `apps/api/src/core/storage/storage-url-signer.spec.ts` | core/storage | 8 | StorageUrlSigner · lifetime |
+| `apps/api/src/core/storage/storage-visibility.spec.ts` | core/storage | 4 | storage visibility |
+| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 13 | StorageService.putImage · StorageService.putDocument · StorageService.signedUrlFor (ADR-091) · Stor… |
 | `apps/api/src/core/throttling/app-throttler.guard.spec.ts` | core/throttling | 5 | AppThrottlerGuard — per-IP 429s on credential routes become auth.rate_limited (doc 206 §1.2) |
 | `apps/api/src/core/throttling/shared-throttler-storage.spec.ts` | core/throttling | 8 | SharedThrottlerStorage |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
@@ -182,7 +186,7 @@ regression or an N+1.
 | `apps/api/src/modules/merchandising/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
 | `apps/api/src/modules/merchandising/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |
 | `apps/api/src/modules/merchandising/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
-| `apps/api/src/modules/merchandising/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
+| `apps/api/src/modules/merchandising/search/search.service.spec.ts` | search | 16 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/money/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
 | `apps/api/src/modules/money/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
 | `apps/api/src/modules/money/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
@@ -356,7 +360,7 @@ regression or an N+1.
 | `apps/api/src/modules/system/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/system/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
 | `apps/api/src/modules/system/rag/chunking.spec.ts` | rag | 7 | chunkPages |
-| `apps/api/src/modules/system/rag/pdf-extraction.service.spec.ts` | rag | 10 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout… |
+| `apps/api/src/modules/system/rag/pdf-extraction.service.spec.ts` | rag | 11 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout… |
 | `apps/api/src/modules/system/rag/pg-vector.store.spec.ts` | rag | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
 | `apps/api/src/modules/system/rag/rag-admin.controller.spec.ts` | rag | 17 | RagAdminController · query (H1, security review) · ask (H1, security review) · uploadSource (H1/M4,… |
 | `apps/api/src/modules/system/rag/rag-corpus.service.spec.ts` | rag | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1,… |

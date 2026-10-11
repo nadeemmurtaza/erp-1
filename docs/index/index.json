@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2925,
-    "lines": 464237,
+    "files": 2932,
+    "lines": 465171,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -14,7 +14,7 @@
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 430,
+    "specs": 434,
     "designLaws": 192
   },
   "designLaws": [
@@ -1372,14 +1372,14 @@
     },
     "infra": {
       "files": 65,
-      "lines": 33516,
-      "bytes": 1339167,
+      "lines": 33518,
+      "bytes": 1339362,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1279,
-      "lines": 176797,
-      "bytes": 7058617,
+      "files": 1285,
+      "lines": 177569,
+      "bytes": 7094110,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 579,
-      "lines": 109132,
-      "bytes": 6922046,
+      "files": 580,
+      "lines": 109292,
+      "bytes": 6933796,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -3254,8 +3254,14 @@
       "files": [
         "apps/api/src/core/storage/files.controller.spec.ts",
         "apps/api/src/core/storage/files.controller.ts",
+        "apps/api/src/core/storage/local-storage.driver.spec.ts",
         "apps/api/src/core/storage/local-storage.driver.ts",
+        "apps/api/src/core/storage/s3-storage.driver.spec.ts",
         "apps/api/src/core/storage/s3-storage.driver.ts",
+        "apps/api/src/core/storage/storage-url-signer.spec.ts",
+        "apps/api/src/core/storage/storage-url-signer.ts",
+        "apps/api/src/core/storage/storage-visibility.spec.ts",
+        "apps/api/src/core/storage/storage-visibility.ts",
         "apps/api/src/core/storage/storage.driver.ts",
         "apps/api/src/core/storage/storage.module.ts",
         "apps/api/src/core/storage/storage.service.spec.ts",
@@ -16228,7 +16234,7 @@
       "controller": "FilesController",
       "handler": "serve",
       "file": "apps/api/src/core/storage/files.controller.ts",
-      "line": 32,
+      "line": 46,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -57881,19 +57887,65 @@
       "file": "apps/api/src/core/storage/files.controller.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "FilesController",
+        "H2 — rag-sources is never served",
+        "a public folder",
+        "an ungated folder (ADR-091 named debt)",
+        "a private folder — the default",
+        "over HTTP"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/storage/local-storage.driver.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "LocalStorageDriver.signedUrlFor",
+        "buildKey"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/storage/s3-storage.driver.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
       "cases": 3,
       "describes": [
-        "FilesController"
+        "S3StorageDriver",
+        "put",
+        "signedUrlFor"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/storage/storage-url-signer.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "StorageUrlSigner",
+        "lifetime"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/storage/storage-visibility.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "storage visibility"
       ]
     },
     {
       "file": "apps/api/src/core/storage/storage.service.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
-      "cases": 12,
+      "cases": 13,
       "describes": [
         "StorageService.putImage",
         "StorageService.putDocument",
+        "StorageService.signedUrlFor (ADR-091)",
         "StorageService — 38-resilience-engineering.md WO-38.1, degradation matrix row "
       ]
     },
@@ -58414,7 +58466,7 @@
       "file": "apps/api/src/modules/merchandising/search/search.service.spec.ts",
       "module": "search",
       "kind": "unit test",
-      "cases": 15,
+      "cases": 16,
       "describes": [
         "SearchService",
         "SearchService — WO-9.5 semantic and visual search",
@@ -60388,7 +60440,7 @@
       "file": "apps/api/src/modules/system/rag/pdf-extraction.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 10,
+      "cases": 11,
       "describes": [
         "PdfExtractionService",
         "the scanned-page (OCR) fallback",
@@ -62410,8 +62462,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 140,
-      "bytes": 6626,
+      "lines": 142,
+      "bytes": 6821,
       "doc": "",
       "symbols": []
     },
@@ -64504,7 +64556,7 @@
       "area": "api",
       "kind": "module",
       "lines": 67,
-      "bytes": 2653,
+      "bytes": 2759,
       "doc": "Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and StorageDriver).",
       "symbols": [
         {
@@ -69010,8 +69062,8 @@
       "path": "apps/api/src/core/storage/files.controller.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 63,
-      "bytes": 2837,
+      "lines": 282,
+      "bytes": 12777,
       "doc": "",
       "symbols": []
     },
@@ -69019,49 +69071,165 @@
       "path": "apps/api/src/core/storage/files.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 67,
-      "bytes": 2386,
+      "lines": 107,
+      "bytes": 4198,
       "doc": "",
       "symbols": [
         {
           "name": "FilesController",
           "kind": "class",
-          "line": 27
+          "line": 36
         }
       ]
+    },
+    {
+      "path": "apps/api/src/core/storage/local-storage.driver.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 57,
+      "bytes": 2781,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/core/storage/local-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 84,
-      "bytes": 2997,
+      "lines": 101,
+      "bytes": 3728,
       "doc": "",
       "symbols": [
         {
           "name": "LocalStorageDriver",
           "kind": "class",
-          "line": 15
+          "line": 17
         },
         {
           "name": "buildKey",
           "kind": "function",
-          "line": 73
+          "line": 90
         }
       ]
+    },
+    {
+      "path": "apps/api/src/core/storage/s3-storage.driver.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2676,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/core/storage/s3-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 92,
-      "bytes": 3434,
+      "lines": 102,
+      "bytes": 4113,
       "doc": "",
       "symbols": [
         {
           "name": "S3StorageDriver",
           "kind": "class",
-          "line": 14
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/storage/storage-url-signer.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 85,
+      "bytes": 4265,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/storage/storage-url-signer.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 71,
+      "bytes": 2822,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "STORAGE_URL_AUDIENCE",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "MAX_SIGNED_URL_TTL_SECONDS",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "assertSignedUrlTtl",
+          "kind": "function",
+          "line": 21
+        },
+        {
+          "name": "StorageUrlSigner",
+          "kind": "class",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/storage/storage-visibility.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 53,
+      "bytes": 2108,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/storage/storage-visibility.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 70,
+      "bytes": 2889,
+      "doc": "Who may fetch a stored object by URL, decided by the folder its key starts with (ADR-091).",
+      "symbols": [
+        {
+          "name": "PUBLIC_FOLDERS",
+          "kind": "const",
+          "line": 12
+        },
+        {
+          "name": "UNGATED_FOLDERS",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "StoredObjectVisibility",
+          "kind": "type",
+          "line": 34
+        },
+        {
+          "name": "PUBLIC_CACHE_CONTROL",
+          "kind": "const",
+          "line": 41
+        },
+        {
+          "name": "PRIVATE_CACHE_CONTROL",
+          "kind": "const",
+          "line": 49
+        },
+        {
+          "name": "folderOf",
+          "kind": "function",
+          "line": 56
+        },
+        {
+          "name": "visibilityOf",
+          "kind": "function",
+          "line": 60
+        },
+        {
+          "name": "cacheControlFor",
+          "kind": "function",
+          "line": 67
         }
       ]
     },
@@ -69069,8 +69237,8 @@
       "path": "apps/api/src/core/storage/storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 35,
-      "bytes": 1297,
+      "lines": 47,
+      "bytes": 1787,
       "doc": "Extension point: file storage.",
       "symbols": [
         {
@@ -69081,12 +69249,12 @@
         {
           "name": "PutFileInput",
           "kind": "interface",
-          "line": 17
+          "line": 22
         },
         {
           "name": "StorageDriver",
           "kind": "interface",
-          "line": 25
+          "line": 30
         }
       ]
     },
@@ -69094,14 +69262,14 @@
       "path": "apps/api/src/core/storage/storage.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 14,
-      "bytes": 456,
+      "lines": 19,
+      "bytes": 768,
       "doc": "",
       "symbols": [
         {
           "name": "StorageModule",
           "kind": "class",
-          "line": 13
+          "line": 18
         }
       ]
     },
@@ -69109,8 +69277,8 @@
       "path": "apps/api/src/core/storage/storage.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 224,
-      "bytes": 9071,
+      "lines": 243,
+      "bytes": 10081,
       "doc": "",
       "symbols": []
     },
@@ -69118,8 +69286,8 @@
       "path": "apps/api/src/core/storage/storage.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 143,
-      "bytes": 5270,
+      "lines": 148,
+      "bytes": 5496,
       "doc": "",
       "symbols": [
         {
@@ -72459,8 +72627,8 @@
       "path": "apps/api/src/modules/merchandising/search/search.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 331,
-      "bytes": 14125,
+      "lines": 345,
+      "bytes": 14994,
       "doc": "",
       "symbols": []
     },
@@ -72468,14 +72636,14 @@
       "path": "apps/api/src/modules/merchandising/search/search.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 419,
-      "bytes": 19589,
+      "lines": 439,
+      "bytes": 20631,
       "doc": "",
       "symbols": [
         {
           "name": "SearchService",
           "kind": "class",
-          "line": 64
+          "line": 73
         }
       ]
     },
@@ -83235,8 +83403,8 @@
       "path": "apps/api/src/modules/system/rag/pdf-extraction.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 196,
-      "bytes": 9755,
+      "lines": 208,
+      "bytes": 10490,
       "doc": "",
       "symbols": []
     },
@@ -103397,8 +103565,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 134,
-      "bytes": 23304,
+      "lines": 135,
+      "bytes": 23739,
       "doc": "",
       "symbols": []
     },
@@ -105334,6 +105502,15 @@
       "kind": "doc",
       "lines": 174,
       "bytes": 8128,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/decisions/ADR-091-stored-files-private-by-default-signed-urls-on-the-local-driver.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 159,
+      "bytes": 11315,
       "doc": "",
       "symbols": []
     },

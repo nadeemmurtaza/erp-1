@@ -126,6 +126,7 @@ export class StorageService {
     return this.driver.delete(key);
   }
 
+  /** The plain URL — it serves the bytes only for a public (or still-ungated) folder; see `StoredFile.url`. */
   urlFor(key: string): string {
     return this.driver.urlFor(key);
   }
@@ -135,7 +136,11 @@ export class StorageService {
     return this.driver.get(key);
   }
 
-  /** A time-limited URL an external service (e.g. a vision API) may fetch — see `StorageDriver.signedUrlFor()`. */
+  /**
+   * A time-limited URL an external service (e.g. a vision API) may fetch —
+   * the only URL that opens a private object. Rejects rather than ever
+   * returning an unsigned one; see `StorageDriver.signedUrlFor()`.
+   */
   signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
     return this.driver.signedUrlFor(key, expiresInSeconds);
   }

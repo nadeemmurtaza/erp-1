@@ -61,6 +61,6 @@ export interface AiProvider {
   complete(input: CompletionInput): Promise<CompletionResult>;
   /** Implement only when `supportsEmbeddings` is true. */
   embed?(texts: string[]): Promise<EmbeddingResult>;
-  /** Implement only when `supportsVision` is true. `imageUrl` must be publicly fetchable — see StorageService.urlFor(). */
+  /** Implement only when `supportsVision` is true. `imageUrl` must be fetchable by the provider — for a stored object, a `StorageService.signedUrlFor()` URL, since a private object's plain `urlFor()` URL is refused (ADR-091). */
   describeImage?(imageUrl: string, prompt: string): Promise<DescribeImageResult>;
 }

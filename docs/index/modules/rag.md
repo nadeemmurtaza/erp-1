@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/system/rag/`
 
-## Files (21 · 3,139 lines)
+## Files (21 · 3,151 lines)
 
 All paths relative to `apps/api/src/modules/system/rag`.
 
@@ -20,7 +20,7 @@ All paths relative to `apps/api/src/modules/system/rag`.
 | `chunking.spec.ts` | unit test | 71 | — |  |
 | `chunking.ts` | module | 61 | 2 |  |
 | `rag.dto.ts` | dto | 70 | 3 |  |
-| `pdf-extraction.service.spec.ts` | unit test | 196 | — |  |
+| `pdf-extraction.service.spec.ts` | unit test | 208 | — |  |
 | `pdf-extraction.service.ts` | service | 341 | 6 | Pinned to the last major (3.x) whose "legacy" Node build ships as |
 | `pg-vector.store.spec.ts` | unit test | 170 | — |  |
 | `pg-vector.store.ts` | module | 118 | 1 | WO-35.3's own (and only, today) `VectorStore` — `pgvector`, exactly `09-ai-layer.md` WO-9.6's "no extra service" decisi… |
@@ -118,7 +118,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `chunking.spec.ts` | 7 | chunkPages |
-| `pdf-extraction.service.spec.ts` | 10 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout / withDeadline |
+| `pdf-extraction.service.spec.ts` | 11 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout / withDeadline |
 | `pg-vector.store.spec.ts` | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
 | `rag-admin.controller.spec.ts` | 17 | RagAdminController · query (H1, security review) · ask (H1, security review) · uploadSource (H1/M4, security review) ·… |
 | `rag-corpus.service.spec.ts` | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1, security review) · c… |

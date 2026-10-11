@@ -5,9 +5,11 @@ import { Injectable } from '@nestjs/common';
 import { slugify } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
+import { StorageUrlSigner } from './storage-url-signer';
 
 /**
- * Writes uploads to a directory on disk and serves them back through the API.
+ * Writes uploads to a directory on disk and serves them back through the API
+ * (`FilesController`, which decides per folder who may fetch what — ADR-091).
  * Fine for development and a single-server deployment; switch STORAGE_DRIVER to
  * s3 before running more than one API instance.
  */
@@ -15,7 +17,10 @@ import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
 export class LocalStorageDriver implements StorageDriver {
   readonly name = 'local';
 
-  constructor(private readonly config: AppConfigService) {}
+  constructor(
+    private readonly config: AppConfigService,
+    private readonly signer: StorageUrlSigner,
+  ) {}
 
   private get root(): string {
     return resolve(this.config.get('LOCAL_STORAGE_DIR'));
@@ -48,12 +53,15 @@ export class LocalStorageDriver implements StorageDriver {
     return readFile(this.resolveKey(key));
   }
 
-  // Local storage is already documented above as a dev/single-server
-  // convenience, not hardened for this — there is no real expiry to offer,
-  // so this falls back to the plain public URL. Real time-limited access
-  // only exists on the s3 driver.
-  signedUrlFor(key: string, _expiresInSeconds: number): Promise<string> {
-    return Promise.resolve(this.urlFor(key));
+  /**
+   * A real time-limited URL: the object's URL plus a token that names this key
+   * and expires (ADR-091), which `FilesController` checks before serving a
+   * private object. Never the bare URL: if signing fails this rejects, and the
+   * caller handles it.
+   */
+  async signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
+    const token = await this.signer.sign(key, expiresInSeconds);
+    return `${this.urlFor(key)}?token=${encodeURIComponent(token)}`;
   }
 
   /**
@@ -69,7 +77,16 @@ export class LocalStorageDriver implements StorageDriver {
   }
 }
 
-/** "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-4f2a1b.jpg" */
+/**
+ * 128 random bits per key (ADR-091). For a folder still served by bare URL the
+ * key is the only thing standing between a stranger and the file, and
+ * everything before the random part — folder, year, month, the uploader's own
+ * filename — is guessable; 32 bits behind that is searchable by a distributed
+ * client despite the per-IP throttle, 128 is not.
+ */
+const KEY_RANDOM_BYTES = 16;
+
+/** "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-<32 hex characters>.jpg" */
 export function buildKey(folder: string, filename: string): string {
   const now = new Date();
   const year = now.getUTCFullYear();
@@ -77,7 +94,7 @@ export function buildKey(folder: string, filename: string): string {
 
   const extension = extname(filename).toLowerCase().slice(0, 10);
   const base = slugify(filename.slice(0, filename.length - extension.length)) || 'file';
-  const unique = randomBytes(4).toString('hex');
+  const unique = randomBytes(KEY_RANDOM_BYTES).toString('hex');
 
   return `${slugify(folder) || 'misc'}/${year}/${month}/${base}-${unique}${extension}`;
 }

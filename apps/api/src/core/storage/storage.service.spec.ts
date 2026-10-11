@@ -184,6 +184,25 @@ describe('StorageService.putDocument', () => {
   });
 });
 
+describe('StorageService.signedUrlFor (ADR-091)', () => {
+  it('passes a driver signing failure to the caller — never a fallback to the plain URL', async () => {
+    const local = { name: 'local', signedUrlFor: jest.fn().mockRejectedValue(new Error('cannot sign')), urlFor: jest.fn(() => 'http://x/plain') };
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        StorageService,
+        { provide: AppConfigService, useValue: { get: jest.fn().mockReturnValue('local') } },
+        { provide: LocalStorageDriver, useValue: local },
+        { provide: S3StorageDriver, useValue: { name: 's3' } },
+        { provide: SettingsService, useValue: { get: jest.fn() } },
+      ],
+    }).compile();
+
+    await expect(module.get(StorageService).signedUrlFor('visual-search/2026/10/a.webp', 300)).rejects.toThrow('cannot sign');
+    expect(local.signedUrlFor).toHaveBeenCalledWith('visual-search/2026/10/a.webp', 300);
+    expect(local.urlFor).not.toHaveBeenCalled();
+  });
+});
+
 describe('StorageService — 38-resilience-engineering.md WO-38.1, degradation matrix row "StorageDriver (S3/R2)"', () => {
   /**
    * The row's stated degraded behavior is "new uploads queue for retry."

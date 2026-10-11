@@ -141,6 +141,18 @@ describe('PdfExtractionService', () => {
       // The scratch image is still cleaned up even though OCR itself failed.
       expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
     });
+
+    it('propagates a signing failure (ADR-091) — the page is never handed to the vision provider on an unsigned URL', async () => {
+      const pdf = buildImageOnlyPdf();
+      ai.isAvailable.mockReturnValue(true);
+      storage.putImage.mockResolvedValue({ key: 'rag-ocr/page-1.png', url: 'https://files.local/rag-ocr/page-1.png', size: 1, contentType: 'image/png' });
+      storage.signedUrlFor.mockRejectedValue(new Error('storage cannot sign'));
+
+      await expect(service.extract(pdf)).rejects.toThrow('storage cannot sign');
+      expect(ai.describeImage).not.toHaveBeenCalled();
+      // M10 — the scratch image is removed on this path too.
+      expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
+    });
   });
 });
 

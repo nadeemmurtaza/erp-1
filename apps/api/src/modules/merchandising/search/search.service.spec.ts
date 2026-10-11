@@ -175,7 +175,7 @@ describe('SearchService — WO-9.5 semantic and visual search', () => {
   let service: SearchService;
   let prisma: PrismaService;
   let ai: { isAvailable: jest.Mock; embed: jest.Mock; describeImage: jest.Mock };
-  let storage: { putImage: jest.Mock };
+  let storage: { putImage: jest.Mock; signedUrlFor: jest.Mock };
   let categoryId: string;
 
   beforeAll(async () => {
@@ -189,7 +189,10 @@ describe('SearchService — WO-9.5 semantic and visual search', () => {
 
   beforeEach(() => {
     ai = { isAvailable: jest.fn().mockReturnValue(true), embed: jest.fn(), describeImage: jest.fn() };
-    storage = { putImage: jest.fn().mockResolvedValue({ key: 'visual-search/x.webp', url: 'https://cdn.test/visual-search/x.webp', size: 1, contentType: 'image/webp' }) };
+    storage = {
+      putImage: jest.fn().mockResolvedValue({ key: 'visual-search/x.webp', url: 'https://cdn.test/visual-search/x.webp', size: 1, contentType: 'image/webp' }),
+      signedUrlFor: jest.fn().mockResolvedValue('https://cdn.test/visual-search/x.webp?token=signed'),
+    };
     (service as unknown as { ai: unknown }).ai = ai;
     (service as unknown as { storage: unknown }).storage = storage;
   });
@@ -306,8 +309,19 @@ describe('SearchService — WO-9.5 semantic and visual search', () => {
       const result = await service.searchByImage({ buffer: Buffer.from('x'), originalname: 'photo.jpg', mimetype: 'image/jpeg' }, 'en', null);
 
       expect(storage.putImage).toHaveBeenCalled();
-      expect(ai.describeImage).toHaveBeenCalled();
+      // ADR-091 — `visual-search/` is private: the provider gets a 300 s signed URL, never the plain one.
+      expect(storage.signedUrlFor).toHaveBeenCalledWith('visual-search/x.webp', 300);
+      expect(ai.describeImage).toHaveBeenCalledWith('VISUAL_SEARCH', 'https://cdn.test/visual-search/x.webp?token=signed', expect.any(String));
       expect(result.data.some((hit) => hit.id === product.id)).toBe(true);
+    });
+
+    it('answers "not available" when the photo cannot be signed, and never sends the plain URL', async () => {
+      storage.signedUrlFor.mockRejectedValue(new Error('storage cannot sign'));
+
+      await expect(
+        service.searchByImage({ buffer: Buffer.from('x'), originalname: 'photo.jpg', mimetype: 'image/jpeg' }, 'en', null),
+      ).rejects.toThrow(/not available/);
+      expect(ai.describeImage).not.toHaveBeenCalled();
     });
 
     it('throws when the vision call is unavailable, rather than returning an empty result silently', async () => {

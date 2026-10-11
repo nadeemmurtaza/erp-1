@@ -32,10 +32,10 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,279 | 176,797 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 579 | 109,132 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,285 | 177,569 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 580 | 109,292 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 37 | 23,355 | workspace manifests, docker compose/stack files, env templates |
+| `(root)` | 37 | 23,357 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 30 | 11,756 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 78 | 10,098 | brand, money, permissions, measurements, entities |
@@ -162,7 +162,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`security`](core/security.md) | 3 |  |
 | [`settings`](core/settings.md) | 7 |  |
 | [`slo`](core/slo.md) | 6 | The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a fo… |
-| [`storage`](core/storage.md) | 8 | Extension point: file storage. |
+| [`storage`](core/storage.md) | 14 | Who may fetch a stored object by URL, decided by the folder its key starts with (ADR-091). |
 | [`throttling`](core/throttling.md) | 5 | The module-wide rate limit every route gets unless it declares its own `@Throttle`: 300 requests per 60 s per… |
 | [`time`](core/time.md) | 4 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that… |
 | [`versioning`](core/versioning.md) | 5 |  |

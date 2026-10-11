@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-579 files · 109,132 lines
+580 files · 109,292 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 14 | 6,621 | doc, file |
+| `docs/implementation` | 14 | 6,622 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
 | `docs/implementation/admin-platform` | 6 | 2,797 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -97,7 +97,7 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 3 | 609 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 92 | 13,338 | doc |
+| `docs/implementation/decisions` | 93 | 13,497 | doc |
 | `docs/implementation/finance-accounting` | 12 | 3,867 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |

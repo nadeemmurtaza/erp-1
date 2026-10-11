@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**614** markdown documents. These explain **why**; this index only says **where**.
+**615** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3108,7 +3108,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>134 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>135 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3469,6 +3469,10 @@ _no second-level headings_
 _no second-level headings_
 
 ### `docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md`  <sub>174 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-091-stored-files-private-by-default-signed-urls-on-the-local-driver.md`  <sub>159 lines</sub>
 
 _no second-level headings_
 

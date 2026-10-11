@@ -13,6 +13,15 @@ const RRF_K = 60;
 const VISUAL_SEARCH_PROMPT =
   'Describe this product photo in one or two plain sentences for a search query: garment or item ' +
   'type, colour, fabric or material texture, pattern, and style. Do not mention that it is a photo.';
+/**
+ * The customer's photo reaches the vision provider on a short-lived signed URL,
+ * never a permanent public one (ADR-091). 300 s: the provider fetches it once,
+ * inside a call `AiService` bounds at 30 s; the rest is slack for an
+ * S3-compatible store judging a presigned URL by its own clock. RAG OCR's
+ * `OCR_SIGNED_URL_TTL_SECONDS` is the same value for the same reason.
+ */
+const VISUAL_SEARCH_SIGNED_URL_TTL_SECONDS = 300;
+const PHOTO_SEARCH_UNAVAILABLE = 'Photo search is not available right now — try searching by text instead.';
 
 interface RankedId {
   productId: string;
@@ -274,13 +283,24 @@ export class SearchService {
       body: file.buffer,
     });
 
-    const described = await this.ai.describeImage(AiFeature.VISUAL_SEARCH, stored.url, VISUAL_SEARCH_PROMPT);
+    // `visual-search/` is a private folder: its plain URL is refused, so the
+    // provider gets a signed one. Signing failing is a storage fault, told to
+    // the customer like any other unavailability rather than a bare 500.
+    let imageUrl: string;
+    try {
+      imageUrl = await this.storage.signedUrlFor(stored.key, VISUAL_SEARCH_SIGNED_URL_TTL_SECONDS);
+    } catch (error) {
+      this.logger.error(`Could not sign photo-search image ${stored.key}: ${error instanceof Error ? error.message : String(error)}`);
+      throw new ServiceUnavailableException(PHOTO_SEARCH_UNAVAILABLE);
+    }
+
+    const described = await this.ai.describeImage(AiFeature.VISUAL_SEARCH, imageUrl, VISUAL_SEARCH_PROMPT);
     if (!described) {
-      throw new ServiceUnavailableException('Photo search is not available right now — try searching by text instead.');
+      throw new ServiceUnavailableException(PHOTO_SEARCH_UNAVAILABLE);
     }
     const embedded = await this.ai.embed(AiFeature.VISUAL_SEARCH, [described.text]);
     if (!embedded) {
-      throw new ServiceUnavailableException('Photo search is not available right now — try searching by text instead.');
+      throw new ServiceUnavailableException(PHOTO_SEARCH_UNAVAILABLE);
     }
 
     const matches = await this.vectorMatch(embedded.vectors[0], locale, VISUAL_SEARCH_LIMIT);

@@ -4,11 +4,19 @@ import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
 import { buildKey } from './local-storage.driver';
 import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
+import { assertSignedUrlTtl } from './storage-url-signer';
+import { cacheControlFor, visibilityOf } from './storage-visibility';
 
 /**
  * S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in
  * production. Selected with STORAGE_DRIVER=s3; the required credentials are
  * checked at boot by env.validation.ts.
+ *
+ * Deployment requirement (ADR-091): only the public folders' prefixes
+ * (`storage-visibility.ts` — `products/`, `auction-lots/`) may be anonymously
+ * readable. Code cannot check the bucket policy; a bucket readable as a whole
+ * makes every private object public at its `urlFor()` URL. A private object
+ * is reached only on `signedUrlFor()`, a real presigned GET.
  */
 @Injectable()
 export class S3StorageDriver implements StorageDriver {
@@ -50,7 +58,8 @@ export class S3StorageDriver implements StorageDriver {
         Key: key,
         Body: input.body,
         ContentType: input.contentType,
-        CacheControl: 'public, max-age=31536000, immutable',
+        // Immutable for a public folder; never kept by a shared cache otherwise (ADR-091).
+        CacheControl: cacheControlFor(visibilityOf(key)),
       }),
     );
 
@@ -84,8 +93,9 @@ export class S3StorageDriver implements StorageDriver {
     return Buffer.from(bytes);
   }
 
-  /** A real presigned GET, expiring in `expiresInSeconds` — unlike `urlFor()`'s permanently-public URL, this one stops working once it expires even if the object itself is never deleted. */
+  /** A real presigned GET, expiring in `expiresInSeconds` — unlike `urlFor()`'s permanently-public URL, this one stops working once it expires even if the object itself is never deleted. Same TTL range as the local driver (ADR-091). */
   async signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
+    assertSignedUrlTtl(expiresInSeconds);
     return getSignedUrl(this.getClient(), new GetObjectCommand({ Bucket: this.bucket, Key: key }), { expiresIn: expiresInSeconds });
   }
 }

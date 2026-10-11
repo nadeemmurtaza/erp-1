@@ -3,37 +3,43 @@
 
 # Core: `storage`
 
-Shared platform — available to every module, part of no feature · 8 files
+Shared platform — available to every module, part of no feature · 14 files
 
 
-> Extension point: file storage.
+> Who may fetch a stored object by URL, decided by the folder its key starts with (ADR-091).
 
 Source: `apps/api/src/core/storage/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (8 · 722 lines)
+## Files (14 · 1,448 lines)
 
 All paths relative to `apps/api/src/core/storage`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `files.controller.spec.ts` | unit test | 63 | — |  |
-| `files.controller.ts` | controller | 67 | 1 | Serves files stored by the local storage driver. |
-| `local-storage.driver.ts` | driver | 84 | 2 | Writes uploads to a directory on disk and serves them back through the API. |
-| `s3-storage.driver.ts` | driver | 92 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
-| `storage.driver.ts` | driver | 35 | 3 | Extension point: file storage. |
-| `storage.module.ts` | nest module | 14 | 1 |  |
-| `storage.service.spec.ts` | unit test | 224 | — |  |
-| `storage.service.ts` | service | 143 | 2 |  |
+| `files.controller.spec.ts` | unit test | 282 | — |  |
+| `files.controller.ts` | controller | 107 | 1 | Serves files stored by the local storage driver. |
+| `local-storage.driver.spec.ts` | unit test | 57 | — |  |
+| `local-storage.driver.ts` | driver | 101 | 2 | Writes uploads to a directory on disk and serves them back through the API (`FilesController`, which decides per folder… |
+| `s3-storage.driver.spec.ts` | unit test | 63 | — |  |
+| `s3-storage.driver.ts` | driver | 102 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
+| `storage-url-signer.spec.ts` | unit test | 85 | — |  |
+| `storage-url-signer.ts` | module | 71 | 4 | The `aud` of a storage URL token. |
+| `storage-visibility.spec.ts` | unit test | 53 | — |  |
+| `storage-visibility.ts` | module | 70 | 8 | Who may fetch a stored object by URL, decided by the folder its key starts with (ADR-091). |
+| `storage.driver.ts` | driver | 47 | 3 | Extension point: file storage. |
+| `storage.module.ts` | nest module | 19 | 1 |  |
+| `storage.service.spec.ts` | unit test | 243 | — |  |
+| `storage.service.ts` | service | 148 | 2 |  |
 
 
 ## HTTP routes (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/files/*path` | **PUBLIC** | `FilesController.serve` :32 |  |
+| GET | `/files/*path` | **PUBLIC** | `FilesController.serve` :46 |  |
 
 
 ## Domain events
@@ -55,9 +61,9 @@ _none_
 ## Nest wiring
 
 **`StorageModule`** (`storage.module.ts`)
-- imports: —
+- imports: `JwtModule`
 - controllers: `FilesController`
-- providers: `LocalStorageDriver`, `S3StorageDriver`, `StorageService`
+- providers: `LocalStorageDriver`, `S3StorageDriver`, `StorageService`, `StorageUrlSigner`
 - exports: `StorageService`
 
 
@@ -70,26 +76,42 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (6)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `files.controller.spec.ts` | 3 | FilesController |
-| `storage.service.spec.ts` | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.md WO-38.1, degradati… |
+| `files.controller.spec.ts` | 16 | FilesController · H2 — rag-sources is never served · a public folder · an ungated folder (ADR-091 named debt) · a priva… |
+| `local-storage.driver.spec.ts` | 6 | LocalStorageDriver.signedUrlFor · buildKey |
+| `s3-storage.driver.spec.ts` | 3 | S3StorageDriver · put · signedUrlFor |
+| `storage-url-signer.spec.ts` | 8 | StorageUrlSigner · lifetime |
+| `storage-visibility.spec.ts` | 4 | storage visibility |
+| `storage.service.spec.ts` | 13 | StorageService.putImage · StorageService.putDocument · StorageService.signedUrlFor (ADR-091) · StorageService — 38-resi… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `FilesController` | class | `files.controller.ts:27` | Serves files stored by the local storage driver. |
-| `LocalStorageDriver` | class | `local-storage.driver.ts:15` | Writes uploads to a directory on disk and serves them back through the API. |
-| `buildKey` | function | `local-storage.driver.ts:73` | "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-4f2a1b.jpg" |
-| `S3StorageDriver` | class | `s3-storage.driver.ts:14` | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
+| `FilesController` | class | `files.controller.ts:36` | Serves files stored by the local storage driver. |
+| `LocalStorageDriver` | class | `local-storage.driver.ts:17` | Writes uploads to a directory on disk and serves them back through the API (`FilesController`, which decides… |
+| `buildKey` | function | `local-storage.driver.ts:90` | "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-<32 hex characters>.jpg" |
+| `S3StorageDriver` | class | `s3-storage.driver.ts:22` | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
+| `STORAGE_URL_AUDIENCE` | const | `storage-url-signer.ts:11` | The `aud` of a storage URL token. |
+| `MAX_SIGNED_URL_TTL_SECONDS` | const | `storage-url-signer.ts:18` | The longest life a signed URL may have: 7 days, AWS Signature V4's own ceiling for a presigned URL — so a TTL… |
+| `assertSignedUrlTtl` | function | `storage-url-signer.ts:21` | Rejects a TTL that is not a whole number of seconds from 1 to MAX_SIGNED_URL_TTL_SECONDS — a caller's bug, ne… |
+| `StorageUrlSigner` | class | `storage-url-signer.ts:37` | Mints and checks the token of a local-driver signed URL (ADR-091): the same short-lived JWT under `JWT_ACCESS… |
+| `PUBLIC_FOLDERS` | const | `storage-visibility.ts:12` | Shown to anyone, by design: product photos on the storefront, auction lots to bidders. |
+| `UNGATED_FOLDERS` | const | `storage-visibility.ts:22` | Sensitive, and still served to anyone holding the URL, because browsers render them from URLs persisted in `P… |
+| `StoredObjectVisibility` | type | `storage-visibility.ts:34` | `public` — served to anyone, cached as immutable. |
+| `PUBLIC_CACHE_CONTROL` | const | `storage-visibility.ts:41` | Keys never change once written (every upload mints a new random key), so a public URL's bytes never change: o… |
+| `PRIVATE_CACHE_CONTROL` | const | `storage-visibility.ts:49` | No shared cache (a CDN, a proxy) may keep a copy, and no browser keeps one on disk on a shared back-office PC. |
+| `folderOf` | function | `storage-visibility.ts:56` | The first segment of a key, lower-cased. |
+| `visibilityOf` | function | `storage-visibility.ts:60` |  |
+| `cacheControlFor` | function | `storage-visibility.ts:67` |  |
 | `StoredFile` | interface | `storage.driver.ts:8` | Extension point: file storage. |
-| `PutFileInput` | interface | `storage.driver.ts:17` |  |
-| `StorageDriver` | interface | `storage.driver.ts:25` |  |
-| `StorageModule` | class | `storage.module.ts:13` |  |
+| `PutFileInput` | interface | `storage.driver.ts:22` |  |
+| `StorageDriver` | interface | `storage.driver.ts:30` |  |
+| `StorageModule` | class | `storage.module.ts:18` |  |
 | `MAX_IMAGE_BYTES` | const | `storage.service.ts:10` |  |
 | `StorageService` | class | `storage.service.ts:28` | Front door for file storage. |
 

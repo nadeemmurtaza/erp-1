@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,279 tracked files in `apps/api`, by directory.
+All 1,285 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1255,18 +1255,24 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `slo-recorder.service.ts` | service | 139 |  |
 | `slo.module.ts` | nest module | 17 |  |
 
-### `apps/api/src/core/storage` (8)
+### `apps/api/src/core/storage` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `files.controller.spec.ts` | unit test | 63 |  |
-| `files.controller.ts` | controller | 67 |  |
-| `local-storage.driver.ts` | driver | 84 |  |
-| `s3-storage.driver.ts` | driver | 92 |  |
-| `storage.driver.ts` | driver | 35 | Extension point: file storage. |
-| `storage.module.ts` | nest module | 14 |  |
-| `storage.service.spec.ts` | unit test | 224 |  |
-| `storage.service.ts` | service | 143 |  |
+| `files.controller.spec.ts` | unit test | 282 |  |
+| `files.controller.ts` | controller | 107 |  |
+| `local-storage.driver.spec.ts` | unit test | 57 |  |
+| `local-storage.driver.ts` | driver | 101 |  |
+| `s3-storage.driver.spec.ts` | unit test | 63 |  |
+| `s3-storage.driver.ts` | driver | 102 |  |
+| `storage-url-signer.spec.ts` | unit test | 85 |  |
+| `storage-url-signer.ts` | module | 71 |  |
+| `storage-visibility.spec.ts` | unit test | 53 |  |
+| `storage-visibility.ts` | module | 70 | Who may fetch a stored object by URL, decided by the folder its key starts with (ADR-091). |
+| `storage.driver.ts` | driver | 47 | Extension point: file storage. |
+| `storage.module.ts` | nest module | 19 |  |
+| `storage.service.spec.ts` | unit test | 243 |  |
+| `storage.service.ts` | service | 148 |  |
 
 ### `apps/api/src/core/throttling` (5)
 
@@ -1652,8 +1658,8 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `search-reindex.listener.ts` | event subscriber | 33 |  |
 | `search.controller.ts` | controller | 73 |  |
 | `search.module.ts` | nest module | 13 |  |
-| `search.service.spec.ts` | unit test | 331 |  |
-| `search.service.ts` | service | 419 |  |
+| `search.service.spec.ts` | unit test | 345 |  |
+| `search.service.ts` | service | 439 |  |
 
 ### `apps/api/src/modules/merchandising/search/dto` (1)
 
@@ -2719,7 +2725,7 @@ All 1,279 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `chunking.spec.ts` | unit test | 71 |  |
 | `chunking.ts` | module | 61 |  |
-| `pdf-extraction.service.spec.ts` | unit test | 196 |  |
+| `pdf-extraction.service.spec.ts` | unit test | 208 |  |
 | `pdf-extraction.service.ts` | service | 341 | Pinned to the last major (3.x) whose "legacy" Node build ships as |
 | `pg-vector.store.spec.ts` | unit test | 170 |  |
 | `pg-vector.store.ts` | module | 118 |  |

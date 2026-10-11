@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**613** markdown documents. These explain **why**; this index only says **where**.
+**614** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1900,6 +1900,23 @@ _no second-level headings_
 - 11. The five pillars  <sub>:722</sub>
 - Appendix A. Every product the research names, and its rows  <sub>:732</sub>
 - Appendix B. Company legend  <sub>:753</sub>
+
+### `docs/implementation/254-office-replacement-program.md`  <sub>971 lines</sub>
+
+- 1. Why this needs its own document  <sub>:20</sub>
+- 2. What already exists, verified, and what this program must reuse  <sub>:107</sub>
+- 3. The build-approach question: surfaced, not settled (OQ1)  <sub>:239</sub>
+- 4. Program architecture (proposed; each ADR lands with its first brief)  <sub>:467</sub>
+- 5. Zero-duplication rulings this program carries into every brief  <sub>:635</sub>
+- 6. Roadmap: tranches XW0–XW5  <sub>:669</sub>
+- 7. Program-level scope lenses (what each brief must close)  <sub>:757</sub>
+- 8. Open questions for the owner  <sub>:798</sub>
+- 9. Decisions the program waits on (ADR candidates, not written here)  <sub>:848</sub>
+- 10. Needs verification, never invented here  <sub>:862</sub>
+- 11. Findings made while checking (not fixed here)  <sub>:886</sub>
+- 12. Documents this changes  <sub>:927</sub>
+- 13. The five pillars  <sub>:946</sub>
+- 14. Out of scope (named, not silently skipped)  <sub>:956</sub>
 
 ### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>102 lines</sub>
 
@@ -4598,16 +4615,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>722 lines</sub>
+### `docs/implementation/README.md`  <sub>730 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:571</sub>
-- The two module groups  <sub>:600</sub>
-- How a work order runs  <sub>:637</sub>
-- Known gaps not yet owned by a phase  <sub>:655</sub>
-- When a brief is wrong  <sub>:682</sub>
-- Scope, honestly  <sub>:695</sub>
-- Gap-analysis roadmap references  <sub>:702</sub>
+- Dependency order  <sub>:579</sub>
+- The two module groups  <sub>:608</sub>
+- How a work order runs  <sub>:645</sub>
+- Known gaps not yet owned by a phase  <sub>:663</sub>
+- When a brief is wrong  <sub>:690</sub>
+- Scope, honestly  <sub>:703</sub>
+- Gap-analysis roadmap references  <sub>:710</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

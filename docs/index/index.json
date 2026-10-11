@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2924,
-    "lines": 463258,
+    "files": 2925,
+    "lines": 464237,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 578,
-      "lines": 108153,
-      "bytes": 6822847,
+      "files": 579,
+      "lines": 109132,
+      "bytes": 6922046,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -103385,6 +103385,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/254-office-replacement-program.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 971,
+      "bytes": 98133,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -103442,8 +103451,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 722,
-      "bytes": 110520,
+      "lines": 730,
+      "bytes": 111586,
       "doc": "",
       "symbols": []
     },

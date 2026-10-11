@@ -568,6 +568,14 @@ is a cross-domain coverage map, the same kind of document as
 |---|---|
 | [`253-distribution-stack-capability-map.md`](./253-distribution-stack-capability-map.md) | **Investigated, nothing built.** Every software capability in the stacks of 15 large US distributors, one row each (110 rows). Each row is bucketed as native build, hardware integration, authority integration or the pending CAD exception, and checked against the code and the documents of record. Counts: 50 already built or scoped, 19 already named, 36 genuinely new. The 55 rows that need a brief fall into 13 dependency-ordered tranches. 14 bucketing questions and 8 ADR candidates are left for the owner. Per-capability briefs follow only after the owner approves the bucketing |
 
+**Number 254** sits at the root for the same reason. It is the
+doc-of-record that doc 253 §7 Q3's resolution asked for, for the
+Office-replacement program:
+
+| File | What it is |
+|---|---|
+| [`254-office-replacement-program.md`](./254-office-replacement-program.md) | **Investigated, nothing built.** The program map and tranche breakdown for the native word processor, spreadsheet, presentation editor, mail client and calendar client (doc 253 rows I6 and I5). Tranche XW0 is a shared foundation: a core editing-engine seam plus the record layer, with authored files stored as I8 `documents` objects, never a second store. XW1–XW3 are three independently absent-able editor modules. XW4 extends doc 233's `mail` with its native screen, and XW5 extends `notify`'s meetings into a calendar. The CMS block model is ruled out as the document model. OQ1 asks the owner whether the editors are built from first principles or on a self-hosted open-source engine behind the seam; the recommendation is the engine. 9 owner questions and 7 ADR candidates are left open |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

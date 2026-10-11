@@ -560,6 +560,14 @@ with no automated check covering the gap:
 | [`249-cheques-post-dated-cheques-printing.md`](./finance-accounting/249-cheques-post-dated-cheques-printing.md) | **Planned, not built.** Issued and received cheques and PDCs. Cheque books are number ranges with computed issued/remaining counts. One state machine covers both directions. Settlements stay with their owning modules (`payments`, `purchasing`) and are reached by event, so no fact is posted twice. Bank-template printing uses the existing print-page idiom, with layouts as versioned data, one print per leaf and amount in words from `brand.ts`. Exact parameters, owner decisions OD-T1–OD-T7, and a full scope-lens map |
 | [`250-inter-branch-fund-transfers.md`](./finance-accounting/250-inter-branch-fund-transfers.md) | **Planned, not built.** Cash moved between two treasury accounts goes request → approval (core `ApprovalService`) → dispatch → counted receipt, with each transfer a numbered FTV voucher. Money in flight sits in `1050 Cash in Transit`, and a shortage becomes a third-person variance. Cross-brand transfers are refused until an intercompany brief exists. Till cash gets an address. Full scope-lens map |
 
+**Number 253** sits at this tree's root rather than in a domain folder. It
+is a cross-domain coverage map, the same kind of document as
+`RETAIL-VERTICAL-COVERAGE-MATRIX.md` and the two gap analyses below:
+
+| File | What it is |
+|---|---|
+| [`253-distribution-stack-capability-map.md`](./253-distribution-stack-capability-map.md) | **Investigated, nothing built.** Every software capability in the stacks of 15 large US distributors, one row each (110 rows). Each row is bucketed as native build, hardware integration, authority integration or the pending CAD exception, and checked against the code and the documents of record. Counts: 50 already built or scoped, 19 already named, 36 genuinely new. The 55 rows that need a brief fall into 13 dependency-ordered tranches. 14 bucketing questions and 8 ADR candidates are left for the owner. Per-capability briefs follow only after the owner approves the bucketing |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without
@@ -702,6 +710,10 @@ scoping pass starts from an inventory instead of a blank page:
   Financial Management feature list.
 - **[`GAP-ANALYSIS-ODOO-APPS.md`](./GAP-ANALYSIS-ODOO-APPS.md)** — Odoo's
   own published app catalog.
+- **[`253-distribution-stack-capability-map.md`](./253-distribution-stack-capability-map.md)**
+  — the technology stacks of 15 large US distributors, bucketed under the
+  owner's "native by default, integrate only hardware, authorities and
+  (pending) CAD" mandate.
 - **[`finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`](./finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md)**
   — a single capability named as entirely unbuilt in both lists above,
   written up on its own since it needs a new actor (`Bank`) this

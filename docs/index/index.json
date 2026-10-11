@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2923,
-    "lines": 462474,
+    "files": 2924,
+    "lines": 463258,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 577,
-      "lines": 107369,
-      "bytes": 6704000,
+      "files": 578,
+      "lines": 108153,
+      "bytes": 6822847,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -103376,6 +103376,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/253-distribution-stack-capability-map.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 772,
+      "bytes": 117663,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -103433,8 +103442,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 710,
-      "bytes": 109336,
+      "lines": 722,
+      "bytes": 110520,
       "doc": "",
       "symbols": []
     },

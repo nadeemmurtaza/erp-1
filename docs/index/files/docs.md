@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 577 tracked files in `docs/*`, by directory.
+All 578 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,18 +558,19 @@ All 577 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (12)
+### `docs/implementation` (13)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
+| `253-distribution-stack-capability-map.md` | doc | 772 |  |
 | `DECISIONS.md` | doc | 134 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 710 |  |
+| `README.md` | doc | 722 |  |
 | `RETAIL-ERP.md` | doc | 1108 |  |
 | `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |

@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**612** markdown documents. These explain **why**; this index only says **where**.
+**613** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1884,6 +1884,22 @@ _no second-level headings_
 - 6. Working with these briefs  <sub>:372</sub>
 - 7. Commit and PR conventions  <sub>:387</sub>
 - 8. Interface rules  <sub>:440</sub>
+
+### `docs/implementation/253-distribution-stack-capability-map.md`  <sub>772 lines</sub>
+
+- 1. What this is  <sub>:16</sub>
+- 2. Results at a glance  <sub>:126</sub>
+- 3. The invisible-integration contract  <sub>:173</sub>
+- 4. The master capability matrix  <sub>:209</sub>
+- 5. Zero-duplication rulings this map carries into every future brief  <sub>:392</sub>
+- 6. Roadmap for the 55 rows that need a brief  <sub>:433</sub>
+- 7. Could not bucket: questions for the owner  <sub>:529</sub>
+- 8. Decisions the roadmap waits on (ADR candidates, not written here)  <sub>:671</sub>
+- 9. Findings made while checking (not matrix rows)  <sub>:684</sub>
+- 10. Documents this changes  <sub>:703</sub>
+- 11. The five pillars  <sub>:722</sub>
+- Appendix A. Every product the research names, and its rows  <sub>:732</sub>
+- Appendix B. Company legend  <sub>:753</sub>
 
 ### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>102 lines</sub>
 
@@ -4582,16 +4598,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>710 lines</sub>
+### `docs/implementation/README.md`  <sub>722 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:563</sub>
-- The two module groups  <sub>:592</sub>
-- How a work order runs  <sub>:629</sub>
-- Known gaps not yet owned by a phase  <sub>:647</sub>
-- When a brief is wrong  <sub>:674</sub>
-- Scope, honestly  <sub>:687</sub>
-- Gap-analysis roadmap references  <sub>:694</sub>
+- Dependency order  <sub>:571</sub>
+- The two module groups  <sub>:600</sub>
+- How a work order runs  <sub>:637</sub>
+- Known gaps not yet owned by a phase  <sub>:655</sub>
+- When a brief is wrong  <sub>:682</sub>
+- Scope, honestly  <sub>:695</sub>
+- Gap-analysis roadmap references  <sub>:702</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

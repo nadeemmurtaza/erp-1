@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { createElement, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { armReveal } from '@/lib/reveal';
 
 /**
@@ -17,9 +17,20 @@ import { armReveal } from '@/lib/reveal';
  *
  * Reduced motion, no `IntersectionObserver`, and no scripting all land on the
  * same result: everything is simply visible. See `armReveal`.
+ *
+ * `as` is the element it renders: `ul` for a list of peers (children are then
+ * `li`), so a list keeps its semantics instead of becoming a `div` with roles.
  */
-export function RevealScope({ className, children }: { className?: string; children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
+export function RevealScope({
+  as = 'div',
+  className,
+  children,
+}: {
+  as?: 'div' | 'ul' | 'ol';
+  className?: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
     const root = ref.current;
@@ -27,9 +38,5 @@ export function RevealScope({ className, children }: { className?: string; child
     return armReveal(Array.from(root.querySelectorAll<HTMLElement>(':scope > [data-reveal-item]')));
   }, []);
 
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
+  return createElement(as, { ref, className }, children);
 }

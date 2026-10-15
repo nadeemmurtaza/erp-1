@@ -8,6 +8,9 @@
 
 // Page anatomy — context, title, one action, then the workspace.
 export { PageHeader } from './page-header';
+export { IconTile } from './icon-tile';
+export { PageIdentityProvider, usePageIdentity, type PageIdentity } from './page-identity';
+export { TiltLink, useTilt } from './tilt';
 export { Section } from './section';
 
 // Progressive disclosure — the mechanism layers 3 and 4 depend on.

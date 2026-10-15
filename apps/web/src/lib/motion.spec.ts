@@ -19,6 +19,7 @@ import {
   typedFrame,
   typedWordsFrame,
   MOTION_MS,
+  tiltAngles,
 } from './motion';
 
 const motion = BRAND.theme.motion;
@@ -326,5 +327,41 @@ describe('fineStaggerDelayMs (CRD-6)', () => {
   it('never goes negative, and a whole grid still finishes inside one slow step', () => {
     expect(fineStaggerDelayMs(-2)).toBe(0);
     expect(fineStaggerDelayMs(999)).toBeLessThanOrEqual(motion.duration.slow);
+  });
+});
+
+describe('tiltAngles', () => {
+  const W = 300;
+  const H = 200;
+
+  it('is flat with the pointer at the centre', () => {
+    expect(tiltAngles(150, 100, W, H)).toEqual({ x: 0, y: 0 });
+  });
+
+  it('leans to the limit at the edges and corners, and never past it', () => {
+    const max = motion.tilt.maxDeg;
+    expect(tiltAngles(W, 100, W, H)).toEqual({ x: 0, y: max });
+    expect(tiltAngles(0, 100, W, H)).toEqual({ x: 0, y: -max });
+    expect(tiltAngles(150, 0, W, H)).toEqual({ x: max, y: 0 });
+    expect(tiltAngles(150, H, W, H)).toEqual({ x: -max, y: 0 });
+    expect(tiltAngles(W * 5, H * 5, W, H)).toEqual({ x: -max, y: max });
+    expect(tiltAngles(-W * 5, -H * 5, W, H)).toEqual({ x: max, y: -max });
+  });
+
+  it('leans in proportion between the centre and an edge', () => {
+    expect(tiltAngles(225, 100, W, H, 4)).toEqual({ x: 0, y: 2 });
+  });
+
+  it('does not lean a card that has no size', () => {
+    expect(tiltAngles(10, 10, 0, 0)).toEqual({ x: 0, y: 0 });
+    expect(tiltAngles(10, 10, -5, 20)).toEqual({ x: 0, y: 0 });
+  });
+
+  it('stays within the token limit for any pointer position', () => {
+    for (const [ox, oy] of [[0, 0], [W, H], [17, 193], [301, -4], [150, 100]] as const) {
+      const { x, y } = tiltAngles(ox, oy, W, H);
+      expect(Math.abs(x)).toBeLessThanOrEqual(motion.tilt.maxDeg);
+      expect(Math.abs(y)).toBeLessThanOrEqual(motion.tilt.maxDeg);
+    }
   });
 });

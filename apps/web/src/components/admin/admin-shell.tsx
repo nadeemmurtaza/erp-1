@@ -17,6 +17,9 @@ import {
 import { CommandPalette } from './command-palette';
 import { UploadProvider } from './upload-provider';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { IconTile } from '@/components/ui/icon-tile';
+import { PageIdentityProvider, type PageIdentity } from '@/components/ui/page-identity';
+import { navGroupTone } from '@/lib/tone';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
 import { BRAND } from '@newax/shared';
@@ -94,6 +97,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
     return best;
   }, null as AdminNavItem | null);
   const breadcrumbs = breadcrumbTrail(activeItem, items);
+  // The page's header wears the glyph and tone of the nav group it sits in (PageHeader reads this).
+  const activeGroup = activeItem ? NAV_GROUPS.find((group) => group.key === activeItem.group) : undefined;
+  const identity: PageIdentity | null =
+    activeGroup && ICON_MAP[activeGroup.icon]
+      ? { icon: ICON_MAP[activeGroup.icon], tone: navGroupTone(activeGroup.key) }
+      : null;
 
   // The upload provider wraps the whole frame, so a transfer started on one page keeps going, and keeps its tray, as the operator moves to another (UPL-6).
   return (
@@ -161,7 +170,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex min-h-14 flex-wrap items-center gap-x-4 gap-y-1 border-b border-neutral-100 bg-white px-4 py-1">
+        <header className="flex min-h-14 flex-wrap items-center gap-x-4 gap-y-1 bg-white px-4 py-1 shadow-raised">
           <button
             type="button"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-neutral-900/80 hover:bg-neutral-50 lg:hidden"
@@ -210,7 +219,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <main className="min-w-0 flex-1 p-4 sm:p-6">
           <Breadcrumbs trail={breadcrumbs} />
           <AdminProviders user={user} enabledModules={enabledModules}>
-            {children}
+            <PageIdentityProvider value={identity}>{children}</PageIdentityProvider>
           </AdminProviders>
         </main>
       </div>
@@ -384,7 +393,7 @@ function NavGroup({
           holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
         )}
       >
-        {GroupIcon && <GroupIcon className="h-4 w-4 shrink-0" />}
+        {GroupIcon && <IconTile icon={GroupIcon} tone={navGroupTone(group.key)} size="sm" />}
         <span className="flex-1 text-start">{group.label}</span>
         {!holdsActivePage && <Chevron open={open} />}
       </button>
@@ -419,7 +428,7 @@ function NavLink({
         'block rounded-md px-3 py-2 text-sm transition-colors duration-normal',
         compact && 'whitespace-nowrap',
         isActive
-          ? 'bg-neutral-50 font-medium text-accent-hover'
+          ? 'nav-rail bg-accent/10 font-medium text-accent-hover'
           : 'text-neutral-900/75 hover:bg-neutral-50 hover:text-neutral-900',
       )}
     >

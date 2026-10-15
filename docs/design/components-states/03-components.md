@@ -56,7 +56,7 @@ under their own laws.
 | `Bento` `BentoTile` | a board of tiles of different weight on one grid: `hero` (2×2), `wide`, `tall`, `sm`, each in a `surface`, `quiet`, `accent` or `inverse` tone. One main job per tile; one column below `md`, so a phone reads them in source order |
 | `Skeleton` `SkeletonText` `SkeletonRegion` | the first-load placeholder, drawn from the content it stands in for. `SkeletonRegion` is the `role="status"` wrapper with a screen-reader label; the pieces inside are `aria-hidden`. Never stands in for an empty or failed state |
 | `Switch` | an on/off setting that takes effect now: `role="switch"`, a label that names the setting (not the action), an optional description, 44 px on touch. A choice that is submitted later is a checkbox, not a switch |
-| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named. `DataTable` takes `stacked` to read as cards below `md` (`02-layout.md`, reflow rule 3), and `stickyFirst` to pin the first column while the rest scroll sideways |
+| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named. `DataTable` takes `stacked` to read as cards below `md` (`02-layout.md`, reflow rule 3), and `stickyFirst` to pin the first column while the rest scroll sideways. It sits on `.table-surface` (the card surface and edge, steps aside inside a card, dialog or metric strip); `Badge` leads a meaningful tone with a 6 px dot in its own colour; an empty table is an `EmptyState` tile and a line |
 
 A notice has four tones: `notice-error`, `notice-success`, `notice-warning` (waiting on someone, or about to end — the same amber as the Badge `warning` tone) and `notice-info`.
 
@@ -336,8 +336,9 @@ question. A label that disappears on focus is a memory test (`COG-6`).
 focus ring that is never removed (`ACC-2`, `COL-4`).
 
 ### FRM-5 · Depth
-**Here** — a 1 px border and a surface lit from the top, with no shadow at rest
-(`CRD-4`: a border and a shadow on one edge draw two boundaries). The card takes
+**Here** — a surface lit from the top whose edge is the 1 px ring of `shadow-card`,
+with the border `transparent` (`CRD-4`: one boundary, never a border and a shadow
+drawing two). The card takes
 the house corner (`--radius-lg`) and
 its fields the field corner (`--radius`); the reel this came from used 24 and
 12, which are soft-brand values and one decision away (see ADR-083's seventh
@@ -368,11 +369,14 @@ lines inside it and 8 of inset around the image (`SPA-1`).
 and the button and nothing else on the card (`COL-4`, `COG-12`).
 
 ### CRD-4 · Depth
-**Here** — a 1 px border and a surface lit from the top (`.card-lit`), with no
-shadow at rest: a border and a shadow on the same edge draw two boundaries
-(`ui.md`). The shadow arrives with the lift, when the card rises under a pointer
-and it means "this rose". The reel this came from drew both at rest; that is a
-soft-brand habit one decision away, not a literal to copy.
+**Here** — a surface lit from the top (`.card`, `.card-lit`) whose edge is the first
+layer of `shadow-card`: a 1 px ring at 6% ink, then two soft layers under it, with
+the border `transparent`. That is one boundary and a depth, where a border plus a
+shadow would be two boundaries (`ui.md`). On a pointer the card rises to
+`shadow-overlay` and, where it is a link to a thing, leans toward the hand by at
+most 4 degrees (`.lift`, `.tilt`) and its icon tile tips and glows; "this rose".
+The reel this came from drew a hard border and a bloom at rest; the ring is the
+house version of the same depth (ADR-083, twelfth addendum).
 
 ### CRD-5 · Corners curve together
 **Here** — an inner corner is the outer corner minus the gap between them. A

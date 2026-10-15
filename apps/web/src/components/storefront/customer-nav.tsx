@@ -75,7 +75,8 @@ export function CustomerNav() {
   return (
     <Link
       href={ROUTES.storefront.login}
-      className="flex items-center gap-2 text-sm text-neutral-900/70 transition-colors duration-normal hover:text-neutral-900"
+      data-tone="indigo"
+      className="tone-hover flex h-9 w-9 items-center justify-center rounded text-sm text-neutral-900/70"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />

@@ -44,6 +44,7 @@ instead of forty.
 | a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
 | whether a component already exists | `docs/index/cross/components.md` |
 | how something should look, behave or read | `docs/index/cross/design-system.md` |
+| a token, palette, motion, layout, component, asset or template from earlier work | `library/INDEX.md` |
 | everything about one API module | `docs/index/modules/<name>.md` |
 | what a file exports, with line numbers | `docs/index/symbols/<area>.md` |
 | every tracked file, by area | `docs/index/cross/files.md` |

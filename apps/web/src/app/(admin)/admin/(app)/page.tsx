@@ -9,6 +9,7 @@ import { RangePicker, DASHBOARD_RANGES } from '@/components/admin/range-picker';
 import { ROUTES } from '@/constants/routes';
 import { DASHBOARD_GROUPS, cardsFor, type DashboardCard } from '@/components/admin/dashboard/card-registry';
 import { CardGroup } from '@/components/admin/dashboard/card-group';
+import { RevealScope } from '@/components/ui/reveal-scope';
 import { NeedsAttentionStrip } from '@/components/admin/dashboard/needs-attention-strip';
 import { ActionHubWidget } from '@/components/admin/dashboard/action-hub-widget';
 import { LiveFeedWidget } from '@/components/admin/dashboard/live-feed-widget';
@@ -76,7 +77,7 @@ export default function AdminDashboardPage() {
         </p>
       ) : null}
 
-      <div className="flex flex-col gap-3">
+      <RevealScope className="flex flex-col gap-3">
         {DASHBOARD_GROUPS.map((group) => {
           const groupCards = visibleCards.filter((card) => card.group === group.key);
           if (groupCards.length === 0) return null;
@@ -95,7 +96,7 @@ export default function AdminDashboardPage() {
             />
           );
         })}
-      </div>
+      </RevealScope>
 
       <div className="mt-4">
         <ComparisonPanel days={days} />

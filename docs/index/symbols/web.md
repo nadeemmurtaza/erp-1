@@ -40,7 +40,7 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `layout.tsx` | `AdminAppLayout` | default | :16 | Wraps every signed-in back-office page in the shell. |
 | `loading.tsx` | `Loading` | default | :14 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | `AdminDashboardPage` | default | :32 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
+| `page.tsx` | `AdminDashboardPage` | default | :33 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account`
 
@@ -101,7 +101,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AuctionDetailPage` | default | :98 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
+| `page.tsx` | `AuctionDetailPage` | default | :99 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
@@ -1288,7 +1288,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :1 |  |
-| `page.tsx` | `AuctionsPage` | default | :32 | Auction list (launchpad-apps/234-auction-app.md §11, WO-234.4). |
+| `page.tsx` | `AuctionsPage` | default | :33 | Auction list (launchpad-apps/234-auction-app.md §11, WO-234.4). |
 
 ### `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]`
 
@@ -1454,7 +1454,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `admin-shell.tsx` | `AdminShell` | function | :37 | The back office frame: role guard, sidebar and header. |
+| `admin-shell.tsx` | `AdminShell` | function | :40 | The back office frame: role guard, sidebar and header. |
 | `auction-bid-ledger.tsx` | `LedgerLot` | interface | :28 |  |
 | `auction-bid-ledger.tsx` | `AuctionBidLedger` | function | :45 | launchpad-apps/234-auction-app.md (WO-234.2) — every accepted bid on one lot, newest first, as a si… |
 | `auction-bidder-sheet.tsx` | `SheetLot` | interface | :26 |  |
@@ -1673,7 +1673,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `action-hub-widget.tsx` | `ActionHubWidget` | function | :19 | The manager action hub's dashboard widget (admin-platform/44-manager-action-hub.md WO-44.4) — a new… |
-| `card-group.tsx` | `CardGroup` | function | :29 | One of the dashboard's nine group rows (the "collapsed groups" layout): closed by default, showing… |
+| `card-group.tsx` | `CardGroup` | function | :31 | One of the dashboard's nine group rows (the "collapsed groups" layout): closed by default, showing… |
 | `card-registry.ts` | `DASHBOARD_GROUPS` | const | :19 | A dashboard card is a registry entry, never a component (10-admin-dashboard.md D1) — mirrors `nav-r… |
 | `card-registry.ts` | `DashboardGroupKey` | type | :31 |  |
 | `card-registry.ts` | `ValueFormat` | type | :34 | Matches `MetricValue.unit` 1:1, plus the client-only rendering choices `unit` alone can't express (… |
@@ -1683,10 +1683,10 @@ Every top-level export in `web`, with the line to open.
 | `comparison-panel.tsx` | `ComparisonPanel` | function | :20 | The one comparative chart the owner asked for by name (Phase 10's own "Why"), filling the empty slo… |
 | `gross-profit-today-widget.tsx` | `GrossProfitTodayWidget` | function | :33 | WO-68.3 (68-realtime-gross-profit.md) — a new card on the existing dashboard, not a new page. |
 | `live-feed-widget.tsx` | `LiveFeedWidget` | function | :21 | The live operational feed's dashboard widget (analytics-reporting/58-live-operational-feed.md WO-58… |
-| `metric-card.tsx` | `MetricCardData` | interface | :9 |  |
-| `metric-card.tsx` | `formatValue` | function | :15 |  |
-| `metric-card.tsx` | `MetricCard` | function | :50 | The whole dashboard card grid boils down to this one component (10-admin-dashboard.md D1) — every c… |
-| `metric-card.tsx` | `MetricCardWithSparkline` | function | :120 | The sparkline-bearing variant of the same tile, for the handful of headline cards D1 names. |
+| `metric-card.tsx` | `MetricCardData` | interface | :10 |  |
+| `metric-card.tsx` | `formatValue` | function | :16 |  |
+| `metric-card.tsx` | `MetricCard` | function | :54 | The whole dashboard card grid boils down to this one component (10-admin-dashboard.md D1) — every c… |
+| `metric-card.tsx` | `MetricCardWithSparkline` | function | :129 | The sparkline-bearing variant of the same tile, for the handful of headline cards D1 names. |
 | `needs-attention-strip.tsx` | `NeedsAttentionStrip` | function | :26 | "The one genuinely good part of the current page" (WO-A.4's own words) — kept, not rebuilt, straigh… |
 | `use-dashboard-metrics.ts` | `DashboardMetrics` | interface | :11 |  |
 | `use-dashboard-metrics.ts` | `useDashboardMetrics` | function | :26 | The dashboard's ONE network request per range change (WO-A.4's own acceptance criterion). |
@@ -1696,7 +1696,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `app-icons.ts` | `LAUNCHPAD_ICONS` | const | :23 | One glyph per `LaunchpadIconKey`. |
-| `app-tile.tsx` | `AppTile` | function | :12 | One app on the launchpad. |
+| `app-tile.tsx` | `AppTile` | function | :15 | One app on the launchpad. |
 | `launchpad-screen.tsx` | `LaunchpadScreen` | function | :39 | The launchpad: the apps this person can open, one tile each. |
 | `launchpad.ts` | `LaunchpadEntry` | interface | :11 | One door inside an app: a nav-registry entry this person can actually open. |
 | `launchpad.ts` | `LaunchpadTileData` | interface | :17 |  |
@@ -1814,14 +1814,14 @@ Every top-level export in `web`, with the line to open.
 | `dispatch-machine.ts` | `FAILURE_COPY` | const | :116 | What happened, why, and what to do next (`FLO-7`). |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` | function | :106 |  |
 | `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :419 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
-| `foundations.tsx` | `GallerySection` | function | :21 | ── frame ─────────────────────────────────────────────────────────────── |
-| `foundations.tsx` | `Group` | function | :46 |  |
-| `foundations.tsx` | `ColourFoundations` | function | :109 |  |
-| `foundations.tsx` | `ContrastTable` | function | :207 |  |
-| `foundations.tsx` | `TypeFoundations` | function | :265 |  |
-| `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
-| `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :66 | The design system, rendered by the system it describes. |
+| `foundations.tsx` | `GallerySection` | function | :22 | ── frame ─────────────────────────────────────────────────────────────── |
+| `foundations.tsx` | `Group` | function | :47 |  |
+| `foundations.tsx` | `ColourFoundations` | function | :110 |  |
+| `foundations.tsx` | `ContrastTable` | function | :220 |  |
+| `foundations.tsx` | `TypeFoundations` | function | :278 |  |
+| `foundations.tsx` | `SpaceFoundations` | function | :310 | ── space, size, radius ───────────────────────────────────────────────── |
+| `foundations.tsx` | `ElevationFoundations` | function | :373 |  |
+| `gallery.tsx` | `DesignSystemGallery` | function | :68 | The design system, rendered by the system it describes. |
 | `layering.tsx` | `LayeringSpecimen` | function | :86 |  |
 | `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
 | `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
@@ -1835,6 +1835,7 @@ Every top-level export in `web`, with the line to open.
 | `patterns.tsx` | `FROSTED` | const | :57 | Frosted: 85% of the overlay surface over a blur. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | function | :420 | ── the list ──────────────────────────────────────────────────────────── |
+| `premium-specimens.tsx` | `PremiumSpecimens` | function | :20 | The colour-and-life pass (ADR-083, twelfth addendum), each part as the real class or component: the… |
 | `publish-audience.tsx` | `PublishAudienceSpecimen` | function | :142 |  |
 | `scope-chip-editor.tsx` | `ScopeChipEditor` | function | :24 | A set of scopes you can take from and add to: removable chips and one "Add" select. |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | function | :397 |  |
@@ -1908,16 +1909,16 @@ Every top-level export in `web`, with the line to open.
 | `lot-settlement.tsx` | `LotCosts` | function | :124 | The one line that says what winning costs, before anyone bids: the buyer's premium on top of the wi… |
 | `lot-skeleton.tsx` | `LotPageSkeleton` | function | :4 | The lot page's first-load placeholder: the title, then the panel and the history, in the boxes they… |
 | `lot-status.tsx` | `LotFigure` | function | :20 | The lot's price: the one figure the page is about. |
-| `lot-status.tsx` | `LotClock` | function | :55 | Time on the lot, counted against the server's clock. |
-| `lot-status.tsx` | `LotStanding` | function | :102 | Where a signed-in bidder stands: leading or outbid, in words. |
-| `lot-status.tsx` | `LotOutcome` | function | :130 | How a closed lot ended, and the way on. |
+| `lot-status.tsx` | `LotClock` | function | :56 | Time on the lot, counted against the server's clock. |
+| `lot-status.tsx` | `LotStanding` | function | :107 | Where a signed-in bidder stands: leading or outbid, in words. |
+| `lot-status.tsx` | `LotOutcome` | function | :135 | How a closed lot ended, and the way on. |
 
 ### `apps/web/src/components/ui`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` | type | :14 | A status mark, in the house corner. |
-| `badge.tsx` | `Badge` | function | :25 |  |
+| `badge.tsx` | `BadgeTone` | type | :18 | A status mark, in the house corner. |
+| `badge.tsx` | `Badge` | function | :29 |  |
 | `bento.tsx` | `Bento` | function | :24 | A bento: one job, shown as a handful of tiles of deliberately different sizes, so the eye finds the… |
 | `bento.tsx` | `BentoSize` | type | :37 |  |
 | `bento.tsx` | `BentoTone` | type | :38 |  |
@@ -1931,15 +1932,15 @@ Every top-level export in `web`, with the line to open.
 | `count-up.tsx` | `CountUp` | function | :41 | A figure that counts to its value instead of appearing at it. |
 | `danger-zone.tsx` | `DangerAction` | interface | :6 |  |
 | `danger-zone.tsx` | `DangerZone` | function | :37 | Where an object's destructive acts live (DNG-5). |
-| `data-table.tsx` | `DataTableColumn` | interface | :29 | The admin's one table. |
-| `data-table.tsx` | `DataTable` | function | :95 |  |
+| `data-table.tsx` | `DataTableColumn` | interface | :30 | The admin's one table. |
+| `data-table.tsx` | `DataTable` | function | :96 |  |
 | `date-field.tsx` | `DateFieldProps` | interface | :50 |  |
 | `date-field.tsx` | `DateField` | function | :102 | A date is a text field first (MNU-2, `ACT-5`): it reads what a person types (`2026-10-03`, `3/10/20… |
 | `dialog.tsx` | `Dialog` | function | :36 | A modal dialog, with the behaviour every modal is supposed to have. |
 | `disclosure.tsx` | `Disclosure` | function | :30 | Advanced options, folded away until asked for. |
 | `draw-icon.tsx` | `DrawIcon` | function | :26 | A stroked icon that draws itself, once, when it appears. |
 | `dropzone.tsx` | `Dropzone` | function | :62 | A place to put files: the whole card is the target (UPL-1). |
-| `empty-state.tsx` | `EmptyState` | function | :17 | What a list shows when it has nothing in it. |
+| `empty-state.tsx` | `EmptyState` | function | :20 | What a list shows when it has nothing in it. |
 | `field.tsx` | `FieldControlProps` | interface | :5 | What a `Field` hands its control, so the label, hint and error are wired by construction. |
 | `field.tsx` | `Field` | function | :34 | One labelled field (FRM-3, `PER-1`). |
 | `field.tsx` | `FormStack` | function | :87 | A form's rhythm (FRM-2, `SPA-2`): fields 16px apart, and 32px between the last of them and the acti… |
@@ -1950,7 +1951,11 @@ Every top-level export in `web`, with the line to open.
 | `filter-bar.tsx` | `useFilterPage` | function | :170 | The page number, from the same URL — `Pagination`'s `onChange` writes it back with `setFilterPage`,… |
 | `filter-bar.tsx` | `useSetFilterPage` | function | :176 |  |
 | `hold-to-confirm.tsx` | `HoldToConfirm` | function | :39 | A destructive control that is confirmed by holding it (DNG-1). |
+| `icon-tile.tsx` | `IconTile` | function | :32 | An icon on its own tinted tile, in one of the brand's seven tones (ADR-083, twelfth addendum). |
 | `index.ts` | `PageHeader` | re-export |  | from `./page-header` |
+| `index.ts` | `IconTile` | re-export |  | from `./icon-tile` |
+| `index.ts` | `PageIdentityProvider` `usePageIdentity` `type PageIdentity` | re-export |  | from `./page-identity` |
+| `index.ts` | `TiltLink` `useTilt` | re-export |  | from `./tilt` |
 | `index.ts` | `Section` | re-export |  | from `./section` |
 | `index.ts` | `Disclosure` | re-export |  | from `./disclosure` |
 | `index.ts` | `Tabs` `type TabItem` | re-export |  | from `./tabs` |
@@ -1999,18 +2004,21 @@ Every top-level export in `web`, with the line to open.
 | `menu.tsx` | `Menu` | function | :62 | The listbox popover that `Select` and `MultiSelect` open: one implementation of the list, so the ke… |
 | `menu.tsx` | `MENU_TRIGGER_CLASS` | const | :404 | The classes of the button that opens a menu: a `.field-input` that reads as a select. |
 | `menu.tsx` | `ValueProxy` | function | :416 | What lets a custom control behave in a `<form>` like the native one it replaced. |
-| `metric-strip.tsx` | `MetricItem` | interface | :6 |  |
-| `metric-strip.tsx` | `MetricStrip` | function | :47 | A row of figures with no boxes in it, and a drawer underneath. |
+| `metric-strip.tsx` | `MetricItem` | interface | :8 |  |
+| `metric-strip.tsx` | `MetricStrip` | function | :52 | A row of figures with no boxes in it, and a drawer underneath. |
 | `multi-select.tsx` | `MultiSelectOption` | type | :9 |  |
 | `multi-select.tsx` | `MultiSelectProps` | interface | :11 |  |
 | `multi-select.tsx` | `MultiSelect` | function | :48 | A multiple choice (MNU-3): checkboxes in a menu that STAYS OPEN on each pick, so choosing five thin… |
 | `page-enter.tsx` | `PageEnter` | function | :27 | A page arrives. |
-| `page-header.tsx` | `PageHeader` | function | :21 | The top of every page: context, title, one line of explanation, and the one primary action. |
+| `page-header.tsx` | `PageHeader` | function | :30 | The top of every page: context, title, one line of explanation, and the one primary action. |
+| `page-identity.tsx` | `PageIdentity` | interface | :13 | Who the page is, for its header: the glyph and tone of the part of the product it belongs to (ADR-0… |
+| `page-identity.tsx` | `PageIdentityProvider` | function | :20 |  |
+| `page-identity.tsx` | `usePageIdentity` | function | :24 |  |
 | `pagination.tsx` | `PaginationMeta` | interface | :15 | The prev/next/page-count block, written out by hand at the foot of every paged list — eight times,… |
 | `pagination.tsx` | `Pagination` | function | :23 |  |
 | `progress-bar.tsx` | `ProgressBar` | function | :28 | A bar that fills to a fraction of something, where a `ProgressRing` would be too tall: a line in a… |
 | `progress-ring.tsx` | `ProgressRing` | function | :24 | A ring that fills to a fraction, with the figure (or an icon) at its centre. |
-| `reveal-scope.tsx` | `RevealScope` | function | :21 | A container whose direct children marked `data-reveal-item` arrive as they scroll into view, a few… |
+| `reveal-scope.tsx` | `RevealScope` | function | :24 | A container whose direct children marked `data-reveal-item` arrive as they scroll into view, a few… |
 | `section-rail.tsx` | `RailSection` | interface | :6 |  |
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
@@ -2037,6 +2045,8 @@ Every top-level export in `web`, with the line to open.
 | `theme-init-script.tsx` | `ThemeInitScript` | function | :19 | Inline this in the `<head>` of every root layout that renders `<html>`. |
 | `theme-toggle.tsx` | `ThemeToggleLabels` | interface | :25 | The control that switches theme. |
 | `theme-toggle.tsx` | `ThemeToggle` | function | :51 |  |
+| `tilt.tsx` | `useTilt` | function | :19 | Lean a card toward the pointer (ADR-083, twelfth addendum). |
+| `tilt.tsx` | `TiltLink` | function | :51 | A `next/link` that is a card: it lifts (`.lift`) and leans (`.tilt`). |
 | `truncate-reveal.tsx` | `TruncateReveal` | function | :28 | A label cut short by an ellipsis that scrolls to show the rest while the pointer is on it. |
 | `upload-tray.tsx` | `UploadTray` | function | :141 | The docked list of transfers: one lane per file, summary on top (UPL-5, UPL-6). |
 
@@ -2390,6 +2400,7 @@ Every top-level export in `web`, with the line to open.
 | `motion.ts` | `reelParts` | function | :231 | The characters of a formatted figure as odometer parts: an ASCII digit rolls (`digit` is its value… |
 | `motion.ts` | `ringStroke` | function | :242 | Stroke geometry for a progress ring: the dash array is the circumference and the offset is how much… |
 | `motion.ts` | `MOTION_MS` | const | :252 | How long a JS-driven motion runs, by name, from the same tokens CSS reads. |
+| `motion.ts` | `tiltAngles` | function | :271 | The lean of a card toward a pointer, in degrees (ADR-083, twelfth addendum). |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
 | `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
 | `popover-position.ts` | `Rect` | interface | :22 | A rectangle in viewport coordinates, the shape `getBoundingClientRect()` returns. |
@@ -2407,6 +2418,15 @@ Every top-level export in `web`, with the line to open.
 | `success-state.ts` | `burstTravel` | function | :55 | Where each of `count` sparks starts and ends, evenly round the badge with the first straight up. |
 | `success-state.ts` | `sparkKeyframes` | function | :75 | The Web Animations keyframes for one spark: out along its ray while it shrinks to `scale.pop` and f… |
 | `success-state.ts` | `BURST_TIMING` | const | :87 | How the burst is timed. |
+| `tone.ts` | `KIND_TONE` | const | :19 | The kinds of thing, and the one tone each wears. |
+| `tone.ts` | `ToneKind` | type | :38 |  |
+| `tone.ts` | `toneForKey` | function | :41 | The same input always gives the same tone, on the server and in the browser. |
+| `tone.ts` | `NAV_GROUP_KIND` | const | :48 | The admin sidebar's groups (`NAV_GROUPS` in nav-registry.ts). |
+| `tone.ts` | `DASHBOARD_GROUP_KIND` | const | :65 | The dashboard's groups (`DASHBOARD_GROUPS`), in the order they are shown; neighbours are never alik… |
+| `tone.ts` | `LAUNCHPAD_KIND` | const | :78 | The launchpad's apps, by manifest icon key. |
+| `tone.ts` | `navGroupTone` | function | :99 | The nav group's tone, or a stable one of its own for a group this file has not heard of. |
+| `tone.ts` | `dashboardGroupTone` | function | :104 | The dashboard group's tone, or a stable one of its own for a group this file has not heard of. |
+| `tone.ts` | `launchpadTone` | function | :109 | The launchpad app's tone, or a stable one of its own for a key this file has not heard of. |
 | `upload-client.ts` | `UploadRequest` | interface | :33 | The upload transport: one multipart POST that can say how far it has got. |
 | `upload-client.ts` | `NETWORK_MESSAGE` | const | :64 | What a person is told when the connection fails before any answer: what happened and what to do (FL… |
 | `upload-client.ts` | `isUploadAbort` | function | :72 | Whether `error` is a cancel, which is an outcome and never a failure. |

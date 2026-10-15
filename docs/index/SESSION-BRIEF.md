@@ -3,7 +3,7 @@
 
 # Repository index — orientation
 
-This repository is **2,901 files / 453,288 lines** across four apps and
+This repository is **2,907 files / 454,677 lines** across four apps and
 three packages. A generated index of it lives in `docs/index/` and is kept in
 step with every commit by `.githooks/pre-commit`.
 
@@ -21,6 +21,7 @@ route or which module publishes an event.
 | a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
 | whether a component already exists | `docs/index/cross/components.md` |
 | how something should look, behave or read | `docs/index/cross/design-system.md` |
+| a token, palette, motion, layout, component, asset or template from earlier work | `library/INDEX.md` |
 | everything about one API module | `docs/index/modules/<name>.md` |
 | what a file exports | `docs/index/symbols/<area>.md` |
 | a command to run | `docs/index/cross/commands.md` |
@@ -34,7 +35,7 @@ Machine-readable: `docs/index/index.json`.
 At a glance: 66 API feature modules · 916 HTTP routes ·
 325 tables · 73 domain events ·
 135 permissions · 286 screens ·
-430 spec files.
+431 spec files.
 
 `docs/index/` is **generated** — never edit it by hand; run `pnpm index`.
 `CLAUDE.md` and `docs/implementation/` remain binding over anything here: the

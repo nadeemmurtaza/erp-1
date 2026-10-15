@@ -2,6 +2,7 @@
 
 import { use, useCallback, useEffect, useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import { CalendarClock, Package, Timer, Trophy, Users } from 'lucide-react';
 import { formatDateTime, formatMoney, toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
@@ -351,13 +352,15 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
         label="Auction summary"
         className={showPeople ? 'mb-3' : 'mb-6'}
         items={[
-          { key: 'opens', label: 'Opens', value: formatDateTime(auction.startsAt) },
+          { key: 'opens', label: 'Opens', value: formatDateTime(auction.startsAt), icon: CalendarClock, tone: 'sky' },
           {
             key: 'closes',
             label: auction.status === 'OPEN' ? 'Closes' : 'Closed',
             value: formatDateTime(auctionClosesAt(auction.lots, auction.endsAt)),
+            icon: Timer,
+            tone: 'sky',
           },
-          { key: 'lots', label: 'Lots on sale', value: String(onSale.length) },
+          { key: 'lots', label: 'Lots on sale', value: String(onSale.length), icon: Package, tone: 'amber' },
         ]}
       />
 
@@ -372,6 +375,8 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
                   {
                     key: 'bidders',
                     label: 'Bidders',
+                    icon: Users,
+                    tone: 'violet' as const,
                     value: bidderStripValue(bidderSummary),
                     detail: (
                       <AuctionBidders
@@ -390,6 +395,8 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
                   {
                     key: 'winners',
                     label: 'Winners',
+                    icon: Trophy,
+                    tone: 'emerald' as const,
                     value: settlementStripValue(settlementSummary),
                     detail: (
                       <AuctionSettlements

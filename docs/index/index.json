@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2901,
-    "lines": 453288,
+    "files": 2907,
+    "lines": 454677,
     "routes": 916,
     "controllers": 167,
     "models": 325,
@@ -14,7 +14,7 @@
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 430,
+    "specs": 431,
     "designLaws": 192
   },
   "designLaws": [
@@ -198,84 +198,84 @@
       "family": "FRM",
       "name": "Motion",
       "file": "docs/design/components-states/03-components.md",
-      "line": 350
+      "line": 351
     },
     {
       "id": "CRD-1",
       "family": "CRD",
       "name": "Hierarchy",
       "file": "docs/design/components-states/03-components.md",
-      "line": 358
+      "line": 359
     },
     {
       "id": "CRD-2",
       "family": "CRD",
       "name": "Spacing",
       "file": "docs/design/components-states/03-components.md",
-      "line": 362
+      "line": 363
     },
     {
       "id": "CRD-3",
       "family": "CRD",
       "name": "Colour",
       "file": "docs/design/components-states/03-components.md",
-      "line": 366
+      "line": 367
     },
     {
       "id": "CRD-4",
       "family": "CRD",
       "name": "Depth",
       "file": "docs/design/components-states/03-components.md",
-      "line": 370
+      "line": 371
     },
     {
       "id": "CRD-5",
       "family": "CRD",
       "name": "Corners curve together",
       "file": "docs/design/components-states/03-components.md",
-      "line": 377
+      "line": 381
     },
     {
       "id": "CRD-6",
       "family": "CRD",
       "name": "Motion",
       "file": "docs/design/components-states/03-components.md",
-      "line": 386
+      "line": 390
     },
     {
       "id": "CPY-1",
       "family": "CPY",
       "name": "The flip is the receipt",
       "file": "docs/design/components-states/03-components.md",
-      "line": 402
+      "line": 406
     },
     {
       "id": "CPY-2",
       "family": "CPY",
       "name": "Two seconds, then back",
       "file": "docs/design/components-states/03-components.md",
-      "line": 411
+      "line": 415
     },
     {
       "id": "CPY-3",
       "family": "CPY",
       "name": "Copy the raw value",
       "file": "docs/design/components-states/03-components.md",
-      "line": 419
+      "line": 423
     },
     {
       "id": "CPY-4",
       "family": "CPY",
       "name": "Say it aloud",
       "file": "docs/design/components-states/03-components.md",
-      "line": 431
+      "line": 435
     },
     {
       "id": "CPY-5",
       "family": "CPY",
       "name": "Fall back, then fail out loud",
       "file": "docs/design/components-states/03-components.md",
-      "line": 441
+      "line": 445
     },
     {
       "id": "SUC-1",
@@ -1366,14 +1366,14 @@
   "areas": {
     "root": {
       "files": 214,
-      "lines": 16187,
-      "bytes": 793693,
+      "lines": 16200,
+      "bytes": 796452,
       "label": "repository root files"
     },
     "infra": {
       "files": 65,
-      "lines": 33516,
-      "bytes": 1339167,
+      "lines": 33519,
+      "bytes": 1339552,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1395,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 588,
-      "lines": 105220,
-      "bytes": 3922069,
+      "files": 594,
+      "lines": 106168,
+      "bytes": 3961275,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 555,
-      "lines": 98183,
-      "bytes": 6103329,
+      "lines": 98403,
+      "bytes": 6122738,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 117,
-      "lines": 13772,
-      "bytes": 514622,
+      "lines": 13977,
+      "bytes": 524983,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -56948,7 +56948,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-clipboard.mjs && node scripts/check-tells.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-clipboard.mjs && node scripts/check-tells.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs && node scripts/check-library.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -57063,6 +57063,12 @@
       "file": "package.json",
       "name": "check:rules",
       "cmd": "node scripts/check-rules.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:library",
+      "cmd": "node scripts/check-library.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -61578,7 +61584,7 @@
       "file": "apps/web/src/lib/motion.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 40,
+      "cases": 45,
       "describes": [
         "bezierEase",
         "clamp01",
@@ -61596,7 +61602,8 @@
         "nextSwap",
         "originOffset",
         "reelParts",
-        "fineStaggerDelayMs (CRD-6)"
+        "fineStaggerDelayMs (CRD-6)",
+        "tiltAngles"
       ]
     },
     {
@@ -61618,6 +61625,15 @@
         "burstTravel",
         "sparkKeyframes",
         "BURST_TIMING"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/tone.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "tone"
       ]
     },
     {
@@ -62044,11 +62060,13 @@
       "file": "packages/shared/src/theme-contrast.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 22,
       "describes": [
         "contrast maths",
         "dark palette",
-        "dark stock hues — inverted in lightness, not in hue"
+        "dark stock hues — inverted in lightness, not in hue",
+        "the teal tone is the brand accent, so a rebrand moves it",
+        "the accent glow"
       ]
     },
     {
@@ -62077,7 +62095,7 @@
       "file": "packages/shared/src/theme-space.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 13,
+      "cases": 14,
       "describes": [
         "spacing and size tokens",
         "layers",
@@ -62302,8 +62320,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 217,
-      "bytes": 17115,
+      "lines": 229,
+      "bytes": 19415,
       "doc": "",
       "symbols": []
     },
@@ -62492,7 +62510,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 617,
+      "bytes": 918,
       "doc": "",
       "symbols": []
     },
@@ -62527,8 +62545,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 866,
-      "bytes": 44004,
+      "lines": 867,
+      "bytes": 44162,
       "doc": "",
       "symbols": []
     },
@@ -88853,14 +88871,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 720,
-      "bytes": 29743,
+      "lines": 727,
+      "bytes": 30092,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionDetailPage",
           "kind": "default",
-          "line": 98
+          "line": 99
         }
       ]
     },
@@ -88884,7 +88902,7 @@
       "area": "web",
       "kind": "page",
       "lines": 205,
-      "bytes": 6993,
+      "bytes": 7057,
       "doc": "",
       "symbols": [
         {
@@ -90578,14 +90596,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 106,
-      "bytes": 4025,
+      "lines": 107,
+      "bytes": 4101,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -92018,14 +92036,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/auctions/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 276,
-      "bytes": 9723,
+      "lines": 277,
+      "bytes": 9829,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionsPage",
           "kind": "default",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -92613,8 +92631,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 1519,
-      "bytes": 53459,
+      "lines": 1807,
+      "bytes": 64368,
       "doc": "",
       "symbols": []
     },
@@ -92681,14 +92699,14 @@
       "path": "apps/web/src/components/admin/admin-shell.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 488,
-      "bytes": 17572,
+      "lines": 497,
+      "bytes": 18232,
       "doc": "",
       "symbols": [
         {
           "name": "AdminShell",
           "kind": "function",
-          "line": 37
+          "line": 40
         }
       ]
     },
@@ -93871,14 +93889,14 @@
       "path": "apps/web/src/components/admin/dashboard/card-group.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 124,
-      "bytes": 4381,
+      "lines": 126,
+      "bytes": 4514,
       "doc": "",
       "symbols": [
         {
           "name": "CardGroup",
           "kind": "function",
-          "line": 29
+          "line": 31
         }
       ]
     },
@@ -93971,29 +93989,29 @@
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 144,
-      "bytes": 5143,
+      "lines": 153,
+      "bytes": 5588,
       "doc": "",
       "symbols": [
         {
           "name": "MetricCardData",
           "kind": "interface",
-          "line": 9
+          "line": 10
         },
         {
           "name": "formatValue",
           "kind": "function",
-          "line": 15
+          "line": 16
         },
         {
           "name": "MetricCard",
           "kind": "function",
-          "line": 50
+          "line": 54
         },
         {
           "name": "MetricCardWithSparkline",
           "kind": "function",
-          "line": 120
+          "line": 129
         }
       ]
     },
@@ -94186,14 +94204,14 @@
       "path": "apps/web/src/components/admin/launchpad/app-tile.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 39,
-      "bytes": 1561,
+      "lines": 40,
+      "bytes": 1672,
       "doc": "",
       "symbols": [
         {
           "name": "AppTile",
           "kind": "function",
-          "line": 12
+          "line": 15
         }
       ]
     },
@@ -95206,44 +95224,44 @@
       "path": "apps/web/src/components/design-system/foundations.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 438,
-      "bytes": 17984,
+      "lines": 452,
+      "bytes": 18801,
       "doc": "",
       "symbols": [
         {
           "name": "GallerySection",
           "kind": "function",
-          "line": 21
+          "line": 22
         },
         {
           "name": "Group",
           "kind": "function",
-          "line": 46
+          "line": 47
         },
         {
           "name": "ColourFoundations",
           "kind": "function",
-          "line": 109
+          "line": 110
         },
         {
           "name": "ContrastTable",
           "kind": "function",
-          "line": 207
+          "line": 220
         },
         {
           "name": "TypeFoundations",
           "kind": "function",
-          "line": 265
+          "line": 278
         },
         {
           "name": "SpaceFoundations",
           "kind": "function",
-          "line": 297
+          "line": 310
         },
         {
           "name": "ElevationFoundations",
           "kind": "function",
-          "line": 359
+          "line": 373
         }
       ]
     },
@@ -95251,14 +95269,14 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 366,
-      "bytes": 15923,
+      "lines": 377,
+      "bytes": 16501,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 66
+          "line": 68
         }
       ]
     },
@@ -95404,6 +95422,21 @@
           "name": "PeopleAccessSpecimen",
           "kind": "function",
           "line": 420
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/premium-specimens.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 120,
+      "bytes": 4709,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PremiumSpecimens",
+          "kind": "function",
+          "line": 20
         }
       ]
     },
@@ -95561,8 +95594,8 @@
       "path": "apps/web/src/components/storefront/auction/lot-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 102,
-      "bytes": 4608,
+      "lines": 111,
+      "bytes": 5056,
       "doc": "",
       "symbols": [
         {
@@ -95577,7 +95610,7 @@
       "area": "web",
       "kind": "component",
       "lines": 92,
-      "bytes": 3701,
+      "bytes": 3727,
       "doc": "",
       "symbols": [
         {
@@ -95656,8 +95689,8 @@
       "path": "apps/web/src/components/storefront/auction/lot-status.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 169,
-      "bytes": 6859,
+      "lines": 174,
+      "bytes": 7133,
       "doc": "",
       "symbols": [
         {
@@ -95668,17 +95701,17 @@
         {
           "name": "LotClock",
           "kind": "function",
-          "line": 55
+          "line": 56
         },
         {
           "name": "LotStanding",
           "kind": "function",
-          "line": 102
+          "line": 107
         },
         {
           "name": "LotOutcome",
           "kind": "function",
-          "line": 130
+          "line": 135
         }
       ]
     },
@@ -95731,8 +95764,8 @@
       "path": "apps/web/src/components/storefront/cart-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 34,
-      "bytes": 1425,
+      "lines": 35,
+      "bytes": 1366,
       "doc": "",
       "symbols": [
         {
@@ -95766,8 +95799,8 @@
       "path": "apps/web/src/components/storefront/customer-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 87,
-      "bytes": 3429,
+      "lines": 88,
+      "bytes": 3433,
       "doc": "",
       "symbols": [
         {
@@ -95876,8 +95909,8 @@
       "path": "apps/web/src/components/storefront/header.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 228,
-      "bytes": 11084,
+      "lines": 229,
+      "bytes": 11051,
       "doc": "",
       "symbols": [
         {
@@ -95921,8 +95954,8 @@
       "path": "apps/web/src/components/storefront/locale-switcher.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 75,
-      "bytes": 2671,
+      "lines": 76,
+      "bytes": 2632,
       "doc": "",
       "symbols": [
         {
@@ -96246,8 +96279,8 @@
       "path": "apps/web/src/components/storefront/visual-search-button.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 89,
-      "bytes": 3226,
+      "lines": 90,
+      "bytes": 3184,
       "doc": "",
       "symbols": [
         {
@@ -96261,19 +96294,19 @@
       "path": "apps/web/src/components/ui/badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 46,
-      "bytes": 1308,
+      "lines": 51,
+      "bytes": 1710,
       "doc": "",
       "symbols": [
         {
           "name": "BadgeTone",
           "kind": "type",
-          "line": 14
+          "line": 18
         },
         {
           "name": "Badge",
           "kind": "function",
-          "line": 25
+          "line": 29
         }
       ]
     },
@@ -96381,8 +96414,8 @@
       "path": "apps/web/src/components/ui/count-up.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 196,
-      "bytes": 7089,
+      "lines": 201,
+      "bytes": 7436,
       "doc": "",
       "symbols": [
         {
@@ -96416,19 +96449,19 @@
       "path": "apps/web/src/components/ui/data-table.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 260,
-      "bytes": 11502,
+      "lines": 273,
+      "bytes": 12058,
       "doc": "",
       "symbols": [
         {
           "name": "DataTableColumn",
           "kind": "interface",
-          "line": 29
+          "line": 30
         },
         {
           "name": "DataTable",
           "kind": "function",
-          "line": 95
+          "line": 96
         }
       ]
     },
@@ -96516,14 +96549,14 @@
       "path": "apps/web/src/components/ui/empty-state.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 40,
-      "bytes": 1368,
+      "lines": 50,
+      "bytes": 1898,
       "doc": "",
       "symbols": [
         {
           "name": "EmptyState",
           "kind": "function",
-          "line": 17
+          "line": 20
         }
       ]
     },
@@ -96608,11 +96641,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/icon-tile.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 50,
+      "bytes": 2030,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IconTile",
+          "kind": "function",
+          "line": 32
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 76,
-      "bytes": 3327,
+      "lines": 79,
+      "bytes": 3503,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -96685,19 +96733,19 @@
       "path": "apps/web/src/components/ui/metric-strip.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 158,
-      "bytes": 5189,
+      "lines": 164,
+      "bytes": 5609,
       "doc": "",
       "symbols": [
         {
           "name": "MetricItem",
           "kind": "interface",
-          "line": 6
+          "line": 8
         },
         {
           "name": "MetricStrip",
           "kind": "function",
-          "line": 47
+          "line": 52
         }
       ]
     },
@@ -96745,14 +96793,39 @@
       "path": "apps/web/src/components/ui/page-header.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 56,
-      "bytes": 1991,
+      "lines": 70,
+      "bytes": 2675,
       "doc": "",
       "symbols": [
         {
           "name": "PageHeader",
           "kind": "function",
-          "line": 21
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/page-identity.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 27,
+      "bytes": 1096,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PageIdentity",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "PageIdentityProvider",
+          "kind": "function",
+          "line": 20
+        },
+        {
+          "name": "usePageIdentity",
+          "kind": "function",
+          "line": 24
         }
       ]
     },
@@ -96810,14 +96883,14 @@
       "path": "apps/web/src/components/ui/reveal-scope.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 36,
-      "bytes": 1375,
+      "lines": 43,
+      "bytes": 1573,
       "doc": "",
       "symbols": [
         {
           "name": "RevealScope",
           "kind": "function",
-          "line": 21
+          "line": 24
         }
       ]
     },
@@ -97066,6 +97139,26 @@
         },
         {
           "name": "ThemeToggle",
+          "kind": "function",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/tilt.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 69,
+      "bytes": 2658,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useTilt",
+          "kind": "function",
+          "line": 19
+        },
+        {
+          "name": "TiltLink",
           "kind": "function",
           "line": 51
         }
@@ -99223,8 +99316,8 @@
       "path": "apps/web/src/lib/motion.spec.ts",
       "area": "web",
       "kind": "unit test",
-      "lines": 331,
-      "bytes": 11171,
+      "lines": 368,
+      "bytes": 12593,
       "doc": "",
       "symbols": []
     },
@@ -99232,8 +99325,8 @@
       "path": "apps/web/src/lib/motion.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 262,
-      "bytes": 10581,
+      "lines": 292,
+      "bytes": 11900,
       "doc": "",
       "symbols": [
         {
@@ -99340,6 +99433,11 @@
           "name": "MOTION_MS",
           "kind": "const",
           "line": 252
+        },
+        {
+          "name": "tiltAngles",
+          "kind": "function",
+          "line": 271
         }
       ]
     },
@@ -99493,6 +99591,70 @@
           "name": "BURST_TIMING",
           "kind": "const",
           "line": 87
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/tone.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 78,
+      "bytes": 3734,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/tone.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 112,
+      "bytes": 4098,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "KIND_TONE",
+          "kind": "const",
+          "line": 19
+        },
+        {
+          "name": "ToneKind",
+          "kind": "type",
+          "line": 38
+        },
+        {
+          "name": "toneForKey",
+          "kind": "function",
+          "line": 41
+        },
+        {
+          "name": "NAV_GROUP_KIND",
+          "kind": "const",
+          "line": 48
+        },
+        {
+          "name": "DASHBOARD_GROUP_KIND",
+          "kind": "const",
+          "line": 65
+        },
+        {
+          "name": "LAUNCHPAD_KIND",
+          "kind": "const",
+          "line": 78
+        },
+        {
+          "name": "navGroupTone",
+          "kind": "function",
+          "line": 99
+        },
+        {
+          "name": "dashboardGroupTone",
+          "kind": "function",
+          "line": 104
+        },
+        {
+          "name": "launchpadTone",
+          "kind": "function",
+          "line": 109
         }
       ]
     },
@@ -101471,8 +101633,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 481,
-      "bytes": 30548,
+      "lines": 485,
+      "bytes": 31061,
       "doc": "",
       "symbols": []
     },
@@ -101498,8 +101660,8 @@
       "path": "docs/design/foundations/01-foundations.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 324,
-      "bytes": 17819,
+      "lines": 352,
+      "bytes": 19694,
       "doc": "",
       "symbols": []
     },
@@ -101534,8 +101696,8 @@
       "path": "docs/design/motion/05-motion.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 340,
-      "bytes": 20378,
+      "lines": 381,
+      "bytes": 23306,
       "doc": "",
       "symbols": []
     },
@@ -103379,8 +103541,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 131,
-      "bytes": 22000,
+      "lines": 132,
+      "bytes": 22243,
       "doc": "",
       "symbols": []
     },
@@ -105224,8 +105386,8 @@
       "path": "docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2065,
-      "bytes": 170677,
+      "lines": 2211,
+      "bytes": 184527,
       "doc": "",
       "symbols": []
     },
@@ -106385,8 +106547,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 66,
-      "bytes": 3028,
+      "lines": 67,
+      "bytes": 3117,
       "doc": "",
       "symbols": []
     },
@@ -107334,19 +107496,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 664,
-      "bytes": 25873,
+      "lines": 736,
+      "bytes": 29761,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 649
+          "line": 721
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 663
+          "line": 735
         }
       ]
     },
@@ -108957,8 +109119,8 @@
       "path": "packages/shared/src/theme-contrast.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 176,
-      "bytes": 8167,
+      "lines": 228,
+      "bytes": 10425,
       "doc": "",
       "symbols": []
     },
@@ -109179,8 +109341,8 @@
       "path": "packages/shared/src/theme-space.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 118,
-      "bytes": 5181,
+      "lines": 147,
+      "bytes": 6820,
       "doc": "",
       "symbols": []
     },
@@ -109218,8 +109380,8 @@
       "path": "packages/shared/src/theme-tailwind.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 344,
-      "bytes": 14983,
+      "lines": 396,
+      "bytes": 17559,
       "doc": "",
       "symbols": [
         {
@@ -109243,49 +109405,69 @@
           "line": 54
         },
         {
-          "name": "hexToRgb",
-          "kind": "function",
-          "line": 80
+          "name": "TONE_WASH_MIX",
+          "kind": "const",
+          "line": 87
         },
         {
-          "name": "rgbToHex",
-          "kind": "function",
-          "line": 86
+          "name": "TONE_NAMES",
+          "kind": "const",
+          "line": 90
         },
         {
-          "name": "mixHex",
-          "kind": "function",
+          "name": "ToneName",
+          "kind": "type",
           "line": 91
         },
         {
-          "name": "channels",
+          "name": "accentGlow",
           "kind": "function",
           "line": 98
         },
         {
-          "name": "darkHueScale",
+          "name": "hexToRgb",
           "kind": "function",
-          "line": 117
+          "line": 105
         },
         {
-          "name": "themeColorVar",
+          "name": "rgbToHex",
+          "kind": "function",
+          "line": 111
+        },
+        {
+          "name": "mixHex",
+          "kind": "function",
+          "line": 116
+        },
+        {
+          "name": "channels",
+          "kind": "function",
+          "line": 123
+        },
+        {
+          "name": "darkHueScale",
           "kind": "function",
           "line": 142
         },
         {
+          "name": "themeColorVar",
+          "kind": "function",
+          "line": 167
+        },
+        {
           "name": "themeVars",
           "kind": "function",
-          "line": 166
+          "line": 191
         },
         {
           "name": "staticVars",
           "kind": "function",
-          "line": 198
+          "line": 231
         },
         {
           "name": "createThemeTailwind",
           "kind": "function",
-          "line": 226
+          "line": 264
         }
       ]
     },
@@ -109443,8 +109625,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2638,
-      "bytes": 122792,
+      "lines": 2640,
+      "bytes": 123012,
       "doc": "",
       "symbols": []
     },
@@ -109491,7 +109673,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 650,
-      "bytes": 33800,
+      "bytes": 33876,
       "doc": "",
       "symbols": [
         {

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 588 tracked files in `apps/web`, by directory.
+All 594 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -71,7 +71,7 @@ All 588 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 1519 |  |
+| `globals.css` | stylesheet | 1807 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -91,7 +91,7 @@ All 588 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `layout.tsx` | layout | 23 |  |
 | `loading.tsx` | loading | 59 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | page | 106 |  |
+| `page.tsx` | page | 107 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account` (1)
 
@@ -152,7 +152,7 @@ All 588 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 720 |  |
+| `page.tsx` | page | 727 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -1331,7 +1331,7 @@ All 588 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 19 |  |
-| `page.tsx` | page | 276 |  |
+| `page.tsx` | page | 277 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]` (2)
 
@@ -1480,7 +1480,7 @@ All 588 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-shell.tsx` | component | 488 |  |
+| `admin-shell.tsx` | component | 497 |  |
 | `auction-bid-ledger.tsx` | component | 154 |  |
 | `auction-bidder-sheet.tsx` | component | 417 |  |
 | `auction-bidders.tsx` | component | 253 |  |
@@ -1577,12 +1577,12 @@ All 588 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `action-hub-widget.tsx` | component | 70 |  |
-| `card-group.tsx` | component | 124 |  |
+| `card-group.tsx` | component | 126 |  |
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
 | `gross-profit-today-widget.tsx` | component | 95 |  |
 | `live-feed-widget.tsx` | component | 94 |  |
-| `metric-card.tsx` | component | 144 |  |
+| `metric-card.tsx` | component | 153 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
 
@@ -1591,7 +1591,7 @@ All 588 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `app-icons.ts` | component | 37 |  |
-| `app-tile.tsx` | component | 39 |  |
+| `app-tile.tsx` | component | 40 |  |
 | `launchpad-screen.tsx` | component | 176 |  |
 | `launchpad.spec.ts` | unit test | 147 |  |
 | `launchpad.ts` | component | 121 |  |
@@ -1618,7 +1618,7 @@ All 588 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (30)
+### `apps/web/src/components/design-system` (31)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1637,8 +1637,8 @@ All 588 tracked files in `apps/web`, by directory.
 | `dispatch-machine.spec.ts` | unit test | 158 |  |
 | `dispatch-machine.ts` | component | 131 | The states of a one-click send, and the only moves between them. |
 | `flow-concepts.tsx` | component | 584 |  |
-| `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 366 |  |
+| `foundations.tsx` | component | 452 |  |
+| `gallery.tsx` | component | 377 |  |
 | `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
@@ -1647,6 +1647,7 @@ All 588 tracked files in `apps/web`, by directory.
 | `page-structure-specimens.tsx` | component | 251 |  |
 | `patterns.tsx` | component | 322 |  |
 | `people-access.tsx` | component | 638 |  |
+| `premium-specimens.tsx` | component | 120 |  |
 | `publish-audience.tsx` | component | 419 |  |
 | `scope-chip-editor.tsx` | component | 127 |  |
 | `scoped-bento.tsx` | component | 506 |  |
@@ -1662,19 +1663,19 @@ All 588 tracked files in `apps/web`, by directory.
 | `auth-page.tsx` | component | 62 |  |
 | `block-renderer.tsx` | component | 91 |  |
 | `bottom-nav.tsx` | component | 157 |  |
-| `cart-badge.tsx` | component | 34 |  |
+| `cart-badge.tsx` | component | 35 |  |
 | `cart-provider.tsx` | component | 104 |  |
-| `customer-nav.tsx` | component | 87 |  |
+| `customer-nav.tsx` | component | 88 |  |
 | `customer-session.tsx` | component | 36 |  |
 | `filter-panel.tsx` | component | 365 |  |
 | `footer.tsx` | component | 157 |  |
 | `frequently-bought-together.tsx` | component | 149 |  |
 | `grid-toggle-wrapper.tsx` | component | 13 |  |
 | `grid-toggle.tsx` | component | 41 |  |
-| `header.tsx` | component | 228 |  |
+| `header.tsx` | component | 229 |  |
 | `json-ld.tsx` | component | 15 | Renders one JSON-LD `<script>` tag. |
 | `legal-page.tsx` | component | 72 |  |
-| `locale-switcher.tsx` | component | 75 |  |
+| `locale-switcher.tsx` | component | 76 |  |
 | `logo.tsx` | component | 126 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | component | 197 |  |
 | `onsite-messages.tsx` | component | 209 |  |
@@ -1694,7 +1695,7 @@ All 588 tracked files in `apps/web`, by directory.
 | `stitching-panel.tsx` | component | 969 |  |
 | `stitching-timeline.tsx` | component | 105 |  |
 | `theme-switch.tsx` | component | 28 |  |
-| `visual-search-button.tsx` | component | 89 |  |
+| `visual-search-button.tsx` | component | 90 |  |
 
 ### `apps/web/src/components/storefront/auction` (9)
 
@@ -1703,47 +1704,49 @@ All 588 tracked files in `apps/web`, by directory.
 | `auctions-link.tsx` | component | 28 |  |
 | `bid-history.tsx` | component | 49 |  |
 | `lot-bidding.tsx` | component | 404 |  |
-| `lot-card.tsx` | component | 102 |  |
+| `lot-card.tsx` | component | 111 |  |
 | `lot-gallery.tsx` | component | 92 |  |
 | `lot-registration.tsx` | component | 315 |  |
 | `lot-settlement.tsx` | component | 138 |  |
 | `lot-skeleton.tsx` | component | 26 |  |
-| `lot-status.tsx` | component | 169 |  |
+| `lot-status.tsx` | component | 174 |  |
 
-### `apps/web/src/components/ui` (44)
+### `apps/web/src/components/ui` (47)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `badge.tsx` | component | 46 |  |
+| `badge.tsx` | component | 51 |  |
 | `bento.tsx` | component | 92 |  |
 | `button.tsx` | component | 94 |  |
 | `confirm-dialog.tsx` | component | 136 |  |
 | `cooldown-banner.tsx` | component | 81 |  |
 | `copy-button.tsx` | component | 186 |  |
-| `count-up.tsx` | component | 196 |  |
+| `count-up.tsx` | component | 201 |  |
 | `danger-zone.tsx` | component | 103 |  |
-| `data-table.tsx` | component | 260 |  |
+| `data-table.tsx` | component | 273 |  |
 | `date-field.tsx` | component | 560 |  |
 | `dialog.tsx` | component | 255 |  |
 | `disclosure.tsx` | component | 75 |  |
 | `draw-icon.tsx` | component | 53 |  |
 | `dropzone.tsx` | component | 250 |  |
-| `empty-state.tsx` | component | 40 |  |
+| `empty-state.tsx` | component | 50 |  |
 | `field.tsx` | component | 104 |  |
 | `filter-bar.tsx` | component | 191 |  |
 | `hold-to-confirm.tsx` | component | 224 |  |
-| `index.ts` | component | 76 | Design-system primitives. |
+| `icon-tile.tsx` | component | 50 |  |
+| `index.ts` | component | 79 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 36 |  |
 | `menu.tsx` | component | 448 |  |
-| `metric-strip.tsx` | component | 158 |  |
+| `metric-strip.tsx` | component | 164 |  |
 | `multi-select.tsx` | component | 134 |  |
 | `page-enter.tsx` | component | 35 |  |
-| `page-header.tsx` | component | 56 |  |
+| `page-header.tsx` | component | 70 |  |
+| `page-identity.tsx` | component | 27 |  |
 | `pagination.tsx` | component | 66 |  |
 | `progress-bar.tsx` | component | 72 |  |
 | `progress-ring.tsx` | component | 104 |  |
-| `reveal-scope.tsx` | component | 36 |  |
+| `reveal-scope.tsx` | component | 43 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
 | `segmented.tsx` | component | 188 |  |
@@ -1756,6 +1759,7 @@ All 588 tracked files in `apps/web`, by directory.
 | `text-motion.tsx` | component | 160 |  |
 | `theme-init-script.tsx` | component | 22 |  |
 | `theme-toggle.tsx` | component | 115 |  |
+| `tilt.tsx` | component | 69 |  |
 | `truncate-reveal.tsx` | component | 61 |  |
 | `upload-tray.tsx` | component | 248 |  |
 
@@ -1806,7 +1810,7 @@ All 588 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (52)
+### `apps/web/src/lib` (54)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1845,8 +1849,8 @@ All 588 tracked files in `apps/web`, by directory.
 | `guard.ts` | utility | 137 |  |
 | `menu-filter.spec.ts` | unit test | 136 |  |
 | `menu-filter.ts` | utility | 169 | What a menu does with a list of options (MNU-1, MNU-6): which control the count asks for, and how typing narrows it. |
-| `motion.spec.ts` | unit test | 331 |  |
-| `motion.ts` | utility | 262 |  |
+| `motion.spec.ts` | unit test | 368 |  |
+| `motion.ts` | utility | 292 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
 | `popover-position.spec.ts` | unit test | 127 |  |
 | `popover-position.ts` | utility | 109 | Where a floating panel goes, as arithmetic (MNU-4). |
@@ -1854,6 +1858,8 @@ All 588 tracked files in `apps/web`, by directory.
 | `reveal.ts` | utility | 59 |  |
 | `success-state.spec.ts` | unit test | 71 |  |
 | `success-state.ts` | utility | 92 |  |
+| `tone.spec.ts` | unit test | 78 |  |
+| `tone.ts` | utility | 112 |  |
 | `upload-client.spec.ts` | unit test | 338 |  |
 | `upload-client.ts` | utility | 198 |  |
 | `upload-queue.spec.ts` | unit test | 584 |  |

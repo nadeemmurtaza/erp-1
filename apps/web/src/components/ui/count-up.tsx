@@ -172,7 +172,12 @@ function ReelFigure({
   let order = 0;
   return (
     <span className={cn('tabular-nums', className)}>
-      <span ref={root} aria-hidden="true" className="select-none">
+      {/*
+        A figure reads left to right in every language (the Urdu storefront prints "Rs 2,756.25" the same way), and each
+        digit here is its own inline box, which a right-to-left line would lay out in reverse ("52.657,2 Rs"). The
+        screen-reader copy below is plain text and follows the page's direction.
+      */}
+      <span ref={root} dir="ltr" aria-hidden="true" className="select-none">
         {reelParts(settled).map((part, i, all) => {
           // Keyed from the right, so a strip keeps its place (and rolls) when the figure gains a digit on the left.
           const key = all.length - i;

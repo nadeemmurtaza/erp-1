@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-588 files · 105,220 lines
+594 files · 106,168 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,13 +31,13 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 255 | 50,227 | page, loading, layout, error |
-| `apps/web/src/components` | 213 | 38,487 | component, unit test, loading |
+| `apps/web/src/app` | 255 | 50,524 | page, loading, layout, error |
+| `apps/web/src/components` | 217 | 38,881 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 6 | 502 | constants |
 | `apps/web/src/hooks` | 15 | 1,132 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 52 | 9,178 | utility, unit test |
+| `apps/web/src/lib` | 54 | 9,435 | utility, unit test |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 2,176 | types |
 | `apps/web/src/utils` | 6 | 369 | unit test, utility |
@@ -65,8 +65,8 @@ through `@newax/shared`'s `BRAND`.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/web/src/types/api.ts` | 1,852 | types |  |
+| `apps/web/src/app/globals.css` | 1,807 | stylesheet |  |
 | `apps/web/src/components/admin/product-form.tsx` | 1,614 | component |  |
-| `apps/web/src/app/globals.css` | 1,519 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 1,430 | page |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 1,221 | component |  |
 | `apps/web/messages/en.json` | 1,120 | json |  |
@@ -76,7 +76,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/design-system/motion-specimens.tsx` | 809 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 780 | page |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 754 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` | 720 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` | 727 | page |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 713 | component |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 

@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**95**), plus the repository's own check scripts.
+Every script in every `package.json` (**96**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -150,6 +150,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:tells` | `node scripts/check-tells.mjs` |
 | `check:overflow` | `node scripts/check-overflow.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
+| `check:library` | `node scripts/check-library.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
 | `index` | `node scripts/build-index.mjs` |
 | `index:check` | `node scripts/build-index.mjs --check` |
@@ -171,7 +172,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2638 |  |
+| `scripts/build-index.mjs` | 2640 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-chart-imports.mjs` | 117 |  |
 | `scripts/check-clipboard.mjs` | 174 |  |

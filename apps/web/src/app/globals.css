@@ -170,7 +170,7 @@
 
   .lift:hover,
   .lift:focus-within {
-    @apply border-neutral-200 shadow-overlay;
+    @apply shadow-overlay;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -343,8 +343,48 @@
    * ink here would sweep a pale teal under a white label.
    */
   .btn-primary {
-    @apply btn bg-accent text-white;
+    @apply btn bg-accent text-white shadow-glow;
     --btn-fill: theme('backgroundColor.accent.hover');
+  }
+
+  /*
+   * The primary button is the one lit control on a page (ADR-083, twelfth addendum). It rests on a
+   * glow in its own fill colour (`shadow-glow`, from `accent`, so a rebrand moves it), rises 1 px
+   * under a fine pointer, and a single light bar crosses it once while the fill sweeps
+   * (`shine`, a flat 22% white parallelogram, not a gradient). All transform and opacity; the
+   * press (`.btn:active`) still wins, so the click lands on the frame it is made. A disabled one
+   * has no glow: it must not look like it is about to do something.
+   */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .btn-primary:hover:not(:disabled):not(:active) {
+      transform: translateY(calc(var(--motion-distance-micro) * -0.5));
+    }
+  }
+
+  .btn-primary:disabled {
+    box-shadow: none;
+  }
+
+  .btn-primary::after {
+    --shine-sign: 1;
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 34%;
+    background: theme('colors.white / 0.22');
+    pointer-events: none;
+    transform: translateX(calc(-140% * var(--shine-sign))) skewX(calc(-20deg * var(--shine-sign)));
+  }
+
+  [dir='rtl'] .btn-primary::after {
+    --shine-sign: -1;
+  }
+
+  .btn-primary:hover:not(:disabled)::after,
+  .btn-primary:focus-visible:not(:disabled)::after {
+    transform: translateX(calc(430% * var(--shine-sign))) skewX(calc(-20deg * var(--shine-sign)));
+    transition: transform var(--motion-duration-sweep) var(--motion-easing-decelerate);
   }
 
   /* The white button the fill was designed for. */
@@ -426,24 +466,55 @@
     @apply ring-2 ring-red-600;
   }
 
+  /*
+   * A box at rest. Its edge is the first layer of `shadow-card` (a 1 px ring in the shadow's
+   * own colour), so there is ONE soft boundary and no `border` beside it: "never a border and
+   * a shadow on the same edge" (ui.md) is kept by making the shadow the edge, not by leaving
+   * the box flat (ADR-083, twelfth addendum, at the owner's direct instruction: "shadow around
+   * the boxes"). The border is kept as `transparent` so the box is the same 1 px larger it
+   * always was and a caller that names a border colour on purpose (a warning card) still gets one.
+   */
   .card {
-    @apply border border-neutral-100 bg-white;
+    @apply border border-transparent bg-white shadow-card;
     border-radius: var(--radius-lg);
   }
 
   /*
-   * A card lit from the top (CRD-4, FRM-5). One border, soft, as `.card`; the
+   * The surface a table sits on (`DataTable`). A table on the bare page is a grid with nothing under
+   * it; on the `.card` surface, with the same ring-and-depth edge and the same corner, it is an
+   * object the page is about, and the column-header band reads as the top of it. It draws no grid of
+   * its own (row rules only, `.table-flat`), so "a table is already a grid" holds: this is the
+   * surface under the grid, not a frame round it. Where the table already sits in a box (a card,
+   * a dialog, a metric strip) the surface steps aside, so a box is never drawn inside a box
+   * (ui.md, "Borders and boxes"); the layout closes over its container instead of every call site
+   * remembering to ask.
+   */
+  .table-surface {
+    @apply bg-white shadow-card;
+    border-radius: var(--radius-lg);
+  }
+
+  .card .table-surface,
+  .card-lit .table-surface,
+  .metric-strip .table-surface,
+  [role='dialog'] .table-surface,
+  .table-surface .table-surface {
+    @apply bg-transparent shadow-none;
+    border-radius: 0;
+  }
+
+  /*
+   * A card lit from the top (CRD-4, FRM-5). One edge, soft, as `.card` (the shadow's own ring); the
    * surface is a little lighter at the top edge and settles to the plain surface
    * by 96px down. In the dark theme `overlay` is the lighter step, which is what
    * makes it read as raised; in light the two steps are close and the effect is a
-   * whisper, which is right. No shadow at rest: `ui.md` forbids a border and a
-   * shadow on the same edge, so the shadow arrives with `.lift`, when the card
-   * rises under a pointer. `--inset` is the gap between this card's edge and
+   * whisper, which is right. It rests on `shadow-card` like `.card`, and `.lift` deepens
+   * it to `shadow-overlay` when the card rises under a pointer. `--inset` is the gap between this card's edge and
    * what sits inside it (media, an inner panel), so `.media-concentric` can curve
    * with it (CRD-5).
    */
   .card-lit {
-    @apply border border-neutral-100 bg-white;
+    @apply border border-transparent bg-white shadow-card;
     --inset: 0.5rem;
     border-radius: var(--radius-lg);
     background-image: linear-gradient(to bottom, rgb(var(--color-overlay)), rgb(var(--color-surface)) 6rem);
@@ -487,7 +558,7 @@
   }
 
   .chip-selected {
-    @apply border-accent bg-accent text-white;
+    @apply border-accent bg-accent text-white shadow-raised;
   }
 
   .chip-unselected {
@@ -641,7 +712,8 @@
    * a different component.
    */
   .metric-strip {
-    @apply no-scrollbar flex snap-x snap-mandatory overflow-x-auto bg-neutral-50 sm:overflow-visible;
+    @apply no-scrollbar flex snap-x snap-mandatory overflow-x-auto bg-white shadow-card sm:overflow-visible;
+    border-radius: var(--radius-lg);
   }
 
   /*
@@ -662,9 +734,9 @@
     @apply min-w-[9.5rem] flex-1 shrink-0 snap-start px-4 py-4 lg:px-5 lg:py-5;
   }
 
-  /* The one being read. Lifted out of the strip by background alone. */
+  /* The one being read. Set apart from the strip's white by the page's own tint. */
   .metric-lead {
-    @apply bg-white;
+    @apply bg-neutral-50;
   }
 
   /*
@@ -675,7 +747,7 @@
    */
   .metric-button {
     @apply cursor-pointer text-start transition-colors;
-    @apply hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent;
+    @apply hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent;
   }
 
   /*
@@ -1490,6 +1562,222 @@
     flex-direction: column;
     transform: translateY(calc(var(--d, 0) * var(--reel-line) * -1));
     transition: transform var(--motion-duration-sweep) var(--motion-easing-settle) var(--reel-delay, 0ms);
+  }
+
+  /*
+   * ---------------------------------------------------------------------
+   * Premium: colour with a reason, depth, and a few things that are alive
+   * (ADR-083, twelfth addendum; docs/design/motion/05-motion.md, "Ambient").
+   * ---------------------------------------------------------------------
+   */
+
+  /*
+   * An icon on its own tinted tile (`IconTile`). `data-tone` (any ancestor or the tile itself)
+   * sets `--tone-ink` and `--tone-wash` from the brand file's seven tones; with none set the tile is
+   * the brand teal. The glyph reaches 3:1 on its wash in both themes (`theme-contrast.spec.ts`), and
+   * the tile's edge is a 1 px inset ring in the glyph's own colour at 16%, so it needs no border.
+   * The tile is for a glyph and never carries text.
+   */
+  .icon-tile {
+    --tile: 2.5rem;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--tile);
+    block-size: var(--tile);
+    color: rgb(var(--tone-ink, var(--color-tone-teal)));
+    background-color: rgb(var(--tone-wash, var(--color-tone-teal-wash)));
+    box-shadow: inset 0 0 0 1px rgb(var(--tone-ink, var(--color-tone-teal)) / 0.16);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--motion-duration-normal) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-normal) var(--motion-easing-settle);
+  }
+
+  .icon-tile-sm {
+    --tile: 1.75rem;
+  }
+
+  .icon-tile-lg {
+    --tile: 3rem;
+  }
+
+  .icon-tile-xl {
+    --tile: 3.5rem;
+  }
+
+  /*
+   * The tile answers the thing it belongs to: when the card (`.lift`) or the link or button
+   * (`a.group`, `button.group`) that holds it is hovered or focused, it lifts, grows and leans by the
+   * motion tokens (`distance.micro`, `scale.tip`, `tilt.tipDeg`), and takes a soft glow in its own
+   * colour. "This is what you are about to open" (causation). A bare `.group` row does not trigger it:
+   * only something that can be opened. A fine pointer or a keyboard only: a finger has no hover, and
+   * the tile does not move on a phone.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    .lift:hover .icon-tile,
+    .lift:focus-within .icon-tile,
+    a.group:hover .icon-tile,
+    a.group:focus-visible .icon-tile,
+    button.group:hover .icon-tile,
+    button.group:focus-visible .icon-tile {
+      transform: translateY(calc(var(--motion-distance-micro) * -1)) scale(var(--motion-scale-tip))
+        rotate(calc(var(--motion-tilt-tip) * -1));
+      box-shadow:
+        inset 0 0 0 1px rgb(var(--tone-ink, var(--color-tone-teal)) / 0.28),
+        0 8px 16px -6px rgb(var(--tone-ink, var(--color-tone-teal)) / 0.5);
+    }
+  }
+
+  /*
+   * A bare icon control that takes its colour when it is the one in use. At rest it is the quiet
+   * neutral it always was, so a row of header icons stays calm; on hover or keyboard focus the glyph
+   * takes its tone and the control its wash (`data-tone`, the same seven tones as `IconTile`). Colour
+   * on the glyph, never on text, and never the only sign of state (focus still draws its own ring).
+   */
+  .tone-hover {
+    transition:
+      color var(--motion-duration-normal) var(--motion-easing-decelerate),
+      background-color var(--motion-duration-normal) var(--motion-easing-decelerate),
+      transform var(--motion-duration-normal) var(--motion-easing-settle);
+  }
+
+  .tone-hover:hover:not(:disabled),
+  .tone-hover:focus-visible {
+    color: rgb(var(--tone-ink, var(--color-tone-teal)));
+    background-color: rgb(var(--tone-wash, var(--color-tone-teal-wash)));
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tone-hover:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+  }
+
+  /*
+   * Live. A dot with a ring that leaves it once every `ambient.pulse` (2 s): "this is updating now"
+   * (state). The dot is the information and stays; the ring is the heartbeat. Under reduced motion
+   * the global rule stops the ring after one frame, at its end state (invisible), so the dot alone
+   * says it, as it did before this existed.
+   */
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 9999px;
+    background-color: rgb(var(--color-feedback-positive));
+  }
+
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: inherit;
+    animation: pulse-ring var(--motion-ambient-pulse) var(--motion-easing-decelerate) infinite;
+  }
+
+  /*
+   * Breathe. The one thing that is closing (a lot in its last minute, a deadline today) gets a 5 px
+   * halo in its own colour that swells 10% and fades once every `ambient.breathe` (3.6 s): "look here,
+   * this is running out" (attention). The halo is a ring on a pseudo-element, so it is transform and
+   * opacity only and the badge itself never moves. One per screen at most; it is the loudest ambient
+   * cue there is. The halo is the colour of the status it sits on: the caller sets `--tone-ink` to that status
+   * hue (a warning badge passes the amber-600 step), else it is the negative feedback colour.
+   */
+  .breathe {
+    position: relative;
+  }
+
+  .breathe::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 5px rgb(var(--tone-ink, var(--color-feedback-negative)) / 0.3);
+    opacity: 0;
+    pointer-events: none;
+    animation: breathe var(--motion-ambient-breathe) var(--motion-easing-standard) infinite;
+  }
+
+  /*
+   * Tilt (`useTilt`). A card under a fine pointer leans toward it by at most `tilt.maxDeg` (4 deg)
+   * through `tilt.perspective` (900 px): "this surface is under your hand" (causation). The hook writes
+   * `--tilt-x` and `--tilt-y` and nothing else; the transform is composed here with `.lift`'s 4 px
+   * rise so the two never fight over the property. Transform only, so no layout and no repaint of
+   * the card's contents.
+   */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .lift.tilt {
+      transition:
+        transform var(--motion-duration-normal) var(--motion-easing-settle),
+        box-shadow var(--motion-duration-slow) var(--motion-easing-settle);
+    }
+
+    .lift.tilt:hover,
+    .lift.tilt:focus-within {
+      transform: perspective(var(--motion-tilt-perspective)) translateY(calc(var(--motion-distance-lift) * -1))
+        rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    }
+  }
+
+  /*
+   * The marker of the page you are on in a nav. A 3 px rounded bar on the inline-start edge that grows
+   * from its centre when the page becomes current (`rail-in`, `normal`): "you arrived here" (state). It
+   * is a transform, so the row does not move. The label keeps its own weight and colour as well, so
+   * the marker is never the only signal.
+   */
+  .nav-rail {
+    position: relative;
+  }
+
+  .nav-rail::before {
+    content: '';
+    position: absolute;
+    inset-block: 0.375rem;
+    inset-inline-start: 0;
+    inline-size: 3px;
+    border-radius: 9999px;
+    background-color: rgb(var(--color-accent-ink));
+    animation: rail-in var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70%,
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes rail-in {
+    from {
+      transform: scaleY(0.2);
+      opacity: 0;
+    }
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
   }
 
   /*

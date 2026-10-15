@@ -1,6 +1,6 @@
 import { BRAND } from './brand';
 import { compositeRgb, contrastRatio, contrastRatioHex, relativeLuminance, wcagLevel } from './theme-contrast';
-import { darkHueScale, hexToRgb, mixHex, STOCK_HUE_NAMES, type StockHues } from './theme-tailwind';
+import { accentGlow, darkHueScale, hexToRgb, mixHex, STOCK_HUE_NAMES, TONE_NAMES, TONE_WASH_MIX, type StockHues } from './theme-tailwind';
 
 /**
  * The dark palette is held to numbers, not to taste (COL-3, COL-5).
@@ -171,5 +171,57 @@ describe('dark stock hues — inverted in lightness, not in hue', () => {
       expect(contrast('#ffffff', STOCK[hue]['600']!)).toBeGreaterThanOrEqual(3);
     }
     expect(contrast('#ffffff', STOCK.red['600']!)).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+/*
+ * Tones (ADR-083, twelfth addendum): the colour an icon wears. Held to the floors that apply to a
+ * graphical object, not to text: the glyph must read against its own wash (3:1, WCAG 1.4.11) and
+ * against the surface and the page it sits on. The surface also gets the 4.5:1 text floor, because
+ * a tone is used as a thin line or a small mark and the one mistake worth ruling out is a pale one.
+ */
+describe.each([
+  ['light', BRAND.theme.colors],
+  ['dark', BRAND.theme.colorsDark],
+] as const)('%s tones', (theme, c) => {
+  describe.each(TONE_NAMES)('%s', (name) => {
+    const ink = c.tone[name];
+    const wash = mixHex(ink, c.surface, TONE_WASH_MIX[theme]);
+
+    it('keeps the glyph at 3:1 on its own wash', () => {
+      expect(contrast(ink, wash)).toBeGreaterThanOrEqual(3);
+    });
+
+    it('keeps the glyph at 3:1 on the page and 4.5:1 on the surface', () => {
+      expect(contrast(ink, c.neutral[50])).toBeGreaterThanOrEqual(3);
+      expect(contrast(ink, c.surface)).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('keeps the wash a tint: it is lighter than the glyph in light and darker in dark, never the glyph itself', () => {
+      expect(wash).not.toBe(ink);
+      if (theme === 'light') expect(luminance(wash)).toBeGreaterThan(luminance(ink));
+      else expect(luminance(wash)).toBeLessThan(luminance(ink));
+    });
+  });
+
+  it('is seven different colours', () => {
+    expect(new Set(TONE_NAMES.map((name) => c.tone[name].toLowerCase())).size).toBe(TONE_NAMES.length);
+    expect(TONE_NAMES).toHaveLength(7);
+  });
+});
+
+describe('the teal tone is the brand accent, so a rebrand moves it', () => {
+  it('is the fill/ink of the light accent and the ink of the dark one', () => {
+    expect(BRAND.theme.colors.tone.teal).toBe(BRAND.theme.colors.accent.DEFAULT);
+    expect(BRAND.theme.colorsDark.tone.teal).toBe(BRAND.theme.colorsDark.accentInk.DEFAULT);
+  });
+});
+
+describe('the accent glow', () => {
+  it('is built from the accent fill, in two layers', () => {
+    const glow = accentGlow(BRAND.theme.colors.accent.DEFAULT);
+    expect(glow.split(/,(?![^(]*\))/)).toHaveLength(2);
+    expect(glow).toContain('rgb(14 130 148 / 0.6)');
+    expect(glow).toContain('rgb(14 130 148 / 0.4)');
   });
 });

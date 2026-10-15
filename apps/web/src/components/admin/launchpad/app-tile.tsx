@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Badge } from '@/components/ui';
+import { Badge, IconTile, TiltLink } from '@/components/ui';
+import { launchpadTone } from '@/lib/tone';
 import { LAUNCHPAD_ICONS } from './app-icons';
 import { entryPreview, type LaunchpadTileData } from './launchpad';
 
@@ -8,6 +8,9 @@ import { entryPreview, type LaunchpadTileData } from './launchpad';
  * (its first reachable entry), so there is one target to hit, 44 px or taller
  * at every width. The preview line is a hint of what is inside, never a menu:
  * the full list lives in the sidebar, one level down (`HIE-1`, Law 7).
+ *
+ * The tile wears its app's tone (`lib/tone.ts`), rests on a card shadow, rises under a pointer and
+ * leans a few degrees toward it (ADR-083, twelfth addendum); the glyph lifts with it.
  */
 export function AppTile({ tile }: { tile: LaunchpadTileData }) {
   const { app, entries } = tile;
@@ -15,15 +18,13 @@ export function AppTile({ tile }: { tile: LaunchpadTileData }) {
   const front = entries[0]!;
 
   return (
-    <Link
+    <TiltLink
       href={front.href}
       data-reveal-item=""
-      className="card lift flex min-h-touch min-w-0 flex-col gap-3 p-5 focus-frame"
+      className="card flex min-h-touch min-w-0 flex-col gap-3 p-5 focus-frame"
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-neutral-100 text-neutral-900">
-          <Icon className="h-5 w-5" aria-hidden="true" />
-        </span>
+        <IconTile icon={Icon} tone={launchpadTone(app.iconKey)} size="lg" />
         {app.stage === 'BETA' ? <Badge tone="info">Beta</Badge> : null}
       </div>
       <div className="min-w-0">
@@ -33,6 +34,6 @@ export function AppTile({ tile }: { tile: LaunchpadTileData }) {
       <p className="mt-auto truncate text-xs text-neutral-900/60" title={entries.map((e) => e.label).join(', ')}>
         {entryPreview(entries)}
       </p>
-    </Link>
+    </TiltLink>
   );
 }

@@ -1,7 +1,9 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useState, type ComponentType, type ReactNode, type SVGProps } from 'react';
 import { cn } from '@/utils/cn';
+import type { ToneName } from '@/lib/tone';
+import { IconTile } from './icon-tile';
 
 export interface MetricItem {
   key: string;
@@ -21,6 +23,9 @@ export interface MetricItem {
    * the figure stops being a label and becomes the way into its own workings.
    */
   detail?: ReactNode;
+  /** A glyph for what this figure counts, on a tile in `tone`. Optional: a strip of plain figures is still a strip. */
+  icon?: ComponentType<SVGProps<SVGSVGElement>>;
+  tone?: ToneName;
 }
 
 /**
@@ -74,6 +79,7 @@ export function MetricStrip({
           const body = (
             <>
               <span className="eyebrow flex items-center gap-1.5">
+                {item.icon ? <IconTile icon={item.icon} tone={item.tone} size="sm" className="me-0.5" /> : null}
                 {item.label}
                 {item.detail ? (
                   <Chevron

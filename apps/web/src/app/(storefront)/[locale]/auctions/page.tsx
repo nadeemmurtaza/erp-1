@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { ApiError } from '@newax/shared';
 import { LotCard } from '@/components/storefront/auction/lot-card';
+import { RevealScope } from '@/components/ui/reveal-scope';
 import { Button, EmptyState, Segmented, SkeletonRegion } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
@@ -180,13 +181,13 @@ function AuctionList() {
               <p className="mt-6 text-sm text-neutral-900/60" aria-live="polite">
                 {t('list.resultsCount', { count: meta?.total ?? lots.length })}
               </p>
-              <ul className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+              <RevealScope as="ul" className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 {lots.map((lot) => (
-                  <li key={lot.lotId} className="flex">
+                  <li key={lot.lotId} data-reveal-item="" className="flex">
                     <LotCard lot={lot} now={now} offsetMs={offsetMs} />
                   </li>
                 ))}
-              </ul>
+              </RevealScope>
               {meta?.hasNext ? (
                 <div className="mt-8 flex flex-col items-center gap-2">
                   <Button variant="secondary" loading={loadingMore} onClick={showMore}>

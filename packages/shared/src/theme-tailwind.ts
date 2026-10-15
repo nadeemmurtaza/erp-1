@@ -75,6 +75,31 @@ const TINT_MIX: Readonly<Record<(typeof TINT_STEPS)[number], number>> = {
   '300': 0.4,
 };
 
+/**
+ * How much of a tone's ink is mixed into the surface to make the wash behind its icon
+ * (ADR-083, twelfth addendum). 12 % on white and 16 % on the dark surface: the
+ * lightest tint that still reads as a colour and not as a stain, and the one at which
+ * every tone's glyph keeps 3:1 against it (the graphical-object floor). Dark takes
+ * four points more because the same ink over a near-black surface needs more of it to
+ * read as tinted at all. One number moves all seven tones; `theme-contrast.spec.ts`
+ * holds both themes to the floor.
+ */
+export const TONE_WASH_MIX = { light: 0.12, dark: 0.16 } as const;
+
+/** The names of the tones, in the order brand.ts lists them. */
+export const TONE_NAMES = Object.keys(BRAND.theme.colors.tone) as ReadonlyArray<keyof typeof BRAND.theme.colors.tone>;
+export type ToneName = (typeof TONE_NAMES)[number];
+
+/**
+ * The glow under a filled brand control: the accent FILL (not the ink, which is pale in
+ * dark) at 60 % in a wide soft layer and 40 % in a tight one. The fill is the same in
+ * both themes, so one string serves both. Derived from `accent`, so a rebrand moves it.
+ */
+export function accentGlow(accentFill: Hex): string {
+  const rgb = channels(accentFill);
+  return `0 8px 20px -8px rgb(${rgb} / 0.6), 0 2px 6px -2px rgb(${rgb} / 0.4)`;
+}
+
 /* ── colour maths ──────────────────────────────────────────────────────── */
 
 export function hexToRgb(hex: Hex): [number, number, number] {
@@ -183,10 +208,18 @@ export function themeVars(theme: 'light' | 'dark', stock: StockHues): Vars {
     '--color-feedback-negative': channels(c.feedback.negative),
     ...Object.fromEntries(c.chart.map((hex, i) => [`--color-chart-${i}`, channels(hex)])),
     '--shadow-flat': elevation.flat,
+    '--shadow-card': elevation.card,
     '--shadow-raised': elevation.raised,
     '--shadow-overlay': elevation.overlay,
     '--shadow-modal': elevation.modal,
+    '--shadow-glow': accentGlow(c.accent.DEFAULT),
   };
+
+  for (const name of TONE_NAMES) {
+    const ink = c.tone[name];
+    vars[`--color-tone-${name}`] = channels(ink);
+    vars[`--color-tone-${name}-wash`] = channels(mixHex(ink, c.surface, TONE_WASH_MIX[theme]));
+  }
 
   for (const hue of STOCK_HUE_NAMES) {
     Object.assign(vars, hueVars(hue, theme === 'light' ? stock[hue] : darkHueScale(stock[hue], c.surface)));
@@ -205,6 +238,11 @@ export function staticVars(): Vars {
   vars['--motion-stagger-step'] = ms(m.stagger.step);
   vars['--motion-stagger-fine'] = ms(m.stagger.fine);
   vars['--motion-speed-read'] = `${m.speed.read}px`;
+  vars['--motion-ambient-pulse'] = ms(m.ambient.pulse);
+  vars['--motion-ambient-breathe'] = ms(m.ambient.breathe);
+  vars['--motion-tilt-max'] = `${m.tilt.maxDeg}deg`;
+  vars['--motion-tilt-perspective'] = `${m.tilt.perspective}px`;
+  vars['--motion-tilt-tip'] = `${m.tilt.tipDeg}deg`;
   return vars;
 }
 
@@ -249,6 +287,9 @@ export function createThemeTailwind(stock: StockHues) {
       accent: { DEFAULT: ref('accent-ink'), hover: ref('accent-ink-hover') },
       star: light.star,
       feedback: { positive: ref('feedback-positive'), negative: ref('feedback-negative') },
+      tone: Object.fromEntries(
+        TONE_NAMES.map((name) => [name, { DEFAULT: ref(`tone-${name}`), wash: ref(`tone-${name}-wash`) }]),
+      ),
       surface: ref('surface'),
       overlay: ref('overlay'),
       inverse: ref('inverse'),
@@ -293,6 +334,8 @@ export function createThemeTailwind(stock: StockHues) {
       xl: 'var(--shadow-modal)',
       '2xl': 'var(--shadow-modal)',
       flat: 'var(--shadow-flat)',
+      card: 'var(--shadow-card)',
+      glow: 'var(--shadow-glow)',
       raised: 'var(--shadow-raised)',
       overlay: 'var(--shadow-overlay)',
       modal: 'var(--shadow-modal)',
@@ -330,7 +373,16 @@ export function createThemeTailwind(stock: StockHues) {
     baseStyles(): CssRules {
       const lightVars = themeVars('light', stock);
       const darkVars = themeVars('dark', stock);
+      // `data-tone="indigo"` on an element gives it and its descendants `--tone-ink` and `--tone-wash`,
+      // which `.icon-tile` reads. One rule per tone, written from the brand file's own list.
+      const tones: CssRules = Object.fromEntries(
+        TONE_NAMES.map((name) => [
+          `[data-tone='${name}']`,
+          { '--tone-ink': `var(--color-tone-${name})`, '--tone-wash': `var(--color-tone-${name}-wash)` },
+        ]),
+      );
       return {
+        ...tones,
         ':root': { 'color-scheme': 'light', ...staticVars(), ...lightVars },
         "[data-theme='light']": { 'color-scheme': 'light', ...lightVars },
         "[data-theme='dark']": { 'color-scheme': 'dark', ...darkVars },

@@ -49,14 +49,38 @@ describe('layers', () => {
 });
 
 describe('elevation', () => {
-  it('has the same four steps in both themes', () => {
+  it('has the same five steps in both themes', () => {
     expect(Object.keys(BRAND.theme.elevation.dark)).toEqual(Object.keys(BRAND.theme.elevation.light));
+    expect(Object.keys(BRAND.theme.elevation.light)).toEqual(['flat', 'card', 'raised', 'overlay', 'modal']);
   });
 
-  it('is never a border-and-shadow hybrid: no step draws a zero-blur spread ring', () => {
+  /*
+   * ADR-083, twelfth addendum. "Never a border and a shadow on the same edge" is kept by
+   * making the shadow the edge: the ring is the FIRST layer of the steps a box sits at or
+   * rises to (`card`, `overlay`, `modal`), so a card has one soft boundary and no `border`.
+   * `raised` and `flat` carry none, and no step may carry a ring that is not its first layer
+   * (a ring in the middle of a stack is a second outline).
+   */
+  it('puts the 1px ring only on card, overlay and modal, and only as the first layer', () => {
+    const ringed = ['card', 'overlay', 'modal'];
+    for (const theme of ['light', 'dark'] as const) {
+      for (const [step, value] of Object.entries(BRAND.theme.elevation[theme])) {
+        const layers = value.split(/,(?![^(]*\))/).map((layer) => layer.trim());
+        const rings = layers.filter((layer) => /^0 0 0 \d+px/.test(layer));
+        if (ringed.includes(step)) {
+          expect(rings).toHaveLength(1);
+          expect(layers[0]).toMatch(/^0 0 0 1px/);
+        } else {
+          expect(rings).toHaveLength(0);
+        }
+      }
+    }
+  });
+
+  it('keeps every step a stack of at most three layers, so a shadow stays one decision', () => {
     for (const theme of ['light', 'dark'] as const) {
       for (const value of Object.values(BRAND.theme.elevation[theme])) {
-        expect(value).not.toMatch(/0 0 0 \d+px/);
+        if (value !== 'none') expect(value.split(/,(?![^(]*\))/).length).toBeLessThanOrEqual(3);
       }
     }
   });
@@ -85,6 +109,11 @@ describe('motion', () => {
     expect(scale.arrive).toBeLessThan(1);
     expect(scale.pop).toBeGreaterThan(0);
     expect(scale.pop).toBeLessThan(scale.arrive);
+    // An icon tile under a hovered card tips up by a few percent and a few degrees: more than a rest, far less than the card's own travel.
+    expect(scale.tip).toBeGreaterThan(1);
+    expect(scale.tip).toBeLessThanOrEqual(1.1);
+    expect(BRAND.theme.motion.tilt.tipDeg).toBeGreaterThan(0);
+    expect(BRAND.theme.motion.tilt.tipDeg).toBeLessThan(BRAND.theme.motion.tilt.maxDeg);
     // Reading speed (px per second): between the two reference reels that scrolled text (23 and 80), and a 240px overflow is one pass of about five seconds.
     expect(speed.read).toBeGreaterThanOrEqual(20);
     expect(speed.read).toBeLessThanOrEqual(100);

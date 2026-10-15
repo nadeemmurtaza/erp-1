@@ -27,7 +27,7 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.edge.yml` | yaml | 42 |  |
 | `docker-stack.prod.yml` | yaml | 124 |  |
 | `docker-stack.staging.yml` | yaml | 124 |  |
-| `package.json` | json | 66 |  |
+| `package.json` | json | 67 |  |
 | `pnpm-lock.yaml` | yaml | 19483 |  |
 | `pnpm-workspace.yaml` | yaml | 24 |  |
 | `turbo.json` | json | 56 |  |
@@ -77,7 +77,7 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2638 |  |
+| `build-index.mjs` | script | 2640 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 117 |  |
 | `check-clipboard.mjs` | script | 174 |  |

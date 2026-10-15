@@ -102,22 +102,50 @@ a button inside that card should read as the same material.
 ## Shadow and elevation
 
 Source: `theme-elevation.ts`. Elevation is a small, ordered set — `flat`,
-`raised`, `overlay`, `modal` — and each maps to exactly one shadow token
-(`--shadow-*`, which differs per theme). Shadows are never composed ad hoc. The
-stock names are mapped onto the four steps (`shadow`/`shadow-sm` → raised,
-`shadow-md`/`shadow-lg` → overlay, `shadow-xl`/`shadow-2xl` → modal), so
-existing call sites are on the system without an edit.
+`card`, `raised`, `overlay`, `modal` — and each maps to exactly one shadow
+token (`--shadow-*`, which differs per theme). Shadows are never composed ad
+hoc. The stock names are mapped onto the five steps (`shadow`/`shadow-sm` →
+raised, `shadow-md`/`shadow-lg` → overlay, `shadow-xl`/`shadow-2xl` → modal),
+so existing call sites are on the system without an edit. `card` is the one at
+rest: it is what a card, a metric strip and a storefront photo frame sit on.
 
 **Light says "higher" with a shadow; dark says it with a lighter surface.** A
 shadow on a near-black page is invisible, so dark's `surface` and `overlay` are
 each lighter than the last (`#171516` → `#242122`), and its shadows are pure
-black at higher opacity as a secondary cue.
+black at higher opacity as a secondary cue. Dark's ring is white at 7–8%, since
+a dark ring on a dark page would not show.
 
 **Rules**
-- **Never a border and a shadow on the same edge.** That is two boundaries, and
-  it is already binding in `.claude/rules/ui.md`.
-- `.card` has no shadow. `.lift` adds one on hover, when it means *this rose*.
+- **One boundary per edge.** A card's edge is the *first layer of its shadow*: a
+  1 px ring at 6% ink (`card`, `overlay`, `modal`), with the border set to
+  `transparent`. So there is a boundary and a depth, and still never a border
+  *and* a shadow drawing two lines on one edge. `raised` and `flat` carry no
+  ring, because they sit on something that already has an edge. A shadow has at
+  most three layers, and a ring is only ever the first (`theme-space.spec.ts`).
+- `.card` and `.card-lit` take `shadow-card`. `.lift` adds `shadow-overlay` on
+  hover, when it means *this rose*. A thing with its own border by meaning (an
+  input, a selected thumbnail, a dashed placeholder) keeps it and takes no ring.
+- **Glow is for the one loud button.** `shadow-glow` (`0 8px 20px -8px` and
+  `0 2px 6px -2px`, the accent fill at 60% and 40%) sits under `.btn-primary`
+  and nothing else, so the page's one action is also the page's one light.
 - Elevation implies z-order: a thing that looks higher must also be higher.
+
+## Tones
+
+Source: `BRAND.theme.colors.tone` and `colorsDark.tone`. Seven colours for a
+glyph and the tile behind it (`IconTile`): `teal` (the accent), `indigo`,
+`violet`, `rose`, `amber`, `emerald`, `sky`. Each has an ink and a wash (the ink
+mixed into the surface at 12% in light, 16% in dark), emitted as
+`--color-tone-<name>` and `--color-tone-<name>-wash`, and as `data-tone` rules
+that set `--tone-ink` and `--tone-wash` for whatever sits inside.
+
+A tone says *which kind of thing*, so the eye can find the money one or the
+people one by hue before it reads a label. It never says good or bad: that is
+`feedback`. It is for glyphs and tiles only, never a text colour and never a
+status. The glyph reaches 3:1 on its own wash and on the page and 4.5:1 on the
+surface in both themes, asserted in `theme-contrast.spec.ts`, so the colour is a
+cue and never the only one. The same glyph is the same tone everywhere
+(`lib/tone.ts` decides, never the glyph).
 
 ## Z-index / layering
 

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { formatMoney, formatNumber } from '@newax/shared';
 import { SparklineChart } from '@/components/admin/charts';
+import { CountUp } from '@/components/ui';
 import { useFreshOnChange } from '@/hooks/use-fresh-on-change';
 import type { DashboardCard, ValueFormat } from './card-registry';
 
@@ -31,6 +32,9 @@ export function formatValue(format: ValueFormat, value: number, label?: string):
       return formatNumber(value);
   }
 }
+
+/** Formats whose figure is not a whole number, so the count passes through fractions and lands on the exact value. */
+const FRACTIONAL: ReadonlySet<ValueFormat> = new Set<ValueFormat>(['rating', 'percent-bps']);
 
 /** Percentage change from `previous` to `value`, or null when there's nothing to compare against. */
 function deltaPercent(value: number, previous: number | null): number | null {
@@ -76,7 +80,7 @@ export function MetricCard({
   return (
     <Link
       href={card.href}
-      className="card sheen flex min-h-[104px] flex-col justify-between gap-2 p-4 transition-colors hover:border-neutral-200"
+      className="card lift sheen flex min-h-[104px] flex-col justify-between gap-2 p-4"
       data-fresh={fresh ? 'true' : undefined}
       aria-label={ariaLabel}
       title={data ? undefined : missingReason}
@@ -88,7 +92,12 @@ export function MetricCard({
           className="text-xl font-semibold tabular-nums text-neutral-900"
           title={card.format === 'text' && card.hint ? card.hint : undefined}
         >
-          {valueText}
+          {card.format === 'text' ? valueText : (
+            <CountUp
+              value={data.value}
+              format={(n) => formatValue(card.format, FRACTIONAL.has(card.format) ? n : Math.round(n), data.label)}
+            />
+          )}
         </span>
       ) : (
         <span className="text-xl font-semibold text-neutral-900/60" aria-hidden="true">

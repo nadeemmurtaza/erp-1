@@ -118,6 +118,47 @@ The reel runs its entrances for about 600 ms. That is a film. A component here
 takes at most `slow` (320 ms); `sweep` (420 ms) is for a page-level figure
 resolving and the button fill.
 
+### The third tier: ambient (twelfth addendum)
+
+The owner, 2026-10-09: "Add maximum motion effects, maximum premium motion
+animations", and "give the liveness to this project, give a soul to this project".
+Two tiers were not enough to say that, so there is a third.
+
+**Ambient** motion is what a screen does while nobody is touching it, and it is
+allowed only where the thing is itself *alive*: updating now, or running out. It
+passes the one test like every other motion (it carries state or attention), and
+it is held to four limits that the other tiers do not need:
+
+- **It has its own clock**, `motion.ambient`: `pulse` 2 000 ms and `breathe`
+  3 600 ms. They are slower than any interaction on purpose, so the 420 ms
+  interaction ceiling is untouched and an ambient loop never reads as a response
+  to the reader's own act.
+- **Transform and opacity only** (`MOT-5`). The live dot's ring and the breathing
+  halo are pseudo-elements that scale and fade; the element they sit on never
+  moves.
+- **One of each per screen at most.** A page of thirty pulsing dots is noise;
+  the dot says "this figure is live" once, at the figure.
+- **Under reduced motion it stops, and loses nothing.** The global rule ends every
+  loop after one frame at its end state: the ring is invisible and the dot alone
+  says "live"; the halo is invisible and the badge's words say "closing soon".
+
+| Motion | What it says | Where | Tier |
+|---|---|---|---|
+| `.live-dot` (ring leaves the dot every 2 s) | this figure is updating now | the lot's price, the lot card's time left | Ambient |
+| `.breathe` (a 5 px halo swells and fades every 3.6 s) | look here, this is running out | the closing-soon badge, one per screen | Ambient |
+| `.btn-primary` shine (one highlight, `sweep`, on hover) | this is the one action | the primary button only | Functional |
+| `.lift.tilt` (leans at most 4° toward a fine pointer, through 900 px of perspective) | this surface is under your hand | a card that is a link to a thing (launchpad tile, lot card) | Functional |
+| `.icon-tile` tip (rises 2 px, grows 6%, leans 3°, takes a glow in its own tone) | this is what you are about to open | a tile inside a hovered or focused card, link or row | Functional |
+| `.nav-rail` (a 3 px bar grows from its centre) | you arrived here | the active row of the admin sidebar | Functional |
+| `.tone-hover` (the glyph takes its tone) | this icon is the one in use | a bare storefront icon control | Functional |
+| `CountUp mode="reel"` on a price | this figure was just computed | the lot's current bid | Expressive |
+
+Hover and focus things are gated by `(hover: hover) and (pointer: fine)` and
+`prefers-reduced-motion: no-preference` together: a finger has no hover, so
+nothing leans or tips on a phone. Still not adopted: particles, drifting
+gradients, parallax, anything that moves on a business control (no bounce, no
+elastic: the rejection list below still stands).
+
 ### The functional vocabulary
 
 | Motion | What moves | Token values |

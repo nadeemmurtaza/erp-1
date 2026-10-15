@@ -155,7 +155,7 @@ const BASELINE = [
   // This is the one baseline entry that needs judgement to apply: the same
   // token used to mark a control's edge IS a violation and is not covered
   // here. The checker cannot tell the two apart — that needs a render.
-  { token: 'neutral-100', max: 42, reason: '1.23:1 — dividers and card outlines. 39 in components, plus 3 in the web stylesheet\'s house classes (lines 430, 446, 701), which the check could not read before it learned `@apply`: the scope grew, not the debt.' },
+  { token: 'neutral-100', max: 39, reason: '1.23:1 — dividers and card outlines, all 39 in components. The 3 that were in the web stylesheet\'s house classes (`.card`, `.card-lit`, `.metric-strip`) are gone: their edge is now the first layer of `shadow-card`, a 1 px ring (ADR-083, twelfth addendum). Lowered from 42.' },
   { token: 'neutral-200', max: 7, reason: '1.54:1 to 1.72:1 — a dropdown edge (party-picker.tsx), and the CONTROL BOUNDARY of the house classes, newly readable through `@apply`: web `.field-input`, the base input/select/textarea/checkbox/radio rule, `.btn-secondary`, `.chip-unselected`, and the POS `.field-input` and `.tap-btn-secondary`. A control\'s boundary needs 3:1 (WCAG 1.4.11), so these six are a real accessibility debt, not a divider that conveys nothing. `.claude/rules/ui.md` says controls take `border-neutral-200`, so the two documents disagree; which one gives way is the owner\'s call (ADR-083, consistency addendum). A second use (a table rule, in an admin toast) was retired when six duplicated toast blocks were pulled into components/admin/toast-stack.tsx.' },
   { token: 'neutral-800', max: 1, reason: '1.10:1 — the dark footer\'s top border.' },
   { token: 'neutral-300', max: 1, reason: '2.10:1 — a gallery thumbnail edge.' },
@@ -170,7 +170,7 @@ const BASELINE = [
  * Use `bg-inverse text-on-inverse` (brand.ts) for a fill that must flip.
  */
 const DARK_BASELINE = [
-  { token: 'neutral-100', max: 42, reason: '1.26:1 — the same dividers and card outlines as light (1.23:1), 39 in components and 3 in the stylesheet\'s house classes. Dark keeps the hairline at the same weight on purpose: it conveys nothing the spacing beside it does not.' },
+  { token: 'neutral-100', max: 39, reason: '1.26:1 — the same dividers and card outlines as light (1.23:1), 39 in components. Dark keeps the hairline at the same weight on purpose: it conveys nothing the spacing beside it does not. Lowered from 42 with light (ADR-083, twelfth addendum).' },
 ];
 
 // ── retired entries, kept as a record rather than deleted outright ───────

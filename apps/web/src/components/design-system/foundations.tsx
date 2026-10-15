@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import {
+  TONE_NAMES,
   THEME_ELEVATION,
   THEME_LAYERS,
   THEME_MOTION,
@@ -162,6 +163,16 @@ export function ColourFoundations() {
         </div>
       </Group>
 
+      <Group
+        title="Tones"
+        note="Seven colours for glyphs and the tile behind them (IconTile), so the eye finds the money one or the people one by hue. Ink on top, its wash below. Never for text and never for status: a tone does not mean good or bad, that is feedback."
+      >
+        <SwatchRow tokens={TONE_NAMES.map((n) => `tone-${n}`)} />
+        <div className="mt-3">
+          <SwatchRow tokens={TONE_NAMES.map((n) => `tone-${n}-wash`)} />
+        </div>
+      </Group>
+
       <Group title="Chart series" note="Six categorical colours, each ≥ 3:1 against the surface in both themes. Charts pair colour with a dash and a marker, so colour is never the only signal.">
         <SwatchRow tokens={[0, 1, 2, 3, 4, 5].map((i) => `chart-${i}`)} />
       </Group>
@@ -200,6 +211,8 @@ const PAIRS: readonly Pair[] = [
     known: 'Light is 1.72:1, inherited from the original palette. Dark is built to 3:1. Tracked in ADR-083.',
   },
   { what: 'Icon and disabled ink (neutral-400) on a surface', fg: 'neutral-400', bg: 'surface', floor: 3 },
+  { what: 'Tone glyph (teal) on its wash', fg: 'tone-teal', bg: 'tone-teal-wash', floor: 3 },
+  { what: 'Tone glyph (rose) on its wash', fg: 'tone-rose', bg: 'tone-rose-wash', floor: 3 },
   { what: 'Chart series 0 on a surface', fg: 'chart-0', bg: 'surface', floor: 3 },
   { what: 'Chart series 3 on a surface', fg: 'chart-3', bg: 'surface', floor: 3 },
 ];
@@ -350,8 +363,9 @@ export function SpaceFoundations() {
 /* ── elevation, layers, motion ─────────────────────────────────────────── */
 
 const ELEVATION_CLASS: Record<keyof typeof THEME_ELEVATION.light, [string, string, string]> = {
-  flat: ['shadow-flat', 'bg-surface', 'Resting content'],
-  raised: ['shadow-raised', 'bg-surface', 'Cards that lift on hover'],
+  flat: ['shadow-flat', 'bg-surface', 'Content with no box of its own'],
+  card: ['shadow-card', 'bg-surface', 'A box at rest: its edge is the shadow\'s first layer'],
+  raised: ['shadow-raised', 'bg-surface', 'Small things: a chip, a sticky bar'],
   overlay: ['shadow-overlay', 'bg-overlay', 'Menus and popovers'],
   modal: ['shadow-modal', 'bg-overlay', 'Dialogs'],
 };
@@ -360,8 +374,8 @@ export function ElevationFoundations() {
   const [replay, setReplay] = useState(false);
   return (
     <>
-      <Group className="lg:col-span-2" title="Elevation" note="Four steps. Light says “higher” with a shadow; dark says it with a lighter surface, because a shadow disappears on near-black.">
-        <ul className="grid gap-4 rounded-lg bg-neutral-50 p-6 sm:grid-cols-2 lg:grid-cols-4">
+      <Group className="lg:col-span-2" title="Elevation" note="Five steps. Light says “higher” with a shadow; dark says it with a lighter surface, because a shadow disappears on near-black.">
+        <ul className="grid gap-4 rounded-lg bg-neutral-50 p-6 sm:grid-cols-2 lg:grid-cols-5">
           {(Object.keys(ELEVATION_CLASS) as (keyof typeof ELEVATION_CLASS)[]).map((step) => {
             const [shadow, surface, use] = ELEVATION_CLASS[step];
             return (

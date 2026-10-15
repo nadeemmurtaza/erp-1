@@ -30,6 +30,7 @@ import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
 import { LayeringSpecimen } from './layering';
 import { PageStructureSpecimens } from './page-structure-specimens';
 import { MotionSpecimens } from './motion-specimens';
+import { PremiumSpecimens } from './premium-specimens';
 import { PeopleAccessSpecimen } from './people-access';
 import { PublishAudienceSpecimen } from './publish-audience';
 import { ScopedBentoSpecimen } from './scoped-bento';
@@ -45,6 +46,7 @@ const SECTIONS = [
   ['space', 'Space'],
   ['depth', 'Depth and timing'],
   ['motion', 'Motion'],
+  ['life', 'Colour and life'],
   ['components', 'Components'],
   ['controls', 'Controls'],
   ['patterns', 'Admin patterns'],
@@ -138,6 +140,15 @@ export function DesignSystemGallery() {
           lead="One language, from the same tokens as everything else: a button presses, a card arrives, a field shakes once when it is wrong, a dialog leaves as fast as it came. Movement is kept only for what it tells the reader, and everything here holds still under reduced motion without losing a fact."
         >
           <MotionSpecimens />
+        </GallerySection>
+
+        <GallerySection
+          id="life"
+          title="Colour and life"
+          lead="What gives a screen its character without adding a feature: a tone for each kind of thing, a soft shadow as each box's edge, a card that answers the hand, and a few things that are visibly alive. Each part is a class or a component, and each holds still, losing nothing, under reduced motion."
+          columns="lg:grid-cols-2"
+        >
+          <PremiumSpecimens />
         </GallerySection>
 
         <GallerySection id="components" title="Components" lead="The shared primitives, as shipped. A page composes these; it does not invent its own.">

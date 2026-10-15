@@ -11,7 +11,8 @@ export function CartBadge() {
   return (
     <Link
       href={ROUTES.storefront.cart}
-      className="group relative inline-flex h-9 w-9 items-center justify-center rounded text-neutral-500 transition-colors duration-normal ease-decelerate hover:bg-neutral-50 hover:text-neutral-900"
+      data-tone="teal"
+      className="tone-hover group relative inline-flex h-9 w-9 items-center justify-center rounded text-neutral-500"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1" />

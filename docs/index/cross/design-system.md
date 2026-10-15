@@ -27,11 +27,11 @@ binding and load automatically when you open a component:
 | Chapter | Governs | Status as written | Laws | Size |
 |---|---|---|---|---|
 | [Principles](../../design/principles-laws/00-principles.md) | How a design decision gets made when no rule covers the case. | binding by review. | — | 83 lines |
-| [Foundations](../../design/foundations/01-foundations.md) | The token layer. Every visual value in the product resolves to something here, | built, in two themes. | — | 324 lines |
+| [Foundations](../../design/foundations/01-foundations.md) | The token layer. Every visual value in the product resolves to something here, | built, in two themes. | — | 352 lines |
 | [Layout and responsive](../../design/layout-composition/02-layout.md) | How a page is arranged, and how that arrangement survives seven screen widths. | breakpoints are built (`apps/web/tailwind.config.ts`), on a scale | 2 | 182 lines |
-| [Components](../../design/components-states/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 35 | 481 lines |
+| [Components](../../design/components-states/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 35 | 485 lines |
 | [States and behaviour](../../design/components-states/04-states.md) | What every element can be, and what each state promises the user. | partly built. | 5 | 235 lines |
-| [Motion](../../design/motion/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | built for the web app. | — | 340 lines |
+| [Motion](../../design/motion/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | built for the web app. | — | 381 lines |
 | [Content](../../design/content/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | partly built. | — | 130 lines |
 | [Accessibility and internationalisation](../../design/accessibility/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 166 lines |
 | [Governance](../../design/process-governance/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 147 lines |
@@ -106,18 +106,18 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `FRM-3` | Labels | [components-states/03-components.md:329](../../design/components-states/03-components.md#frm-3-labels) |
 | `FRM-4` | Colour | [components-states/03-components.md:334](../../design/components-states/03-components.md#frm-4-colour) |
 | `FRM-5` | Depth | [components-states/03-components.md:338](../../design/components-states/03-components.md#frm-5-depth) |
-| `FRM-6` | Motion | [components-states/03-components.md:350](../../design/components-states/03-components.md#frm-6-motion) |
-| `CRD-1` | Hierarchy | [components-states/03-components.md:358](../../design/components-states/03-components.md#crd-1-hierarchy) |
-| `CRD-2` | Spacing | [components-states/03-components.md:362](../../design/components-states/03-components.md#crd-2-spacing) |
-| `CRD-3` | Colour | [components-states/03-components.md:366](../../design/components-states/03-components.md#crd-3-colour) |
-| `CRD-4` | Depth | [components-states/03-components.md:370](../../design/components-states/03-components.md#crd-4-depth) |
-| `CRD-5` | Corners curve together | [components-states/03-components.md:377](../../design/components-states/03-components.md#crd-5-corners-curve-together) |
-| `CRD-6` | Motion | [components-states/03-components.md:386](../../design/components-states/03-components.md#crd-6-motion) |
-| `CPY-1` | The flip is the receipt | [components-states/03-components.md:402](../../design/components-states/03-components.md#cpy-1-the-flip-is-the-receipt) |
-| `CPY-2` | Two seconds, then back | [components-states/03-components.md:411](../../design/components-states/03-components.md#cpy-2-two-seconds-then-back) |
-| `CPY-3` | Copy the raw value | [components-states/03-components.md:419](../../design/components-states/03-components.md#cpy-3-copy-the-raw-value) |
-| `CPY-4` | Say it aloud | [components-states/03-components.md:431](../../design/components-states/03-components.md#cpy-4-say-it-aloud) |
-| `CPY-5` | Fall back, then fail out loud | [components-states/03-components.md:441](../../design/components-states/03-components.md#cpy-5-fall-back-then-fail-out-loud) |
+| `FRM-6` | Motion | [components-states/03-components.md:351](../../design/components-states/03-components.md#frm-6-motion) |
+| `CRD-1` | Hierarchy | [components-states/03-components.md:359](../../design/components-states/03-components.md#crd-1-hierarchy) |
+| `CRD-2` | Spacing | [components-states/03-components.md:363](../../design/components-states/03-components.md#crd-2-spacing) |
+| `CRD-3` | Colour | [components-states/03-components.md:367](../../design/components-states/03-components.md#crd-3-colour) |
+| `CRD-4` | Depth | [components-states/03-components.md:371](../../design/components-states/03-components.md#crd-4-depth) |
+| `CRD-5` | Corners curve together | [components-states/03-components.md:381](../../design/components-states/03-components.md#crd-5-corners-curve-together) |
+| `CRD-6` | Motion | [components-states/03-components.md:390](../../design/components-states/03-components.md#crd-6-motion) |
+| `CPY-1` | The flip is the receipt | [components-states/03-components.md:406](../../design/components-states/03-components.md#cpy-1-the-flip-is-the-receipt) |
+| `CPY-2` | Two seconds, then back | [components-states/03-components.md:415](../../design/components-states/03-components.md#cpy-2-two-seconds-then-back) |
+| `CPY-3` | Copy the raw value | [components-states/03-components.md:423](../../design/components-states/03-components.md#cpy-3-copy-the-raw-value) |
+| `CPY-4` | Say it aloud | [components-states/03-components.md:435](../../design/components-states/03-components.md#cpy-4-say-it-aloud) |
+| `CPY-5` | Fall back, then fail out loud | [components-states/03-components.md:445](../../design/components-states/03-components.md#cpy-5-fall-back-then-fail-out-loud) |
 | `SUC-1` | Specific | [components-states/04-states.md:146](../../design/components-states/04-states.md#suc-1-specific) |
 | `SUC-2` | Next step | [components-states/04-states.md:158](../../design/components-states/04-states.md#suc-2-next-step) |
 | `SUC-3` | Stakes | [components-states/04-states.md:169](../../design/components-states/04-states.md#suc-3-stakes) |
@@ -283,14 +283,14 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 
 | Signal | Today | Note |
 |---|---|---|
-| Token files | 11 (648 lines) | Token groups that exist at all — see the table below |
-| Primitives | 43 | `apps/web/src/components/ui` — the ladder's second rung |
+| Token files | 11 (700 lines) | Token groups that exist at all — see the table below |
+| Primitives | 46 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
-| CSS `transition` | 19 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 131 | the actual motion surface today — utility classes, not a token |
-| CSS `@keyframes` | 18 | named animations |
-| `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 498 | written by hand; **no accessibility lint runs** |
+| CSS `transition` | 23 | declared transitions across every stylesheet |
+| Tailwind `transition-*` classes | 125 | the actual motion surface today — utility classes, not a token |
+| CSS `@keyframes` | 21 | named animations |
+| `prefers-reduced-motion` blocks | 6 | chapter 05 and 07 both require this on every motion |
+| `aria-*` attributes | 501 | written by hand; **no accessibility lint runs** |
 | `role=` attributes | 412 |  |
 | RTL / `dir` references | 65 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
@@ -323,7 +323,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### [`docs/design/foundations/01-foundations.md`](../../design/foundations/01-foundations.md)  <sub>324 lines</sub>
+### [`docs/design/foundations/01-foundations.md`](../../design/foundations/01-foundations.md)  <sub>352 lines</sub>
 
 - Why tokens and not values  <sub>:16</sub>
 - Colour  <sub>:26</sub>
@@ -332,12 +332,13 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Size  <sub>:82</sub>
 - Radius  <sub>:95</sub>
 - Shadow and elevation  <sub>:102</sub>
-- Z-index / layering  <sub>:122</sub>
-- Breakpoints  <sub>:143</sub>
-- Motion tokens  <sub>:156</sub>
-- Safeguards  <sub>:208</sub>
-- Theming  <sub>:227</sub>
-- Where tokens live  <sub>:310</sub>
+- Tones  <sub>:133</sub>
+- Z-index / layering  <sub>:150</sub>
+- Breakpoints  <sub>:171</sub>
+- Motion tokens  <sub>:184</sub>
+- Safeguards  <sub>:236</sub>
+- Theming  <sub>:255</sub>
+- Where tokens live  <sub>:338</sub>
 
 ### [`docs/design/layout-composition/02-layout.md`](../../design/layout-composition/02-layout.md)  <sub>182 lines</sub>
 
@@ -351,7 +352,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The POS is a different animal  <sub>:157</sub>
 - Verifying  <sub>:170</sub>
 
-### [`docs/design/components-states/03-components.md`](../../design/components-states/03-components.md)  <sub>481 lines</sub>
+### [`docs/design/components-states/03-components.md`](../../design/components-states/03-components.md)  <sub>485 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
@@ -359,8 +360,8 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Patterns — *undocumented*  <sub>:82</sub>
 - Templates — *undocumented*  <sub>:123</sub>
 - Controls with a contract  <sub>:134</sub>
-- Component contract  <sub>:458</sub>
-- What never gets hand-rolled  <sub>:473</sub>
+- Component contract  <sub>:462</sub>
+- What never gets hand-rolled  <sub>:477</sub>
 
 ### [`docs/design/components-states/04-states.md`](../../design/components-states/04-states.md)  <sub>235 lines</sub>
 
@@ -377,22 +378,22 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The success state  <sub>:138</sub>
 - Offline and degraded — the POS case  <sub>:221</sub>
 
-### [`docs/design/motion/05-motion.md`](../../design/motion/05-motion.md)  <sub>340 lines</sub>
+### [`docs/design/motion/05-motion.md`](../../design/motion/05-motion.md)  <sub>381 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:208</sub>
-- Orchestration  <sub>:224</sub>
-- Micro-interactions  <sub>:233</sub>
-- Scroll  <sub>:249</sub>
-- Responsive motion  <sub>:261</sub>
-- Reduced motion — required  <sub>:272</sub>
-- Performance  <sub>:308</sub>
-- Rejection list  <sub>:319</sub>
-- Benchmark, not template  <sub>:330</sub>
+- Continuity over replacement  <sub>:249</sub>
+- Orchestration  <sub>:265</sub>
+- Micro-interactions  <sub>:274</sub>
+- Scroll  <sub>:290</sub>
+- Responsive motion  <sub>:302</sub>
+- Reduced motion — required  <sub>:313</sub>
+- Performance  <sub>:349</sub>
+- Rejection list  <sub>:360</sub>
+- Benchmark, not template  <sub>:371</sub>
 
 ### [`docs/design/content/06-content.md`](../../design/content/06-content.md)  <sub>130 lines</sub>
 

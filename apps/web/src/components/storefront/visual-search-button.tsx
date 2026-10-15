@@ -56,7 +56,8 @@ export function VisualSearchButton() {
         title={t('visualSearch')}
         disabled={busy}
         onClick={() => inputRef.current?.click()}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors duration-normal hover:bg-neutral-50 hover:text-neutral-900 disabled:opacity-50"
+        data-tone="sky"
+        className="tone-hover flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-neutral-500 disabled:opacity-50"
       >
         {busy ? (
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-900" />

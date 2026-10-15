@@ -3,7 +3,7 @@
 
 # Components
 
-All **193** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **197** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -15,16 +15,19 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 | Export | File | Product files | Design-system files |
 |---|---|---|---|
 | `PageHeader` | `page-header.tsx` | 149 | 3 |
+| `IconTile` | `icon-tile.tsx` | 6 | 1 |
+| `PageIdentityProvider` | `page-identity.tsx` | 1 | 0 |
+| `TiltLink` | `tilt.tsx` | 1 | 0 |
 | `Section` | `section.tsx` | 41 | 1 |
 | `Disclosure` | `disclosure.tsx` | 18 | 5 |
 | `Tabs` | `tabs.tsx` | 9 | 3 |
 | `SectionRail` | `section-rail.tsx` | 5 | 1 |
 | `DataTable` | `data-table.tsx` | 124 | 9 |
-| `EmptyState` | `empty-state.tsx` | 82 | 4 |
+| `EmptyState` | `empty-state.tsx` | 83 | 4 |
 | `MetricStrip` | `metric-strip.tsx` | 22 | 2 |
-| `Badge` | `badge.tsx` | 21 | 11 |
+| `Badge` | `badge.tsx` | 21 | 12 |
 | `Pagination` | `pagination.tsx` | 14 | 2 |
-| `Button` | `button.tsx` | 27 | 15 |
+| `Button` | `button.tsx` | 27 | 16 |
 | `Dialog` | `dialog.tsx` | 36 | 3 |
 | `ConfirmDialog` | `confirm-dialog.tsx` | 14 | 4 |
 | `CopyButton` | `copy-button.tsx` | 2 | 1 |
@@ -49,10 +52,10 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 | `MultiSelect` | `multi-select.tsx` | 0 | 1 |
 | `DateField` | `date-field.tsx` | 17 | 1 |
 | `PageEnter` | `page-enter.tsx` | 2 | 1 |
-| `CountUp` | `count-up.tsx` | 1 | 1 |
+| `CountUp` | `count-up.tsx` | 3 | 2 |
 | `ProgressRing` | `progress-ring.tsx` | 0 | 2 |
 | `ProgressBar` | `progress-bar.tsx` | 3 | 1 |
-| `RevealScope` | `reveal-scope.tsx` | 2 | 1 |
+| `RevealScope` | `reveal-scope.tsx` | 4 | 1 |
 | `ScrambleText` | `text-motion.tsx` | 1 | 1 |
 | `TypeText` | `text-motion.tsx` | 0 | 1 |
 | `SwapText` | `swap-text.tsx` | 2 | 1 |
@@ -225,7 +228,7 @@ name taken through a path the scanner cannot resolve would appear too.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (21)
+### `apps/web/src/components/design-system` (22)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -236,7 +239,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | `department-page.tsx` | `DepartmentPageSpecimen` | client | 1 |  |
 | `dispatch-flow.tsx` | `DispatchFlowSpecimen` | client | 1 |  |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
-| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 10 |  |
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 11 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 1 |  |
 | `layering.tsx` | `LayeringSpecimen` | client | 1 |  |
 | `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
@@ -245,6 +248,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | `page-structure-specimens.tsx` | `PageAnatomySpecimen` `ListPageSpecimen` `ArrivalSpecimen` `PageStructureSpecimens` | client | 1 |  |
 | `patterns.tsx` | `FROSTED` `AdminPatterns` | client | 2 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | client | 1 |  |
+| `premium-specimens.tsx` | `PremiumSpecimens` | client | 1 |  |
 | `publish-audience.tsx` | `PublishAudienceSpecimen` | client | 1 |  |
 | `scope-chip-editor.tsx` | `ScopeChipEditor` | client | 1 |  |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | client | 1 |  |
@@ -308,17 +312,17 @@ name taken through a path the scanner cannot resolve would appear too.
 | `lot-skeleton.tsx` | `LotPageSkeleton` | server | 2 |  |
 | `lot-status.tsx` | `LotFigure` `LotClock` `LotStanding` `LotOutcome` | client | 2 |  |
 
-### `apps/web/src/components/ui` (43)
+### `apps/web/src/components/ui` (46)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 34 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 35 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 4 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 43 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 44 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 19 |  |
 | `cooldown-banner.tsx` | `CooldownBanner` | client | 2 |  |
 | `copy-button.tsx` | `CopyButtonProps` `CopyButton` | client | 4 |  |
-| `count-up.tsx` | `CountUp` | client | 3 |  |
+| `count-up.tsx` | `CountUp` | client | 6 |  |
 | `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 4 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 134 |  |
 | `date-field.tsx` | `DateFieldProps` `DateField` | client | 19 |  |
@@ -326,21 +330,23 @@ name taken through a path the scanner cannot resolve would appear too.
 | `disclosure.tsx` | `Disclosure` | client | 24 |  |
 | `draw-icon.tsx` | `DrawIcon` | client | 5 |  |
 | `dropzone.tsx` | `Dropzone` | client | 9 |  |
-| `empty-state.tsx` | `EmptyState` | server | 87 |  |
+| `empty-state.tsx` | `EmptyState` | server | 88 |  |
 | `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 13 |  |
 | `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 24 |  |
 | `hold-to-confirm.tsx` | `HoldToConfirm` | client | 4 |  |
+| `icon-tile.tsx` | `IconTile` | server | 8 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 8 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | server | 93 |  |
 | `menu.tsx` | `OptionBlocker` `MenuOption` `Menu` `MENU_TRIGGER_CLASS` `ValueProxy` | client | 4 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 25 |  |
 | `multi-select.tsx` | `MultiSelectOption` `MultiSelectProps` `MultiSelect` | client | 2 |  |
 | `page-enter.tsx` | `PageEnter` | client | 4 |  |
-| `page-header.tsx` | `PageHeader` | server | 153 |  |
+| `page-header.tsx` | `PageHeader` | client | 153 |  |
+| `page-identity.tsx` | `PageIdentity` `PageIdentityProvider` `usePageIdentity` | client | 3 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 17 |  |
 | `progress-bar.tsx` | `ProgressBar` | server | 5 |  |
 | `progress-ring.tsx` | `ProgressRing` | client | 3 |  |
-| `reveal-scope.tsx` | `RevealScope` | client | 4 |  |
+| `reveal-scope.tsx` | `RevealScope` | client | 6 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 10 |  |
 | `section.tsx` | `Section` | server | 43 |  |
 | `segmented.tsx` | `SegmentedOption` `Segmented` | client | 15 |  |
@@ -353,6 +359,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | `text-motion.tsx` | `ScrambleText` `TypeText` | client | 3 |  |
 | `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
 | `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 4 |  |
+| `tilt.tsx` | `useTilt` `TiltLink` | client | 4 |  |
 | `truncate-reveal.tsx` | `TruncateReveal` | client | 6 |  |
 | `upload-tray.tsx` | `UploadTray` | client | 3 |  |
 

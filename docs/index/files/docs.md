@@ -47,7 +47,7 @@ All 555 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `03-components.md` | doc | 481 |  |
+| `03-components.md` | doc | 485 |  |
 | `04-states.md` | doc | 235 |  |
 
 ### `docs/design/content` (1)
@@ -60,7 +60,7 @@ All 555 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `01-foundations.md` | doc | 324 |  |
+| `01-foundations.md` | doc | 352 |  |
 
 ### `docs/design/layout-composition` (3)
 
@@ -74,7 +74,7 @@ All 555 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `05-motion.md` | doc | 340 |  |
+| `05-motion.md` | doc | 381 |  |
 
 ### `docs/design/principles-laws` (2)
 
@@ -563,7 +563,7 @@ All 555 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 131 |  |
+| `DECISIONS.md` | doc | 132 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -833,7 +833,7 @@ All 555 tracked files in `docs/*`, by directory.
 | `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
 | `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
 | `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
-| `ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | doc | 2065 |  |
+| `ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | doc | 2211 |  |
 | `ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md` | doc | 52 |  |
 | `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 562 |  |

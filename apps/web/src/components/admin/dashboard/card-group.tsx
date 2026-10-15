@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ICON_MAP } from '@/components/admin/nav-registry';
+import { IconTile } from '@/components/ui';
+import { dashboardGroupTone } from '@/lib/tone';
 import { STORAGE_KEYS } from '@/constants/storage';
 import type { DashboardCard, DashboardGroupKey } from './card-registry';
 import { MetricCard, MetricCardWithSparkline, formatValue, type MetricCardData } from './metric-card';
@@ -72,10 +74,10 @@ export function CardGroup({
   const panelId = `dashboard-group-${groupKey}`;
 
   return (
-    <section className="card p-0">
+    <section data-reveal-item="" className="card p-0">
       <div className="flex items-center justify-between gap-3 p-4">
-        <Link href={href} className="flex min-w-0 items-center gap-2 font-medium text-neutral-900 hover:underline">
-          <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <Link href={href} className="group flex min-w-0 items-center gap-3 font-medium text-neutral-900 hover:underline">
+          <IconTile icon={Icon} tone={dashboardGroupTone(groupKey)} size="sm" />
           <span className="truncate">{label}</span>
         </Link>
         <div className="flex shrink-0 items-center gap-3">

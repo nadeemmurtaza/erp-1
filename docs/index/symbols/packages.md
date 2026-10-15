@@ -144,8 +144,8 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
 | `auction.ts` | `MAX_LOT_PHOTOS` | const | :14 | Photographs one lot may have (WO-234.12, doc 234 §12). |
-| `brand.ts` | `BRAND` | const | :649 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :663 |  |
+| `brand.ts` | `BRAND` | const | :721 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :735 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
@@ -387,15 +387,19 @@ Every top-level export in `packages`, with the line to open.
 | `theme-tailwind.ts` | `StockHues` | interface | :46 | The stock Tailwind scales this product uses, passed in by the app. |
 | `theme-tailwind.ts` | `STOCK_HUE_NAMES` | const | :53 |  |
 | `theme-tailwind.ts` | `StockHueName` | type | :54 |  |
-| `theme-tailwind.ts` | `hexToRgb` | function | :80 | ── colour maths ──────────────────────────────────────────────────────── |
-| `theme-tailwind.ts` | `rgbToHex` | function | :86 |  |
-| `theme-tailwind.ts` | `mixHex` | function | :91 | `fg` over `bg` at `alpha`, as an opaque hex. |
-| `theme-tailwind.ts` | `channels` | function | :98 | `#0e8294` -> `'14 130 148'`, the form `rgb(var(--x) / <alpha-value>)` needs. |
-| `theme-tailwind.ts` | `darkHueScale` | function | :117 | A stock hue scale, re-derived for a dark surface. |
-| `theme-tailwind.ts` | `themeColorVar` | function | :142 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
-| `theme-tailwind.ts` | `themeVars` | function | :166 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
-| `theme-tailwind.ts` | `staticVars` | function | :198 | Custom properties that do not change between themes: motion. |
-| `theme-tailwind.ts` | `createThemeTailwind` | function | :226 |  |
+| `theme-tailwind.ts` | `TONE_WASH_MIX` | const | :87 | How much of a tone's ink is mixed into the surface to make the wash behind its icon (ADR-083, twelf… |
+| `theme-tailwind.ts` | `TONE_NAMES` | const | :90 | The names of the tones, in the order brand.ts lists them. |
+| `theme-tailwind.ts` | `ToneName` | type | :91 | The names of the tones, in the order brand.ts lists them. |
+| `theme-tailwind.ts` | `accentGlow` | function | :98 | The glow under a filled brand control: the accent FILL (not the ink, which is pale in dark) at 60 %… |
+| `theme-tailwind.ts` | `hexToRgb` | function | :105 | ── colour maths ──────────────────────────────────────────────────────── |
+| `theme-tailwind.ts` | `rgbToHex` | function | :111 |  |
+| `theme-tailwind.ts` | `mixHex` | function | :116 | `fg` over `bg` at `alpha`, as an opaque hex. |
+| `theme-tailwind.ts` | `channels` | function | :123 | `#0e8294` -> `'14 130 148'`, the form `rgb(var(--x) / <alpha-value>)` needs. |
+| `theme-tailwind.ts` | `darkHueScale` | function | :142 | A stock hue scale, re-derived for a dark surface. |
+| `theme-tailwind.ts` | `themeColorVar` | function | :167 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
+| `theme-tailwind.ts` | `themeVars` | function | :191 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
+| `theme-tailwind.ts` | `staticVars` | function | :231 | Custom properties that do not change between themes: motion. |
+| `theme-tailwind.ts` | `createThemeTailwind` | function | :264 |  |
 | `theme-type.ts` | `TypeStep` | interface | :14 | The type scale — a view onto BRAND.theme.type. |
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |

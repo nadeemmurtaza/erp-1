@@ -101,11 +101,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>217 lines</sub>
+### `.claude/rules/ui.md`  <sub>229 lines</sub>
 
 - Use what exists  <sub>:15</sub>
-- Borders and boxes  <sub>:125</sub>
-- No dead ends  <sub>:170</sub>
+- Borders and boxes  <sub>:130</sub>
+- No dead ends  <sub>:182</sub>
 
 ### `.claude/skills/feature-scope/SKILL.md`  <sub>225 lines</sub>
 
@@ -173,7 +173,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>866 lines</sub>
+### `CLAUDE.md`  <sub>867 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
@@ -181,10 +181,10 @@ _no second-level headings_
 - Feature scope: build the whole capability, not one slice of it  <sub>:170</sub>
 - Scale: the three axes  <sub>:199</sub>
 - Look it up before you search  <sub>:262</sub>
-- The rule index  <sub>:334</sub>
-- Before you open a PR  <sub>:381</sub>
-- Deployment  <sub>:466</sub>
-- NEWAX Engineering Operating Protocol  <sub>:479</sub>
+- The rule index  <sub>:335</sub>
+- Before you open a PR  <sub>:382</sub>
+- Deployment  <sub>:467</sub>
+- NEWAX Engineering Operating Protocol  <sub>:480</sub>
 
 ### `CONTRIBUTING.md`  <sub>130 lines</sub>
 
@@ -238,7 +238,7 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:141</sub>
 - What would make this real  <sub>:148</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>481 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>485 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
@@ -246,8 +246,8 @@ _no second-level headings_
 - Patterns — *undocumented*  <sub>:82</sub>
 - Templates — *undocumented*  <sub>:123</sub>
 - Controls with a contract  <sub>:134</sub>
-- Component contract  <sub>:458</sub>
-- What never gets hand-rolled  <sub>:473</sub>
+- Component contract  <sub>:462</sub>
+- What never gets hand-rolled  <sub>:477</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>235 lines</sub>
 
@@ -275,7 +275,7 @@ _no second-level headings_
 - Localisation  <sub>:103</sub>
 - Verifying  <sub>:117</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>324 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>352 lines</sub>
 
 - Why tokens and not values  <sub>:16</sub>
 - Colour  <sub>:26</sub>
@@ -284,12 +284,13 @@ _no second-level headings_
 - Size  <sub>:82</sub>
 - Radius  <sub>:95</sub>
 - Shadow and elevation  <sub>:102</sub>
-- Z-index / layering  <sub>:122</sub>
-- Breakpoints  <sub>:143</sub>
-- Motion tokens  <sub>:156</sub>
-- Safeguards  <sub>:208</sub>
-- Theming  <sub>:227</sub>
-- Where tokens live  <sub>:310</sub>
+- Tones  <sub>:133</sub>
+- Z-index / layering  <sub>:150</sub>
+- Breakpoints  <sub>:171</sub>
+- Motion tokens  <sub>:184</sub>
+- Safeguards  <sub>:236</sub>
+- Theming  <sub>:255</sub>
+- Where tokens live  <sub>:338</sub>
 
 ### `docs/design/layout-composition/02-layout.md`  <sub>182 lines</sub>
 
@@ -319,22 +320,22 @@ _no second-level headings_
 - What must be built  <sub>:187</sub>
 - Sources  <sub>:200</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>340 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>381 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:208</sub>
-- Orchestration  <sub>:224</sub>
-- Micro-interactions  <sub>:233</sub>
-- Scroll  <sub>:249</sub>
-- Responsive motion  <sub>:261</sub>
-- Reduced motion — required  <sub>:272</sub>
-- Performance  <sub>:308</sub>
-- Rejection list  <sub>:319</sub>
-- Benchmark, not template  <sub>:330</sub>
+- Continuity over replacement  <sub>:249</sub>
+- Orchestration  <sub>:265</sub>
+- Micro-interactions  <sub>:274</sub>
+- Scroll  <sub>:290</sub>
+- Responsive motion  <sub>:302</sub>
+- Reduced motion — required  <sub>:313</sub>
+- Performance  <sub>:349</sub>
+- Rejection list  <sub>:360</sub>
+- Benchmark, not template  <sub>:371</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -3056,7 +3057,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>131 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>132 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3388,7 +3389,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md`  <sub>2,065 lines</sub>
+### `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md`  <sub>2,211 lines</sub>
 
 _no second-level headings_
 

@@ -192,7 +192,8 @@ export function Header() {
               <Link
                 href={ROUTES.storefront.shop}
                 aria-label={t('search')}
-                className="flex h-9 w-9 items-center justify-center rounded text-neutral-500 transition-colors duration-normal hover:bg-neutral-50 hover:text-neutral-900 sm:hidden"
+                data-tone="rose"
+                className="tone-hover flex h-9 w-9 items-center justify-center rounded text-neutral-500 sm:hidden"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />

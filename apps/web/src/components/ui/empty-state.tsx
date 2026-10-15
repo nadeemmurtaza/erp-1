@@ -1,5 +1,8 @@
-import type { ReactNode } from 'react';
+import { Inbox } from 'lucide-react';
+import type { ComponentType, ReactNode, SVGProps } from 'react';
 import { cn } from '@/utils/cn';
+import type { ToneName } from '@/lib/tone';
+import { IconTile } from './icon-tile';
 
 /**
  * What a list shows when it has nothing in it.
@@ -18,6 +21,8 @@ export function EmptyState({
   title,
   description,
   action,
+  icon = Inbox,
+  tone = 'sky',
   className,
 }: {
   title: ReactNode;
@@ -25,10 +30,15 @@ export function EmptyState({
   description?: ReactNode;
   /** The one thing that resolves it: create, or clear the filter. */
   action?: ReactNode;
+  /** The glyph on the tile above the title. A tray by default; pass `null` where the title stands alone. */
+  icon?: ComponentType<SVGProps<SVGSVGElement>> | null;
+  /** The tile's tone. Sky by default: calm, and nothing here is good or bad. */
+  tone?: ToneName;
   className?: string;
 }) {
   return (
     <div className={cn('px-6 py-12 text-center', className)}>
+      {icon ? <IconTile icon={icon} tone={tone} size="lg" className="mb-3" /> : null}
       <p className="text-sm font-medium text-neutral-900">{title}</p>
       {description ? (
         <p className="mx-auto mt-1 max-w-sm text-sm text-neutral-900/60">{description}</p>

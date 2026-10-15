@@ -3,7 +3,7 @@
 
 # Tests
 
-**430** spec files, **4,768** cases. What is already pinned down — and what is not.
+**431** spec files, **4,790** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -71,7 +71,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (398)
+## Unit and integration (399)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -427,9 +427,10 @@ regression or an N+1.
 | `apps/web/src/lib/date-parse.spec.ts` | web | 35 | the formats the field must understand (MNU-2) · day order follows the deployment locale · impossibl… |
 | `apps/web/src/lib/guard.spec.ts` | web | 18 | nextHold (DNG-1) · holdProgress · isVagueLabel (DNG-2) · cooldownState (DNG-6) |
 | `apps/web/src/lib/menu-filter.spec.ts` | web | 22 | thresholds · filterOptions · typeAheadIndex |
-| `apps/web/src/lib/motion.spec.ts` | web | 40 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
+| `apps/web/src/lib/motion.spec.ts` | web | 45 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
 | `apps/web/src/lib/popover-position.spec.ts` | web | 13 | placePopover |
 | `apps/web/src/lib/success-state.spec.ts` | web | 9 | journeyStates · burstTravel · sparkKeyframes · BURST_TIMING |
+| `apps/web/src/lib/tone.spec.ts` | web | 10 | tone |
 | `apps/web/src/lib/upload-client.spec.ts` | web | 22 | uploadFile: the request · uploadFile: a 401 (the same two chances as adminFetch) · uploadFile: fail… |
 | `apps/web/src/lib/upload-queue.spec.ts` | web | 49 | add · concurrency · speed and time left · percentOf and isProcessing · failure is per file (UPL-5)… |
 | `apps/web/src/lib/upload.spec.ts` | web | 32 | describeLimits · checkFile · checkFiles · partitionFiles · formatSpeed · formatEta |
@@ -467,10 +468,10 @@ regression or an N+1.
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
-| `packages/shared/src/theme-contrast.spec.ts` | packages | 16 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue |
+| `packages/shared/src/theme-contrast.spec.ts` | packages | 22 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue · the teal tone… |
 | `packages/shared/src/theme-radii.spec.ts` | packages | 11 | concentricRadius (CRD-5) · safeguards (DNG-1, DNG-6) · feedback (CPY-2, CPY-5, SUC-3) |
 | `packages/shared/src/theme-runtime.spec.ts` | packages | 9 | resolveTheme · isThemePreference · themeInitScript |
-| `packages/shared/src/theme-space.spec.ts` | packages | 13 | spacing and size tokens · layers · elevation · motion |
+| `packages/shared/src/theme-space.spec.ts` | packages | 14 | spacing and size tokens · layers · elevation · motion |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 | `packages/shared/src/variant-matrix.spec.ts` | packages | 7 | generateVariantCombinations · newCombinationsOnly · removedCombinations |
 

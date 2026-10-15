@@ -43,7 +43,7 @@ export function LotGallery({
 
   return (
     <section aria-label={t('gallery', { number: lotNo })} className={cn('grid gap-3', className)}>
-      <div className="media-concentric relative aspect-[4/3] w-full overflow-hidden bg-neutral-50">
+      <div className="media-concentric relative aspect-[4/3] w-full overflow-hidden bg-neutral-50 shadow-card">
         {lost ? (
           <p className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-neutral-900/70">{t('photoMissing')}</p>
         ) : (
@@ -74,7 +74,7 @@ export function LotGallery({
                   aria-current={position === index ? 'true' : undefined}
                   className={cn(
                     'media-concentric focus-frame relative block h-touch w-touch overflow-hidden border bg-neutral-50 fold:h-12 fold:w-16',
-                    position === index ? 'border-neutral-900' : 'border-neutral-100',
+                    position === index ? 'border-neutral-900 shadow-raised' : 'border-neutral-100',
                   )}
                 >
                   {broken.has(image.url) ? null : (

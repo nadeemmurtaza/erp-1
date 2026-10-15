@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { formatDateTime, formatMoney, type Locale } from '@newax/shared';
-import { Badge } from '@/components/ui';
+import { Badge, CountUp } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useCountdownLabel } from '@/hooks/use-countdown-label';
@@ -32,12 +32,13 @@ export function LotFigure({ lot, connection }: { lot: PublicLot; connection: Liv
     <div>
       <p className="text-sm text-neutral-900/60">{label}</p>
       <p className="sheen text-3xl font-semibold tabular-nums text-neutral-900 lg:text-4xl" data-fresh={fresh ? 'true' : undefined}>
-        {formatMoney(minor, locale)}
+        {/* The one figure the page is about: it rolls to each new price, and a closed lot's is simply the figure. */}
+        <CountUp mode="reel" value={minor} format={(n) => formatMoney(n, locale)} />
       </p>
       {lot.phase === 'OPEN' ? (
         <p className="mt-1 flex items-center gap-2 text-xs text-neutral-900/60">
           {/* The dot is a second cue, never the only one: the sentence says the same. */}
-          <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${connection === 'live' ? 'bg-feedback-positive' : 'bg-neutral-300'}`} />
+          <span aria-hidden="true" className={connection === 'live' ? 'live-dot' : 'inline-block h-1.5 w-1.5 rounded-full bg-neutral-300'} />
           {lot.currentBidMinor === null ? `${t('lot.noBidsYet')} · ` : ''}
           {connection === 'live' ? t('lot.live') : connection === 'polling' ? t('lot.polling') : t('lot.connecting')}
         </p>
@@ -87,7 +88,11 @@ export function LotClock({ lot, offsetMs, now }: { lot: PublicLot; offsetMs: num
     <div>
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <p className="text-sm text-neutral-900/60">{t('timeLeft')}</p>
-        {state === 'closing-soon' ? <Badge tone="warning">{t('closingSoon')}</Badge> : null}
+        {state === 'closing-soon' ? (
+          <Badge tone="warning" className="breathe [--tone-ink:var(--color-amber-600)]">
+            {t('closingSoon')}
+          </Badge>
+        ) : null}
       </div>
       <p role="timer" className="text-2xl font-semibold tabular-nums text-neutral-900">
         {countdown(msUntil(lot.endsAt, offsetMs, now))}

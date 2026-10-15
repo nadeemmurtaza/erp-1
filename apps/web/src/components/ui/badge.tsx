@@ -10,6 +10,10 @@ import { cn } from '@/utils/cn';
  * on the next, and "pending" was sometimes amber and sometimes plain grey.
  * The tones here are the vocabulary: pick the one that matches the MEANING
  * and let the component decide the colour.
+ *
+ * A tone that says something (not `neutral`) leads with a 6 px dot in the same colour: the mark
+ * a person finds first in a column of statuses. It repeats what the colour and the word already
+ * say, so it is `aria-hidden` and never the only sign (ADR-083, twelfth addendum).
  */
 export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
 
@@ -39,6 +43,7 @@ export function Badge({
         className,
       )}
     >
+      {tone === 'neutral' ? null : <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-current" />}
       {children}
     </span>
   );

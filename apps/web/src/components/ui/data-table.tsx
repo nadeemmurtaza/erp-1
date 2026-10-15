@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { EmptyState } from './empty-state';
 
 /**
  * The admin's one table.
@@ -134,12 +135,21 @@ export function DataTable<Row>({
   return (
     // The scroll container is the point: a wide table on a phone must scroll
     // inside its own box rather than widening the page.
-    <div className={cn('w-full overflow-x-auto', className)}>
+    <div
+      className={cn(
+        'table-surface w-full overflow-x-auto',
+        // Stacked rows are cards of their own below `md`; a surface under them would box a box.
+        stacked && 'max-md:bg-transparent max-md:shadow-none',
+        className,
+      )}
+    >
       <table {...role('table')} className={cn('w-full text-sm', block)}>
         <thead
           {...role('rowgroup')}
           className={cn(
-            'whitespace-nowrap border-b border-neutral-100 bg-neutral-50',
+            // No fill of its own: the header band is the top of the surface under it (`.table-surface`),
+            // so it reads as part of the table and not as a strip of page colour above it.
+            'whitespace-nowrap border-b border-neutral-100',
             stacked && 'max-md:sr-only',
           )}
         >
@@ -153,7 +163,7 @@ export function DataTable<Row>({
                   'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
                   column.align === 'end' ? 'text-end' : 'text-start',
                   i === 0 && pinned,
-                  i === 0 && stickyFirst && 'bg-neutral-50',
+                  i === 0 && stickyFirst && 'bg-surface',
                 )}
               >
                 {column.header}
@@ -171,9 +181,12 @@ export function DataTable<Row>({
               <td
                 colSpan={columns.length}
                 {...role('cell')}
-                className={cn('px-4 py-10 text-center text-sm text-neutral-900/60', block)}
+                className={cn(
+                  isLoading ? 'px-4 py-10 text-center text-sm text-neutral-900/60' : 'px-4 py-2',
+                  block,
+                )}
               >
-                {isLoading ? loadingLabel : emptyLabel}
+                {isLoading ? loadingLabel : <EmptyState title={emptyLabel} className="py-8" />}
               </td>
             </tr>
           ) : (

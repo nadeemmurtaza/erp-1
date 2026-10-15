@@ -2062,3 +2062,149 @@ permission key, no migration.
 - *`check-tells` for `TYP-3` and `GLO-7`.*
 - *Button `blockedBy`, a toast action (undo), `ErrorState` adoption* and the rest of the
   ledger above.
+
+### Addendum — 2026-10-09 (twelfth): colour and life, a universal pass
+
+**Requirement.** The owner, 2026-10-09: "deploy a universal, I need to check and apply some
+better design, like shadow around the boxes, like full premium design I need, and apply some
+colors to the icons, and like give the liveness to this project. It is right now a dull
+project, only monocolor, but give the liveness to the project, give a soul to this project,
+and I need full premium design, 100% premium design. Even if you need to change the UX UI,
+change it, but I need full premium design." and, minutes later: "Add maximum motion effects,
+maximum premium motion animations." **Reason.** The system was correct and calm and read as
+dull: one accent, borders for edges, no colour on any glyph, motion only as feedback.
+**Outcome.** A design-system-level change, so it reaches every screen that uses the shared
+classes and primitives (admin, storefront, the Auction screens) without a per-page edit.
+Nothing was deployed: this repository is a disconnected clone with no deployment, and
+"deploy a universal" is read as "make it universal", not as a release.
+
+**What this supersedes, said plainly.** Three earlier calls were right for the calm system
+and are changed on the owner's instruction, each with a limit so the change cannot spread:
+(1) "`.card` has no shadow; never a border and a shadow on one edge" becomes "a card's edge
+is the first layer of its shadow", so there is still one boundary; (2) "no glow under the
+primary button" becomes "a glow under the one loud button, and nowhere else"; (3) decorative
+and ambient motion was rejected (`MOT-1`, `05-motion.md`) and becomes a third tier, ambient,
+allowed only where the thing is itself alive (updating now, running out), on its own clock.
+The corner (2 to 3 px) and "a button is never round" (`PER-3`) are untouched: the owner's
+earlier rulings on both stand.
+
+**What was built.**
+- **Elevation, five steps** (`brand.ts` `elevation`, both themes): `flat`, `card`, `raised`,
+  `overlay`, `modal`. `card`, `overlay` and `modal` start with a 1 px ring; `raised` does not.
+  `.card`, `.card-lit` and `.metric-strip` are `border-transparent shadow-card`; `.lift` raises
+  to `shadow-overlay`; the shell header, the lot photo frame and a selected thumbnail take
+  `shadow-card` or `shadow-raised`. `shadow-glow` is derived from the accent fill
+  (`accentGlow`) and sits under `.btn-primary` only.
+- **Seven tones** (`colors.tone`, `colorsDark.tone`): `teal` (equal to the accent), `indigo`,
+  `violet`, `rose`, `amber`, `emerald`, `sky`, each with a wash (the ink mixed into the
+  surface), emitted as `--color-tone-*` and `[data-tone]` rules. `IconTile` puts a glyph on its
+  tile; `lib/tone.ts` decides the tone, never the glyph, by the *kind of thing* a surface is
+  (`KIND_TONE`: shop, selling, making, people, goods, money, movement, settings), so the sidebar's
+  Orders group, the dashboard's Orders row and the launchpad's Sales app are one colour; 13 nav
+  groups, 9 dashboard groups and 12 launchpad apps name a kind, and any other key falls back to a
+  stable hash. Applied to the sidebar groups, every launchpad app, `PageHeader`
+  (from the page's nav group, through `PageIdentityProvider`), `EmptyState`, `MetricStrip`
+  items, the dashboard groups and the Auction admin and storefront screens.
+- **Liveness**: `.live-dot` (a ring leaves the dot) on the lot page's "Live" line under the price
+  and on the lot card's time; `.breathe` (a halo swells and fades) on the lot page's closing-soon
+  badge only (the lot card has the dot, not the halo, so a grid of lots never breathes together); `CountUp` on dashboard
+  figures and a `reel` on the lot's current bid; `RevealScope` (new `as` prop, so a list stays a
+  `ul`) staggers the dashboard groups and the lot grid in; `.nav-rail` marks the active page.
+- **Lean and glow**: `.lift.tilt` with `useTilt` / `TiltLink` leans a link-card toward a fine
+  pointer; the icon tile inside tips and takes a glow; `.btn-primary` sweeps one highlight on
+  hover; `.tone-hover` gives a bare storefront icon its tone on hover.
+- **Lists**: `DataTable` sits on `.table-surface` (the `.card` surface, edge and corner), which
+  steps aside by CSS inside a card, a dialog, a metric strip or another surface, and under
+  `stacked` below `md`, so there is no box in a box; the "No outer frame" clause of the table
+  rule is replaced by that, and "no vertical lines, no zebra, no `divide-*` on top of it"
+  stands. `Badge` leads every tone but `neutral` with a 6 px dot in its own colour
+  (`aria-hidden`; the word and the colour already say it). An empty `DataTable` shows the
+  `EmptyState` tile and the caller's line instead of bare text.
+- **Gallery**: `/admin/design-system` gained the Tones group in Colour, two tone rows in the
+  contrast table (measured live, both themes), the elevation step `card`, and a "Colour and
+  life" section with every piece above as the real class or component.
+- **Docs**: `01-foundations.md` (elevation, Tones), `03-components.md` (`FRM-5`, `CRD-4`),
+  `05-motion.md` ("The third tier: ambient"), `.claude/rules/ui.md` (the new primitives and
+  classes, the card-edge rule).
+
+**Parameters.** Every number, with why this one and not a smaller or larger one.
+
+| Parameter | Exact value | Why | Where enforced | If it fails |
+|---|---|---|---|---|
+| `card` shadow, light | `0 0 0 1px rgb(18 17 17 / .06), 0 1px 2px 0 rgb(18 17 17 / .05), 0 6px 16px -6px rgb(18 17 17 / .1)` | the ring is the edge (6% ink reads as a hairline on `#f2f2f2` without a border colour); the two soft layers are the lift. A larger blur makes a grid of cards look like a cloud | `brand.ts` `elevation`, `theme-space.spec.ts` | the spec fails on a ring that is not the first layer, a fourth layer, or a ring on `raised` |
+| `card` shadow, dark | `0 0 0 1px rgb(255 255 255 / .07), 0 1px 2px 0 rgb(0 0 0 / .5), 0 8px 20px -6px rgb(0 0 0 / .55)` | a dark ring on a dark page is invisible, so the ring is white at 7%; the black layers carry the secondary cue | same | same |
+| `overlay`, `modal` | rings at 6% (light) and 8% (dark); blurs 32 px and 56 px | one step more blur per step more height; `modal` 30% ink is the strongest shadow in the system | same | same |
+| Tone wash mix | 12% light, 16% dark | enough that the tile reads as a tile on `#fff`; dark needs 4 points more to leave the surface; each tone's glyph is 3:1 on its wash | `TONE_WASH_MIX` in `theme-tailwind.ts`, `theme-contrast.spec.ts` | the spec fails the build below 3:1 (glyph on wash), 3:1 (on the page), 4.5:1 (on the surface) |
+| Tone ink (light) | teal `#0e8294`, indigo `#4f46e5`, violet `#7c3aed`, rose `#e11d48`, amber `#b45309`, emerald `#047857`, sky `#0369a1` | each is the darkest value of its hue that still reads as that hue next to the others; the weakest on its wash is 3.88:1 (teal) and 3.89:1 (rose) | `brand.ts`, `check-contrast` palette | same spec |
+| Tone ink (dark) | `#3db8cb`, `#818cf8`, `#a78bfa`, `#fb7185`, `#fbbf24`, `#34d399`, `#38bdf8` | the 400 steps of each hue; all above 4.8:1 on the dark wash | same | same |
+| `shadow-glow` | `0 8px 20px -8px` at 60% and `0 2px 6px -2px` at 40% of the accent fill | the negative spread keeps it under the button and off its sides; 60% is the strongest that does not tint the page | `accentGlow`, spec "glow is the accent's own colour" | spec |
+| `motion.ambient.pulse` | 2 000 ms | slower than a resting heartbeat (about 1 s) reads as "still here", not "alarm"; 5 times the 420 ms interaction ceiling so it never reads as a reaction | `brand.ts`, `--motion-ambient-pulse` | the global reduced-motion rule ends every loop after one frame at its end state |
+| `motion.ambient.breathe` | 3 600 ms | slower than the pulse because it is the louder cue; one cycle per breath at rest is about 4 s | same | same |
+| Halo | 5 px ring, 30% of the tone, scale 1 to 1.1, transform and opacity only | visible at arm's length on a 20 px badge without leaving it | `.breathe::after` | none to fail: on reduced motion the ring is at opacity 0 |
+| `motion.tilt` | 4 degrees maximum, 900 px perspective | at 4 degrees a grid of cards still reads as level; at 900 px the lean reads as a surface under the hand and not a 3D object | `tiltAngles` (clamped, unit-tested), `useTilt` | below `(hover: hover) and (pointer: fine)` or under reduced motion the CSS ignores the values |
+| Tile tip | rise `distance.micro` (2 px), `scale.tip` 1.06, turn `tilt.tipDeg` 3 degrees counter-clockwise, 8 px glow at 50% | the smallest movement that reads as "this answers you" at 48 px; 6% is the most a 40 to 56 px tile can grow before its ring meets the card's padding; 3 degrees is one short of the card's own 4-degree lean so the two never read as one motion | `.icon-tile` rules, from `--motion-distance-micro`, `--motion-scale-tip`, `--motion-tilt-tip`; only under `.lift`, `a.group` or `button.group` | gated like the tilt: no hover or reduced motion shows the tile at rest |
+| Button shine | a 34% wide, 22% white band, skewed -20 degrees, one pass over `sweep` (420 ms) | one pass is a flourish, two is a loop; 22% white lightens teal without whitening it | `.btn-primary::after` | RTL mirrors it (`--shine-sign`); reduced motion shows no band |
+| Lot grid and dashboard reveal | the existing 80 ms stagger, capped at four steps, `arrive` over `slow` | not a new number: `RevealScope` as it was | `lib/reveal.ts` | no scripting, no observer or reduced motion shows everything at once |
+
+**Decisions made without the owner, all reversible.**
+- "Deploy a universal" is read as "make it universal"; no production or preview deploy exists
+  to run, and none was run.
+- Teal is both the accent and a tone, so the sidebar's overview group and the primary button
+  match; a tone that equals the accent is not a second palette.
+- Tones are on glyphs and tiles only, never text or status, so the contrast floor and the
+  meaning of green and red are untouched.
+- The house corner and "never round" stand, because the owner ruled on them twice; the reel's
+  24 px cards were not adopted.
+- No gradient surface, no glass, no blur: `check-tells` still counts them and the baseline did
+  not move.
+- The ambient loops are limited to two, each carrying state or attention; "maximum" is read as
+  "everywhere it means something", not "everywhere".
+- POS and the mobile app are untouched. Mobile does not read this stylesheet, and the POS has
+  its own density rules; both are named below.
+
+**Failure modes.** A tone chosen for a new nav group is a one-line edit in `lib/tone.ts`,
+and a spec fails on two neighbouring groups sharing one. The ring in `shadow-card` is invisible
+where a card sits on a surface of nearly the same lightness (a card inside a card): the rule
+"never a box inside a box" still applies, and this pass added none. An old browser with no
+`IntersectionObserver` shows everything at once. A browser with no `(hover: hover)` shows no
+lean. A page with several `breathe` badges breaks the "one per screen" limit; nothing enforces
+it today, so it is review.
+
+**Found in the check, fixed.** The reel's digits are separate inline boxes, so in a
+right-to-left line the first Urdu storefront use printed `52.657,2 Rs` for `Rs 2,756.25`.
+`CountUp` now sets `dir="ltr"` on its visual strip (a figure reads left to right in every
+language) and leaves the screen-reader copy to the page's direction. Seen and fixed in
+Chromium on `/ur/auctions/lots/...` at 1440 px.
+
+**Verification.** Run on 2026-10-15 against the tree this addendum describes.
+- `pnpm typecheck` exit 0 (ten packages). `@newax/web` 711 tests in 29 files and `@newax/shared`
+  472 tests in 27 suites pass. The API suites that touch this change (14 suites, 121 tests) pass
+  on a freshly migrated and seeded database; six failed once on an old scratch database that
+  predated a migration, which is the database's state and not the code's.
+- Lint: `turbo run lint` (eslint, 0 errors, 0 warnings) and every `check:*` script exit 0,
+  including `check:contrast` at its lowered baselines (42 to 39) and `check:tells` at an
+  unmoved baseline; `check-tells --self-test` passes its 124 cases.
+- The CLAUDE.md counts equal the tree before this change: 27 inline `style={{`, 6
+  `toLocale*`, 6 bare `fetch`, 0 `text-gray-` / `bg-gray-`.
+- A real-browser sweep of 127 admin and storefront routes found 67 surfaces and 0 nested boxes
+  (a surface inside a surface). Tailwind's `shadow-none` leaves a transparent multi-layer
+  `box-shadow`, not `none`, so the sweep counts a surface by its ring and not by the word.
+- In Chromium, with `prefers-reduced-motion: reduce` every loop ends after one frame and
+  nothing moves on hover; the lifted tiles, cards and buttons take a visible focus ring from the
+  keyboard; the Urdu storefront prints the price left to right (the fix above).
+- `pnpm --filter @newax/web build` exit 0, run after the last capture with the dev server
+  stopped (the two share `.next`). Before and after captures at 1440 and 390 px, and the dark
+  theme at 1440, are attached to the pull request thread.
+
+**Scope lenses.** A design-system change, not a feature: no actor, row, permission key, write,
+number or document is created. Reachable: every part appears on a screen a person already
+opens, and `/admin/design-system#life` shows each as the real class or component. No new
+permission key.
+
+**Separable work orders, named and not built.**
+- *The same pass on the POS till*, whose density and 48 px targets (`ACC-4`) need their own
+  decision about what a shadow costs on till hardware.
+- *The same pass on the mobile app*, which reads `theme` objects, not this stylesheet.
+- *A check that fails a second `breathe` on one screen.*
+- *The storefront home hero and product pages*, which take the card shadow through `.card`
+  but have not had their own colour-and-life design.

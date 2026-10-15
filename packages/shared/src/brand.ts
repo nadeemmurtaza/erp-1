@@ -258,6 +258,31 @@ const colors = {
    * reason (see chart-theme.ts).
    */
   chart: ['#0e8294', '#b8860b', '#4a6fa5', '#8a5a44', '#5f7a4f', '#7d5ba6'],
+  /**
+   * Tones: the colour an ICON wears, and nothing else (ADR-083, twelfth addendum).
+   *
+   * The product was one teal on a grey ramp, and the owner called it dull. A tone
+   * is a hue for a glyph and its tinted tile (`IconTile`), so an app, a group or a
+   * kind of thing can be told from another at a glance without a word. It is
+   * never a text colour, never a status (that is `feedback`), never a fill behind a
+   * white label. Seven, because a screen rarely shows more kinds of thing than
+   * that side by side; `teal` is the brand accent, so the product's own colour is
+   * one of the seven and a rebrand moves it with `accent`.
+   *
+   * Each is the 600 to 700 step of its hue, picked so the glyph reaches 3:1 (the
+   * graphical-object floor, WCAG 1.4.11) on its own 12% wash and 4.5:1 on white.
+   * The wash is derived (`TONE_WASH_MIX`), never written here: one number moves all
+   * seven. `theme-contrast.spec.ts` holds both themes to those floors.
+   */
+  tone: {
+    teal: '#0e8294',
+    indigo: '#4f46e5',
+    violet: '#7c3aed',
+    rose: '#e11d48',
+    amber: '#b45309',
+    emerald: '#047857',
+    sky: '#0369a1',
+  },
 } as const;
 
 /**
@@ -325,6 +350,16 @@ const colorsDark = {
     negative: '#ff8a80',
   },
   chart: ['#2ba6b9', '#d4a72c', '#7c9bd0', '#c08f77', '#8fb07a', '#ae8ad6'],
+  /** The same seven tones, lightened for a dark surface (COL-5): each reaches 4.5:1 on `surface`. */
+  tone: {
+    teal: '#3db8cb',
+    indigo: '#818cf8',
+    violet: '#a78bfa',
+    rose: '#fb7185',
+    amber: '#fbbf24',
+    emerald: '#34d399',
+    sky: '#38bdf8',
+  },
 } as const;
 
 /**
@@ -427,29 +462,45 @@ const size = {
 } as const;
 
 /**
- * Elevation — four ordered steps, each exactly one shadow (chapter 01).
+ * Elevation — five ordered steps, each exactly one shadow (chapter 01).
  *
  * Shadows are neutral-tinted, not pure black: a shadow is a darker version of
  * the surface it falls on, and #121111 at low alpha reads as that, where rgb(0
- * 0 0) reads as a hole. Each step is two layers — a tight contact shadow that
+ * 0 0) reads as a hole. Each step is layers — a tight contact shadow that
  * anchors the object and a wide ambient one that lifts it.
+ *
+ * `card` is the step a box sits at REST, and it is the one place the edge and the
+ * shadow are the same thing: its first layer is a 1 px ring (`0 0 0 1px`) at 6%
+ * (light) or 7% white (dark), so a card is drawn by one soft boundary and has no
+ * `border` beside it. That is how "never a border and a shadow on the same edge"
+ * (ui.md) is kept while a box still gets depth: there is one boundary, and it is
+ * the shadow's. `overlay` and `modal` carry the same ring so a card that rises
+ * (`.lift`) keeps its edge instead of losing it. `raised` has no ring: it is for
+ * small things (a chip, a sticky bar) that sit on a surface with its own edge.
  *
  * Dark shadows are deeper and more opaque, and they are only half of dark
  * elevation: the other half is `colors.overlay` being lighter than
- * `colors.surface`. Never a border and a shadow on the same edge (ui.md).
+ * `colors.surface`, and the ring being white, because a black shadow on a near-black
+ * page is invisible and the ring is what keeps a card findable there.
  */
 const elevation = {
   light: {
     flat: 'none',
-    raised: '0 1px 2px 0 rgb(18 17 17 / 0.06), 0 1px 3px 0 rgb(18 17 17 / 0.06)',
-    overlay: '0 4px 8px -2px rgb(18 17 17 / 0.08), 0 12px 24px -6px rgb(18 17 17 / 0.12)',
-    modal: '0 8px 16px -4px rgb(18 17 17 / 0.12), 0 24px 56px -12px rgb(18 17 17 / 0.3)',
+    card: '0 0 0 1px rgb(18 17 17 / 0.06), 0 1px 2px 0 rgb(18 17 17 / 0.05), 0 6px 16px -6px rgb(18 17 17 / 0.1)',
+    raised: '0 1px 2px 0 rgb(18 17 17 / 0.06), 0 3px 8px -2px rgb(18 17 17 / 0.1)',
+    overlay:
+      '0 0 0 1px rgb(18 17 17 / 0.06), 0 4px 8px -2px rgb(18 17 17 / 0.08), 0 16px 32px -8px rgb(18 17 17 / 0.18)',
+    modal:
+      '0 0 0 1px rgb(18 17 17 / 0.06), 0 8px 16px -4px rgb(18 17 17 / 0.12), 0 24px 56px -12px rgb(18 17 17 / 0.3)',
   },
   dark: {
     flat: 'none',
-    raised: '0 1px 2px 0 rgb(0 0 0 / 0.5), 0 1px 3px 0 rgb(0 0 0 / 0.4)',
-    overlay: '0 4px 8px -2px rgb(0 0 0 / 0.5), 0 12px 24px -6px rgb(0 0 0 / 0.55)',
-    modal: '0 8px 16px -4px rgb(0 0 0 / 0.55), 0 24px 56px -12px rgb(0 0 0 / 0.7)',
+    card: '0 0 0 1px rgb(255 255 255 / 0.07), 0 1px 2px 0 rgb(0 0 0 / 0.5), 0 8px 20px -6px rgb(0 0 0 / 0.55)',
+    raised: '0 1px 2px 0 rgb(0 0 0 / 0.5), 0 3px 8px -2px rgb(0 0 0 / 0.5)',
+    overlay:
+      '0 0 0 1px rgb(255 255 255 / 0.08), 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 16px 32px -8px rgb(0 0 0 / 0.6)',
+    modal:
+      '0 0 0 1px rgb(255 255 255 / 0.08), 0 8px 16px -4px rgb(0 0 0 / 0.55), 0 24px 56px -12px rgb(0 0 0 / 0.7)',
   },
 } as const;
 
@@ -522,9 +573,11 @@ const motion = {
   distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4, lift: 4 },
   /**
    * Scale endpoints. A press compresses to 98%; a card or notice arriving starts at 97%;
-   * a mark too small for 97% to read (a chart point, a badge dot) starts at 60%.
+   * a mark too small for 97% to read (a chart point, a badge dot) starts at 60%. An icon tile
+   * whose card is under the pointer tips to 106%: the most a 40 to 56 px tile can grow before its
+   * ring touches the card's padding.
    */
-  scale: { press: 0.98, arrive: 0.97, pop: 0.6 },
+  scale: { press: 0.98, arrive: 0.97, pop: 0.6, tip: 1.06 },
   /**
    * How fast moving text may travel while someone reads it, in px per second. Used where
    * a truncated line is scrolled to show its end on hover or focus: slow enough to follow
@@ -540,6 +593,25 @@ const motion = {
    * `step`, so four of them still finish inside 160 ms.
    */
   stagger: { step: 80, steps: 4, fine: 40 },
+  /**
+   * Ambient cues (ADR-083, twelfth addendum): a loop that says "this is live" or "this
+   * is the one", not a response to an input, so it is not a `duration` and the
+   * 420 ms interaction ceiling does not apply to it. `pulse` is the ring round a live
+   * dot (one ring per 2 s reads as a heartbeat, not an alarm); `breathe` is the slow
+   * swell on the one thing that is closing (3.6 s, about a resting breath). Both are
+   * transform and opacity only and stop under `prefers-reduced-motion`, where the dot
+   * and the badge simply stay as they are.
+   */
+  ambient: { pulse: 2000, breathe: 3600 },
+  /**
+   * The tilt of a card under a pointer, in degrees, and the perspective it is seen
+   * through, in px. 4 deg is the most a card of 280 to 400 px can lean before its
+   * far edge visibly leaves the grid; 900 px keeps the foreshortening to a few
+   * percent. Fine pointers only: a finger has no hover to lean toward. `tipDeg` is the
+   * counter-clockwise turn of an icon tile whose card is under the pointer: 3 deg, a
+   * nod, one degree short of the card's own lean so the two never read as one motion.
+   */
+  tilt: { maxDeg: 4, perspective: 900, tipDeg: 3 },
 } as const;
 
 // ---------------------------------------------------------------------------

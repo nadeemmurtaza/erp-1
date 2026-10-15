@@ -55,6 +55,8 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `Pagination` | the prev/next/page-count block under a paged list, fed the API's `meta` directly |
 | `ListPageSkeleton` | a route's own `loading.tsx` for the shared list layout (`PageHeader`, `FilterBar`, a table): `<ListPageSkeleton filters={2} columns={6} />` |
 | `ThemeToggle` | the theme switch: `segmented` (light, system, dark) for a settings bar, `icon` (flip between two) where there is no room |
+| `IconTile` | an icon on its own tinted tile in one of the seven tones (`teal`, `indigo`, `violet`, `rose`, `amber`, `emerald`, `sky`): a nav group, a launchpad app, a page header, an empty state, a metric. The tone comes from `lib/tone.ts` (`navGroupTone`, `launchpadTone`, `toneForKey`), never from the glyph, and it means *which kind of thing*, never good or bad (that is `Badge` and `feedback`). It is `aria-hidden`: the label is always beside it. `PageHeader` shows one for you from the page's nav group (`PageIdentityProvider` in the admin shell); `EmptyState` takes `icon` and `tone`; a `MetricStrip` item takes `icon` and `tone` |
+| `TiltLink`, `useTilt` | a card that is a link to a thing and should lean toward the hand: add `lift tilt` (or use `TiltLink`) and the hook writes `--tilt-x` and `--tilt-y`. At most 4 degrees, fine pointers only; a finger or reduced motion sees nothing |
 | `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
 Cross-surface: `components/common/status-badge` (**the** status mark, a `Badge`
@@ -71,6 +73,7 @@ Admin: `components/admin/range-picker`.
 `.nav-link` `.nav-tab` `.prose-legal` `.lift` `.skeleton` `.stagger`
 `.no-scrollbar` `.container-page` `.spinner` `.focus-frame` `.toast-timer`
 `.sheet-in` `.sheet-out` `.tab-indicator` `.card-lit` `.media-concentric` `.field-xl` `.stagger-fine` `.btn-hold`
+`.icon-tile` (`-sm` `-lg` `-xl`) `.tone-hover` `.live-dot` `.breathe` `.tilt` `.nav-rail` `.table-surface`
 
 **A button has the house corner, never a circle or a pill.** An icon button is `.icon-btn`
 or `rounded`, not `rounded-full` (`PER-3`; `check-tells` fails `round-button`). `rounded-full`
@@ -97,6 +100,8 @@ class (ADR-083, consistency addendum).
 | Storage keys | `@/constants/storage` |
 | Permissions | `@/constants/permissions` |
 | Charts | `@/components/admin/charts` — `TimeSeriesChart` `PeriodComparisonChart` `ShareChart` `FunnelChart` `PointLineChart` `RangeChart` `GaugeChart` `StackedAreaChart` `CalendarHeatmap` `RadarChart` `SmallMultiplesChart`; the data shape picks the form (`/admin/design-system#charts`). Recharts is imported nowhere else |
+
+**Colour on icons and life on a screen** (ADR-083, twelfth addendum). A glyph that stands for a kind of thing sits on an `IconTile` in that kind's tone; a live figure carries `.live-dot`; the one item that is running out carries `.breathe` (one per screen); the one loud button carries the glow and shine it already has (`.btn-primary`, nothing else). Tones are for glyphs and tiles, never for text or status. The ambient loops (`motion.ambient`: `pulse` 2 000 ms, `breathe` 3 600 ms) are the only motion that runs while nobody is touching the screen; `docs/design/motion/05-motion.md` ("The third tier: ambient") states the four limits.
 
 Motion is a class, not a call site. Press, fill, lift, focus, the invalid
 shake, notice arrival, exits and the loading ring are already on `.btn`, `.chip`,
@@ -144,13 +149,20 @@ A border must mean something. Prefer whitespace and alignment.
   addendum). Until it is decided, do not darken a border on a hunch and do not
   add a seventh.
 - **Never a border and a shadow on the same edge.** That is also two
-  boundaries. `.card` has no shadow; `.lift` adds one on hover, when it means
-  "this rose".
+  boundaries. A card's edge is the *first layer of its shadow*: `.card` and
+  `.card-lit` are `border-transparent shadow-card`, and `shadow-card` starts with
+  a 1 px ring at 6% ink, so there is one boundary and a depth. `.lift` raises it to
+  `shadow-overlay` on hover, when it means "this rose". A bordered *control* (an
+  input, a selected thumbnail) keeps its border and takes no ring.
 - A **card** must be a summary, object, status, action, warning or result.
   No decorative cards. A form that is the only thing on its page gets no box.
 - A **table** is already a grid — `.table-flat` draws row rules and nothing
-  else. No outer frame, no vertical lines, no zebra, and no `divide-*` on top
-  of it.
+  else. No vertical lines, no zebra, and no `divide-*` on top of it. `DataTable`
+  sits on `.table-surface` (a card's surface, ring-and-depth edge and corner,
+  under the grid and not a frame drawn round it); where the table is already
+  inside a card, a dialog or a metric strip the surface steps aside by CSS, so
+  there is no box in a box and no call site has to remember to ask. A
+  hand-written `.table-flat` sits on whatever it is placed in.
 - A **message** gets a tint, not a border — `.notice`.
 - A **filter row** is controls, not an object. No box.
 

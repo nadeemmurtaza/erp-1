@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatDateTime, formatMoney, type Locale } from '@newax/shared';
-import { Badge } from '@/components/ui';
+import { Badge, useTilt } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
 import { useCountdownLabel } from '@/hooks/use-countdown-label';
@@ -14,9 +14,9 @@ import { CLOSING_SOON_MS, msUntil, type PublicLotSummary } from '@/lib/auction-l
 /**
  * One lot in the list: what it is, what it is at, and when it ends. The whole
  * card is the link (a lot has one thing to do, open it), so there is no button
- * inside it. It looks like one: the card recipe's lit surface and border at rest
- * (`card-lit`, CRD-4), the lift and the shadow when the pointer or focus arrives
- * (`lift`, CRD-6), and an arrow at the end that is there at rest too, because
+ * inside it. It looks like one: the card recipe's lit surface and its shadow-drawn
+ * edge at rest (`card-lit`, CRD-4), the lift and the deeper shadow when the pointer or focus arrives
+ * (`lift`, CRD-6), a lean of a few degrees toward the pointer (`tilt`), and an arrow at the end that is there at rest too, because
  * hover does not exist on a phone (`ACC-7`). Time on an open lot is counted against the server's clock
  * (`offsetMs`), so a device with a wrong clock is not shown a wrong ending.
  */
@@ -27,6 +27,7 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
   const countdown = useCountdownLabel();
   // A photograph that cannot be fetched is left out, not shown as a broken image (ITG-3); the card reads fine without it.
   const [coverLost, setCoverLost] = useState(false);
+  const tilt = useTilt<HTMLAnchorElement>();
 
   const left = lot.phase === 'OPEN' && now > 0 ? msUntil(lot.endsAt, offsetMs, now) : null;
   const sold = lot.outcome?.kind === 'SOLD' ? lot.outcome : null;
@@ -44,7 +45,10 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
   return (
     <Link
       href={ROUTES.storefront.auctionLot(lot.lotId)}
-      className="group lift card-lit flex min-h-[10rem] w-full flex-col gap-3 p-5"
+      ref={tilt.ref}
+      onPointerMove={tilt.onPointerMove}
+      onPointerLeave={tilt.onPointerLeave}
+      className="group lift tilt card-lit flex min-h-[10rem] w-full flex-col gap-3 p-5"
     >
       {lot.coverUrl && !coverLost ? (
         // Pulled out to the card's inset (`--inset` 0.5rem) so the corner of the picture follows the card's (CRD-5). The title below names it, so the picture itself is decoration.
@@ -82,7 +86,8 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
       </div>
 
       <div className="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm text-neutral-900/60">
-        <span>
+        <span className="inline-flex items-center gap-2">
+          {lot.phase === 'OPEN' && left !== null && left > 0 ? <span aria-hidden="true" className="live-dot" /> : null}
           {lot.phase === 'OPEN'
             ? left === null
               ? null
@@ -93,7 +98,11 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
               ? tLot('opensAt', { date: formatDateTime(lot.startsAt, locale) })
               : t('ended')}
         </span>
-        {left !== null && left > 0 && left <= CLOSING_SOON_MS ? <Badge tone="warning">{tLot('closingSoon')}</Badge> : null}
+        {left !== null && left > 0 && left <= CLOSING_SOON_MS ? (
+          <Badge tone="warning">
+            {tLot('closingSoon')}
+          </Badge>
+        ) : null}
         <span className="tabular-nums">{t('bids', { count: lot.bidCount })}</span>
       </div>
     </Link>

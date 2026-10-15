@@ -158,8 +158,8 @@ export default function AuctionsPage() {
                 ),
               },
               { header: 'Status', cell: (row) => <StatusBadge status={row.status} /> },
-              { header: 'Opens', cell: (row) => formatDateTime(row.startsAt), muted: true },
-              { header: 'Closes', cell: (row) => formatDateTime(row.endsAt), muted: true },
+              { header: 'Opens', cell: (row) => formatDateTime(row.startsAt), muted: true, className: 'whitespace-nowrap' },
+              { header: 'Closes', cell: (row) => formatDateTime(row.endsAt), muted: true, className: 'whitespace-nowrap' },
               { header: 'Lots', align: 'end', numeric: true, cell: (row) => row.lotCount },
             ]}
           />

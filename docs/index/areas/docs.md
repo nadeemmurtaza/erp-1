@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-555 files · 98,183 lines
+555 files · 98,403 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -23,11 +23,11 @@ has a bug.
 | `docs/brand/logo` | 6 | 0 | asset |
 | `docs/design` | 1 | 120 | doc |
 | `docs/design/accessibility` | 1 | 166 | doc |
-| `docs/design/components-states` | 2 | 716 | doc |
+| `docs/design/components-states` | 2 | 720 | doc |
 | `docs/design/content` | 1 | 130 | doc |
-| `docs/design/foundations` | 1 | 324 | doc |
+| `docs/design/foundations` | 1 | 352 | doc |
 | `docs/design/layout-composition` | 3 | 586 | doc |
-| `docs/design/motion` | 1 | 340 | doc |
+| `docs/design/motion` | 1 | 381 | doc |
 | `docs/design/principles-laws` | 2 | 1,025 | doc |
 | `docs/design/process-governance` | 5 | 1,076 | doc |
 | `docs/erp-lenses/_meta` | 32 | 7,258 | doc |
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 4,665 | doc, file |
+| `docs/implementation` | 11 | 4,666 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
 | `docs/implementation/admin-platform` | 6 | 2,797 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -97,7 +97,7 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 89 | 12,555 | doc |
+| `docs/implementation/decisions` | 89 | 12,701 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
@@ -122,7 +122,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | 2,065 | doc |  |
+| `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | 2,211 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |

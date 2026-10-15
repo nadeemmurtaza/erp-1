@@ -18,7 +18,7 @@ All 214 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
-| `CLAUDE.md` | doc | 866 |  |
+| `CLAUDE.md` | doc | 867 |  |
 | `CONTRIBUTING.md` | doc | 130 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
@@ -71,7 +71,7 @@ All 214 tracked files in `repository root files`, by directory.
 | `security.md` | doc | 49 |  |
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 217 |  |
+| `ui.md` | doc | 229 |  |
 
 ### `.claude/skills/feature-scope` (1)
 

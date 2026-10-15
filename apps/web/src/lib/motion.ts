@@ -259,3 +259,33 @@ export const MOTION_MS = {
   /** A drawn check (`Button done`, FRM-6) is one `slow` stroke; a page that leaves on success waits this long so it is seen. */
   done: duration.slow,
 } as const;
+
+/**
+ * The lean of a card toward a pointer, in degrees (ADR-083, twelfth addendum). The pointer's offset
+ * from the card's centre, as a fraction of half its width and height, times `tilt.maxDeg`: at the
+ * centre the card is flat, at an edge it is at the limit, and nothing leans past it however far the
+ * pointer is reported to be (a pointer captured outside the box, a fast move before the leave).
+ * `x` is the rotation about the horizontal axis (pointer low leans the card's bottom away from you),
+ * `y` about the vertical (pointer right leans its right side away). A card with no size does not lean.
+ */
+export function tiltAngles(
+  offsetX: number,
+  offsetY: number,
+  width: number,
+  height: number,
+  maxDeg: number = BRAND.theme.motion.tilt.maxDeg,
+): { x: number; y: number } {
+  if (width <= 0 || height <= 0) return { x: 0, y: 0 };
+  const fx = clampSigned((offsetX - width / 2) / (width / 2));
+  const fy = clampSigned((offsetY - height / 2) / (height / 2));
+  // `+ 0` turns -0 into 0, so a pointer at the centre writes "0.00deg" and not "-0.00deg".
+  return { x: round2(-fy * maxDeg) + 0, y: round2(fx * maxDeg) + 0 };
+}
+
+function clampSigned(value: number): number {
+  return Math.min(1, Math.max(-1, value));
+}
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}

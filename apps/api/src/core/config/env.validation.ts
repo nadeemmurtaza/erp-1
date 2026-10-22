@@ -243,6 +243,18 @@ export const envSchema = z.object({
   ECOSYSTEM_EVENT_BUS_URL: z.string().optional(),
 
   /**
+   * NeuraCore Cryptographic Transit Relay & ANAX Intercept Engine
+   */
+  NEURA_CORE_URL: z.string().default('http://localhost:5000'),
+  NEURA_CRYPTO_TENANT_ID: z.string().default('default'),
+  NEURA_CRYPTO_ENTITY_ID: z.string().default('erp-1'),
+  NEURA_CRYPTO_KEY_ID: z.string().default('kid_erp_default'),
+  NEURA_CRYPTO_INGRESS_SECRET_HEX: z.string().optional(),
+  NEURA_CRYPTO_EGRESS_SECRET_HEX: z.string().optional(),
+  NEURA_CRYPTO_AUTH_SECRET_HEX: z.string().optional(),
+  ANAX_ENABLED: bool('true'),
+
+  /**
    * nID Identity & OAuth Integration (ECOSYSTEM.md, WO-255.2).
    * Relying-party OAuth authorization-code credentials with nID.
    */

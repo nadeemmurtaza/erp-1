@@ -351,7 +351,8 @@ describe('NEWAX Ecosystem Clients (Enterprise Multi-Tenant)', () => {
       const mockInbound = { processEvent: jest.fn() };
       const mockConfig = { ecosystemGatewayKey: 'valid-secret-key' } as any;
 
-      const controller = new EcosystemController(mockInbound as any, mockConfig);
+      const mockCryptoMesh = { isEnvelope: jest.fn().mockReturnValue(false), decryptFromRelay: jest.fn() };
+      const controller = new EcosystemController(mockInbound as any, mockConfig, mockCryptoMesh as any);
 
       // Fails with invalid key
       await expect(
@@ -378,6 +379,47 @@ describe('NEWAX Ecosystem Clients (Enterprise Multi-Tenant)', () => {
         expect.objectContaining({
           source: 'communicator',
           tenantId: 'tenant-01',
+        }),
+      );
+    });
+
+    it('decrypts encrypted transit envelopes before processing', async () => {
+      const mockInbound = { processEvent: jest.fn().mockResolvedValue({ accepted: true, eventName: 'refund.proof_captured', actionTaken: 'decrypted_and_processed' }) };
+      const mockConfig = { ecosystemGatewayKey: undefined } as any;
+      const decryptedPayload = {
+        eventId: 'evt-secure-100',
+        name: 'refund.proof_captured',
+        occurredAt: '2026-10-22T12:00:00Z',
+        source: 'communicator',
+        schemaVersion: 1,
+        payload: { returnRequestId: 'ret-77', liveProofSessionId: 'sess-88', confidenceScore: 0.99 },
+      };
+      const mockCryptoMesh = {
+        isEnvelope: jest.fn().mockReturnValue(true),
+        decryptFromRelay: jest.fn().mockReturnValue(decryptedPayload),
+      };
+      const controller = new EcosystemController(mockInbound as any, mockConfig, mockCryptoMesh as any);
+
+      const encryptedEnvelope = {
+        version: '1.0.0',
+        tenantId: 'tenant-secure',
+        senderId: 'communicator',
+        recipientId: 'erp-1',
+        iv: 'fake-iv',
+        ciphertext: 'fake-ciphertext',
+        authTag: 'fake-tag',
+        keyId: 'kid-1',
+        timestamp: '2026-10-22T12:00:00Z',
+        signature: 'fake-sig',
+      };
+
+      const res = await controller.handleInboundEvent(encryptedEnvelope as any);
+      expect(res.accepted).toBe(true);
+      expect(mockCryptoMesh.decryptFromRelay).toHaveBeenCalledWith(encryptedEnvelope);
+      expect(mockInbound.processEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          eventId: 'evt-secure-100',
+          name: 'refund.proof_captured',
         }),
       );
     });

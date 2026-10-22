@@ -12,7 +12,7 @@ Source: `apps/api/src/core/ecosystem/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (9 · 1,010 lines)
+## Files (9 · 1,063 lines)
 
 All paths relative to `apps/api/src/core/ecosystem`.
 
@@ -23,9 +23,9 @@ All paths relative to `apps/api/src/core/ecosystem`.
 | `ecosystem-inbound.service.ts` | service | 109 | 2 |  |
 | `ecosystem-module-gateway.client.ts` | module | 115 | 2 |  |
 | `ecosystem.constants.ts` | module | 92 | 6 | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
-| `ecosystem.controller.ts` | controller | 65 | 1 | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
+| `ecosystem.controller.ts` | controller | 76 | 1 | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
 | `ecosystem.module.ts` | nest module | 46 | 1 |  |
-| `ecosystem.spec.ts` | unit test | 386 | — |  |
+| `ecosystem.spec.ts` | unit test | 428 | — |  |
 | `index.ts` | module | 6 | — |  |
 
 
@@ -33,7 +33,7 @@ All paths relative to `apps/api/src/core/ecosystem`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` :37 | Receives cross-repo events from core-newax Event Bus / Communicator |
+| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` :39 | Receives cross-repo events from core-newax Event Bus / Communicator |
 
 
 ## Domain events
@@ -87,7 +87,7 @@ All paths relative to `apps/api/src/core/ecosystem`.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `ecosystem.spec.ts` | 12 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient · Ec… |
+| `ecosystem.spec.ts` | 13 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient · Ec… |
 
 
 ## Every export in this unit
@@ -107,7 +107,7 @@ All paths relative to `apps/api/src/core/ecosystem`.
 | `GatewayRequest` | interface | `ecosystem.constants.ts:47` | Synchronous cross-module RPC request sent through core-newax Module Gateway with multi-tenant isolation conte… |
 | `GatewayResponse` | interface | `ecosystem.constants.ts:65` | Response received from core-newax Module Gateway. |
 | `RefundProofCapturedPayload` | interface | `ecosystem.constants.ts:79` | Payload received when Communicator's LiveProof engine captures authenticated live camera proof for a customer… |
-| `EcosystemController` | class | `ecosystem.controller.ts:25` | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
+| `EcosystemController` | class | `ecosystem.controller.ts:26` | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
 | `EcosystemModule` | class | `ecosystem.module.ts:45` |  |
 
 

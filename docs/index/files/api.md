@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,291 tracked files in `apps/api`, by directory.
+All 1,300 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -854,7 +854,7 @@ All 1,291 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 67 |  |
+| `core.module.ts` | nest module | 71 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -881,6 +881,17 @@ All 1,291 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `anthropic.provider.ts` | module | 143 |  |
 | `openai.provider.ts` | module | 115 |  |
+
+### `apps/api/src/core/anax` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `anax-sensor.service.ts` | service | 159 |  |
+| `anax.controller.ts` | controller | 81 |  |
+| `anax.module.ts` | nest module | 13 |  |
+| `anax.service.spec.ts` | unit test | 125 |  |
+| `anax.service.ts` | service | 565 |  |
+| `anax.types.ts` | module | 221 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidan… |
 
 ### `apps/api/src/core/approvals` (3)
 
@@ -1021,7 +1032,7 @@ All 1,291 tracked files in `apps/api`, by directory.
 | `config.module.ts` | nest module | 23 |  |
 | `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
-| `env.validation.ts` | config | 424 |  |
+| `env.validation.ts` | config | 436 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 39 |  |
 
@@ -1030,6 +1041,14 @@ All 1,291 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `segment-filter-engine.ts` | module | 94 |  |
+
+### `apps/api/src/core/crypto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `crypto-mesh.service.spec.ts` | unit test | 80 |  |
+| `crypto-mesh.service.ts` | service | 238 |  |
+| `crypto.module.ts` | nest module | 10 |  |
 
 ### `apps/api/src/core/ecosystem` (9)
 
@@ -1040,9 +1059,9 @@ All 1,291 tracked files in `apps/api`, by directory.
 | `ecosystem-inbound.service.ts` | service | 109 |  |
 | `ecosystem-module-gateway.client.ts` | module | 115 |  |
 | `ecosystem.constants.ts` | module | 92 |  |
-| `ecosystem.controller.ts` | controller | 65 |  |
+| `ecosystem.controller.ts` | controller | 76 |  |
 | `ecosystem.module.ts` | nest module | 46 |  |
-| `ecosystem.spec.ts` | unit test | 386 |  |
+| `ecosystem.spec.ts` | unit test | 428 |  |
 | `index.ts` | module | 6 |  |
 
 ### `apps/api/src/core/events` (7)

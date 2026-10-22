@@ -32,7 +32,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,291 | 178,499 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,300 | 180,060 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 580 | 109,320 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 38 | 23,473 | workspace manifests, docker compose/stack files, env templates |
@@ -137,6 +137,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 |---|---|---|
 | [`action-hub`](core\action-hub.md) | 5 |  |
 | [`ai`](core\ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
+| [`anax`](core\anax.md) | 6 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biologi… |
 | [`approvals`](core\approvals.md) | 3 |  |
 | [`audit`](core\audit.md) | 2 |  |
 | [`auth`](core\auth.md) | 51 |  |
@@ -145,6 +146,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`common`](core\common.md) | 10 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core\config.md) | 7 |  |
 | [`crm`](core\crm.md) | 1 |  |
+| [`crypto`](core\crypto.md) | 3 |  |
 | [`ecosystem`](core\ecosystem.md) | 9 |  |
 | [`events`](core\events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | [`extension-points`](core\extension-points.md) | 12 |  |

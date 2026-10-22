@@ -3,10 +3,10 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2939,
-    "lines": 466245,
-    "routes": 919,
-    "controllers": 169,
+    "files": 2948,
+    "lines": 467806,
+    "routes": 924,
+    "controllers": 170,
     "models": 325,
     "enums": 153,
     "migrations": 132,
@@ -14,7 +14,7 @@
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 432,
+    "specs": 434,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1291,
-      "lines": 178499,
-      "bytes": 7288951,
+      "files": 1300,
+      "lines": 180060,
+      "bytes": 7347979,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -2902,6 +2902,18 @@
       "page": "docs/index/core/ai.md"
     },
     {
+      "name": "anax",
+      "files": [
+        "apps/api/src/core/anax/anax-sensor.service.ts",
+        "apps/api/src/core/anax/anax.controller.ts",
+        "apps/api/src/core/anax/anax.module.ts",
+        "apps/api/src/core/anax/anax.service.spec.ts",
+        "apps/api/src/core/anax/anax.service.ts",
+        "apps/api/src/core/anax/anax.types.ts"
+      ],
+      "page": "docs/index/core/anax.md"
+    },
+    {
       "name": "approvals",
       "files": [
         "apps/api/src/core/approvals/approval.service.spec.ts",
@@ -3027,6 +3039,15 @@
         "apps/api/src/core/crm/segment-filter-engine.ts"
       ],
       "page": "docs/index/core/crm.md"
+    },
+    {
+      "name": "crypto",
+      "files": [
+        "apps/api/src/core/crypto/crypto-mesh.service.spec.ts",
+        "apps/api/src/core/crypto/crypto-mesh.service.ts",
+        "apps/api/src/core/crypto/crypto.module.ts"
+      ],
+      "page": "docs/index/core/crypto.md"
     },
     {
       "name": "ecosystem",
@@ -15370,6 +15391,76 @@
       "summary": "Wishlisted products that are currently out of stock, most-wanted first"
     },
     {
+      "method": "POST",
+      "path": "/anax/evaluate",
+      "module": "core/anax",
+      "controller": "AnaxController",
+      "handler": "evaluateScenario",
+      "file": "apps/api/src/core/anax/anax.controller.ts",
+      "line": 74,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/anax/flight-plan",
+      "module": "core/anax",
+      "controller": "AnaxController",
+      "handler": "getFlightPlan",
+      "file": "apps/api/src/core/anax/anax.controller.ts",
+      "line": 35,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/anax/geopolitical-risk",
+      "module": "core/anax",
+      "controller": "AnaxController",
+      "handler": "getGeopoliticalRisk",
+      "file": "apps/api/src/core/anax/anax.controller.ts",
+      "line": 48,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/anax/insights",
+      "module": "core/anax",
+      "controller": "AnaxController",
+      "handler": "getComprehensiveInsights",
+      "file": "apps/api/src/core/anax/anax.controller.ts",
+      "line": 23,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/anax/valuation",
+      "module": "core/anax",
+      "controller": "AnaxController",
+      "handler": "getEnterpriseValuation",
+      "file": "apps/api/src/core/anax/anax.controller.ts",
+      "line": 61,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
       "method": "GET",
       "path": "/api-keys",
       "module": "core/auth",
@@ -16260,7 +16351,7 @@
       "controller": "EcosystemController",
       "handler": "handleInboundEvent",
       "file": "apps/api/src/core/ecosystem/ecosystem.controller.ts",
-      "line": 37,
+      "line": 39,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -57547,6 +57638,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/anax/anax.service.spec.ts",
+      "module": "core/anax",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "AnaxService (Dragonfly Intercept Intelligence in ERP-1)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/approvals/approval.service.spec.ts",
       "module": "core/approvals",
       "kind": "unit test",
@@ -57855,10 +57955,19 @@
       ]
     },
     {
+      "file": "apps/api/src/core/crypto/crypto-mesh.service.spec.ts",
+      "module": "core/crypto",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "CryptoMeshService (Banking-Grade Multi-Layer Encryption)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/ecosystem/ecosystem.spec.ts",
       "module": "core/ecosystem",
       "kind": "unit test",
-      "cases": 12,
+      "cases": 13,
       "describes": [
         "NEWAX Ecosystem Clients (Enterprise Multi-Tenant)",
         "HttpEcosystemModuleGatewayClient",
@@ -64925,6 +65034,150 @@
       ]
     },
     {
+      "path": "apps/api/src/core/anax/anax-sensor.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 159,
+      "bytes": 5726,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnaxSensorService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/anax/anax.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 81,
+      "bytes": 3220,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnaxController",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/anax/anax.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 13,
+      "bytes": 382,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnaxModule",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/anax/anax.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 125,
+      "bytes": 4980,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/anax/anax.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 565,
+      "bytes": 24318,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnaxService",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/anax/anax.types.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 221,
+      "bytes": 6291,
+      "doc": "ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidance and trajectory interception for enterprise SaaS business operations.",
+      "symbols": [
+        {
+          "name": "InternalTelemetrySignal",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "GeopoliticalWarSignal",
+          "kind": "interface",
+          "line": 34
+        },
+        {
+          "name": "CommodityForexSignal",
+          "kind": "interface",
+          "line": 53
+        },
+        {
+          "name": "MarketTradesAndEquitiesSignal",
+          "kind": "interface",
+          "line": 68
+        },
+        {
+          "name": "WorldMacroSignal",
+          "kind": "interface",
+          "line": 75
+        },
+        {
+          "name": "StateSpaceVector16",
+          "kind": "interface",
+          "line": 91
+        },
+        {
+          "name": "InterceptPoint",
+          "kind": "interface",
+          "line": 117
+        },
+        {
+          "name": "FourWingFlightCommand",
+          "kind": "interface",
+          "line": 129
+        },
+        {
+          "name": "BusinessValuationInsight",
+          "kind": "interface",
+          "line": 164
+        },
+        {
+          "name": "StockInventoryEvaluation",
+          "kind": "interface",
+          "line": 179
+        },
+        {
+          "name": "ForexPredictionInsight",
+          "kind": "interface",
+          "line": 188
+        },
+        {
+          "name": "GeopoliticalRelationshipInsight",
+          "kind": "interface",
+          "line": 199
+        },
+        {
+          "name": "ComprehensiveBusinessIntelligenceReport",
+          "kind": "interface",
+          "line": 208
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/approvals/approval.service.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -66637,8 +66890,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 424,
-      "bytes": 19430,
+      "lines": 436,
+      "bytes": 19947,
       "doc": "",
       "symbols": [
         {
@@ -66649,12 +66902,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 270
+          "line": 282
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 300
+          "line": 312
         }
       ]
     },
@@ -66686,14 +66939,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 67,
-      "bytes": 2531,
+      "lines": 71,
+      "bytes": 2603,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 66
+          "line": 70
         }
       ]
     },
@@ -66709,6 +66962,60 @@
           "name": "segmentFilterToWhere",
           "kind": "function",
           "line": 88
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/crypto/crypto-mesh.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3208,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/crypto/crypto-mesh.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 238,
+      "bytes": 7667,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EncryptedTransitEnvelope",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "CryptographicIntegrityError",
+          "kind": "class",
+          "line": 24
+        },
+        {
+          "name": "ReplayAttackDetectedError",
+          "kind": "class",
+          "line": 31
+        },
+        {
+          "name": "CryptoMeshService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/crypto/crypto.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 227,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CryptoModule",
+          "kind": "class",
+          "line": 9
         }
       ]
     },
@@ -66831,14 +67138,14 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 65,
-      "bytes": 2332,
+      "lines": 76,
+      "bytes": 2947,
       "doc": "",
       "symbols": [
         {
           "name": "EcosystemController",
           "kind": "class",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -66861,8 +67168,8 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 386,
-      "bytes": 13824,
+      "lines": 428,
+      "bytes": 15629,
       "doc": "",
       "symbols": []
     },

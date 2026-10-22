@@ -11,8 +11,12 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { AppConfigService } from './core/config/app-config.service';
+import { loadVaultSecrets } from './core/config/vault-loader';
 
 async function bootstrap(): Promise<void> {
+  // WO-255.3: Pre-bootstrap secrets vault integration with nID
+  await loadVaultSecrets();
+
   // rawBody: true makes `req.rawBody` available alongside the parsed JSON
   // body — needed by identity-verification's webhook handler, which
   // verifies nID's signature over the exact bytes nID signed. Every other

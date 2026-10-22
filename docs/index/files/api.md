@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,300 tracked files in `apps/api`, by directory.
+All 1,302 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -848,7 +848,7 @@ All 1,300 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `app.module.ts` | nest module | 55 |  |
-| `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
+| `main.ts` | module | 117 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
@@ -1024,7 +1024,7 @@ All 1,300 tracked files in `apps/api`, by directory.
 | `all-exceptions.filter.spec.ts` | unit test | 143 |  |
 | `all-exceptions.filter.ts` | module | 198 |  |
 
-### `apps/api/src/core/config` (7)
+### `apps/api/src/core/config` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1032,9 +1032,11 @@ All 1,300 tracked files in `apps/api`, by directory.
 | `config.module.ts` | nest module | 23 |  |
 | `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
-| `env.validation.ts` | config | 436 |  |
+| `env.validation.ts` | config | 444 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 39 |  |
+| `vault-loader.spec.ts` | unit test | 129 |  |
+| `vault-loader.ts` | config | 122 |  |
 
 ### `apps/api/src/core/crm` (1)
 

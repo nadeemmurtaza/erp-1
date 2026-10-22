@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,300 files · 180,064 lines
+1,302 files · 180,327 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -31,8 +31,8 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
 | `apps/api/prisma/schema` | 187 | 18,678 | prisma schema, migration, toml |
-| `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 253 | 32,705 | unit test, service, module, controller |
+| `apps/api/src` | 2 | 172 | nest module, module |
+| `apps/api/src/core` | 255 | 32,964 | unit test, service, module, controller |
 | `apps/api/src/modules` | 805 | 112,415 | doc, unit test, service, controller |
 | `apps/api/test` | 38 | 11,876 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |

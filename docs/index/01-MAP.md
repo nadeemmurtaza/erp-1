@@ -32,7 +32,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,300 | 180,064 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,302 | 180,327 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 580 | 109,320 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 38 | 23,473 | workspace manifests, docker compose/stack files, env templates |
@@ -144,7 +144,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`cache`](core\cache.md) | 4 |  |
 | [`checkout`](core\checkout.md) | 1 |  |
 | [`common`](core\common.md) | 10 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
-| [`config`](core\config.md) | 7 |  |
+| [`config`](core\config.md) | 9 |  |
 | [`crm`](core\crm.md) | 1 |  |
 | [`crypto`](core\crypto.md) | 3 |  |
 | [`ecosystem`](core\ecosystem.md) | 9 |  |

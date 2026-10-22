@@ -263,6 +263,14 @@ export const envSchema = z.object({
   NID_CLIENT_SECRET: z.string().optional(),
   NID_REDIRECT_URI: z.string().optional(),
 
+  /**
+   * nID Secrets Vault Integration (ECOSYSTEM.md, WO-255.3).
+   * Boot-time scoped environment secrets injection from nID Vault.
+   */
+  NID_VAULT_ENABLED: bool('false'),
+  NID_SERVICE_ID: z.string().default('erp-1'),
+  NID_SERVICE_SECRET: z.string().optional(),
+
   STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),

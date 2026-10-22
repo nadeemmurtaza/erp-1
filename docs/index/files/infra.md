@@ -45,7 +45,7 @@ All 66 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `ci.yml` | yaml | 203 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
-| `qodo-review.yml` | yaml | 29 |  |
+| `qodo-review.yml` | yaml | 44 |  |
 
 ### `deploy` (3)
 

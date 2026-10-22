@@ -44,7 +44,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | `apps/pos` | 33 | 2,671 | Next.js PWA — offline-first point of sale |
 | `.claude` | 28 | 1,892 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
-| `.github` | 4 | 404 | CI and deployment workflows |
+| `.github` | 4 | 419 | CI and deployment workflows |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `packages/config` | 4 | 101 | shared tsconfig and eslint bases |
 | `.junie` | 1 | 81 |  |

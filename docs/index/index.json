@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2956,
-    "lines": 468728,
+    "lines": 468743,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1372,8 +1372,8 @@
     },
     "infra": {
       "files": 66,
-      "lines": 33545,
-      "bytes": 1373445,
+      "lines": 33560,
+      "bytes": 1374110,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -62916,8 +62916,8 @@
       "path": ".github/workflows/qodo-review.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 29,
-      "bytes": 669,
+      "lines": 44,
+      "bytes": 1334,
       "doc": "",
       "symbols": []
     },

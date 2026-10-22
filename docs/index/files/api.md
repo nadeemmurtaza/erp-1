@@ -928,7 +928,7 @@ All 1,300 tracked files in `apps/api`, by directory.
 | `login-identifier.ts` | module | 38 |  |
 | `login-throttle.service.spec.ts` | unit test | 111 |  |
 | `login-throttle.service.ts` | service | 168 |  |
-| `nid.controller.ts` | controller | 69 |  |
+| `nid.controller.ts` | controller | 73 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |

@@ -12,6 +12,7 @@ import type { Response } from 'express';
 import { setRefreshCookie } from './auth.controller';
 import { Public } from './decorators';
 import { NidProvider } from './providers/nid.provider';
+import { AppConfigService } from '../config/app-config.service';
 
 /**
  * nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2).
@@ -25,7 +26,10 @@ import { NidProvider } from './providers/nid.provider';
 export class NidController {
   private readonly logger = new Logger(NidController.name);
 
-  constructor(private readonly nidProvider: NidProvider) {}
+  constructor(
+    private readonly nidProvider: NidProvider,
+    private readonly config: AppConfigService,
+  ) {}
 
   @Public()
   @Get('start')
@@ -60,7 +64,7 @@ export class NidController {
     const session = await this.nidProvider.handleCallback(code, state, redirectUri);
 
     if (res) {
-      setRefreshCookie(res, session.refreshToken);
+      setRefreshCookie(res, session.refreshToken, this.config);
     }
 
     return session;

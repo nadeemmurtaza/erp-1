@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (51 · 10,441 lines)
+## Files (51 · 10,445 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -46,7 +46,7 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `login-identifier.ts` | module | 38 | 3 | A sign-in identifier as the rate limiter and the audit trail see it: the normalised form, hashed (206-rate-limiting-cac… |
 | `login-throttle.service.spec.ts` | unit test | 111 | — |  |
 | `login-throttle.service.ts` | service | 168 | 7 | The per-account sign-in bucket (WO-206.2, 206-rate-limiting-caching-compression-hardening.md §1.2). |
-| `nid.controller.ts` | controller | 69 | 1 | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
+| `nid.controller.ts` | controller | 73 | 1 | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `ownership.guard.spec.ts` | unit test | 49 | — |  |
 | `ownership.guard.ts` | guard | 24 | 2 |  |
 | `password.util.spec.ts` | unit test | 80 | — |  |
@@ -100,8 +100,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :134 | Revoke the current refresh token |
 | GET | `/auth/me` | signed-in | `AuthController.me` :152 | The signed-in user |
 | PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :173 | Update your own profile fields |
-| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` :54 | Handles the OAuth authorization callback from nID |
-| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` :33 | Initiates a Login with nID authorization flow |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` :58 | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` :37 | Initiates a Login with nID authorization flow |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :114 | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` :78 | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :221 | Resend the email verification link |
@@ -288,7 +288,7 @@ check there before adding another.
 | `LoginAttemptContext` | interface | `login-throttle.service.ts:83` |  |
 | `LoginThrottleService` | class | `login-throttle.service.ts:100` | The second, per-account layer in front of password sign-in — the per-IP CREDENTIAL_THROTTLE stops one address… |
 | `loginBucketKey` | function | `login-throttle.service.ts:165` | The Redis key a bucket lives at — exported for tests that age a bucket instead of waiting minutes. |
-| `NidController` | class | `nid.controller.ts:25` | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
+| `NidController` | class | `nid.controller.ts:26` | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `OwnedEntity` | interface | `ownership.guard.ts:3` |  |
 | `assertCanManage` | function | `ownership.guard.ts:13` | Throws unless the actor holds "<capability>.manage_all", or holds "<capability>.manage_own" AND entity.ownerI… |
 | `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:4` |  |

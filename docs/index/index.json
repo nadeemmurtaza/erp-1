@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2948,
-    "lines": 467806,
+    "lines": 467810,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1378,8 +1378,8 @@
     },
     "api": {
       "files": 1300,
-      "lines": 180060,
-      "bytes": 7347979,
+      "lines": 180064,
+      "bytes": 7348113,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -15763,7 +15763,7 @@
       "controller": "NidController",
       "handler": "handleCallback",
       "file": "apps/api/src/core/auth/nid.controller.ts",
-      "line": 54,
+      "line": 58,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -15777,7 +15777,7 @@
       "controller": "NidController",
       "handler": "startLogin",
       "file": "apps/api/src/core/auth/nid.controller.ts",
-      "line": 33,
+      "line": 37,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -66062,14 +66062,14 @@
       "path": "apps/api/src/core/auth/nid.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 69,
-      "bytes": 1867,
+      "lines": 73,
+      "bytes": 2001,
       "doc": "",
       "symbols": [
         {
           "name": "NidController",
           "kind": "class",
-          "line": 25
+          "line": 26
         }
       ]
     },

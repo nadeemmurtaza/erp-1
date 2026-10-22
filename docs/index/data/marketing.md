@@ -3,7 +3,7 @@
 
 # Schema: `marketing.prisma`
 
-3 models · 3 enums. Owned by module [`marketing`](../modules/marketing.md).
+3 models · 3 enums. Owned by module [`marketing`](..\modules\marketing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -105,4 +105,4 @@ Indexes: `@@unique([campaignId, contactId])` · `@@index([campaignId, status])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

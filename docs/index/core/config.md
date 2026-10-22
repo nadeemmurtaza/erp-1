@@ -12,17 +12,17 @@ Source: `apps/api/src/core/config/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 753 lines)
+## Files (7 · 784 lines)
 
 All paths relative to `apps/api/src/core/config`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `app-config.service.ts` | service | 72 | 1 | Typed accessor over ConfigService. |
+| `app-config.service.ts` | service | 88 | 1 | Typed accessor over ConfigService. |
 | `config.module.ts` | nest module | 23 | 1 |  |
 | `enabled-modules.ts` | config | 15 | 1 | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allowlist names. |
 | `env.validation.spec.ts` | unit test | 190 | — |  |
-| `env.validation.ts` | config | 400 | 3 |  |
+| `env.validation.ts` | config | 415 | 3 |  |
 | `load-env.ts` | config | 14 | — |  |
 | `meta.controller.ts` | controller | 39 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
 
@@ -83,11 +83,11 @@ check there before adding another.
 | `AppConfigModule` | class | `config.module.ts:22` |  |
 | `enabledFeatureModules` | function | `enabled-modules.ts:10` | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allow… |
 | `envSchema` | const | `env.validation.ts:57` |  |
-| `Env` | type | `env.validation.ts:252` |  |
-| `validateEnv` | function | `env.validation.ts:282` |  |
+| `Env` | type | `env.validation.ts:261` |  |
+| `validateEnv` | function | `env.validation.ts:291` |  |
 | `MetaController` | class | `meta.controller.ts:21` | What the frontend needs before it can decide what to show: which optional modules this deployment actually ha… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

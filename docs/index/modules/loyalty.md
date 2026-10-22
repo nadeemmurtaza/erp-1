@@ -65,7 +65,7 @@ _none_
 
 Enums: `LoyaltyTransactionType` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -81,7 +81,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `giftcards`** ⚠ direct import
 - core `auth`
 - core `common`
 - core `events`
@@ -116,4 +115,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

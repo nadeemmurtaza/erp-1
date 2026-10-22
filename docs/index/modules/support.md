@@ -78,7 +78,7 @@ _none_
 
 Enums: `CustomerTicketStatus` (5) · `SupportMessageAuthorType` (2) · `TicketPriority` (4) · `TicketStatus` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -94,7 +94,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `crm`** ⚠ direct import
 - core `action-hub`
 - core `audit`
 - core `auth`
@@ -149,4 +148,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

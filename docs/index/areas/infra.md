@@ -12,8 +12,8 @@ on them.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/infra.md](../symbols/infra.md)
-- **Every file here:** [files/infra.md](../files/infra.md)
+- **Every exported symbol here:** [symbols/infra.md](..\symbols\infra.md)
+- **Every file here:** [files/infra.md](..\files\infra.md)
 
 ## Directory breakdown
 
@@ -59,4 +59,4 @@ on them.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

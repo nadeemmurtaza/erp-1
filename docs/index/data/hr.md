@@ -3,7 +3,7 @@
 
 # Schema: `hr.prisma`
 
-6 models · 2 enums. Owned by module [`hr`](../modules/hr.md).
+6 models · 2 enums. Owned by module [`hr`](..\modules\hr.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -152,4 +152,4 @@ Indexes: `@@index([userId, endedOn])` · `@@index([positionId, endedOn])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -98,7 +98,7 @@ All paths relative to `apps/api/src/modules/supply-chain/bom`.
 
 Enums: `BomStatus` (3) · `RawMaterialUnit` (6)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -114,11 +114,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `catalog`** ⚠ direct import
-- **module `finance`** ⚠ direct import
-- **module `inventory`** ⚠ direct import
-- **module `parties`** ⚠ direct import
-- **module `purchasing`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `common`
@@ -191,4 +186,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

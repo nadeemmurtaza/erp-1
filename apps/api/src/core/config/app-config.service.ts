@@ -48,6 +48,22 @@ export class AppConfigService {
     return this.get('NODE_ROLE') !== 'STANDALONE';
   }
 
+  get isEcosystemEnabled(): boolean {
+    return this.get('ECOSYSTEM_ENABLED');
+  }
+
+  get ecosystemGatewayUrl(): string | undefined {
+    return this.get('ECOSYSTEM_GATEWAY_URL');
+  }
+
+  get ecosystemGatewayKey(): string | undefined {
+    return this.get('ECOSYSTEM_GATEWAY_KEY');
+  }
+
+  get ecosystemEventBusUrl(): string | undefined {
+    return this.get('ECOSYSTEM_EVENT_BUS_URL');
+  }
+
   /** Optional feature modules switched on by the MODULES allowlist. */
   isModuleEnabled(name: string): boolean {
     return this.get('MODULES').includes(name);

@@ -3,7 +3,7 @@
 
 # Schema: `search.prisma`
 
-2 models · 0 enums. Owned by module [`search`](../modules/search.md).
+2 models · 0 enums. Owned by module [`search`](..\modules\search.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -54,4 +54,4 @@ Indexes: `@@unique([locale, term, synonym])` · `@@index([locale, term])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

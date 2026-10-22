@@ -114,4 +114,4 @@ All 33 tracked files in `apps/pos`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/pos.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\pos.md) · [← index home](..\README.md)

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,279 tracked files in `apps/api`, by directory.
+All 1,286 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -854,7 +854,7 @@ All 1,279 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 65 |  |
+| `core.module.ts` | nest module | 67 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -1014,11 +1014,11 @@ All 1,279 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-config.service.ts` | service | 72 |  |
+| `app-config.service.ts` | service | 88 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
-| `env.validation.ts` | config | 400 |  |
+| `env.validation.ts` | config | 415 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 39 |  |
 
@@ -1027,6 +1027,18 @@ All 1,279 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `segment-filter-engine.ts` | module | 94 |  |
+
+### `apps/api/src/core/ecosystem` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ecosystem-event-bridge.service.ts` | service | 81 |  |
+| `ecosystem-event-bus.client.ts` | module | 92 |  |
+| `ecosystem-module-gateway.client.ts` | module | 105 |  |
+| `ecosystem.constants.ts` | module | 62 |  |
+| `ecosystem.module.ts` | nest module | 40 |  |
+| `ecosystem.spec.ts` | unit test | 251 |  |
+| `index.ts` | module | 6 |  |
 
 ### `apps/api/src/core/events` (7)
 
@@ -2830,4 +2842,4 @@ All 1,279 tracked files in `apps/api`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/api.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\api.md) · [← index home](..\README.md)

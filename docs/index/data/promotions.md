@@ -3,7 +3,7 @@
 
 # Schema: `promotions.prisma`
 
-3 models · 2 enums. Owned by module [`promotions`](../modules/promotions.md).
+3 models · 2 enums. Owned by module [`promotions`](..\modules\promotions.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -25,7 +25,7 @@ against a real database.
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `name` | `String` |  | staff-facing, not translated |
+| `name` | `String` |  |  |
 | `type` | `DiscountType` |  |  |
 | `scope` | `DiscountScope` |  | @default(ORDER) |
 | `value` | `Int` |  |  |
@@ -38,13 +38,13 @@ against a real database.
 | `firstOrderOnly` | `Boolean` |  | @default(false) |
 | `buyQuantity` | `Int?` | optional |  |
 | `getQuantity` | `Int?` | optional |  |
-| `getDiscountBps` | `Int?` | optional | 10000 = free |
+| `getDiscountBps` | `Int?` | optional |  |
 | `startsAt` | `DateTime?` | optional |  |
 | `endsAt` | `DateTime?` | optional |  |
 | `isActive` | `Boolean` |  | @default(true) |
 | `isStackable` | `Boolean` |  | @default(false) |
 | `priority` | `Int` |  | @default(0) |
-| `usageLimit` | `Int?` | optional | total redemptions across all customers |
+| `usageLimit` | `Int?` | optional |  |
 | `usageLimitPerUser` | `Int?` | optional |  |
 | `usageCount` | `Int` |  | @default(0) |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -111,13 +111,13 @@ Indexes: `@@index([discountId])` · `@@index([batchId])`
 
 | Value | Meaning |
 |---|---|
-| `PERCENTAGE` | basis points, House Rule 5 |
-| `FIXED_AMOUNT` | paisa off |
+| `PERCENTAGE // basis points, House Rule 5` |  |
+| `FIXED_AMOUNT // paisa off` |  |
 | `FREE_SHIPPING` |  |
 | `BUY_X_GET_Y` |  |
-| `TIERED` | spend more, save more — see DiscountRule's own doc comment in @newax/shared/discounts.ts |
+| `TIERED // spend more, save more — see DiscountRule's own doc comment in @newax/shared/discounts.ts` |  |
 
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -345,4 +345,4 @@ URL, which CLAUDE.md counts as not shipped.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

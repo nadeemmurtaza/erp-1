@@ -3,7 +3,7 @@
 
 # Schema: `production.prisma`
 
-4 models · 2 enums. Owned by module [`production`](../modules/production.md).
+4 models · 2 enums. Owned by module [`production`](..\modules\production.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -55,7 +55,7 @@ Indexes: `@@unique([billOfMaterialId, componentVariantId])` · `@@index([compone
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "WO-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `variantId` | `String` |  |  |
 | `quantityOrdered` | `Int` |  |  |
 | `quantityCompleted` | `Int` |  | @default(0) |
@@ -109,4 +109,4 @@ Indexes: `@@index([status, createdAt])` · `@@index([variantId])` · `@@index([s
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

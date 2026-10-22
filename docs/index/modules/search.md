@@ -60,7 +60,7 @@ _none_
 | `SearchSynonym` | 5 | :11 | Search. |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -119,4 +119,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

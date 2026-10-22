@@ -3,7 +3,7 @@
 
 # Schema: `loyalty.prisma`
 
-3 models · 1 enums. Owned by module [`loyalty`](../modules/loyalty.md).
+3 models · 1 enums. Owned by module [`loyalty`](..\modules\loyalty.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -85,4 +85,4 @@ Indexes: `@@unique([refereeId])` · `@@index([referrerId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

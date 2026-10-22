@@ -76,7 +76,7 @@ All paths relative to `apps/api/src/modules/supply-chain/production`.
 
 Enums: `WorkOrderSource` (3) · `WorkOrderStatus` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -92,7 +92,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
 - core `auth`
 - core `events`
 - core `prisma`
@@ -132,4 +131,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

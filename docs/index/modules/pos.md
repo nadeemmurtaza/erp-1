@@ -98,7 +98,7 @@ _none_
 
 Enums: `CashMovementType` (5) · `PosOrderType` (3) · `PosShiftStatus` (2) · `PosTerminalStatus` (3) · `QuantitySource` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -114,7 +114,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `orders`** ⚠ direct import
 - core `auth`
 - core `common`
 - core `idempotency`
@@ -185,4 +184,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

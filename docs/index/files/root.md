@@ -3,12 +3,12 @@
 
 # Files — root
 
-All 214 tracked files in `repository root files`, by directory.
+All 215 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (17)
+### `.` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -22,11 +22,12 @@ All 214 tracked files in `repository root files`, by directory.
 | `CONTRIBUTING.md` | doc | 130 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
+| `ECOSYSTEM.md` | doc | 110 |  |
 | `GEMINI.md` | doc | 81 |  |
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
 | `PRD.md` | doc | 185 |  |
-| `README.md` | doc | 213 |  |
+| `README.md` | doc | 221 |  |
 | `Rules.md` | doc | 30 |  |
 | `START-HERE.md` | doc | 107 |  |
 
@@ -475,4 +476,4 @@ All 214 tracked files in `repository root files`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/root.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\root.md) · [← index home](..\README.md)

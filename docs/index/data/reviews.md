@@ -3,7 +3,7 @@
 
 # Schema: `reviews.prisma`
 
-2 models · 1 enums. Owned by module [`reviews`](../modules/reviews.md).
+2 models · 1 enums. Owned by module [`reviews`](..\modules\reviews.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -44,7 +44,7 @@ against a real database.
 | `productId` | `String` |  |  |
 | `userId` | `String?` | optional |  |
 | `orderItemId` | `String?` | unique, optional | @unique |
-| `rating` | `Int` |  | 1-5 |
+| `rating` | `Int` |  |  |
 | `title` | `String?` | optional |  |
 | `body` | `String?` | optional |  |
 | `photoUrls` | `String[]` |  | @default([]) |
@@ -76,4 +76,4 @@ Indexes: `@@unique([productId, userId])` · `@@index([productId, status, created
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

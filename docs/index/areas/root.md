@@ -3,21 +3,21 @@
 
 # repository root files
 
-214 files · 16,187 lines
+215 files · 16,305 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/root.md](../symbols/root.md)
-- **Every file here:** [files/root.md](../files/root.md)
+- **Every exported symbol here:** [symbols/root.md](..\symbols\root.md)
+- **Every file here:** [files/root.md](..\files\root.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 17 | 2,371 | file, doc |
+| `.` | 18 | 2,489 | file, doc |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 9 | 390 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -59,13 +59,13 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma/schema/marketplace.prisma` | 271 | prisma schema | The cross-tenant marketplace/product-reference network — doc 165 |
 | `.claude/skills/feature-scope/SKILL.md` | 225 | doc |  |
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
+| `README.md` | 221 | doc |  |
 | `.claude/rules/ui.md` | 217 | doc |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
-| `README.md` | 213 | doc |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

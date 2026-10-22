@@ -136,7 +136,7 @@ All paths relative to `apps/api/src/modules/sales/auction`.
 
 Enums: `AuctionLotStatus` (4) · `AuctionRegistration` (3) · `AuctionSettlementStatus` (6) · `AuctionStatus` (7) · `AuctionType` (3) · `BidderStatus` (4) · `BidKind` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -372,4 +372,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

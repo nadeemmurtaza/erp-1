@@ -3,7 +3,7 @@
 
 # Schema: `notification-preferences.prisma`
 
-1 models · 2 enums. Owned by module [`notification-preferences`](../modules/notification-preferences.md).
+1 models · 2 enums. Owned by module [`notification-preferences`](..\modules\notification-preferences.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -60,4 +60,4 @@ Indexes: `@@unique([userId, channel, category])` · `@@index([userId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

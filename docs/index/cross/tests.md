@@ -3,7 +3,7 @@
 
 # Tests
 
-**430** spec files, **4,768** cases. What is already pinned down — and what is not.
+**431** spec files, **4,777** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -18,17 +18,17 @@ such exemption.
 
 ## API modules with no spec file
 
-- [`addresses`](../modules/addresses.md)
-- [`example-hello-world-pack`](../modules/example-hello-world-pack.md)
-- [`giftcards`](../modules/giftcards.md)
-- [`loyalty`](../modules/loyalty.md)
-- [`notification-preferences`](../modules/notification-preferences.md)
-- [`promotions`](../modules/promotions.md)
-- [`resilience`](../modules/resilience.md)
-- [`stitching`](../modules/stitching.md)
-- [`tax`](../modules/tax.md)
-- [`tracking`](../modules/tracking.md)
-- [`wishlist`](../modules/wishlist.md)
+- [`addresses`](..\modules\addresses.md)
+- [`example-hello-world-pack`](..\modules\example-hello-world-pack.md)
+- [`giftcards`](..\modules\giftcards.md)
+- [`loyalty`](..\modules\loyalty.md)
+- [`notification-preferences`](..\modules\notification-preferences.md)
+- [`promotions`](..\modules\promotions.md)
+- [`resilience`](..\modules\resilience.md)
+- [`stitching`](..\modules\stitching.md)
+- [`tax`](..\modules\tax.md)
+- [`tracking`](..\modules\tracking.md)
+- [`wishlist`](..\modules\wishlist.md)
 
 ## End-to-end (32)
 
@@ -71,7 +71,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (398)
+## Unit and integration (399)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -102,6 +102,7 @@ regression or an N+1.
 | `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an ov… |
 | `apps/api/src/core/common/hash-chain.spec.ts` | core/common | 8 | hash chain |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `apps/api/src/core/ecosystem/ecosystem.spec.ts` | core/ecosystem | 9 | NEWAX Ecosystem Clients (WO-255.1) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient… |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |
@@ -477,4 +478,4 @@ regression or an N+1.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -233,6 +233,15 @@ export const envSchema = z.object({
   SMS_API_TOKEN: z.string().optional(),
   SMS_FROM_NUMBER: z.string().optional(),
 
+  /**
+   * NEWAX Ecosystem connection (ECOSYSTEM.md, 255-ecosystem-alignment-roadmap.md).
+   * When true, Module Gateway RPC calls and cross-repo Event Bus publishing are active.
+   */
+  ECOSYSTEM_ENABLED: bool('false'),
+  ECOSYSTEM_GATEWAY_URL: z.string().optional(),
+  ECOSYSTEM_GATEWAY_KEY: z.string().optional(),
+  ECOSYSTEM_EVENT_BUS_URL: z.string().optional(),
+
   STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),
@@ -393,6 +402,12 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   }
   if (result.data.PARENT_API_KEY && !result.data.PARENT_URL) {
     throw new Error('PARENT_API_KEY is set but PARENT_URL is not — there is nothing to call with it.');
+  }
+
+  if (result.data.ECOSYSTEM_ENABLED && !result.data.ECOSYSTEM_GATEWAY_URL) {
+    throw new Error(
+      'ECOSYSTEM_ENABLED=true requires ECOSYSTEM_GATEWAY_URL — the core-newax Module Gateway endpoint.',
+    );
   }
 
   return result.data;

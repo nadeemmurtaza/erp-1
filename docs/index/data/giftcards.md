@@ -3,7 +3,7 @@
 
 # Schema: `giftcards.prisma`
 
-3 models · 1 enums. Owned by module [`giftcards`](../modules/giftcards.md).
+3 models · 1 enums. Owned by module [`giftcards`](..\modules\giftcards.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -54,7 +54,7 @@ Indexes: `@@index([status])` · `@@index([purchasedByUserId])`
 | `giftCardId` | `String` |  |  |
 | `delta` | `Int` |  |  |
 | `balanceAfter` | `Int` |  |  |
-| `reason` | `String` |  | "issue" \| "redeem" \| "refund" \| "expire" \| "adjust" \| "cancel" |
+| `reason` | `String` |  |  |
 | `orderId` | `String?` | optional |  |
 | `actorId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -73,7 +73,7 @@ Indexes: `@@index([giftCardId, createdAt])` · `@@index([orderId])`
 | `userId` | `String` |  |  |
 | `delta` | `Int` |  |  |
 | `balanceAfter` | `Int` |  |  |
-| `reason` | `String` |  | "refund" \| "goodwill" \| "redeem" \| "expire" \| "adjust" \| "referral" (WO-7.7) |
+| `reason` | `String` |  |  |
 | `orderId` | `String?` | optional |  |
 | `actorId` | `String?` | optional |  |
 | `note` | `String?` | optional |  |
@@ -100,4 +100,4 @@ Indexes: `@@index([userId, createdAt])` · `@@index([orderId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

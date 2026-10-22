@@ -3,7 +3,7 @@
 
 # Schema: `catalog.prisma`
 
-30 models · 7 enums. Owned by module [`catalog`](../modules/catalog.md).
+30 models · 7 enums. Owned by module [`catalog`](..\modules\catalog.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -46,7 +46,7 @@ Indexes: `@@index([isActive])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `brandId` | `String` |  |  |
-| `locale` | `String` |  | "en" \| "ur" |
+| `locale` | `String` |  |  |
 | `name` | `String` |  |  |
 | `description` | `String?` | optional |  |
 | `brand` | `Brand` | relation | @relation(fields: [brandId], references: [id], onDelete: Cascade) |
@@ -103,7 +103,7 @@ Indexes: `@@index([parentId])` · `@@index([isActive])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `categoryId` | `String` |  |  |
-| `locale` | `String` |  | "en" \| "ur" |
+| `locale` | `String` |  |  |
 | `name` | `String` |  |  |
 | `description` | `String?` | optional |  |
 | `category` | `Category` | relation | @relation(fields: [categoryId], references: [id], onDelete: Cascade) |
@@ -223,8 +223,8 @@ Indexes: `@@unique([valueId, locale])`
 | `basePrice` | `Int` |  |  |
 | `compareAtPrice` | `Int?` | optional |  |
 | `brandId` | `String?` | optional |  |
-| `fabric` | `String?` | optional | lawn, chiffon, khaddar, linen… |
-| `season` | `String?` | optional | summer, winter, festive |
+| `fabric` | `String?` | optional |  |
+| `season` | `String?` | optional |  |
 | `tags` | `String[]` |  | @default([]) |
 | `code` | `String?` | optional |  |
 | `noindex` | `Boolean` |  | @default(false) |
@@ -460,7 +460,7 @@ Indexes: `@@unique([productId, locale])` · `@@index([name])`
 | `id` | `String` | id | @id @default(cuid()) |
 | `productId` | `String` |  |  |
 | `sku` | `String` | unique | @unique |
-| `size` | `String?` | optional | S/M/L or "Free size" |
+| `size` | `String?` | optional |  |
 | `color` | `String?` | optional |  |
 | `colorHex` | `String?` | optional |  |
 | `label` | `String?` | optional |  |
@@ -556,7 +556,7 @@ Indexes: `@@index([isAutomatic])`
 | `variantId` | `String` |  |  |
 | `delta` | `Int` |  |  |
 | `resultingStock` | `Int` |  |  |
-| `reason` | `String` |  | "restock" \| "correction" \| "damaged" \| "sold_offline" \| "other" |
+| `reason` | `String` |  |  |
 | `note` | `String?` | optional |  |
 | `actorId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -605,10 +605,10 @@ Indexes: `@@index([variantId, createdAt])`
 
 | Value | Meaning |
 |---|---|
-| `BUTTON` | "S M L XL" |
-| `DROPDOWN` | long lists |
-| `SWATCH` | colour or fabric image |
-| `TEXT` | free entry, e.g. a monogram |
+| `BUTTON // "S M L XL"` |  |
+| `DROPDOWN // long lists` |  |
+| `SWATCH // colour or fabric image` |  |
+| `TEXT // free entry, e.g. a monogram` |  |
 
 ### `ProductCrossSellKind`  <sub>`apps/api/prisma/schema/catalog.prisma:735`</sub>
 
@@ -626,12 +626,12 @@ Indexes: `@@index([variantId, createdAt])`
 
 | Value | Meaning |
 |---|---|
-| `GOODS` | physical goods (electronics, grocery, etc) |
-| `SERVICE` | non-physical services |
-| `DIGITAL` | software, licenses, digital downloads |
-| `STITCHED` | legacy: ready to wear |
-| `UNSTITCHED` | legacy: fabric, optionally stitched to measure |
-| `STITCHING_SERVICE` | legacy: the tailoring itself, sold as a product |
+| `GOODS // physical goods (electronics, grocery, etc)` |  |
+| `SERVICE // non-physical services` |  |
+| `DIGITAL // software, licenses, digital downloads` |  |
+| `STITCHED // legacy: ready to wear` |  |
+| `UNSTITCHED // legacy: fabric, optionally stitched to measure` |  |
+| `STITCHING_SERVICE // legacy: the tailoring itself, sold as a product` |  |
 
 ### `ProductStatus`  <sub>`apps/api/prisma/schema/catalog.prisma:17`</sub>
 
@@ -644,4 +644,4 @@ Indexes: `@@index([variantId, createdAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -76,7 +76,7 @@ All paths relative to `apps/api/src/modules/sales/payments`.
 
 Enums: `PaymentStatus` (6)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -92,7 +92,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `receivables`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `config`
@@ -144,4 +143,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

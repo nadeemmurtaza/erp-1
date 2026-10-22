@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 579 tracked files in `docs/*`, by directory.
+All 580 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -920,7 +920,7 @@ All 579 tracked files in `docs/*`, by directory.
 | `80-employee-training-certification.md` | doc | 161 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
 
-### `docs/implementation/integrations-connectivity` (26)
+### `docs/implementation/integrations-connectivity` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -947,6 +947,7 @@ All 579 tracked files in `docs/*`, by directory.
 | `194-app-platform-failure-modes.md` | doc | 282 |  |
 | `195-app-platform-rollout-sequencing.md` | doc | 241 |  |
 | `213-partner-fact-exchange.md` | doc | 319 |  |
+| `255-ecosystem-alignment-roadmap.md` | doc | 188 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 262 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 283 |  |
@@ -1075,4 +1076,4 @@ All 579 tracked files in `docs/*`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/docs.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\docs.md) · [← index home](..\README.md)

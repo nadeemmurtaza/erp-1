@@ -83,4 +83,4 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

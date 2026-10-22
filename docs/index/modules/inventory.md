@@ -144,7 +144,7 @@ All paths relative to `apps/api/src/modules/supply-chain/inventory/dto`.
 
 Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `SerializedUnitStatus` (5) · `SpotCheckStatus` (4) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -254,4 +254,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

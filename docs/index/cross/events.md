@@ -30,19 +30,19 @@ order" is a new file, not an edit to checkout.
 
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
-| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `crm`, `accounting`, `orders`, `stitching`, `example-hello-world-pack` |
-| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `loyalty`, `orders` |
-| `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `auction`, `orders` |
-| `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `auction`, `payments` |
-| `payment.failed` | `PaymentFailed` | `payments` | `payments` |
+| `order.placed` | `OrderPlaced` | core/`ecosystem`, `accounting`, `orders` | core/`ecosystem`, core/`events`, `crm`, `accounting`, `orders`, `stitching`, `example-hello-world-pack` |
+| `order.status_changed` | `OrderStatusChanged` | core/`ecosystem`, `orders` | core/`ecosystem`, `crm`, `finance`, `loyalty`, `orders` |
+| `order.cancelled` | `OrderCancelled` | core/`ecosystem`, `finance`, `orders` | core/`ecosystem`, `crm`, `auction`, `orders` |
+| `payment.succeeded` | `PaymentSucceeded` | core/`ecosystem`, `accounting`, `orders`, `payments` | core/`ecosystem`, `accounting`, `auction`, `payments` |
+| `payment.failed` | `PaymentFailed` | core/`ecosystem`, `payments` | core/`ecosystem`, `payments` |
 | `payment.awaiting_approval` | `PaymentAwaitingApproval` | `payments` | _none_ |
-| `payment.refunded` | `PaymentRefunded` | `payments` | `accounting`, `payments` |
-| `stitching.job_created` | `StitchingJobCreated` | `stitching` | `production` |
-| `stitching.job_stage_changed` | `StitchingJobStageChanged` | `stitching` | `stitching`, `production` |
+| `payment.refunded` | `PaymentRefunded` | core/`ecosystem`, `payments` | core/`ecosystem`, `accounting`, `payments` |
+| `stitching.job_created` | `StitchingJobCreated` | core/`ecosystem`, `stitching` | core/`ecosystem`, `production` |
+| `stitching.job_stage_changed` | `StitchingJobStageChanged` | core/`ecosystem`, `stitching` | core/`ecosystem`, `stitching`, `production` |
 | `stitching.order_created` | `StitchingOrderCreated` | `stitching` | _none_ |
 | `crm.contact_upserted` | `ContactUpserted` | **none** | _none_ |
 | `crm.lead_created` | `LeadCreated` | **none** | _none_ |
-| `user.registered` | `UserRegistered` | core/`auth` | `users` |
+| `user.registered` | `UserRegistered` | core/`auth`, core/`ecosystem` | core/`ecosystem`, `users` |
 | `user.password_changed` | `PasswordChanged` | core/`auth` | `users` |
 | `user.password_reset_requested` | `PasswordResetRequested` | core/`auth` | `users` |
 | `user.email_verification_requested` | `EmailVerificationRequested` | core/`auth` | `users` |
@@ -114,6 +114,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:26` | core/`ecosystem` |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:58` | `accounting` |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:165` | `accounting` |
 | `apps/api/src/modules/sales/orders/auction-order-sink.ts:139` | `orders` |
@@ -125,6 +126,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleOrderPlaced()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:24` | core/`ecosystem` |
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
 | `onOrderPlaced()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:27` | `crm` |
 | `onOrderPlaced()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:56` | `accounting` |
@@ -140,6 +142,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:31` | core/`ecosystem` |
 | `apps/api/src/modules/sales/orders/orders.service.ts:833` | `orders` |
 | `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
@@ -148,6 +151,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleOrderStatusChanged()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:29` | core/`ecosystem` |
 | `onStatusChanged()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:66` | `crm` |
 | `onOrderStatusChanged()` | `apps/api/src/modules/money/finance/finance.listener.ts:18` | `finance` |
 | `onOrderStatusChanged()` | `apps/api/src/modules/sales/loyalty/loyalty-order.listener.ts:24` | `loyalty` |
@@ -160,6 +164,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:36` | core/`ecosystem` |
 | `apps/api/src/modules/money/finance/finance.listener.ts:9` | `finance` |
 | `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
@@ -168,6 +173,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleOrderCancelled()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:34` | core/`ecosystem` |
 | `onCancelled()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:71` | `crm` |
 | `onOrderCancelled()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:33` | `auction` |
 | `onCancelled()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:161` | `orders` |
@@ -179,6 +185,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:41` | core/`ecosystem` |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:125` | `accounting` |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:162` | `accounting` |
 | `apps/api/src/modules/sales/orders/instalment-plan.service.ts:90` | `orders` |
@@ -192,6 +199,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
+| `handlePaymentSucceeded()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:39` | core/`ecosystem` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:123` | `accounting` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:28` | `auction` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:34` | `payments` |
@@ -203,6 +211,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:46` | core/`ecosystem` |
 | `apps/api/src/modules/sales/payments/payments.service.ts:199` | `payments` |
 | `apps/api/src/modules/sales/payments/payments.service.ts:301` | `payments` |
 
@@ -211,6 +220,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
+| `handlePaymentFailed()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:44` | core/`ecosystem` |
 | `onPaymentFailed()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:79` | `payments` |
 
 ### `payment.awaiting_approval`
@@ -234,6 +244,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:51` | core/`ecosystem` |
 | `apps/api/src/modules/sales/payments/payments.service.ts:408` | `payments` |
 
 
@@ -241,6 +252,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
+| `handlePaymentRefunded()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:49` | core/`ecosystem` |
 | `onPaymentRefunded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:160` | `accounting` |
 | `onPaymentRefunded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:118` | `payments` |
 
@@ -251,6 +263,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:61` | core/`ecosystem` |
 | `apps/api/src/modules/sales/stitching/jobs.service.ts:217` | `stitching` |
 
 
@@ -258,6 +271,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleStitchingJobCreated()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:59` | core/`ecosystem` |
 | `onStitchingJobCreated()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:30` | `production` |
 
 ### `stitching.job_stage_changed`
@@ -267,6 +281,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:66` | core/`ecosystem` |
 | `apps/api/src/modules/sales/stitching/jobs.service.ts:379` | `stitching` |
 
 
@@ -274,6 +289,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleStitchingJobStageChanged()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:64` | core/`ecosystem` |
 | `onStageChanged()` | `apps/api/src/modules/sales/stitching/order.subscriber.ts:48` | `stitching` |
 | `onStitchingJobStageChanged()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:68` | `production` |
 
@@ -323,12 +339,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/core/auth/auth.service.ts:153` | core/`auth` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:56` | core/`ecosystem` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleUserRegistered()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:54` | core/`ecosystem` |
 | `onRegistered()` | `apps/api/src/modules/system/users/notification.subscriber.ts:21` | `users` |
 
 ### `user.password_changed`
@@ -1350,4 +1368,4 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

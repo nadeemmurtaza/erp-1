@@ -55,7 +55,7 @@ _none_
 | `EmbeddedWidget` | 9 | :6 | Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architecture (architecture-p… |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -100,4 +100,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

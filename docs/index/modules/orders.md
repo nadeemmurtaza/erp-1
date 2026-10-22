@@ -94,7 +94,7 @@ All paths relative to `apps/api/src/modules/sales/orders`.
 
 Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -115,14 +115,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `catalog`** ⚠ direct import
-- **module `fulfilment`** ⚠ direct import
-- **module `giftcards`** ⚠ direct import
-- **module `inventory`** ⚠ direct import
-- **module `payments`** ⚠ direct import
-- **module `pricing`** ⚠ direct import
-- **module `promotions`** ⚠ direct import
-- **module `tax`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `checkout`
@@ -196,4 +188,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

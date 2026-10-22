@@ -24,6 +24,7 @@ import { SettingsModule } from './settings/settings.module';
 import { SloModule } from './slo/slo.module';
 import { StorageModule } from './storage/storage.module';
 import { VersioningModule } from './versioning/versioning.module';
+import { EcosystemModule } from './ecosystem/ecosystem.module';
 
 /**
  * Everything a feature module is allowed to depend on.
@@ -59,6 +60,7 @@ import { VersioningModule } from './versioning/versioning.module';
     VersioningModule,
     ResilienceModule,
     SloModule,
+    EcosystemModule,
   ],
 })
 export class CoreModule {}

@@ -3,7 +3,7 @@
 
 # Schema: `payroll.prisma`
 
-9 models · 5 enums. Owned by module [`payroll`](../modules/payroll.md).
+9 models · 5 enums. Owned by module [`payroll`](..\modules\payroll.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -97,7 +97,7 @@ Indexes: `@@index([userId, status])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "annual", "sick", "unpaid" |
+| `key` | `String` | unique | @unique |
 | `name` | `String` |  |  |
 | `kind` | `LeaveKind` |  |  |
 | `accrualDaysPerRun` | `Float` |  | @default(0) |
@@ -113,7 +113,7 @@ Indexes: `@@index([userId, status])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | PayRunNumberCounter, "PR-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `periodStart` | `DateTime` |  |  |
 | `periodEnd` | `DateTime` |  |  |
 | `status` | `PayRunStatus` |  | @default(DRAFT) |
@@ -230,4 +230,4 @@ Indexes: `@@unique([payRunId, userId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -3,7 +3,7 @@
 
 # Schema: `rag.prisma`
 
-2 models · 2 enums. Owned by module [`rag`](../modules/rag.md).
+2 models · 2 enums. Owned by module [`rag`](..\modules\rag.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -92,4 +92,4 @@ Indexes: `@@index([organizationId, corpus, status])` · `@@index([status])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

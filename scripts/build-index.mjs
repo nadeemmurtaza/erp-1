@@ -2580,7 +2580,7 @@ function existingIndexFiles(dir, acc = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
     if (entry.isDirectory()) existingIndexFiles(p, acc);
-    else acc.push(relative(ROOT, p));
+    else acc.push(relative(ROOT, p).replace(/\\/g, '/'));
   }
   return acc;
 }

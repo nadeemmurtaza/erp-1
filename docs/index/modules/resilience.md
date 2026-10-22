@@ -53,7 +53,7 @@ _none_
 | `RequestOutcome` | 5 | :23 | Resilience engineering (resilience-scalability/38-resilience-engineering.md, WO-38.3). |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -96,4 +96,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

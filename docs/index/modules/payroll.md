@@ -92,7 +92,7 @@ _none_
 
 Enums: `CompensationBasis` (3) · `LeaveKind` (4) · `LeaveRequestStatus` (4) · `PayRunAdjustmentReason` (3) · `PayRunStatus` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -165,4 +165,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

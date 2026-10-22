@@ -3,7 +3,7 @@
 
 # Schema: `feature-flags.prisma`
 
-1 models · 0 enums. Owned by module [`feature-flags`](../modules/feature-flags.md).
+1 models · 0 enums. Owned by module [`feature-flags`](..\modules\feature-flags.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -50,4 +50,4 @@ Indexes: `@@index([createdAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

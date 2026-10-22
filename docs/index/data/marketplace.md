@@ -3,7 +3,7 @@
 
 # Schema: `marketplace.prisma`
 
-9 models · 7 enums. Owned by module [`marketplace`](../modules/marketplace.md).
+9 models · 7 enums. Owned by module [`marketplace`](..\modules\marketplace.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -242,4 +242,4 @@ Indexes: `@@unique([tenantId, externalRef])` · `@@index([status, kind])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

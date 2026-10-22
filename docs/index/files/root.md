@@ -3,17 +3,18 @@
 
 # Files — root
 
-All 215 tracked files in `repository root files`, by directory.
+All 216 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (18)
+### `.` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.clinerules` | file | — |  |
 | `.gitattributes` | file | — |  |
+| `.pr_agent.toml` | toml | 92 |  |
 | `.prettierignore` | file | — |  |
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 81 |  |

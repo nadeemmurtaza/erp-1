@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2954,
-    "lines": 468607,
+    "files": 2956,
+    "lines": 468728,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1365,21 +1365,21 @@
   ],
   "areas": {
     "root": {
-      "files": 215,
-      "lines": 16305,
-      "bytes": 816231,
+      "files": 216,
+      "lines": 16397,
+      "bytes": 818917,
       "label": "repository root files"
     },
     "infra": {
-      "files": 65,
-      "lines": 33516,
-      "bytes": 1372776,
+      "files": 66,
+      "lines": 33545,
+      "bytes": 1373445,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 1306,
       "lines": 180861,
-      "bytes": 7373800,
+      "bytes": 7378028,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1403,7 +1403,7 @@
     "docs": {
       "files": 580,
       "lines": 109320,
-      "bytes": 7046006,
+      "bytes": 7046193,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -62913,6 +62913,15 @@
       "symbols": []
     },
     {
+      "path": ".github/workflows/qodo-review.yml",
+      "area": "infra",
+      "kind": "yaml",
+      "lines": 29,
+      "bytes": 669,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
@@ -62927,6 +62936,15 @@
       "kind": "doc",
       "lines": 81,
       "bytes": 3924,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".pr_agent.toml",
+      "area": "root",
+      "kind": "toml",
+      "lines": 92,
+      "bytes": 2686,
       "doc": "",
       "symbols": []
     },
@@ -65065,7 +65083,7 @@
       "area": "api",
       "kind": "service",
       "lines": 159,
-      "bytes": 5726,
+      "bytes": 5884,
       "doc": "",
       "symbols": [
         {
@@ -65080,7 +65098,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 81,
-      "bytes": 3220,
+      "bytes": 3300,
       "doc": "",
       "symbols": [
         {
@@ -65095,7 +65113,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 13,
-      "bytes": 382,
+      "bytes": 394,
       "doc": "",
       "symbols": [
         {
@@ -65110,7 +65128,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 125,
-      "bytes": 4980,
+      "bytes": 5104,
       "doc": "",
       "symbols": []
     },
@@ -65119,7 +65137,7 @@
       "area": "api",
       "kind": "service",
       "lines": 565,
-      "bytes": 24318,
+      "bytes": 24882,
       "doc": "",
       "symbols": [
         {
@@ -65134,7 +65152,7 @@
       "area": "api",
       "kind": "module",
       "lines": 221,
-      "bytes": 6291,
+      "bytes": 6511,
       "doc": "ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidance and trajectory interception for enterprise SaaS business operations.",
       "symbols": [
         {
@@ -65635,7 +65653,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 74,
-      "bytes": 2681,
+      "bytes": 2754,
       "doc": "",
       "symbols": [
         {
@@ -66090,7 +66108,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 73,
-      "bytes": 2001,
+      "bytes": 2073,
       "doc": "",
       "symbols": [
         {
@@ -66227,7 +66245,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 226,
-      "bytes": 7297,
+      "bytes": 7522,
       "doc": "",
       "symbols": []
     },
@@ -66236,7 +66254,7 @@
       "area": "api",
       "kind": "module",
       "lines": 332,
-      "bytes": 10488,
+      "bytes": 10819,
       "doc": "",
       "symbols": [
         {
@@ -66864,7 +66882,7 @@
       "area": "api",
       "kind": "service",
       "lines": 104,
-      "bytes": 2749,
+      "bytes": 2852,
       "doc": "",
       "symbols": [
         {
@@ -66918,7 +66936,7 @@
       "area": "api",
       "kind": "config",
       "lines": 444,
-      "bytes": 20217,
+      "bytes": 20255,
       "doc": "",
       "symbols": [
         {
@@ -66967,7 +66985,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 129,
-      "bytes": 3953,
+      "bytes": 4081,
       "doc": "",
       "symbols": []
     },
@@ -66976,7 +66994,7 @@
       "area": "api",
       "kind": "config",
       "lines": 122,
-      "bytes": 3929,
+      "bytes": 4050,
       "doc": "",
       "symbols": [
         {
@@ -67001,7 +67019,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 71,
-      "bytes": 2603,
+      "bytes": 2673,
       "doc": "",
       "symbols": [
         {
@@ -67031,7 +67049,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 80,
-      "bytes": 3208,
+      "bytes": 3287,
       "doc": "",
       "symbols": []
     },
@@ -67040,7 +67058,7 @@
       "area": "api",
       "kind": "service",
       "lines": 238,
-      "bytes": 7667,
+      "bytes": 7904,
       "doc": "",
       "symbols": [
         {
@@ -67070,7 +67088,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 227,
+      "bytes": 236,
       "doc": "",
       "symbols": [
         {
@@ -67085,7 +67103,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 197,
-      "bytes": 6742,
+      "bytes": 6938,
       "doc": "",
       "symbols": []
     },
@@ -67094,7 +67112,7 @@
       "area": "api",
       "kind": "service",
       "lines": 115,
-      "bytes": 3375,
+      "bytes": 3489,
       "doc": "",
       "symbols": [
         {
@@ -67114,7 +67132,7 @@
       "area": "api",
       "kind": "service",
       "lines": 81,
-      "bytes": 2936,
+      "bytes": 3016,
       "doc": "",
       "symbols": [
         {
@@ -67129,7 +67147,7 @@
       "area": "api",
       "kind": "module",
       "lines": 110,
-      "bytes": 3241,
+      "bytes": 3350,
       "doc": "",
       "symbols": [
         {
@@ -67149,7 +67167,7 @@
       "area": "api",
       "kind": "service",
       "lines": 109,
-      "bytes": 3330,
+      "bytes": 3438,
       "doc": "",
       "symbols": [
         {
@@ -67169,7 +67187,7 @@
       "area": "api",
       "kind": "module",
       "lines": 115,
-      "bytes": 3488,
+      "bytes": 3602,
       "doc": "",
       "symbols": [
         {
@@ -67189,7 +67207,7 @@
       "area": "api",
       "kind": "module",
       "lines": 92,
-      "bytes": 3117,
+      "bytes": 3208,
       "doc": "",
       "symbols": [
         {
@@ -67229,7 +67247,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 76,
-      "bytes": 2947,
+      "bytes": 3022,
       "doc": "",
       "symbols": [
         {
@@ -67244,7 +67262,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 57,
-      "bytes": 2083,
+      "bytes": 2139,
       "doc": "",
       "symbols": [
         {
@@ -67259,7 +67277,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 428,
-      "bytes": 15629,
+      "bytes": 16056,
       "doc": "",
       "symbols": []
     },
@@ -67268,7 +67286,7 @@
       "area": "api",
       "kind": "module",
       "lines": 9,
-      "bytes": 378,
+      "bytes": 386,
       "doc": "",
       "symbols": []
     },
@@ -67277,7 +67295,7 @@
       "area": "api",
       "kind": "service",
       "lines": 96,
-      "bytes": 3058,
+      "bytes": 3153,
       "doc": "",
       "symbols": [
         {
@@ -67302,7 +67320,7 @@
       "area": "api",
       "kind": "service",
       "lines": 112,
-      "bytes": 3516,
+      "bytes": 3627,
       "doc": "",
       "symbols": [
         {
@@ -107001,7 +107019,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 188,
-      "bytes": 14148,
+      "bytes": 14335,
       "doc": "",
       "symbols": []
     },

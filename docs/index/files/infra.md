@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 65 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 66 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -39,12 +39,13 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `copilot-instructions.md` | doc | 81 |  |
 
-### `.github/workflows` (2)
+### `.github/workflows` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `ci.yml` | yaml | 203 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
+| `qodo-review.yml` | yaml | 29 |  |
 
 ### `deploy` (3)
 

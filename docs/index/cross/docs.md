@@ -2176,13 +2176,7 @@ _no second-level headings_
 
 ### `docs/implementation/integrations-connectivity/255-ecosystem-alignment-roadmap.md`  <sub>188 lines</sub>
 
-- 1. Executive Summary & Objective  <sub>:10</sub>
-- 2. Current State Audit & Boundary Analysis  <sub>:24</sub>
-- 3. The Four Laws of Ecosystem Coexistence  <sub>:52</sub>
-- 4. Phased Implementation Roadmap  <sub>:67</sub>
-- 5. Detailed Work Orders (WO-255.1 to WO-255.8)  <sub>:79</sub>
-- 6. Definition of Done & Verification Suite  <sub>:167</sub>
-- 7. Next Steps & Execution Order  <sub>:181</sub>
+_no second-level headings_
 
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 

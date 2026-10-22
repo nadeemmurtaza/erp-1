@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,286 tracked files in `apps/api`, by directory.
+All 1,289 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -897,13 +897,13 @@ All 1,286 tracked files in `apps/api`, by directory.
 | `audit.module.ts` | nest module | 10 |  |
 | `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (34)
+### `apps/api/src/core/auth` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.constants.ts` | module | 116 |  |
 | `auth.controller.ts` | controller | 229 |  |
-| `auth.module.ts` | nest module | 67 |  |
+| `auth.module.ts` | nest module | 74 |  |
 | `auth.service.spec.ts` | unit test | 516 |  |
 | `auth.service.ts` | service | 712 |  |
 | `bearer-token.ts` | module | 31 |  |
@@ -917,6 +917,7 @@ All 1,286 tracked files in `apps/api`, by directory.
 | `login-identifier.ts` | module | 38 |  |
 | `login-throttle.service.spec.ts` | unit test | 111 |  |
 | `login-throttle.service.ts` | service | 168 |  |
+| `nid.controller.ts` | controller | 69 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
@@ -963,10 +964,12 @@ All 1,286 tracked files in `apps/api`, by directory.
 | `role.dto.ts` | dto | 44 |  |
 | `sso.dto.ts` | dto | 188 |  |
 
-### `apps/api/src/core/auth/providers` (2)
+### `apps/api/src/core/auth/providers` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `nid.provider.spec.ts` | unit test | 226 |  |
+| `nid.provider.ts` | module | 332 |  |
 | `oidc.provider.spec.ts` | unit test | 205 |  |
 | `oidc.provider.ts` | module | 195 |  |
 
@@ -1014,11 +1017,11 @@ All 1,286 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-config.service.ts` | service | 88 |  |
+| `app-config.service.ts` | service | 104 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
-| `env.validation.ts` | config | 415 |  |
+| `env.validation.ts` | config | 424 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 39 |  |
 
@@ -1033,11 +1036,11 @@ All 1,286 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `ecosystem-event-bridge.service.ts` | service | 81 |  |
-| `ecosystem-event-bus.client.ts` | module | 92 |  |
-| `ecosystem-module-gateway.client.ts` | module | 105 |  |
-| `ecosystem.constants.ts` | module | 62 |  |
+| `ecosystem-event-bus.client.ts` | module | 110 |  |
+| `ecosystem-module-gateway.client.ts` | module | 115 |  |
+| `ecosystem.constants.ts` | module | 74 |  |
 | `ecosystem.module.ts` | nest module | 40 |  |
-| `ecosystem.spec.ts` | unit test | 251 |  |
+| `ecosystem.spec.ts` | unit test | 266 |  |
 | `index.ts` | module | 6 |  |
 
 ### `apps/api/src/core/events` (7)

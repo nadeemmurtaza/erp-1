@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **916** endpoints across **167** controllers, with the access rule that actually guards each one.
+All **918** endpoints across **168** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -32,7 +32,7 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 81** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 83** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -43,6 +43,8 @@ never authorization.
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
+| GET | `/auth/nid/callback` | `NidController.handleCallback` |
+| GET | `/auth/nid/start` | `NidController.startLogin` |
 | POST | `/auth/refresh` | `AuthController.refresh` |
 | POST | `/auth/register` | `AuthController.register` |
 | POST | `/auth/reset-password` | `AuthController.resetPassword` |
@@ -438,7 +440,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/admin/action-hub` | `analytics.view` | `ActionHubController.collect` | Every action item pending on the caller, merged from every registered source |
 
-### [`core/auth`](..\core\auth.md) (34)
+### [`core/auth`](..\core\auth.md) (36)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -467,6 +469,8 @@ never authorization.
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` | Revoke the current refresh token |
 | GET | `/auth/me` | signed-in | `AuthController.me` | The signed-in user |
 | PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` | Update your own profile fields |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` | Initiates a Login with nID authorization flow |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` | Resend the email verification link |

@@ -7,6 +7,7 @@ export interface EcosystemEventBusClient {
   /**
    * Publishes a domain event to the core-newax Event Bus.
    * All external event consumers (Communicator, newcom, etc.) receive it asynchronously.
+   * Carries tenant and organization scoping for enterprise multi-tenancy.
    *
    * @returns true if accepted by the event bus or bypassed when ecosystem is disabled;
    *          false on delivery failure (caller should retry).
@@ -14,7 +15,11 @@ export interface EcosystemEventBusClient {
   publish<T = unknown>(
     name: string,
     payload: T,
-    correlationId?: string,
+    options?: {
+      correlationId?: string;
+      tenantId?: string;
+      organizationId?: string;
+    },
   ): Promise<boolean>;
 }
 
@@ -27,7 +32,11 @@ export class HttpEcosystemEventBusClient implements EcosystemEventBusClient {
   async publish<T = unknown>(
     name: string,
     payload: T,
-    correlationId?: string,
+    options?: {
+      correlationId?: string;
+      tenantId?: string;
+      organizationId?: string;
+    },
   ): Promise<boolean> {
     if (!this.config.isEcosystemEnabled) {
       this.logger.debug(
@@ -49,8 +58,10 @@ export class HttpEcosystemEventBusClient implements EcosystemEventBusClient {
       name,
       occurredAt: new Date().toISOString(),
       source: 'erp-1',
+      tenantId: options?.tenantId,
+      organizationId: options?.organizationId,
+      correlationId: options?.correlationId,
       schemaVersion: 1,
-      correlationId,
       payload,
     };
 
@@ -61,6 +72,13 @@ export class HttpEcosystemEventBusClient implements EcosystemEventBusClient {
         'Content-Type': 'application/json',
         'X-Newax-Source': 'erp-1',
       };
+
+      if (options?.tenantId) {
+        headers['X-Tenant-Id'] = options.tenantId;
+      }
+      if (options?.organizationId) {
+        headers['X-Organization-Id'] = options.organizationId;
+      }
 
       if (this.config.ecosystemGatewayKey) {
         headers['Authorization'] = `Bearer ${this.config.ecosystemGatewayKey}`;

@@ -9,6 +9,7 @@ export interface EcosystemModuleGatewayClient {
   /**
    * Invokes an action on an external NEWAX module via core-newax Module Gateway.
    * Never calls another repository directly (ECOSYSTEM.md Law 1).
+   * Enforces multi-tenant isolation via tenant context headers.
    */
   call<T = unknown, R = unknown>(request: GatewayRequest<T>): Promise<GatewayResponse<R>>;
 }
@@ -55,6 +56,13 @@ export class HttpEcosystemModuleGatewayClient implements EcosystemModuleGatewayC
         'X-Newax-Source': 'erp-1',
       };
 
+      if (request.tenantId) {
+        headers['X-Tenant-Id'] = request.tenantId;
+      }
+      if (request.organizationId) {
+        headers['X-Organization-Id'] = request.organizationId;
+      }
+
       if (this.config.ecosystemGatewayKey) {
         headers['Authorization'] = `Bearer ${this.config.ecosystemGatewayKey}`;
       }
@@ -65,6 +73,8 @@ export class HttpEcosystemModuleGatewayClient implements EcosystemModuleGatewayC
         body: JSON.stringify({
           targetModule: request.targetModule,
           action: request.action,
+          tenantId: request.tenantId,
+          organizationId: request.organizationId,
           payload: request.payload,
         }),
         signal: AbortSignal.timeout(timeoutMs),

@@ -64,6 +64,22 @@ export class AppConfigService {
     return this.get('ECOSYSTEM_EVENT_BUS_URL');
   }
 
+  get nidBaseUrl(): string {
+    return this.get('NID_BASE_URL') || 'http://localhost:4000';
+  }
+
+  get nidClientId(): string | undefined {
+    return this.get('NID_CLIENT_ID');
+  }
+
+  get nidClientSecret(): string | undefined {
+    return this.get('NID_CLIENT_SECRET');
+  }
+
+  get nidRedirectUri(): string | undefined {
+    return this.get('NID_REDIRECT_URI');
+  }
+
   /** Optional feature modules switched on by the MODULES allowlist. */
   isModuleEnabled(name: string): boolean {
     return this.get('MODULES').includes(name);

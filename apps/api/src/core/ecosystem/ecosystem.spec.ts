@@ -3,13 +3,12 @@ import { AppConfigService } from '../config/app-config.service';
 import { DomainEvent } from '../events/domain-events';
 import {
   ECOSYSTEM_EVENT_BUS_CLIENT,
-  ECOSYSTEM_MODULE_GATEWAY_CLIENT,
 } from './ecosystem.constants';
 import { EcosystemEventBridgeService } from './ecosystem-event-bridge.service';
 import { HttpEcosystemEventBusClient } from './ecosystem-event-bus.client';
 import { HttpEcosystemModuleGatewayClient } from './ecosystem-module-gateway.client';
 
-describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
+describe('NEWAX Ecosystem Clients (Enterprise Multi-Tenant)', () => {
   let originalFetch: typeof globalThis.fetch;
 
   beforeEach(() => {
@@ -58,7 +57,7 @@ describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
       expect(res.error?.code).toBe('GATEWAY_URL_MISSING');
     });
 
-    it('successfully calls gateway when enabled and receives response', async () => {
+    it('successfully calls gateway with multi-tenant headers and payload', async () => {
       const mockConfig = {
         isEcosystemEnabled: true,
         ecosystemGatewayUrl: 'https://gateway.example.com',
@@ -87,15 +86,21 @@ describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
       const res = await client.call({
         targetModule: 'Communicator',
         action: 'lookupContact',
+        tenantId: 'tenant-enterprise-01',
+        organizationId: 'org-apac',
         payload: { email: 'user@example.com' },
       });
 
       expect(capturedUrl).toBe('https://gateway.example.com/invoke');
       expect(capturedHeaders['X-Newax-Source']).toBe('erp-1');
+      expect(capturedHeaders['X-Tenant-Id']).toBe('tenant-enterprise-01');
+      expect(capturedHeaders['X-Organization-Id']).toBe('org-apac');
       expect(capturedHeaders['Authorization']).toBe('Bearer secret-key-123');
       expect(capturedBody).toEqual({
         targetModule: 'Communicator',
         action: 'lookupContact',
+        tenantId: 'tenant-enterprise-01',
+        organizationId: 'org-apac',
         payload: { email: 'user@example.com' },
       });
       expect(res.success).toBe(true);
@@ -160,7 +165,7 @@ describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
       expect(res).toBe(true);
     });
 
-    it('publishes wrapped event envelope to event bus when enabled', async () => {
+    it('publishes wrapped event envelope with multi-tenant context to event bus', async () => {
       const mockConfig = {
         isEcosystemEnabled: true,
         ecosystemEventBusUrl: 'https://events.example.com',
@@ -168,10 +173,12 @@ describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
       } as unknown as AppConfigService;
 
       let capturedUrl = '';
+      let capturedHeaders: Record<string, string> = {};
       let capturedBody: any;
 
       globalThis.fetch = jest.fn().mockImplementation(async (url, init) => {
         capturedUrl = url.toString();
+        capturedHeaders = init?.headers as Record<string, string>;
         capturedBody = JSON.parse(init?.body as string);
         return {
           ok: true,
@@ -183,13 +190,21 @@ describe('NEWAX Ecosystem Clients (WO-255.1)', () => {
       const res = await client.publish(
         DomainEvent.OrderPlaced,
         { orderId: 'ord-123', totalMinor: 500000 },
-        'corr-789',
+        {
+          correlationId: 'corr-789',
+          tenantId: 'tenant-enterprise-01',
+          organizationId: 'org-emea',
+        },
       );
 
       expect(res).toBe(true);
       expect(capturedUrl).toBe('https://events.example.com/publish');
+      expect(capturedHeaders['X-Tenant-Id']).toBe('tenant-enterprise-01');
+      expect(capturedHeaders['X-Organization-Id']).toBe('org-emea');
       expect(capturedBody.name).toBe(DomainEvent.OrderPlaced);
       expect(capturedBody.source).toBe('erp-1');
+      expect(capturedBody.tenantId).toBe('tenant-enterprise-01');
+      expect(capturedBody.organizationId).toBe('org-emea');
       expect(capturedBody.schemaVersion).toBe(1);
       expect(capturedBody.correlationId).toBe('corr-789');
       expect(capturedBody.payload).toEqual({ orderId: 'ord-123', totalMinor: 500000 });

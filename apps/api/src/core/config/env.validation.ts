@@ -242,6 +242,15 @@ export const envSchema = z.object({
   ECOSYSTEM_GATEWAY_KEY: z.string().optional(),
   ECOSYSTEM_EVENT_BUS_URL: z.string().optional(),
 
+  /**
+   * nID Identity & OAuth Integration (ECOSYSTEM.md, WO-255.2).
+   * Relying-party OAuth authorization-code credentials with nID.
+   */
+  NID_BASE_URL: z.string().default('http://localhost:4000'),
+  NID_CLIENT_ID: z.string().optional(),
+  NID_CLIENT_SECRET: z.string().optional(),
+  NID_REDIRECT_URI: z.string().optional(),
+
   STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),

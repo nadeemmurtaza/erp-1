@@ -3,10 +3,10 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2934,
-    "lines": 465213,
-    "routes": 916,
-    "controllers": 167,
+    "files": 2937,
+    "lines": 465927,
+    "routes": 918,
+    "controllers": 168,
     "models": 325,
     "enums": 153,
     "migrations": 132,
@@ -14,7 +14,7 @@
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 431,
+    "specs": 432,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1286,
-      "lines": 177467,
-      "bytes": 7255078,
+      "files": 1289,
+      "lines": 178181,
+      "bytes": 7277772,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -2949,12 +2949,15 @@
         "apps/api/src/core/auth/login-identifier.ts",
         "apps/api/src/core/auth/login-throttle.service.spec.ts",
         "apps/api/src/core/auth/login-throttle.service.ts",
+        "apps/api/src/core/auth/nid.controller.ts",
         "apps/api/src/core/auth/ownership.guard.spec.ts",
         "apps/api/src/core/auth/ownership.guard.ts",
         "apps/api/src/core/auth/password.util.spec.ts",
         "apps/api/src/core/auth/password.util.ts",
         "apps/api/src/core/auth/permissions.service.spec.ts",
         "apps/api/src/core/auth/permissions.service.ts",
+        "apps/api/src/core/auth/providers/nid.provider.spec.ts",
+        "apps/api/src/core/auth/providers/nid.provider.ts",
         "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
         "apps/api/src/core/auth/providers/oidc.provider.ts",
         "apps/api/src/core/auth/rate-limit-audit.service.spec.ts",
@@ -15659,6 +15662,34 @@
       "public": false,
       "authOnly": true,
       "summary": "Update your own profile fields"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/nid/callback",
+      "module": "core/auth",
+      "controller": "NidController",
+      "handler": "handleCallback",
+      "file": "apps/api/src/core/auth/nid.controller.ts",
+      "line": 54,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Handles the OAuth authorization callback from nID"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/nid/start",
+      "module": "core/auth",
+      "controller": "NidController",
+      "handler": "startLogin",
+      "file": "apps/api/src/core/auth/nid.controller.ts",
+      "line": 33,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Initiates a Login with nID authorization flow"
     },
     {
       "method": "POST",
@@ -57637,6 +57668,17 @@
       ]
     },
     {
+      "file": "apps/api/src/core/auth/providers/nid.provider.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "NidProvider (WO-255.2)",
+        "startLogin",
+        "handleCallback"
+      ]
+    },
+    {
       "file": "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
@@ -57802,7 +57844,7 @@
       "kind": "unit test",
       "cases": 9,
       "describes": [
-        "NEWAX Ecosystem Clients (WO-255.1)",
+        "NEWAX Ecosystem Clients (Enterprise Multi-Tenant)",
         "HttpEcosystemModuleGatewayClient",
         "HttpEcosystemEventBusClient",
         "EcosystemEventBridgeService"
@@ -65294,14 +65336,14 @@
       "path": "apps/api/src/core/auth/auth.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 67,
-      "bytes": 2508,
+      "lines": 74,
+      "bytes": 2681,
       "doc": "",
       "symbols": [
         {
           "name": "AuthModule",
           "kind": "class",
-          "line": 66
+          "line": 73
         }
       ]
     },
@@ -65746,6 +65788,21 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/nid.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 69,
+      "bytes": 1867,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NidController",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/auth/ownership.guard.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -65864,6 +65921,40 @@
           "name": "PermissionsResolverService",
           "kind": "class",
           "line": 80
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/providers/nid.provider.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 226,
+      "bytes": 7297,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/providers/nid.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 332,
+      "bytes": 10488,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NidAccountClaims",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "NidLoginStartResult",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "NidProvider",
+          "kind": "class",
+          "line": 46
         }
       ]
     },
@@ -66474,8 +66565,8 @@
       "path": "apps/api/src/core/config/app-config.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 88,
-      "bytes": 2469,
+      "lines": 104,
+      "bytes": 2749,
       "doc": "",
       "symbols": [
         {
@@ -66528,8 +66619,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 415,
-      "bytes": 19099,
+      "lines": 424,
+      "bytes": 19430,
       "doc": "",
       "symbols": [
         {
@@ -66540,12 +66631,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 261
+          "line": 270
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 291
+          "line": 300
         }
       ]
     },
@@ -66622,8 +66713,8 @@
       "path": "apps/api/src/core/ecosystem/ecosystem-event-bus.client.ts",
       "area": "api",
       "kind": "module",
-      "lines": 92,
-      "bytes": 2699,
+      "lines": 110,
+      "bytes": 3241,
       "doc": "",
       "symbols": [
         {
@@ -66634,7 +66725,7 @@
         {
           "name": "HttpEcosystemEventBusClient",
           "kind": "class",
-          "line": 22
+          "line": 27
         }
       ]
     },
@@ -66642,8 +66733,8 @@
       "path": "apps/api/src/core/ecosystem/ecosystem-module-gateway.client.ts",
       "area": "api",
       "kind": "module",
-      "lines": 105,
-      "bytes": 3138,
+      "lines": 115,
+      "bytes": 3488,
       "doc": "",
       "symbols": [
         {
@@ -66654,7 +66745,7 @@
         {
           "name": "HttpEcosystemModuleGatewayClient",
           "kind": "class",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -66662,34 +66753,34 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.constants.ts",
       "area": "api",
       "kind": "module",
-      "lines": 62,
-      "bytes": 1998,
+      "lines": 74,
+      "bytes": 2555,
       "doc": "",
       "symbols": [
         {
           "name": "ECOSYSTEM_MODULE_GATEWAY_CLIENT",
           "kind": "const",
-          "line": 13
+          "line": 15
         },
         {
           "name": "ECOSYSTEM_EVENT_BUS_CLIENT",
           "kind": "const",
-          "line": 14
+          "line": 16
         },
         {
           "name": "EcosystemEventEnvelope",
           "kind": "interface",
-          "line": 19
+          "line": 22
         },
         {
           "name": "GatewayRequest",
           "kind": "interface",
-          "line": 39
+          "line": 47
         },
         {
           "name": "GatewayResponse",
           "kind": "interface",
-          "line": 53
+          "line": 65
         }
       ]
     },
@@ -66712,8 +66803,8 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 251,
-      "bytes": 8423,
+      "lines": 266,
+      "bytes": 9232,
       "doc": "",
       "symbols": []
     },

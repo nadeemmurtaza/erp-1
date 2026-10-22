@@ -3,7 +3,7 @@
 
 # Schema: `support.prisma`
 
-4 models · 4 enums. Owned by module [`support`](../modules/support.md).
+4 models · 4 enums. Owned by module [`support`](..\modules\support.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -132,4 +132,4 @@ Indexes: `@@index([ticketId, createdAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

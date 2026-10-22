@@ -267,4 +267,4 @@ Every top-level export in `root`, with the line to open.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

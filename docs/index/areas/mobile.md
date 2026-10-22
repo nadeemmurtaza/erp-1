@@ -11,10 +11,10 @@ API as the web storefront through `src/api/`.
 
 ## Go deeper
 
-- **Every screen:** [cross/ui-routes.md](../cross/ui-routes.md)
-- **Every component:** [cross/components.md](../cross/components.md)
-- **Every exported symbol here:** [symbols/mobile.md](../symbols/mobile.md)
-- **Every file here:** [files/mobile.md](../files/mobile.md)
+- **Every screen:** [cross/ui-routes.md](..\cross\ui-routes.md)
+- **Every component:** [cross/components.md](..\cross\components.md)
+- **Every exported symbol here:** [symbols/mobile.md](..\symbols\mobile.md)
+- **Every file here:** [files/mobile.md](..\files\mobile.md)
 
 ## Directory breakdown
 
@@ -62,4 +62,4 @@ API as the web storefront through `src/api/`.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -55,7 +55,7 @@ _none_
 | `EntityAttribute` | 8 | :17 | A general EAV model, built by explicit owner override (ADR-026). |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -103,4 +103,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -13,10 +13,10 @@ outbox and replay when the network returns. The register maths itself lives in
 
 ## Go deeper
 
-- **Every screen:** [cross/ui-routes.md](../cross/ui-routes.md)
-- **Every component:** [cross/components.md](../cross/components.md)
-- **Every exported symbol here:** [symbols/pos.md](../symbols/pos.md)
-- **Every file here:** [files/pos.md](../files/pos.md)
+- **Every screen:** [cross/ui-routes.md](..\cross\ui-routes.md)
+- **Every component:** [cross/components.md](..\cross\components.md)
+- **Every exported symbol here:** [symbols/pos.md](..\symbols\pos.md)
+- **Every file here:** [files/pos.md](..\files\pos.md)
 
 ## Directory breakdown
 
@@ -59,4 +59,4 @@ outbox and replay when the network returns. The register maths itself lives in
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

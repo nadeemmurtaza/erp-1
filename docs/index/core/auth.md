@@ -3,7 +3,7 @@
 
 # Core: `auth`
 
-Shared platform — available to every module, part of no feature · 48 files
+Shared platform — available to every module, part of no feature · 51 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (48 · 9,807 lines)
+## Files (51 · 10,445 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -29,7 +29,7 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
 | `auth.constants.ts` | module | 116 | 18 |  |
 | `auth.controller.ts` | controller | 229 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
-| `auth.module.ts` | nest module | 67 | 1 |  |
+| `auth.module.ts` | nest module | 74 | 1 |  |
 | `auth.service.spec.ts` | unit test | 516 | — |  |
 | `auth.service.ts` | service | 712 | 11 | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race — two tabs,… |
 | `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
@@ -46,12 +46,15 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `login-identifier.ts` | module | 38 | 3 | A sign-in identifier as the rate limiter and the audit trail see it: the normalised form, hashed (206-rate-limiting-cac… |
 | `login-throttle.service.spec.ts` | unit test | 111 | — |  |
 | `login-throttle.service.ts` | service | 168 | 7 | The per-account sign-in bucket (WO-206.2, 206-rate-limiting-caching-compression-hardening.md §1.2). |
+| `nid.controller.ts` | controller | 73 | 1 | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `ownership.guard.spec.ts` | unit test | 49 | — |  |
 | `ownership.guard.ts` | guard | 24 | 2 |  |
 | `password.util.spec.ts` | unit test | 80 | — |  |
 | `password.util.ts` | module | 89 | 6 |  |
 | `permissions.service.spec.ts` | unit test | 317 | — |  |
 | `permissions.service.ts` | service | 219 | 5 |  |
+| `nid.provider.spec.ts` | unit test | 226 | — |  |
+| `nid.provider.ts` | module | 332 | 3 |  |
 | `oidc.provider.spec.ts` | unit test | 205 | — |  |
 | `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
 | `rate-limit-audit.service.spec.ts` | unit test | 76 | — |  |
@@ -68,7 +71,7 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `sso.service.ts` | service | 869 | 9 | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |
 
 
-## HTTP routes (34)
+## HTTP routes (36)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -97,6 +100,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :134 | Revoke the current refresh token |
 | GET | `/auth/me` | signed-in | `AuthController.me` :152 | The signed-in user |
 | PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :173 | Update your own profile fields |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` :58 | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` :37 | Initiates a Login with nID authorization flow |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :114 | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` :78 | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :221 | Resend the email verification link |
@@ -136,9 +141,9 @@ _none_
 
 **`AuthModule`** (`auth.module.ts`)
 - imports: `PassportModule`, `JwtModule`
-- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`, `SsoController`, `SsoAdminController`
-- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`, `LoginThrottleService`, `RateLimitAuditService`
-- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `RateLimitAuditService`
+- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`, `SsoController`, `SsoAdminController`, `NidController`
+- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`, `NidProvider`, `LoginThrottleService`, `RateLimitAuditService`
+- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `RateLimitAuditService`, `NidProvider`
 
 
 ## Reaches out to
@@ -151,7 +156,7 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (17)
+## Tests (18)
 
 | Spec | Cases | Covers |
 |---|---|---|
@@ -166,6 +171,7 @@ check there before adding another.
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
 | `permissions.service.spec.ts` | 24 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · resolveForUserCached — L1 (doc 208 §2… |
+| `nid.provider.spec.ts` | 7 | NidProvider (WO-255.2) · startLogin · handleCallback |
 | `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
 | `rate-limit-audit.service.spec.ts` | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
 | `roles.service.spec.ts` | 32 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
@@ -224,7 +230,7 @@ check there before adding another.
 | `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:51` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
 | `setRefreshCookie` | function | `auth.controller.ts:54` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
 | `AuthController` | class | `auth.controller.ts:66` |  |
-| `AuthModule` | class | `auth.module.ts:66` |  |
+| `AuthModule` | class | `auth.module.ts:73` |  |
 | `REFRESH_REUSE_GRACE_MS` | const | `auth.service.ts:29` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
 | `REFRESH_REUSE_DETECTED_AUDIT_ACTION` | const | `auth.service.ts:31` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
 | `REFRESH_FAMILY_LOCK_NAMESPACE` | const | `auth.service.ts:44` | pg_advisory_xact_lock namespace for one refresh-token family (the 8_241_1xx range the numbering locks already… |
@@ -282,6 +288,7 @@ check there before adding another.
 | `LoginAttemptContext` | interface | `login-throttle.service.ts:83` |  |
 | `LoginThrottleService` | class | `login-throttle.service.ts:100` | The second, per-account layer in front of password sign-in — the per-IP CREDENTIAL_THROTTLE stops one address… |
 | `loginBucketKey` | function | `login-throttle.service.ts:165` | The Redis key a bucket lives at — exported for tests that age a bucket instead of waiting minutes. |
+| `NidController` | class | `nid.controller.ts:26` | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `OwnedEntity` | interface | `ownership.guard.ts:3` |  |
 | `assertCanManage` | function | `ownership.guard.ts:13` | Throws unless the actor holds "<capability>.manage_all", or holds "<capability>.manage_own" AND entity.ownerI… |
 | `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:4` |  |
@@ -295,6 +302,9 @@ check there before adding another.
 | `PERMISSIONS_L1_MAX_ENTRIES` | const | `permissions.service.ts:21` | L1 entries per process, least recently used evicted past it (doc 208 §2). |
 | `PERMISSIONS_L2_TTL_MS` | const | `permissions.service.ts:28` | L2: how long a resolved set is shared in Redis (`permissions:{userId}`, doc 208 §2). |
 | `PermissionsResolverService` | class | `permissions.service.ts:80` | Resolves a user's currently effective roles and permission keys. |
+| `NidAccountClaims` | interface | `nid.provider.ts:17` |  |
+| `NidLoginStartResult` | interface | `nid.provider.ts:24` |  |
+| `NidProvider` | class | `nid.provider.ts:46` | nID Authentication Provider (ECOSYSTEM.md, WO-255.2). |
 | `OidcProvider` | class | `oidc.provider.ts:50` | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnectio… |
 | `identityFromClaims` | function | `oidc.provider.ts:161` | The identity a verified ID token proves. |
 | `RATE_LIMITED_AUDIT_ACTION` | const | `rate-limit-audit.service.ts:5` |  |
@@ -331,4 +341,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

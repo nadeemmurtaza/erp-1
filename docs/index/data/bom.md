@@ -3,7 +3,7 @@
 
 # Schema: `bom.prisma`
 
-6 models · 2 enums. Owned by module [`bom`](../modules/bom.md).
+6 models · 2 enums. Owned by module [`bom`](..\modules\bom.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -178,4 +178,4 @@ Indexes: `@@index([isActive, kind])` · `@@index([name])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

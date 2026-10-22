@@ -81,7 +81,6 @@ _none_
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
 - core `ai`
 - core `audit`
 - core `auth`
@@ -148,4 +147,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

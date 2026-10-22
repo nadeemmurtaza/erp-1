@@ -3,7 +3,7 @@
 
 # Schema: `wishlist.prisma`
 
-2 models · 0 enums. Owned by module [`wishlist`](../modules/wishlist.md).
+2 models · 0 enums. Owned by module [`wishlist`](..\modules\wishlist.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -57,4 +57,4 @@ Indexes: `@@unique([userId, productId, variantId])` · `@@index([userId, created
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -51,4 +51,4 @@ Indexes: `@@unique([scope, key])` · `@@index([createdAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

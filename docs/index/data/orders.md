@@ -3,7 +3,7 @@
 
 # Schema: `orders.prisma`
 
-6 models · 5 enums. Owned by module [`orders`](../modules/orders.md).
+6 models · 5 enums. Owned by module [`orders`](..\modules\orders.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -37,7 +37,7 @@ against a real database.
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "YSN-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `userId` | `String?` | optional |  |
 | `contactId` | `String?` | optional |  |
 | `status` | `OrderStatus` |  | @default(PENDING) |
@@ -110,7 +110,7 @@ Indexes: `@@unique([sourceType, sourceRef])` · `@@index([status, placedAt])` ·
 | `nameUr` | `String?` | optional |  |
 | `sku` | `String?` | optional |  |
 | `imageUrl` | `String?` | optional |  |
-| `variantLabel` | `String?` | optional | "Medium / Ferozi" |
+| `variantLabel` | `String?` | optional |  |
 | `unitPrice` | `Int` |  |  |
 | `unitCost` | `Int` |  | @default(0) |
 | `quantity` | `Int` |  | @default(1) |
@@ -177,7 +177,7 @@ Indexes: `@@index([orderId, createdAt])`
 | `trackingNumber` | `String?` | optional |  |
 | `trackingUrl` | `String?` | optional |  |
 | `status` | `ShipmentStatus` |  | @default(PENDING) |
-| `cost` | `Int?` | optional | paisa |
+| `cost` | `Int?` | optional |  |
 | `dispatchedAt` | `DateTime?` | optional |  |
 | `deliveredAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -259,4 +259,4 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

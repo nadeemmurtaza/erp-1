@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,279 tracked files in `apps/api`, by directory.
+All 1,306 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -848,13 +848,13 @@ All 1,279 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `app.module.ts` | nest module | 55 |  |
-| `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
+| `main.ts` | module | 117 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 65 |  |
+| `core.module.ts` | nest module | 71 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -882,6 +882,17 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `anthropic.provider.ts` | module | 143 |  |
 | `openai.provider.ts` | module | 115 |  |
 
+### `apps/api/src/core/anax` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `anax-sensor.service.ts` | service | 159 |  |
+| `anax.controller.ts` | controller | 81 |  |
+| `anax.module.ts` | nest module | 13 |  |
+| `anax.service.spec.ts` | unit test | 125 |  |
+| `anax.service.ts` | service | 565 |  |
+| `anax.types.ts` | module | 221 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidan… |
+
 ### `apps/api/src/core/approvals` (3)
 
 | File | Kind | Lines | Purpose |
@@ -897,13 +908,13 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `audit.module.ts` | nest module | 10 |  |
 | `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (34)
+### `apps/api/src/core/auth` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.constants.ts` | module | 116 |  |
 | `auth.controller.ts` | controller | 229 |  |
-| `auth.module.ts` | nest module | 67 |  |
+| `auth.module.ts` | nest module | 74 |  |
 | `auth.service.spec.ts` | unit test | 516 |  |
 | `auth.service.ts` | service | 712 |  |
 | `bearer-token.ts` | module | 31 |  |
@@ -917,6 +928,7 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `login-identifier.ts` | module | 38 |  |
 | `login-throttle.service.spec.ts` | unit test | 111 |  |
 | `login-throttle.service.ts` | service | 168 |  |
+| `nid.controller.ts` | controller | 73 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
@@ -963,10 +975,12 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `role.dto.ts` | dto | 44 |  |
 | `sso.dto.ts` | dto | 188 |  |
 
-### `apps/api/src/core/auth/providers` (2)
+### `apps/api/src/core/auth/providers` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `nid.provider.spec.ts` | unit test | 226 |  |
+| `nid.provider.ts` | module | 332 |  |
 | `oidc.provider.spec.ts` | unit test | 205 |  |
 | `oidc.provider.ts` | module | 195 |  |
 
@@ -1010,23 +1024,51 @@ All 1,279 tracked files in `apps/api`, by directory.
 | `all-exceptions.filter.spec.ts` | unit test | 143 |  |
 | `all-exceptions.filter.ts` | module | 198 |  |
 
-### `apps/api/src/core/config` (7)
+### `apps/api/src/core/config` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-config.service.ts` | service | 72 |  |
+| `app-config.service.ts` | service | 104 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
-| `env.validation.ts` | config | 400 |  |
+| `env.validation.ts` | config | 444 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 39 |  |
+| `vault-loader.spec.ts` | unit test | 129 |  |
+| `vault-loader.ts` | config | 122 |  |
 
 ### `apps/api/src/core/crm` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `segment-filter-engine.ts` | module | 94 |  |
+
+### `apps/api/src/core/crypto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `crypto-mesh.service.spec.ts` | unit test | 80 |  |
+| `crypto-mesh.service.ts` | service | 238 |  |
+| `crypto.module.ts` | nest module | 10 |  |
+
+### `apps/api/src/core/ecosystem` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `customer-bridges.spec.ts` | unit test | 197 |  |
+| `customer-engagement-bridge.service.ts` | service | 115 |  |
+| `ecosystem-event-bridge.service.ts` | service | 81 |  |
+| `ecosystem-event-bus.client.ts` | module | 110 |  |
+| `ecosystem-inbound.service.ts` | service | 109 |  |
+| `ecosystem-module-gateway.client.ts` | module | 115 |  |
+| `ecosystem.constants.ts` | module | 92 |  |
+| `ecosystem.controller.ts` | controller | 76 |  |
+| `ecosystem.module.ts` | nest module | 57 |  |
+| `ecosystem.spec.ts` | unit test | 428 |  |
+| `index.ts` | module | 9 |  |
+| `marketing-dispatch-bridge.service.ts` | service | 96 |  |
+| `support-ticket-bridge.service.ts` | service | 112 |  |
 
 ### `apps/api/src/core/events` (7)
 
@@ -2830,4 +2872,4 @@ All 1,279 tracked files in `apps/api`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/api.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\api.md) · [← index home](..\README.md)

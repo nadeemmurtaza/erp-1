@@ -26,7 +26,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `userId` | `String?` | optional |  |
-| `label` | `String?` | optional | "Home", "Office" |
+| `label` | `String?` | optional |  |
 | `fullName` | `String` |  |  |
 | `phone` | `String` |  |  |
 | `line1` | `String` |  |  |
@@ -67,10 +67,10 @@ Indexes: `@@index([feature, createdAt])` · `@@index([createdAt])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `type` | `String` |  | "page_view" \| "add_to_cart" \| "checkout_started" |
-| `path` | `String?` | optional | for page_view: the route, e.g. "/en/product/lawn-suit-42" |
-| `source` | `String` |  | "direct" \| "organic" \| "social" \| "referral" \| "email" |
-| `sessionId` | `String` |  | opaque, anonymous, client-generated — never joined to a user |
+| `type` | `String` |  |  |
+| `path` | `String?` | optional |  |
+| `source` | `String` |  | @default("direct") |
+| `sessionId` | `String` |  |  |
 | `meta` | `Json?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 
@@ -109,8 +109,8 @@ Indexes: `@@index([userId, createdAt])` · `@@index([createdAt])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `actorId` | `String?` | optional |  |
-| `action` | `String` |  | "product.updated", "order.status_changed" |
-| `entity` | `String` |  | "Product", "Order" |
+| `action` | `String` |  |  |
+| `entity` | `String` |  |  |
 | `entityId` | `String?` | optional |  |
 | `data` | `Json?` | optional |  |
 | `ip` | `String?` | optional |  |
@@ -144,7 +144,7 @@ Indexes: `@@index([userId])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `label` | `String` |  | "Orders", "Support Inbox", "Marketing PK" |
+| `label` | `String` |  |  |
 | `purpose` | `EmailAccountPurpose` |  | @default(TRANSACTIONAL) |
 | `isActive` | `Boolean` |  | @default(true) |
 | `isDefault` | `Boolean` |  | @default(false) |
@@ -194,7 +194,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `name` | `String` |  | "order.placed" |
+| `name` | `String` |  |  |
 | `payload` | `Json` |  |  |
 | `status` | `OutboxStatus` |  | @default(PENDING) |
 | `attempts` | `Int` |  | @default(0) |
@@ -317,7 +317,7 @@ Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `email` | `String?` | unique, optional | @unique |
-| `phone` | `String?` | unique, optional | normalised E.164 |
+| `phone` | `String?` | unique, optional | @unique |
 | `passwordHash` | `String?` | optional |  |
 | `firstName` | `String?` | optional |  |
 | `lastName` | `String?` | optional |  |
@@ -555,4 +555,4 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

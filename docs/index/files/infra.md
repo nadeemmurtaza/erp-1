@@ -116,4 +116,4 @@ All 65 tracked files in `scripts, CI, deployment and container configuration`, b
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/infra.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\infra.md) · [← index home](..\README.md)

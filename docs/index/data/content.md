@@ -3,7 +3,7 @@
 
 # Schema: `content.prisma`
 
-8 models · 1 enums. Owned by module [`content`](../modules/content.md).
+8 models · 1 enums. Owned by module [`content`](..\modules\content.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -169,4 +169,4 @@ Indexes: `@@unique([pageId, locale])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

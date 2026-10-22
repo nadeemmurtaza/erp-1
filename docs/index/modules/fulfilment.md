@@ -124,7 +124,7 @@ All paths relative to `apps/api/src/modules/sales/fulfilment`.
 
 Enums: `ManifestStatus` (2) · `ReturnResolution` (5) · `ReturnStatus` (8) · `ShippingRateType` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -145,8 +145,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `catalog`** ⚠ direct import
-- **module `inventory`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `config`
@@ -218,4 +216,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

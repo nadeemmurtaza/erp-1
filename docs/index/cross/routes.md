@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **916** endpoints across **167** controllers, with the access rule that actually guards each one.
+All **924** endpoints across **170** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -22,7 +22,7 @@ never authorization.
 
 ## Attention list
 
-- **Undecorated routes: 5**
+- **Undecorated routes: 10**
 
 | Method | Path | Handler | File |
 |---|---|---|---|
@@ -31,8 +31,13 @@ never authorization.
 | GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:38` |
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
+| POST | `/anax/evaluate` | `AnaxController.evaluateScenario` | `apps/api/src/core/anax/anax.controller.ts:74` |
+| GET | `/anax/flight-plan` | `AnaxController.getFlightPlan` | `apps/api/src/core/anax/anax.controller.ts:35` |
+| GET | `/anax/geopolitical-risk` | `AnaxController.getGeopoliticalRisk` | `apps/api/src/core/anax/anax.controller.ts:48` |
+| GET | `/anax/insights` | `AnaxController.getComprehensiveInsights` | `apps/api/src/core/anax/anax.controller.ts:23` |
+| GET | `/anax/valuation` | `AnaxController.getEnterpriseValuation` | `apps/api/src/core/anax/anax.controller.ts:61` |
 
-- **Public routes: 81** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 84** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -43,6 +48,8 @@ never authorization.
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
+| GET | `/auth/nid/callback` | `NidController.handleCallback` |
+| GET | `/auth/nid/start` | `NidController.startLogin` |
 | POST | `/auth/refresh` | `AuthController.refresh` |
 | POST | `/auth/register` | `AuthController.register` |
 | POST | `/auth/reset-password` | `AuthController.resetPassword` |
@@ -79,6 +86,7 @@ never authorization.
 | GET | `/content/posts` | `ContentController.listPosts` |
 | GET | `/content/posts/:slug` | `ContentController.getPost` |
 | POST | `/crm/enquiries` | `CrmPublicController.createEnquiry` |
+| POST | `/ecosystem/events` | `EcosystemController.handleInboundEvent` |
 | POST | `/email/unsubscribe` | `UnsubscribeController.unsubscribe` |
 | GET | `/files/*path` | `FilesController.serve` |
 | GET | `/health` | `HealthController.live` |
@@ -121,7 +129,7 @@ never authorization.
 
 ## By module
 
-### [`accounting`](../modules/accounting.md) (19)
+### [`accounting`](..\modules\accounting.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -145,7 +153,7 @@ never authorization.
 | GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
 | GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit)… |
 
-### [`accounts`](../modules/accounts.md) (11)
+### [`accounts`](..\modules\accounts.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -161,7 +169,7 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | **⚠ undecorated** | `B2BAccountsAdminController.setPolicy` | Set the order-value threshold and the buyer contacts who may approve above it |
 | POST | `/admin/accounts/b2b/:id/update` | **⚠ undecorated** | `B2BAccountsAdminController.update` | Activate, deactivate, or change the purchase-order requirement |
 
-### [`addresses`](../modules/addresses.md) (4)
+### [`addresses`](..\modules\addresses.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -170,7 +178,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (26)
+### [`analytics`](..\modules\analytics.md) (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -201,7 +209,7 @@ never authorization.
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 | GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
 
-### [`attendance`](../modules/attendance.md) (17)
+### [`attendance`](..\modules\attendance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -223,7 +231,7 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (35)
+### [`auction`](..\modules\auction.md) (35)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -263,7 +271,7 @@ never authorization.
 | GET | `/auctions/public/lots/:lotId` | **PUBLIC** | `AuctionPublicController.lot` | One lot as a visitor sees it: price, time left, newest bids, and how it ended |
 | GET | `/auctions/public/lots/:lotId/stream` | **PUBLIC** | `AuctionPublicController.stream` | Live price and bids for one lot as server-sent events |
 
-### [`bankfacilities`](../modules/bankfacilities.md) (10)
+### [`bankfacilities`](..\modules\bankfacilities.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -278,7 +286,7 @@ never authorization.
 | POST | `/admin/bank-facilities/drawdowns/:drawdownId/post` | `finance.facilities.manage` | `BankFacilitiesController.postDrawdown` | Post an approved drawdown to the general ledger |
 | GET | `/admin/bank-facilities/renewals` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listUpcomingRenewals` | Active facilities maturing within the configured renewal-alert window |
 
-### [`bom`](../modules/bom.md) (22)
+### [`bom`](..\modules\bom.md) (22)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -305,14 +313,14 @@ never authorization.
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 | POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
-### [`bpmn-workflows`](../modules/bpmn-workflows.md) (2)
+### [`bpmn-workflows`](..\modules\bpmn-workflows.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/bpmn-workflows/:subjectType` | signed-in | `BpmnWorkflowsController.get` | The saved BPMN diagram (and its compiled steps) for one approval subject type,… |
 | PUT | `/admin/bpmn-workflows/:subjectType` | `settings.bpmn-workflows.manage` | `BpmnWorkflowsController.save` | Compile and save a BPMN diagram for one approval subject type |
 
-### [`cart`](../modules/cart.md) (8)
+### [`cart`](..\modules\cart.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -325,7 +333,7 @@ never authorization.
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 | POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
-### [`catalog`](../modules/catalog.md) (58)
+### [`catalog`](..\modules\catalog.md) (58)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -388,7 +396,7 @@ never authorization.
 | GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
 
-### [`collections`](../modules/collections.md) (10)
+### [`collections`](..\modules\collections.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -403,7 +411,7 @@ never authorization.
 | GET | `/collections` | **PUBLIC** | `CollectionsController.list` |  |
 | GET | `/collections/:slug` | **PUBLIC** | `CollectionsController.get` |  |
 
-### [`content`](../modules/content.md) (24)
+### [`content`](..\modules\content.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -432,13 +440,23 @@ never authorization.
 | GET | `/content/posts` | **PUBLIC** | `ContentController.listPosts` |  |
 | GET | `/content/posts/:slug` | **PUBLIC** | `ContentController.getPost` |  |
 
-### [`core/action-hub`](../core/action-hub.md) (1)
+### [`core/action-hub`](..\core\action-hub.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/action-hub` | `analytics.view` | `ActionHubController.collect` | Every action item pending on the caller, merged from every registered source |
 
-### [`core/auth`](../core/auth.md) (34)
+### [`core/anax`](..\core\anax.md) (5)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/anax/evaluate` | **⚠ undecorated** | `AnaxController.evaluateScenario` |  |
+| GET | `/anax/flight-plan` | **⚠ undecorated** | `AnaxController.getFlightPlan` |  |
+| GET | `/anax/geopolitical-risk` | **⚠ undecorated** | `AnaxController.getGeopoliticalRisk` |  |
+| GET | `/anax/insights` | **⚠ undecorated** | `AnaxController.getComprehensiveInsights` |  |
+| GET | `/anax/valuation` | **⚠ undecorated** | `AnaxController.getEnterpriseValuation` |  |
+
+### [`core/auth`](..\core\auth.md) (36)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -467,6 +485,8 @@ never authorization.
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` | Revoke the current refresh token |
 | GET | `/auth/me` | signed-in | `AuthController.me` | The signed-in user |
 | PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` | Update your own profile fields |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` | Initiates a Login with nID authorization flow |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` | Resend the email verification link |
@@ -477,26 +497,32 @@ never authorization.
 | POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` | Exchange a completed single sign-on for a session — the same result a password… |
 | POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` | Confirm an email address using a verification link token |
 
-### [`core/config`](../core/config.md) (1)
+### [`core/config`](..\core\config.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
 
-### [`core/feed`](../core/feed.md) (1)
+### [`core/ecosystem`](..\core\ecosystem.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` | Receives cross-repo events from core-newax Event Bus / Communicator |
+
+### [`core/feed`](..\core\feed.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/feed` | `analytics.view` | `FeedController.collect` | Recent order, purchase-order and payment activity, merged and capped, newest fi… |
 
-### [`core/health`](../core/health.md) (2)
+### [`core/health`](..\core\health.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
 | GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database and the rate-limit Redis |
 
-### [`core/launchpad`](../core/launchpad.md) (3)
+### [`core/launchpad`](..\core\launchpad.md) (3)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -504,7 +530,7 @@ never authorization.
 | GET | `/launchpad/apps` | `launchpad.manage` | `LaunchpadController.statuses` | Every shipped app with its on/off switch and why it is hidden, if it is |
 | PUT | `/launchpad/apps/:key` | `launchpad.manage` | `LaunchpadController.setEnabled` | Switch one app on or off for the whole organization (hides the tile; deletes no… |
 
-### [`core/notifications`](../core/notifications.md) (14)
+### [`core/notifications`](..\core\notifications.md) (14)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -523,20 +549,20 @@ never authorization.
 | POST | `/me/devices` | signed-in | `DevicesController.register` | Register this installation for push notifications |
 | DELETE | `/me/devices/:token` | signed-in | `DevicesController.unregister` | Stop sending push notifications to this installation |
 
-### [`core/replication`](../core/replication.md) (2)
+### [`core/replication`](..\core\replication.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/replication/pull` | **PUBLIC** | `ReplicationController.pull` | This node's own POLICY records since a cursor, pulled down |
 | POST | `/replication/push` | **PUBLIC** | `ReplicationController.push` | A child's own FACT records, pushed up |
 
-### [`core/storage`](../core/storage.md) (1)
+### [`core/storage`](..\core\storage.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (33)
+### [`crm`](..\modules\crm.md) (33)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -574,7 +600,7 @@ never authorization.
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
-### [`custom-fields`](../modules/custom-fields.md) (6)
+### [`custom-fields`](..\modules\custom-fields.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -585,7 +611,7 @@ never authorization.
 | GET | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.values` | One entity's own custom-field values, gated by that entity's own edit permission |
 | POST | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.setValues` | Set one entity's own custom-field values, gated by that entity's own edit permi… |
 
-### [`embeds`](../modules/embeds.md) (6)
+### [`embeds`](..\modules\embeds.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -596,14 +622,14 @@ never authorization.
 | POST | `/admin/embeds/:key/token` | `analytics.view` | `EmbedWidgetsController.issueToken` | A short-lived, scoped token for one active widget — never a raw session credent… |
 | GET | `/admin/embeds/all` | `settings.embeds.manage` | `EmbedWidgetsController.listAll` | Every embedded widget, active or not — for the configuration screen |
 
-### [`entity-attributes`](../modules/entity-attributes.md) (2)
+### [`entity-attributes`](..\modules\entity-attributes.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/entity-attributes` | signed-in | `EntityAttributesController.list` | One entity's own attributes, gated by that entity's own edit permission |
 | POST | `/admin/entity-attributes` | signed-in | `EntityAttributesController.set` | Set one attribute on one entity, gated by that entity's own edit permission |
 
-### [`feature-flags`](../modules/feature-flags.md) (7)
+### [`feature-flags`](..\modules\feature-flags.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -615,7 +641,7 @@ never authorization.
 | POST | `/admin/feature-flags/:id/propose-rollout` | `platform.flags.manage` | `FeatureFlagsAdminController.proposeRollout` | Propose 100% rollout and/or clearing the kill switch on a money/stock-path flag… |
 | GET | `/admin/feature-flags/audit` | `platform.flags.manage` | `FeatureFlagsAdminController.audit` | WO-37.3 — every flag older than 90 days with no stated removal criteria |
 
-### [`finance`](../modules/finance.md) (17)
+### [`finance`](..\modules\finance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -637,7 +663,7 @@ never authorization.
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
 | GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
-### [`fragments`](../modules/fragments.md) (7)
+### [`fragments`](..\modules\fragments.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -649,7 +675,7 @@ never authorization.
 | POST | `/admin/fragments/:key/token` | signed-in | `FragmentsController.issueToken` | A short-lived token scoped to one fragment and one mount point — never a raw se… |
 | GET | `/admin/fragments/for-mount-point` | signed-in | `FragmentsController.listForMountPoint` | Every active fragment registered for one named mount point |
 
-### [`fulfilment`](../modules/fulfilment.md) (39)
+### [`fulfilment`](..\modules\fulfilment.md) (39)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -693,7 +719,7 @@ never authorization.
 | GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` |  |
 | GET | `/shipping/quote` | **PUBLIC** | `ShippingController.quote` |  |
 
-### [`giftcards`](../modules/giftcards.md) (10)
+### [`giftcards`](..\modules\giftcards.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -708,7 +734,7 @@ never authorization.
 | GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` | My store credit balance |
 | GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` | My store credit history |
 
-### [`hr`](../modules/hr.md) (17)
+### [`hr`](..\modules\hr.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -730,7 +756,7 @@ never authorization.
 | GET | `/admin/people/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.listRanks` | The rank ladder |
 | POST | `/admin/people/ranks` | `hr.people.manage` | `PeopleController.createRank` | Add a rank |
 
-### [`identity-verification`](../modules/identity-verification.md) (4)
+### [`identity-verification`](..\modules\identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -739,7 +765,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (40)
+### [`inventory`](..\modules\inventory.md) (40)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -784,7 +810,7 @@ never authorization.
 | GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` | Variance history attributed to the shift that had custody — 156-loss-prevention… |
 | GET | `/public/serials/:serialNumber` | **PUBLIC** | `SerializedUnitsPublicController.verify` | Verify a purchase by serial number — status, sale date and warranty only |
 
-### [`loyalty`](../modules/loyalty.md) (11)
+### [`loyalty`](..\modules\loyalty.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -800,14 +826,14 @@ never authorization.
 | GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` | Customers I have referred |
 | GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` | Loyalty tiers and their benefits |
 
-### [`managed-services`](../modules/managed-services.md) (2)
+### [`managed-services`](..\modules\managed-services.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/managed-services/invoices` | `settings.manage` | `ManagedServicesController.invoices` |  |
 | GET | `/managed-services/usage` | `settings.manage` | `ManagedServicesController.usage` |  |
 
-### [`marketing`](../modules/marketing.md) (11)
+### [`marketing`](..\modules\marketing.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -823,7 +849,7 @@ never authorization.
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
 | GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
 
-### [`marketplace`](../modules/marketplace.md) (10)
+### [`marketplace`](..\modules\marketplace.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -838,7 +864,7 @@ never authorization.
 | POST | `/admin/marketplace/product-references/register` | `catalog.manage` | `ProductReferencesController.register` | The barcode had no match when looked up — register this tenant's own just-saved… |
 | POST | `/webhooks/marketplace/product-reference-sync` | **PUBLIC** | `MarketplaceWebhookController.productReferenceSync` |  |
 
-### [`measurements`](../modules/measurements.md) (13)
+### [`measurements`](..\modules\measurements.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -856,21 +882,21 @@ never authorization.
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
 | GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` | Based on the signed-in customer's saved measurements, the size this product's o… |
 
-### [`metadata-forms`](../modules/metadata-forms.md) (2)
+### [`metadata-forms`](..\modules\metadata-forms.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/metadata-forms/:entityType` | signed-in | `MetadataFormsController.get` | The defined form shape for one entity type, or null if none is defined |
 | PUT | `/admin/metadata-forms/:entityType` | `settings.metadata-forms.manage` | `MetadataFormsController.define` | Define (or replace) the form shape for one entity type |
 
-### [`notification-preferences`](../modules/notification-preferences.md) (2)
+### [`notification-preferences`](..\modules\notification-preferences.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/notification-preferences` | signed-in | `NotificationPreferencesController.list` | My notification preferences, per channel and category |
 | PUT | `/notification-preferences` | signed-in | `NotificationPreferencesController.update` | Update one or more preference cells |
 
-### [`notify`](../modules/notify.md) (16)
+### [`notify`](..\modules\notify.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -891,7 +917,7 @@ never authorization.
 | POST | `/admin/notify/preview` | `notify.send` | `NotifyController.preview` | Resolve an audience and report whether it needs a countersignature, without sen… |
 | POST | `/admin/notify/send` | `notify.send` | `NotifyController.send` | Send an internal message, or submit it for countersignature if it is above the… |
 
-### [`onsitemessages`](../modules/onsitemessages.md) (10)
+### [`onsitemessages`](..\modules\onsitemessages.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -906,7 +932,7 @@ never authorization.
 | GET | `/onsite-messages/active` | **PUBLIC** | `OnsiteMessagesController.active` |  |
 | POST | `/onsite-messages/newsletter` | **PUBLIC** | `OnsiteMessagesController.subscribe` |  |
 
-### [`orders`](../modules/orders.md) (11)
+### [`orders`](..\modules\orders.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -922,7 +948,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (15)
+### [`organization`](..\modules\organization.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -942,7 +968,7 @@ never authorization.
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
-### [`orgstructure`](../modules/orgstructure.md) (13)
+### [`orgstructure`](..\modules\orgstructure.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -960,7 +986,7 @@ never authorization.
 | GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` | The whole org tree |
 | GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` | Every configured unit type |
 
-### [`parties`](../modules/parties.md) (3)
+### [`parties`](..\modules\parties.md) (3)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -968,7 +994,7 @@ never authorization.
 | GET | `/admin/parties/:id` | `parties.manage` | `PartiesController.get` | Get a party |
 | GET | `/admin/parties/search` | `parties.manage` | `PartiesController.search` | Typeahead search for the counterparty picker |
 
-### [`payments`](../modules/payments.md) (7)
+### [`payments`](..\modules\payments.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -980,7 +1006,7 @@ never authorization.
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`payroll`](../modules/payroll.md) (19)
+### [`payroll`](..\modules\payroll.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1004,7 +1030,7 @@ never authorization.
 | PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` | APPROVED → POSTED. Fires payroll.run_posted. |
 | PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` | Recompute every line on a still-DRAFT pay run, replacing them. |
 
-### [`planning`](../modules/planning.md) (6)
+### [`planning`](..\modules\planning.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1015,7 +1041,7 @@ never authorization.
 | GET | `/admin/planning/suppliers/:id/lead-time-distribution` | `planning.propagation.view` | `PlanningController.leadTimeDistribution` | A supplier's own lead-time distribution, backfilled from goods-receipt history |
 | GET | `/admin/planning/suppliers/:id/scorecard` | `planning.propagation.view` | `PlanningController.supplierScorecard` | On-time-in-full rate and price variance, computed from purchase-order history |
 
-### [`pos`](../modules/pos.md) (20)
+### [`pos`](..\modules\pos.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1040,7 +1066,7 @@ never authorization.
 | POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` | Issue a fresh device credential for this terminal — shown once, never retrievab… |
 | POST | `/admin/pos/terminals/:id/suspend` | `pos.manage` | `PosTerminalsController.suspend` | Suspend a terminal — never deletes it, its history stays put |
 
-### [`pricing`](../modules/pricing.md) (7)
+### [`pricing`](..\modules\pricing.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1052,7 +1078,7 @@ never authorization.
 | POST | `/admin/pricing/price-lists/preview` | `pricing.price-lists.manage` | `PricingController.preview` | Preview one variant's resolved price for a customer at a quantity — a pure read… |
 | POST | `/admin/pricing/price-lists/preview/batch` | `pricing.price-lists.manage` | `PricingController.previewBatch` | Preview several variants at once — the same batched path checkout itself uses |
 
-### [`production`](../modules/production.md) (9)
+### [`production`](..\modules\production.md) (9)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1066,7 +1092,7 @@ never authorization.
 | POST | `/admin/production/work-orders/:id/complete` | `production.manage` | `WorkOrdersController.complete` | Complete a work order, crediting finished stock |
 | POST | `/admin/production/work-orders/:id/release` | `production.manage` | `WorkOrdersController.release` | Release a work order, consuming its bill of materials |
 
-### [`promotions`](../modules/promotions.md) (12)
+### [`promotions`](..\modules\promotions.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1083,7 +1109,7 @@ never authorization.
 | POST | `/admin/promotions/promo-codes/bulk-generate` | `promotions.manage` | `PromotionsController.bulkGeneratePromoCodes` | Generate N codes with a shared prefix for a campaign |
 | POST | `/promotions/preview` | **PUBLIC** | `PromotionsPublicController.preview` | Preview what discounts/a promo code would do to this cart |
 
-### [`purchasing`](../modules/purchasing.md) (24)
+### [`purchasing`](..\modules\purchasing.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1112,7 +1138,7 @@ never authorization.
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
 
-### [`rag`](../modules/rag.md) (11)
+### [`rag`](..\modules\rag.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1128,7 +1154,7 @@ never authorization.
 | POST | `/admin/rag/sources/:id/retry` | `rag.ingest.manage` | `RagAdminController.retry` | Re-queue a FAILED source, or one stuck in-flight past the staleness threshold |
 | GET | `/admin/rag/status` | `rag.ingest.manage` `rag.query` | `RagAdminController.status` | Whether retrieval/generation are available — the absent-AiProvider case the que… |
 
-### [`receivables`](../modules/receivables.md) (20)
+### [`receivables`](..\modules\receivables.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1153,7 +1179,7 @@ never authorization.
 | PUT | `/admin/dunning/policy` | `finance.credit-terms.manage` | `DunningController.setPolicy` | Replace the dunning policy's steps |
 | GET | `/admin/statements/:customerId` | `finance.view` | `StatementsController.statement` | A customer's statement of account over a period — invoices, payments and credit… |
 
-### [`recommendations`](../modules/recommendations.md) (7)
+### [`recommendations`](..\modules\recommendations.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1165,7 +1191,7 @@ never authorization.
 | GET | `/catalog/products/:slug/related` | **PUBLIC** | `RecommendationsController.related` | WO-9.6 — related products / "complete the look" (manual > co-occurrence > embed… |
 | GET | `/catalog/recommendations/personalized` | **PUBLIC** | `PersonalizedRecommendationsController.personalized` | WO-9.6 — "personalised homepage from browse... history", by anonymous session id |
 
-### [`reports`](../modules/reports.md) (12)
+### [`reports`](..\modules\reports.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1182,7 +1208,7 @@ never authorization.
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
 
-### [`resilience`](../modules/resilience.md) (6)
+### [`resilience`](..\modules\resilience.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1193,7 +1219,7 @@ never authorization.
 | GET | `/admin/resilience/slo` | `platform.resilience.view` | `ResilienceAdminController.slo` | Trailing-30-day success rate, p95 latency and remaining error budget for checko… |
 | GET | `/admin/resilience/slo-paths` | `platform.resilience.view` | `ResilienceAdminController.paths` | The three named critical paths this dashboard tracks, for the frontend to rende… |
 
-### [`reviews`](../modules/reviews.md) (7)
+### [`reviews`](..\modules\reviews.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1205,7 +1231,7 @@ never authorization.
 | POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` | Mark a review helpful |
 | GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` | My own reviews, any status |
 
-### [`search`](../modules/search.md) (6)
+### [`search`](..\modules\search.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1216,7 +1242,7 @@ never authorization.
 | GET | `/search` | **PUBLIC** | `SearchController.search` |  |
 | POST | `/search/by-image` | **PUBLIC** | `SearchController.searchByImage` | WO-9.5 — upload a photo, find the nearest products |
 
-### [`settings`](../modules/settings.md) (8)
+### [`settings`](..\modules\settings.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1229,7 +1255,7 @@ never authorization.
 | PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` | Turn WebP conversion on or off for new uploads |
 | GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` | The full permission catalog, grouped by category |
 
-### [`settlements`](../modules/settlements.md) (8)
+### [`settlements`](..\modules\settlements.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1242,7 +1268,7 @@ never authorization.
 | POST | `/admin/settlements/batches/:id/write-off` | `finance.settlement.reconcile` | `SettlementsController.writeOff` | Post the write-off — refused above the configured threshold without a prior, di… |
 | GET | `/admin/settlements/providers` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listProviders` | Every registered settlement provider |
 
-### [`stitching`](../modules/stitching.md) (21)
+### [`stitching`](..\modules\stitching.md) (21)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1268,7 +1294,7 @@ never authorization.
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
 
-### [`support`](../modules/support.md) (16)
+### [`support`](..\modules\support.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1289,7 +1315,7 @@ never authorization.
 | POST | `/support/tickets/:id/transition` | signed-in | `CustomerSupportController.transition` | Reopen a resolved ticket — every other status change is staff-side |
 | GET | `/support/tickets/mine` | signed-in | `CustomerSupportController.mine` | Every ticket you raised |
 
-### [`tasks`](../modules/tasks.md) (11)
+### [`tasks`](..\modules\tasks.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1305,7 +1331,7 @@ never authorization.
 | POST | `/admin/tasks/stages` | `tasks.admin` | `TaskStagesController.create` | Add a stage |
 | POST | `/admin/tasks/stages/:id/reorder` | `tasks.admin` | `TaskStagesController.reorder` | Reorder a stage — does not rewrite the history of tasks that already moved thro… |
 
-### [`tax`](../modules/tax.md) (8)
+### [`tax`](..\modules\tax.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1318,13 +1344,13 @@ never authorization.
 | GET | `/admin/tax/settings` | `tax.manage` | `TaxController.getSettings` | tax.enabled, pricing mode and default class |
 | PUT | `/admin/tax/settings` | `tax.manage` | `TaxController.updateSettings` | Update tax.enabled, pricing mode and/or default class |
 
-### [`tracking`](../modules/tracking.md) (1)
+### [`tracking`](..\modules\tracking.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | POST | `/track/event` | **PUBLIC** | `TrackingController.track` | Record one page_view / add_to_cart / checkout_started event |
 
-### [`tradingpartners`](../modules/tradingpartners.md) (20)
+### [`tradingpartners`](..\modules\tradingpartners.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1349,7 +1375,7 @@ never authorization.
 | POST | `/trading-partners/facts` | **PUBLIC** | `TradingPartnerPortalController.submitFact` | Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, app… |
 | GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` |  |
 
-### [`transfers`](../modules/transfers.md) (5)
+### [`transfers`](..\modules\transfers.md) (5)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1359,7 +1385,7 @@ never authorization.
 | POST | `/admin/transfers/:id/cancel` | `transfers.manage` | `TransfersController.cancel` | Cancel a transfer still in transit — returns its stock to the source |
 | POST | `/admin/transfers/:id/receive` | `transfers.manage` | `TransfersController.receive` | Receive a transfer — moves stock from in-transit into the destination; a short… |
 
-### [`users`](../modules/users.md) (8)
+### [`users`](..\modules\users.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1372,7 +1398,7 @@ never authorization.
 | DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` | Remove a Role from this user |
 | POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` | Assign a custom Role to this user (owner's request — a user may hold several) |
 
-### [`wallet`](../modules/wallet.md) (17)
+### [`wallet`](..\modules\wallet.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1394,7 +1420,7 @@ never authorization.
 | GET | `/wallet/ledger` | signed-in | `WalletAccountController.ledger` | My wallet history |
 | POST | `/wallet/purchase` | signed-in | `WalletAccountController.purchase` | Buy wallet credit — settles into an existing Payment, never a new tender of its… |
 
-### [`wishlist`](../modules/wishlist.md) (8)
+### [`wishlist`](..\modules\wishlist.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -1410,4 +1436,4 @@ never authorization.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

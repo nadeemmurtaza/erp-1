@@ -3,7 +3,7 @@
 
 # Tests
 
-**430** spec files, **4,768** cases. What is already pinned down — and what is not.
+**436** spec files, **4,810** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -18,17 +18,17 @@ such exemption.
 
 ## API modules with no spec file
 
-- [`addresses`](../modules/addresses.md)
-- [`example-hello-world-pack`](../modules/example-hello-world-pack.md)
-- [`giftcards`](../modules/giftcards.md)
-- [`loyalty`](../modules/loyalty.md)
-- [`notification-preferences`](../modules/notification-preferences.md)
-- [`promotions`](../modules/promotions.md)
-- [`resilience`](../modules/resilience.md)
-- [`stitching`](../modules/stitching.md)
-- [`tax`](../modules/tax.md)
-- [`tracking`](../modules/tracking.md)
-- [`wishlist`](../modules/wishlist.md)
+- [`addresses`](..\modules\addresses.md)
+- [`example-hello-world-pack`](..\modules\example-hello-world-pack.md)
+- [`giftcards`](..\modules\giftcards.md)
+- [`loyalty`](..\modules\loyalty.md)
+- [`notification-preferences`](..\modules\notification-preferences.md)
+- [`promotions`](..\modules\promotions.md)
+- [`resilience`](..\modules\resilience.md)
+- [`stitching`](..\modules\stitching.md)
+- [`tax`](..\modules\tax.md)
+- [`tracking`](..\modules\tracking.md)
+- [`wishlist`](..\modules\wishlist.md)
 
 ## End-to-end (32)
 
@@ -71,12 +71,13 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (398)
+## Unit and integration (404)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
 | `apps/api/src/core/action-hub/action-hub-registry.service.spec.ts` | core/action-hub | 6 | ActionHubRegistryService |
 | `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 17 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
+| `apps/api/src/core/anax/anax.service.spec.ts` | core/anax | 5 | AnaxService (Dragonfly Intercept Intelligence in ERP-1) |
 | `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 13 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
@@ -89,6 +90,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 24 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · resolveForUserCac… |
+| `apps/api/src/core/auth/providers/nid.provider.spec.ts` | core/auth | 7 | NidProvider (WO-255.2) · startLogin · handleCallback |
 | `apps/api/src/core/auth/providers/oidc.provider.spec.ts` | core/auth | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityF… |
 | `apps/api/src/core/auth/rate-limit-audit.service.spec.ts` | core/auth | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 32 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
@@ -102,6 +104,10 @@ regression or an N+1.
 | `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an ov… |
 | `apps/api/src/core/common/hash-chain.spec.ts` | core/common | 8 | hash chain |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `apps/api/src/core/config/vault-loader.spec.ts` | core/config | 6 | VaultLoader (WO-255.3) |
+| `apps/api/src/core/crypto/crypto-mesh.service.spec.ts` | core/crypto | 4 | CryptoMeshService (Banking-Grade Multi-Layer Encryption) |
+| `apps/api/src/core/ecosystem/customer-bridges.spec.ts` | core/ecosystem | 7 | Decoupled Domain Bridges (WO-255.5 / WO-255.6) · SupportTicketBridge (WO-255.5) · CustomerEngagemen… |
+| `apps/api/src/core/ecosystem/ecosystem.spec.ts` | core/ecosystem | 13 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosyste… |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |
@@ -477,4 +483,4 @@ regression or an N+1.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

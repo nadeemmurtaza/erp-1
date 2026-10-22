@@ -3,7 +3,7 @@
 
 # Schema: `inventory.prisma`
 
-16 models · 7 enums. Owned by module [`inventory`](../modules/inventory.md).
+16 models · 7 enums. Owned by module [`inventory`](..\modules\inventory.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -28,7 +28,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `name` | `String` |  |  |
-| `code` | `String` | unique | "MAIN", "LHR-01" — short, used in ledger refs |
+| `code` | `String` | unique | @unique |
 | `type` | `LocationType` |  | @default(STORE) |
 | `retailBrandId` | `String?` | optional |  |
 | `originNodeId` | `String?` | optional |  |
@@ -391,20 +391,20 @@ Indexes: `@@id([variantId, locationId])`
 
 | Value | Meaning |
 |---|---|
-| `PURCHASE_RECEIPT` | goods received against a purchase order |
-| `SALE` | order placed |
-| `CANCELLATION` | order cancelled, stock returned to the shelf |
-| `RETURN` | customer returned goods |
-| `ADJUSTMENT` | manual correction by staff |
-| `DAMAGE` | written off as damaged |
-| `COUNT` | variance posted by a stock count |
-| `WRITE_OFF` | lost, stolen, expired |
-| `PRODUCTION_CONSUMPTION` | raw material consumed by a released WorkOrder |
-| `PRODUCTION_RECEIPT` | finished goods credited by a completed WorkOrder |
-| `POS_SALE` | till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Or… |
-| `POS_OFFLINE_VARIANCE` | InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row |
-| `TRANSFER_OUT` | WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel) |
-| `TRANSFER_IN` | WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/canc… |
+| `PURCHASE_RECEIPT // goods received against a purchase order` |  |
+| `SALE // order placed` |  |
+| `CANCELLATION // order cancelled, stock returned to the shelf` |  |
+| `RETURN // customer returned goods` |  |
+| `ADJUSTMENT // manual correction by staff` |  |
+| `DAMAGE // written off as damaged` |  |
+| `COUNT // variance posted by a stock count` |  |
+| `WRITE_OFF // lost, stolen, expired` |  |
+| `PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder` |  |
+| `PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder` |  |
+| `POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order` |  |
+| `POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row` |  |
+| `TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)` |  |
+| `TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)` |  |
 
 ### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:126`</sub>
 
@@ -416,4 +416,4 @@ Indexes: `@@id([variantId, locationId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

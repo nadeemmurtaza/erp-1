@@ -3,7 +3,7 @@
 
 # Schema: `identity-verification.prisma`
 
-1 models · 1 enums. Owned by module [`identity-verification`](../modules/identity-verification.md).
+1 models · 1 enums. Owned by module [`identity-verification`](..\modules\identity-verification.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -55,4 +55,4 @@ against a real database.
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

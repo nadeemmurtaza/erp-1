@@ -89,7 +89,7 @@ _none_
 
 Enums: `CreditDebitNoteStatus` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -110,7 +110,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `accounting`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `common`
@@ -168,4 +167,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

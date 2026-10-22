@@ -3,7 +3,7 @@
 
 # Schema: `attendance.prisma`
 
-4 models · 4 enums. Owned by module [`attendance`](../modules/attendance.md).
+4 models · 4 enums. Owned by module [`attendance`](..\modules\attendance.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -149,4 +149,4 @@ Indexes: `@@index([userId, startsAt])` · `@@index([orgUnitId, startsAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

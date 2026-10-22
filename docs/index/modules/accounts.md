@@ -64,7 +64,7 @@ _none_
 
 Enums: `B2BOrderRequestStatus` (4)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -80,8 +80,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `orders`** ⚠ direct import
-- **module `pricing`** ⚠ direct import
 - core `approvals`
 - core `audit`
 - core `auth`
@@ -117,4 +115,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

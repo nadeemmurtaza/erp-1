@@ -9,7 +9,9 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { LoginThrottleService } from './login-throttle.service';
+import { NidController } from './nid.controller';
 import { PermissionsResolverService } from './permissions.service';
+import { NidProvider } from './providers/nid.provider';
 import { OidcProvider } from './providers/oidc.provider';
 import { RateLimitAuditService } from './rate-limit-audit.service';
 import { RolesService } from './roles.service';
@@ -30,6 +32,8 @@ import { SsoService } from './sso.service';
  * RateLimitAuditService is exported for AppThrottlerGuard (app.module.ts),
  * which records the per-IP half of `auth.rate_limited`; LoginThrottleService
  * records the per-account half itself (206-rate-limiting-caching-compression-hardening.md).
+ *
+ * NidProvider & NidController implement nID relying-party OAuth (WO-255.2).
  */
 @Global()
 @Module({
@@ -41,6 +45,7 @@ import { SsoService } from './sso.service';
     ApiKeysAdminController,
     SsoController,
     SsoAdminController,
+    NidController,
   ],
   providers: [
     AuthService,
@@ -51,6 +56,7 @@ import { SsoService } from './sso.service';
     ApiKeysService,
     SsoService,
     OidcProvider,
+    NidProvider,
     LoginThrottleService,
     RateLimitAuditService,
   ],
@@ -61,6 +67,7 @@ import { SsoService } from './sso.service';
     ApiKeyAuthService,
     ApiKeysService,
     RateLimitAuditService,
+    NidProvider,
   ],
 })
 export class AuthModule {}

@@ -16,10 +16,10 @@ through `@newax/shared`'s `BRAND`.
 
 ## Go deeper
 
-- **Every screen:** [cross/ui-routes.md](../cross/ui-routes.md)
-- **Every component:** [cross/components.md](../cross/components.md)
-- **Every exported symbol here:** [symbols/web.md](../symbols/web.md)
-- **Every file here:** [files/web.md](../files/web.md)
+- **Every screen:** [cross/ui-routes.md](..\cross\ui-routes.md)
+- **Every component:** [cross/components.md](..\cross\components.md)
+- **Every exported symbol here:** [symbols/web.md](..\symbols\web.md)
+- **Every file here:** [files/web.md](..\files\web.md)
 
 ## Directory breakdown
 
@@ -83,4 +83,4 @@ through `@newax/shared`'s `BRAND`.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

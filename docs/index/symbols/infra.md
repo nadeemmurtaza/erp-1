@@ -105,4 +105,4 @@ Every top-level export in `infra`, with the line to open.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -3,7 +3,7 @@
 
 # Schema: `wallet.prisma`
 
-4 models · 4 enums. Owned by module [`wallet`](../modules/wallet.md).
+4 models · 4 enums. Owned by module [`wallet`](..\modules\wallet.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -91,7 +91,7 @@ Indexes: `@@index([accountId, status])`
 | `id` | `String` | id | @id @default(cuid()) |
 | `accountId` | `String` |  |  |
 | `type` | `WalletEntryType` |  |  |
-| `amountMinor` | `Int` |  | always positive; direction implied by `type` |
+| `amountMinor` | `Int` |  |  |
 | `orderId` | `String?` | optional |  |
 | `sourceRef` | `String` |  |  |
 | `actorId` | `String?` | optional |  |
@@ -135,14 +135,14 @@ Indexes: `@@unique([accountId, type, sourceRef])` · `@@index([accountId, create
 
 | Value | Meaning |
 |---|---|
-| `PURCHASE` | customer buys credit — real money into Newax's own bank account, booked as deferred revenue |
-| `RESERVE` | credit earmarked against a specific order at checkout — not yet spent |
-| `REDEEM` | the earmark converts to an actual spend, exactly when the merchant confirms the order |
-| `RELEASE_RESERVATION` | the merchant does not confirm (rejects, expires) — the earmark returns to available, unspent |
-| `REFUND` | reverses a PURCHASE or a REDEEM |
-| `ADJUSTMENT` | a manual, always-approved-above-threshold, always-reasoned correction |
+| `PURCHASE // customer buys credit — real money into Newax's own bank account, booked as deferred revenue` |  |
+| `RESERVE // credit earmarked against a specific order at checkout — not yet spent` |  |
+| `REDEEM // the earmark converts to an actual spend, exactly when the merchant confirms the order` |  |
+| `RELEASE_RESERVATION // the merchant does not confirm (rejects, expires) — the earmark returns to available, unspent` |  |
+| `REFUND // reverses a PURCHASE or a REDEEM` |  |
+| `ADJUSTMENT // a manual, always-approved-above-threshold, always-reasoned correction` |  |
 
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

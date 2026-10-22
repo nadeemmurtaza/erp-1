@@ -205,4 +205,4 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -95,4 +95,4 @@ Indexes: `@@unique([onsiteMessageId, locale])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

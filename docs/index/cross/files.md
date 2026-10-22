@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,925** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,954** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,279 | 176,797 | [files/api.md](../files/api.md) |
-| apps/web | 588 | 105,220 | [files/web.md](../files/web.md) |
-| apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
-| apps/mobile | 50 | 6,942 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 117 | 13,772 | [files/packages.md](../files/packages.md) |
-| docs/* | 579 | 109,132 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 65 | 33,516 | [files/infra.md](../files/infra.md) |
-| repository root files | 214 | 16,187 | [files/root.md](../files/root.md) |
+| apps/api | 1,306 | 180,861 | [files/api.md](..\files\api.md) |
+| apps/web | 588 | 105,220 | [files/web.md](..\files\web.md) |
+| apps/pos | 33 | 2,671 | [files/pos.md](..\files\pos.md) |
+| apps/mobile | 50 | 6,942 | [files/mobile.md](..\files\mobile.md) |
+| packages/* | 117 | 13,772 | [files/packages.md](..\files\packages.md) |
+| docs/* | 580 | 109,320 | [files/docs.md](..\files\docs.md) |
+| scripts, CI, deployment and container configuration | 65 | 33,516 | [files/infra.md](..\files\infra.md) |
+| repository root files | 215 | 16,305 | [files/root.md](..\files\root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,16 +28,16 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 613 |
-| unit test | 398 |
+| doc | 615 |
+| unit test | 404 |
 | page | 234 |
-| service | 221 |
+| service | 229 |
+| module | 215 |
 | component | 210 |
-| module | 209 |
-| controller | 157 |
+| controller | 160 |
 | dto | 138 |
 | migration | 132 |
-| nest module | 107 |
+| nest module | 110 |
 | prisma schema | 66 |
 | utility | 47 |
 | script | 46 |
@@ -51,8 +51,8 @@ name a new file: the convention is what makes it findable.
 | loading | 14 |
 | file | 13 |
 | registry | 13 |
+| config | 13 |
 | yaml | 12 |
-| config | 12 |
 | guard | 9 |
 | constants | 8 |
 | layout | 6 |
@@ -80,4 +80,4 @@ name a new file: the convention is what makes it findable.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

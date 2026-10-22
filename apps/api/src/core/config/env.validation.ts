@@ -233,6 +233,44 @@ export const envSchema = z.object({
   SMS_API_TOKEN: z.string().optional(),
   SMS_FROM_NUMBER: z.string().optional(),
 
+  /**
+   * NEWAX Ecosystem connection (ECOSYSTEM.md, 255-ecosystem-alignment-roadmap.md).
+   * When true, Module Gateway RPC calls and cross-repo Event Bus publishing are active.
+   */
+  ECOSYSTEM_ENABLED: bool('false'),
+  ECOSYSTEM_GATEWAY_URL: z.string().optional(),
+  ECOSYSTEM_GATEWAY_KEY: z.string().optional(),
+  ECOSYSTEM_EVENT_BUS_URL: z.string().optional(),
+
+  /**
+   * NeuraCore Cryptographic Transit Relay & ANAX Intercept Engine
+   */
+  NEURA_CORE_URL: z.string().default('http://localhost:5000'),
+  NEURA_CRYPTO_TENANT_ID: z.string().default('default'),
+  NEURA_CRYPTO_ENTITY_ID: z.string().default('erp-1'),
+  NEURA_CRYPTO_KEY_ID: z.string().default('kid_erp_default'),
+  NEURA_CRYPTO_INGRESS_SECRET_HEX: z.string().optional(),
+  NEURA_CRYPTO_EGRESS_SECRET_HEX: z.string().optional(),
+  NEURA_CRYPTO_AUTH_SECRET_HEX: z.string().optional(),
+  ANAX_ENABLED: bool('true'),
+
+  /**
+   * nID Identity & OAuth Integration (ECOSYSTEM.md, WO-255.2).
+   * Relying-party OAuth authorization-code credentials with nID.
+   */
+  NID_BASE_URL: z.string().default('http://localhost:4000'),
+  NID_CLIENT_ID: z.string().optional(),
+  NID_CLIENT_SECRET: z.string().optional(),
+  NID_REDIRECT_URI: z.string().optional(),
+
+  /**
+   * nID Secrets Vault Integration (ECOSYSTEM.md, WO-255.3).
+   * Boot-time scoped environment secrets injection from nID Vault.
+   */
+  NID_VAULT_ENABLED: bool('false'),
+  NID_SERVICE_ID: z.string().default('erp-1'),
+  NID_SERVICE_SECRET: z.string().optional(),
+
   STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),
@@ -393,6 +431,12 @@ export function validateEnv(raw: Record<string, unknown>): Env {
   }
   if (result.data.PARENT_API_KEY && !result.data.PARENT_URL) {
     throw new Error('PARENT_API_KEY is set but PARENT_URL is not — there is nothing to call with it.');
+  }
+
+  if (result.data.ECOSYSTEM_ENABLED && !result.data.ECOSYSTEM_GATEWAY_URL) {
+    throw new Error(
+      'ECOSYSTEM_ENABLED=true requires ECOSYSTEM_GATEWAY_URL — the core-newax Module Gateway endpoint.',
+    );
   }
 
   return result.data;

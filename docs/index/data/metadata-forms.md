@@ -3,7 +3,7 @@
 
 # Schema: `metadata-forms.prisma`
 
-1 models · 0 enums. Owned by module [`metadata-forms`](../modules/metadata-forms.md).
+1 models · 0 enums. Owned by module [`metadata-forms`](..\modules\metadata-forms.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -37,4 +37,4 @@ against a real database.
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -58,7 +58,7 @@ _none_
 | `PriceListEntry` | 6 | :30 | A quantity break OR a flat override — never both meaninglessly: a row with minQuantity=1 IS the flat override… |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -108,4 +108,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

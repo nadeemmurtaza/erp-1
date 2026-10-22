@@ -3,7 +3,7 @@
 
 # Schema: `pricing.prisma`
 
-3 models · 0 enums. Owned by module [`pricing`](../modules/pricing.md).
+3 models · 0 enums. Owned by module [`pricing`](..\modules\pricing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -43,8 +43,8 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `priceListId` | `String` |  |  |
-| `customerId` | `String?` | optional | Contact.id — same join CustomerCreditTerm.customerId already uses |
-| `tagId` | `String?` | optional | Tag.id |
+| `customerId` | `String?` | optional |  |
+| `tagId` | `String?` | optional |  |
 | `priceList` | `PriceList` | relation | @relation(fields: [priceListId], references: [id], onDelete: Cascade) |
 
 Indexes: `@@index([customerId])` · `@@index([tagId])`
@@ -69,4 +69,4 @@ Indexes: `@@unique([priceListId, variantId, minQuantity])` · `@@index([variantI
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

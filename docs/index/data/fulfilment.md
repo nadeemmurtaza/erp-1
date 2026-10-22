@@ -3,7 +3,7 @@
 
 # Schema: `fulfilment.prisma`
 
-16 models · 4 enums. Owned by module [`fulfilment`](../modules/fulfilment.md).
+16 models · 4 enums. Owned by module [`fulfilment`](..\modules\fulfilment.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -27,7 +27,7 @@ against a real database.
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "MFT-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `courierKey` | `String` |  |  |
 | `status` | `ManifestStatus` |  | @default(OPEN) |
 | `dispatchedAt` | `DateTime?` | optional |  |
@@ -52,7 +52,7 @@ Indexes: `@@index([courierKey, status])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "too_small" \| "damaged" \| "not_as_described" \| … |
+| `key` | `String` | unique | @unique |
 | `isActive` | `Boolean` |  | @default(true) |
 | `order` | `Int` |  | @default(0) |
 | `translations` | `ReturnReasonTranslation[]` |  |  |
@@ -75,7 +75,7 @@ Indexes: `@@unique([reasonId, locale])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "RMA-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `orderId` | `String` |  |  |
 | `userId` | `String?` | optional |  |
 | `status` | `ReturnStatus` |  | @default(REQUESTED) |
@@ -184,7 +184,7 @@ Indexes: `@@unique([classId, locale])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "standard" \| "express" \| "same_day" |
+| `key` | `String` | unique | @unique |
 | `courierKey` | `String?` | optional |  |
 | `etaMinDays` | `Int` |  | @default(2) |
 | `etaMaxDays` | `Int` |  | @default(5) |
@@ -304,4 +304,4 @@ Indexes: `@@unique([zoneId, locale])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

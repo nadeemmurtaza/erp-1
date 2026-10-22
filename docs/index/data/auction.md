@@ -3,7 +3,7 @@
 
 # Schema: `auction.prisma`
 
-10 models · 7 enums. Owned by module [`auction`](../modules/auction.md).
+10 models · 7 enums. Owned by module [`auction`](..\modules\auction.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -327,4 +327,4 @@ Indexes: `@@unique([lotId, bidderId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

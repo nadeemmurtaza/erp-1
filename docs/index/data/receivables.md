@@ -3,7 +3,7 @@
 
 # Schema: `receivables.prisma`
 
-5 models · 1 enums. Owned by module [`receivables`](../modules/receivables.md).
+5 models · 1 enums. Owned by module [`receivables`](..\modules\receivables.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -28,7 +28,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `number` | `String` | unique | @unique |
-| `customerId` | `String` |  | Contact.id — bare scalar, see file header |
+| `customerId` | `String` |  |  |
 | `orderId` | `String?` | optional |  |
 | `appliedToOrderId` | `String?` | optional |  |
 | `amountMinor` | `Int` |  |  |
@@ -50,7 +50,7 @@ Indexes: `@@index([customerId, status])` · `@@index([orderId])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `customerId` | `String` | unique | Contact.id |
+| `customerId` | `String` | unique | @unique |
 | `creditLimitMinor` | `Int` |  |  |
 | `paymentTermDays` | `Int` |  | @default(30) |
 | `isOnHold` | `Boolean` |  | @default(false) |
@@ -67,8 +67,8 @@ Indexes: `@@index([isOnHold])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `number` | `String` | unique | @unique |
-| `supplierId` | `String` |  | Supplier.id — bare scalar |
-| `supplierBillId` | `String?` | optional | SupplierBill.id — bare scalar, nullable |
+| `supplierId` | `String` |  |  |
+| `supplierBillId` | `String?` | optional |  |
 | `amountMinor` | `Int` |  |  |
 | `reason` | `String` |  |  |
 | `status` | `CreditDebitNoteStatus` |  | @default(DRAFT) |
@@ -87,7 +87,7 @@ Indexes: `@@index([supplierId, status])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `orderId` | `String` |  | Order.id — bare scalar |
+| `orderId` | `String` |  |  |
 | `stepIndex` | `Int` |  |  |
 | `sentAt` | `DateTime` |  | @default(now()) |
 
@@ -121,4 +121,4 @@ Indexes: `@@unique([orderId, stepIndex])` · `@@index([orderId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

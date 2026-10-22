@@ -3,7 +3,7 @@
 
 # Schema: `notify.prisma`
 
-8 models · 2 enums. Owned by module [`notify`](../modules/notify.md).
+8 models · 2 enums. Owned by module [`notify`](..\modules\notify.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -185,4 +185,4 @@ Indexes: `@@unique([meetingId, userId])` · `@@index([userId, response])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

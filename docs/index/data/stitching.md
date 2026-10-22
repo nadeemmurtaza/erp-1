@@ -3,7 +3,7 @@
 
 # Schema: `stitching.prisma`
 
-8 models · 3 enums. Owned by module [`stitching`](../modules/stitching.md).
+8 models · 3 enums. Owned by module [`stitching`](..\modules\stitching.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -25,7 +25,7 @@ against a real database.
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "JOB-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `orderItemId` | `String?` | unique, optional | @unique |
 | `stitchingOrderId` | `String?` | optional |  |
 | `garmentTypeId` | `String` |  |  |
@@ -96,7 +96,7 @@ Indexes: `@@unique([groupId, key])` · `@@index([groupId, order])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "neckline", "sleeve_style" |
+| `key` | `String` | unique | @unique |
 | `labelEn` | `String` |  |  |
 | `labelUr` | `String` |  |  |
 | `garmentTypeId` | `String?` | optional |  |
@@ -122,7 +122,7 @@ Indexes: `@@index([garmentTypeId, order])` · `@@index([area, order])`
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `number` | `String` | unique | "STO-2026-0001" |
+| `number` | `String` | unique | @unique |
 | `userId` | `String?` | optional |  |
 | `contactId` | `String?` | optional |  |
 | `status` | `StitchingOrderStatus` |  | @default(DRAFT) |
@@ -133,7 +133,7 @@ Indexes: `@@index([garmentTypeId, order])` · `@@index([area, order])`
 | `deliveryAddress` | `Json?` | optional |  |
 | `fabricNotes` | `String?` | optional |  |
 | `staffNotes` | `String?` | optional |  |
-| `quotedFee` | `Int?` | optional | paisa |
+| `quotedFee` | `Int?` | optional |  |
 | `fabricReceivedAt` | `DateTime?` | optional |  |
 | `promisedAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -203,4 +203,4 @@ Indexes: `@@index([status])` · `@@index([userId])` · `@@index([contactId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

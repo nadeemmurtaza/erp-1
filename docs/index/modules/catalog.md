@@ -175,7 +175,7 @@ All paths relative to `apps/api/src/modules/merchandising/catalog`.
 
 Enums: `AiSuggestionKind` (5) · `AiSuggestionStatus` (3) · `CollectionSortStrategy` (6) · `OptionDisplay` (4) · `ProductCrossSellKind` (3) · `ProductKind` (6) · `ProductStatus` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -191,7 +191,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
 - core `ai`
 - core `audit`
 - core `auth`
@@ -298,4 +297,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

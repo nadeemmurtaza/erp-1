@@ -3,7 +3,7 @@
 
 # Schema: `resilience.prisma`
 
-1 models · 0 enums. Owned by module [`resilience`](../modules/resilience.md).
+1 models · 0 enums. Owned by module [`resilience`](..\modules\resilience.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -39,4 +39,4 @@ Indexes: `@@index([path, occurredAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

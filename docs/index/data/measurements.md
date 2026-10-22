@@ -3,7 +3,7 @@
 
 # Schema: `measurements.prisma`
 
-4 models · 1 enums. Owned by module [`measurements`](../modules/measurements.md).
+4 models · 1 enums. Owned by module [`measurements`](..\modules\measurements.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -28,7 +28,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `garmentTypeId` | `String` |  |  |
-| `sizeToken` | `String` |  | "XS" \| "S" \| "M" \| "L" \| "XL" \| "XXL" |
+| `sizeToken` | `String` |  |  |
 | `values` | `Json` |  |  |
 | `order` | `Int` |  | @default(0) |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -42,7 +42,7 @@ Indexes: `@@unique([garmentTypeId, sizeToken])` · `@@index([garmentTypeId, orde
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "kameez", "shalwar" |
+| `key` | `String` | unique | @unique |
 | `labelEn` | `String` |  |  |
 | `labelUr` | `String` |  |  |
 | `order` | `Int` |  | @default(0) |
@@ -68,7 +68,7 @@ Indexes: `@@index([isActive, order])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `garmentTypeId` | `String` |  |  |
-| `key` | `String` |  | "chest", "sleeve_length" |
+| `key` | `String` |  |  |
 | `labelEn` | `String` |  |  |
 | `labelUr` | `String` |  |  |
 | `unit` | `MeasurementUnit` |  | @default(INCH) |
@@ -117,4 +117,4 @@ Indexes: `@@unique([userId, garmentTypeId, label])` · `@@index([userId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

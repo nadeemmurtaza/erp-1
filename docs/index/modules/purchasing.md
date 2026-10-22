@@ -121,7 +121,7 @@ All paths relative to `apps/api/src/modules/supply-chain/purchasing/dto`.
 
 Enums: `PurchaseOrderStatus` (5) · `RequisitionApprovalStatus` (4) · `SupplierBillStatus` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -142,9 +142,6 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
-- **module `parties`** ⚠ direct import
-- **module `tradingpartners`** ⚠ direct import
 - core `approvals`
 - core `auth`
 - core `config`
@@ -231,4 +228,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

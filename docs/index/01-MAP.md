@@ -32,7 +32,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,302 | 180,327 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,306 | 180,861 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 580 | 109,320 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 588 | 105,220 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 38 | 23,473 | workspace manifests, docker compose/stack files, env templates |
@@ -147,7 +147,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`config`](core\config.md) | 9 |  |
 | [`crm`](core\crm.md) | 1 |  |
 | [`crypto`](core\crypto.md) | 3 |  |
-| [`ecosystem`](core\ecosystem.md) | 9 |  |
+| [`ecosystem`](core\ecosystem.md) | 13 |  |
 | [`events`](core\events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | [`extension-points`](core\extension-points.md) | 12 |  |
 | [`feature-flags`](core\feature-flags.md) | 3 |  |

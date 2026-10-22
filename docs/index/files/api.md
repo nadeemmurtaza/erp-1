@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,302 tracked files in `apps/api`, by directory.
+All 1,306 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1052,19 +1052,23 @@ All 1,302 tracked files in `apps/api`, by directory.
 | `crypto-mesh.service.ts` | service | 238 |  |
 | `crypto.module.ts` | nest module | 10 |  |
 
-### `apps/api/src/core/ecosystem` (9)
+### `apps/api/src/core/ecosystem` (13)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `customer-bridges.spec.ts` | unit test | 197 |  |
+| `customer-engagement-bridge.service.ts` | service | 115 |  |
 | `ecosystem-event-bridge.service.ts` | service | 81 |  |
 | `ecosystem-event-bus.client.ts` | module | 110 |  |
 | `ecosystem-inbound.service.ts` | service | 109 |  |
 | `ecosystem-module-gateway.client.ts` | module | 115 |  |
 | `ecosystem.constants.ts` | module | 92 |  |
 | `ecosystem.controller.ts` | controller | 76 |  |
-| `ecosystem.module.ts` | nest module | 46 |  |
+| `ecosystem.module.ts` | nest module | 57 |  |
 | `ecosystem.spec.ts` | unit test | 428 |  |
-| `index.ts` | module | 6 |  |
+| `index.ts` | module | 9 |  |
+| `marketing-dispatch-bridge.service.ts` | service | 96 |  |
+| `support-ticket-bridge.service.ts` | service | 112 |  |
 
 ### `apps/api/src/core/events` (7)
 

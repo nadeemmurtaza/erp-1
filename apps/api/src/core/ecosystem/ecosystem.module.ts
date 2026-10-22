@@ -8,13 +8,18 @@ import { EcosystemEventBridgeService } from './ecosystem-event-bridge.service';
 import { EcosystemEventBusClient, HttpEcosystemEventBusClient } from './ecosystem-event-bus.client';
 import { EcosystemInboundService } from './ecosystem-inbound.service';
 import { EcosystemModuleGatewayClient, HttpEcosystemModuleGatewayClient } from './ecosystem-module-gateway.client';
+import { SupportTicketBridge } from './support-ticket-bridge.service';
+import { CustomerEngagementBridge } from './customer-engagement-bridge.service';
+import { MarketingDispatchBridge } from './marketing-dispatch-bridge.service';
 
 /**
  * Global NEWAX Ecosystem Module.
  *
  * Provides the Module Gateway Client (for synchronous RPC through core-newax),
  * the Event Bus Client & Outbox Bridge (for cross-repo async domain events),
- * and the Inbound Ecosystem Webhook Controller (for incoming cross-repo events).
+ * the Inbound Ecosystem Webhook Controller (for incoming cross-repo events),
+ * and Decoupled Domain Bridges (SupportTicketBridge, CustomerEngagementBridge,
+ * MarketingDispatchBridge for WO-255.5 / WO-255.6).
  */
 @Global()
 @Module({
@@ -32,6 +37,9 @@ import { EcosystemModuleGatewayClient, HttpEcosystemModuleGatewayClient } from '
     },
     EcosystemEventBridgeService,
     EcosystemInboundService,
+    SupportTicketBridge,
+    CustomerEngagementBridge,
+    MarketingDispatchBridge,
   ],
   exports: [
     ECOSYSTEM_MODULE_GATEWAY_CLIENT,
@@ -40,6 +48,9 @@ import { EcosystemModuleGatewayClient, HttpEcosystemModuleGatewayClient } from '
     HttpEcosystemEventBusClient,
     EcosystemEventBridgeService,
     EcosystemInboundService,
+    SupportTicketBridge,
+    CustomerEngagementBridge,
+    MarketingDispatchBridge,
   ],
 })
 export class EcosystemModule {}

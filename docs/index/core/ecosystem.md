@@ -3,7 +3,7 @@
 
 # Core: `ecosystem`
 
-Shared platform — available to every module, part of no feature · 9 files
+Shared platform — available to every module, part of no feature · 13 files
 
 
 
@@ -12,21 +12,25 @@ Source: `apps/api/src/core/ecosystem/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (9 · 1,063 lines)
+## Files (13 · 1,597 lines)
 
 All paths relative to `apps/api/src/core/ecosystem`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `customer-bridges.spec.ts` | unit test | 197 | — |  |
+| `customer-engagement-bridge.service.ts` | service | 115 | 2 |  |
 | `ecosystem-event-bridge.service.ts` | service | 81 | 1 | Bridges internal domain events dispatched by the transactional outbox to the central core-newax Event Bus. |
 | `ecosystem-event-bus.client.ts` | module | 110 | 2 |  |
 | `ecosystem-inbound.service.ts` | service | 109 | 2 |  |
 | `ecosystem-module-gateway.client.ts` | module | 115 | 2 |  |
 | `ecosystem.constants.ts` | module | 92 | 6 | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
 | `ecosystem.controller.ts` | controller | 76 | 1 | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
-| `ecosystem.module.ts` | nest module | 46 | 1 |  |
+| `ecosystem.module.ts` | nest module | 57 | 1 |  |
 | `ecosystem.spec.ts` | unit test | 428 | — |  |
-| `index.ts` | module | 6 | — |  |
+| `index.ts` | module | 9 | — |  |
+| `marketing-dispatch-bridge.service.ts` | service | 96 | 3 |  |
+| `support-ticket-bridge.service.ts` | service | 112 | 3 |  |
 
 
 ## HTTP routes (1)
@@ -77,16 +81,17 @@ All paths relative to `apps/api/src/core/ecosystem`.
 **`EcosystemModule`** (`ecosystem.module.ts`)
 - imports: —
 - controllers: `EcosystemController`
-- providers: `HttpEcosystemModuleGatewayClient`, `useExisting: HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `useExisting: HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`
-- exports: `ECOSYSTEM_MODULE_GATEWAY_CLIENT`, `ECOSYSTEM_EVENT_BUS_CLIENT`, `HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`
+- providers: `HttpEcosystemModuleGatewayClient`, `useExisting: HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `useExisting: HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`, `SupportTicketBridge`, `CustomerEngagementBridge`, `MarketingDispatchBridge`
+- exports: `ECOSYSTEM_MODULE_GATEWAY_CLIENT`, `ECOSYSTEM_EVENT_BUS_CLIENT`, `HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`, `SupportTicketBridge`, `CustomerEngagementBridge`, `MarketingDispatchBridge`
 
 
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `customer-bridges.spec.ts` | 7 | Decoupled Domain Bridges (WO-255.5 / WO-255.6) · SupportTicketBridge (WO-255.5) · CustomerEngagementBridge (WO-255.5) ·… |
 | `ecosystem.spec.ts` | 13 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient · Ec… |
 
 
@@ -94,6 +99,8 @@ All paths relative to `apps/api/src/core/ecosystem`.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `CustomerHistoryResult` | interface | `customer-engagement-bridge.service.ts:8` |  |
+| `CustomerEngagementBridge` | class | `customer-engagement-bridge.service.ts:32` | CustomerEngagementBridge (ECOSYSTEM.md, WO-255.5). |
 | `EcosystemEventBridgeService` | class | `ecosystem-event-bridge.service.ts:16` | Bridges internal domain events dispatched by the transactional outbox to the central core-newax Event Bus. |
 | `EcosystemEventBusClient` | interface | `ecosystem-event-bus.client.ts:6` |  |
 | `HttpEcosystemEventBusClient` | class | `ecosystem-event-bus.client.ts:27` |  |
@@ -108,7 +115,13 @@ All paths relative to `apps/api/src/core/ecosystem`.
 | `GatewayResponse` | interface | `ecosystem.constants.ts:65` | Response received from core-newax Module Gateway. |
 | `RefundProofCapturedPayload` | interface | `ecosystem.constants.ts:79` | Payload received when Communicator's LiveProof engine captures authenticated live camera proof for a customer… |
 | `EcosystemController` | class | `ecosystem.controller.ts:26` | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
-| `EcosystemModule` | class | `ecosystem.module.ts:45` |  |
+| `EcosystemModule` | class | `ecosystem.module.ts:56` |  |
+| `CampaignDispatchPayload` | interface | `marketing-dispatch-bridge.service.ts:10` |  |
+| `CampaignDispatchResult` | interface | `marketing-dispatch-bridge.service.ts:21` |  |
+| `MarketingDispatchBridge` | class | `marketing-dispatch-bridge.service.ts:38` | MarketingDispatchBridge (ECOSYSTEM.md, WO-255.6). |
+| `DelegatedTicketPayload` | interface | `support-ticket-bridge.service.ts:10` |  |
+| `DelegatedTicketResult` | interface | `support-ticket-bridge.service.ts:23` |  |
+| `SupportTicketBridge` | class | `support-ticket-bridge.service.ts:41` | SupportTicketBridge (ECOSYSTEM.md, WO-255.5). |
 
 
 ---

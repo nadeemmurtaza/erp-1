@@ -3,7 +3,7 @@
 
 # Tests
 
-**435** spec files, **4,803** cases. What is already pinned down — and what is not.
+**436** spec files, **4,810** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -71,7 +71,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (403)
+## Unit and integration (404)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -106,6 +106,7 @@ regression or an N+1.
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/config/vault-loader.spec.ts` | core/config | 6 | VaultLoader (WO-255.3) |
 | `apps/api/src/core/crypto/crypto-mesh.service.spec.ts` | core/crypto | 4 | CryptoMeshService (Banking-Grade Multi-Layer Encryption) |
+| `apps/api/src/core/ecosystem/customer-bridges.spec.ts` | core/ecosystem | 7 | Decoupled Domain Bridges (WO-255.5 / WO-255.6) · SupportTicketBridge (WO-255.5) · CustomerEngagemen… |
 | `apps/api/src/core/ecosystem/ecosystem.spec.ts` | core/ecosystem | 13 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosyste… |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |

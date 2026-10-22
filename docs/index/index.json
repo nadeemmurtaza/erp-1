@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2950,
-    "lines": 468073,
+    "files": 2954,
+    "lines": 468607,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -14,7 +14,7 @@
     "permissions": 135,
     "screens": 286,
     "crons": 32,
-    "specs": 435,
+    "specs": 436,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1302,
-      "lines": 180327,
-      "bytes": 7356425,
+      "files": 1306,
+      "lines": 180861,
+      "bytes": 7373800,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -3054,6 +3054,8 @@
     {
       "name": "ecosystem",
       "files": [
+        "apps/api/src/core/ecosystem/customer-bridges.spec.ts",
+        "apps/api/src/core/ecosystem/customer-engagement-bridge.service.ts",
         "apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts",
         "apps/api/src/core/ecosystem/ecosystem-event-bus.client.ts",
         "apps/api/src/core/ecosystem/ecosystem-inbound.service.ts",
@@ -3062,7 +3064,9 @@
         "apps/api/src/core/ecosystem/ecosystem.controller.ts",
         "apps/api/src/core/ecosystem/ecosystem.module.ts",
         "apps/api/src/core/ecosystem/ecosystem.spec.ts",
-        "apps/api/src/core/ecosystem/index.ts"
+        "apps/api/src/core/ecosystem/index.ts",
+        "apps/api/src/core/ecosystem/marketing-dispatch-bridge.service.ts",
+        "apps/api/src/core/ecosystem/support-ticket-bridge.service.ts"
       ],
       "page": "docs/index/core/ecosystem.md"
     },
@@ -57975,6 +57979,18 @@
       ]
     },
     {
+      "file": "apps/api/src/core/ecosystem/customer-bridges.spec.ts",
+      "module": "core/ecosystem",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "Decoupled Domain Bridges (WO-255.5 / WO-255.6)",
+        "SupportTicketBridge (WO-255.5)",
+        "CustomerEngagementBridge (WO-255.5)",
+        "MarketingDispatchBridge (WO-255.6)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/ecosystem/ecosystem.spec.ts",
       "module": "core/ecosystem",
       "kind": "unit test",
@@ -67065,6 +67081,35 @@
       ]
     },
     {
+      "path": "apps/api/src/core/ecosystem/customer-bridges.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 197,
+      "bytes": 6742,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/ecosystem/customer-engagement-bridge.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 115,
+      "bytes": 3375,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerHistoryResult",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "CustomerEngagementBridge",
+          "kind": "class",
+          "line": 32
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts",
       "area": "api",
       "kind": "service",
@@ -67198,14 +67243,14 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 1555,
+      "lines": 57,
+      "bytes": 2083,
       "doc": "",
       "symbols": [
         {
           "name": "EcosystemModule",
           "kind": "class",
-          "line": 45
+          "line": 56
         }
       ]
     },
@@ -67222,10 +67267,60 @@
       "path": "apps/api/src/core/ecosystem/index.ts",
       "area": "api",
       "kind": "module",
-      "lines": 6,
-      "bytes": 222,
+      "lines": 9,
+      "bytes": 378,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/ecosystem/marketing-dispatch-bridge.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 96,
+      "bytes": 3058,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CampaignDispatchPayload",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "CampaignDispatchResult",
+          "kind": "interface",
+          "line": 21
+        },
+        {
+          "name": "MarketingDispatchBridge",
+          "kind": "class",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ecosystem/support-ticket-bridge.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 112,
+      "bytes": 3516,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DelegatedTicketPayload",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "DelegatedTicketResult",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "SupportTicketBridge",
+          "kind": "class",
+          "line": 41
+        }
+      ]
     },
     {
       "path": "apps/api/src/core/events/contract-analyzer.ts",

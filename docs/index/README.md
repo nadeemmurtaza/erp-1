@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,950 files / 468,073 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,954 files / 468,607 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -57,7 +57,7 @@ single fact — the page is the right tool when you need the shape of something.
 | “What runs on a schedule?” | [cross/jobs.md](cross\jobs.md) | n/a | 32 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross\commands.md) | n/a | every script in every package.json (95) |
 | “What does the schema history look like?” | [cross/migrations.md](cross\migrations.md) | n/a | 132 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross\tests.md) | n/a | 435 spec files → what each one pins down |
+| “What is already tested?” | [cross/tests.md](cross\tests.md) | n/a | 436 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross\docs.md) | n/a | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (66) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
@@ -119,7 +119,7 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,302 | 180,327 | [api](areas\api.md) |
+| apps/api | 1,306 | 180,861 | [api](areas\api.md) |
 | apps/web | 588 | 105,220 | [web](areas\web.md) |
 | apps/pos | 33 | 2,671 | [pos](areas\pos.md) |
 | apps/mobile | 50 | 6,942 | [mobile](areas\mobile.md) |

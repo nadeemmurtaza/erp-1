@@ -11,6 +11,14 @@ fabric and have it stitched to their saved measurements, or send their own cloth
 for a stitching job and follow its progress. Staff run the catalogue, orders,
 tailor queue, stock, purchasing and accounts from one back office.
 
+## Part of the NEWAX ecosystem
+
+This is one of several connected NEWAX repos. See [`ECOSYSTEM.md`](ECOSYSTEM.md)
+for what this repo owns, what it must never own, and the rules for how it
+talks to the others — in particular, several modules under
+`apps/api/src/modules/customers` and `system` are slated to move out to
+other repos (nID, Communicator); see `ECOSYSTEM.md` for the full list.
+
 New here? Read [`START-HERE.md`](./START-HERE.md) first. It is one page, written
 for people, and says what lives where.
 

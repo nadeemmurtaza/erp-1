@@ -27,7 +27,7 @@ export interface EcosystemEventEnvelope<T = unknown> {
   /** ISO-8601 UTC timestamp when the event occurred. */
   occurredAt: string;
   /** Source repository producing this event. */
-  source: 'erp-1';
+  source: 'erp-1' | 'communicator' | 'nID' | 'core-newax' | 'newcom' | 'AegisDesk' | string;
   /** Enterprise multi-tenant identifier for strict tenant isolation. */
   tenantId?: string;
   /** Sub-organization or branch identifier within the enterprise tenant. */
@@ -70,4 +70,22 @@ export interface GatewayResponse<R = unknown> {
     message: string;
     details?: unknown;
   };
+}
+
+/**
+ * Payload received when Communicator's LiveProof engine captures
+ * authenticated live camera proof for a customer refund/return claim.
+ */
+export interface RefundProofCapturedPayload {
+  sessionId: string;
+  orderId?: string | null;
+  claimType: string;
+  mediaType: 'live_photo' | 'live_video';
+  mediaUrl: string;
+  sha256Hash: string;
+  fileSizeBytes: number;
+  durationSeconds?: number | null;
+  verificationScore: number;
+  watermarkVerified: boolean;
+  capturedAt: string;
 }

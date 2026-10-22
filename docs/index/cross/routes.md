@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **918** endpoints across **168** controllers, with the access rule that actually guards each one.
+All **919** endpoints across **169** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -32,7 +32,7 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 83** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 84** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -81,6 +81,7 @@ never authorization.
 | GET | `/content/posts` | `ContentController.listPosts` |
 | GET | `/content/posts/:slug` | `ContentController.getPost` |
 | POST | `/crm/enquiries` | `CrmPublicController.createEnquiry` |
+| POST | `/ecosystem/events` | `EcosystemController.handleInboundEvent` |
 | POST | `/email/unsubscribe` | `UnsubscribeController.unsubscribe` |
 | GET | `/files/*path` | `FilesController.serve` |
 | GET | `/health` | `HealthController.live` |
@@ -486,6 +487,12 @@ never authorization.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
+
+### [`core/ecosystem`](..\core\ecosystem.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` | Receives cross-repo events from core-newax Event Bus / Communicator |
 
 ### [`core/feed`](..\core\feed.md) (1)
 

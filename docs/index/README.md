@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,937 files / 465,927 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,939 files / 466,245 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -46,7 +46,7 @@ single fact — the page is the right tool when you need the shape of something.
 
 | Your question | Open this | Cost | What it gives you |
 |---|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross\routes.md) | n/a | all 918 HTTP routes, with the permission that guards each |
+| “Where is the endpoint for X?” | [cross/routes.md](cross\routes.md) | n/a | all 919 HTTP routes, with the permission that guards each |
 | “What permission do I need / who has it?” | [cross/permissions.md](cross\permissions.md) | n/a | all 135 permissions → routes, UI call sites, seed |
 | “Which table/column holds X?” | [cross/data-model.md](cross\data-model.md) | n/a | all 325 Prisma models and 153 enums, field by field |
 | “How do modules talk to each other?” | [cross/events.md](cross\events.md) | n/a | all 73 domain events → publishers and subscribers |
@@ -119,7 +119,7 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,289 | 178,181 | [api](areas\api.md) |
+| apps/api | 1,291 | 178,499 | [api](areas\api.md) |
 | apps/web | 588 | 105,220 | [web](areas\web.md) |
 | apps/pos | 33 | 2,671 | [pos](areas\pos.md) |
 | apps/mobile | 50 | 6,942 | [mobile](areas\mobile.md) |

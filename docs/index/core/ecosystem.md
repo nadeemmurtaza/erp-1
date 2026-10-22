@@ -3,7 +3,7 @@
 
 # Core: `ecosystem`
 
-Shared platform — available to every module, part of no feature · 7 files
+Shared platform — available to every module, part of no feature · 9 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/ecosystem/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 692 lines)
+## Files (9 · 1,010 lines)
 
 All paths relative to `apps/api/src/core/ecosystem`.
 
@@ -20,16 +20,20 @@ All paths relative to `apps/api/src/core/ecosystem`.
 |---|---|---|---|---|
 | `ecosystem-event-bridge.service.ts` | service | 81 | 1 | Bridges internal domain events dispatched by the transactional outbox to the central core-newax Event Bus. |
 | `ecosystem-event-bus.client.ts` | module | 110 | 2 |  |
+| `ecosystem-inbound.service.ts` | service | 109 | 2 |  |
 | `ecosystem-module-gateway.client.ts` | module | 115 | 2 |  |
-| `ecosystem.constants.ts` | module | 74 | 5 | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
-| `ecosystem.module.ts` | nest module | 40 | 1 |  |
-| `ecosystem.spec.ts` | unit test | 266 | — |  |
+| `ecosystem.constants.ts` | module | 92 | 6 | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
+| `ecosystem.controller.ts` | controller | 65 | 1 | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
+| `ecosystem.module.ts` | nest module | 46 | 1 |  |
+| `ecosystem.spec.ts` | unit test | 386 | — |  |
 | `index.ts` | module | 6 | — |  |
 
 
-## HTTP routes (0)
+## HTTP routes (1)
 
-_This unit exposes no HTTP routes._
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` :37 | Receives cross-repo events from core-newax Event Bus / Communicator |
 
 
 ## Domain events
@@ -72,9 +76,9 @@ _This unit exposes no HTTP routes._
 
 **`EcosystemModule`** (`ecosystem.module.ts`)
 - imports: —
-- controllers: —
-- providers: `HttpEcosystemModuleGatewayClient`, `useExisting: HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `useExisting: HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`
-- exports: `ECOSYSTEM_MODULE_GATEWAY_CLIENT`, `ECOSYSTEM_EVENT_BUS_CLIENT`, `HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`
+- controllers: `EcosystemController`
+- providers: `HttpEcosystemModuleGatewayClient`, `useExisting: HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `useExisting: HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`
+- exports: `ECOSYSTEM_MODULE_GATEWAY_CLIENT`, `ECOSYSTEM_EVENT_BUS_CLIENT`, `HttpEcosystemModuleGatewayClient`, `HttpEcosystemEventBusClient`, `EcosystemEventBridgeService`, `EcosystemInboundService`
 
 
 
@@ -83,7 +87,7 @@ _This unit exposes no HTTP routes._
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `ecosystem.spec.ts` | 9 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient · Ec… |
+| `ecosystem.spec.ts` | 12 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosystemEventBusClient · Ec… |
 
 
 ## Every export in this unit
@@ -93,6 +97,8 @@ _This unit exposes no HTTP routes._
 | `EcosystemEventBridgeService` | class | `ecosystem-event-bridge.service.ts:16` | Bridges internal domain events dispatched by the transactional outbox to the central core-newax Event Bus. |
 | `EcosystemEventBusClient` | interface | `ecosystem-event-bus.client.ts:6` |  |
 | `HttpEcosystemEventBusClient` | class | `ecosystem-event-bus.client.ts:27` |  |
+| `InboundEventProcessResult` | interface | `ecosystem-inbound.service.ts:6` |  |
+| `EcosystemInboundService` | class | `ecosystem-inbound.service.ts:18` | Processes incoming cross-repo events received from core-newax Event Bus / Communicator / nID. |
 | `EcosystemModuleGatewayClient` | interface | `ecosystem-module-gateway.client.ts:8` |  |
 | `HttpEcosystemModuleGatewayClient` | class | `ecosystem-module-gateway.client.ts:18` |  |
 | `ECOSYSTEM_MODULE_GATEWAY_CLIENT` | const | `ecosystem.constants.ts:15` | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
@@ -100,7 +106,9 @@ _This unit exposes no HTTP routes._
 | `EcosystemEventEnvelope` | interface | `ecosystem.constants.ts:22` | Standard cross-repo event envelope across all seven NEWAX repositories, carrying explicit tenant and organiza… |
 | `GatewayRequest` | interface | `ecosystem.constants.ts:47` | Synchronous cross-module RPC request sent through core-newax Module Gateway with multi-tenant isolation conte… |
 | `GatewayResponse` | interface | `ecosystem.constants.ts:65` | Response received from core-newax Module Gateway. |
-| `EcosystemModule` | class | `ecosystem.module.ts:39` |  |
+| `RefundProofCapturedPayload` | interface | `ecosystem.constants.ts:79` | Payload received when Communicator's LiveProof engine captures authenticated live camera proof for a customer… |
+| `EcosystemController` | class | `ecosystem.controller.ts:25` | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
+| `EcosystemModule` | class | `ecosystem.module.ts:45` |  |
 
 
 ---

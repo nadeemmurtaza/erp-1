@@ -3,7 +3,7 @@
 
 # Tests
 
-**432** spec files, **4,784** cases. What is already pinned down — and what is not.
+**432** spec files, **4,787** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -103,7 +103,7 @@ regression or an N+1.
 | `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 9 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an ov… |
 | `apps/api/src/core/common/hash-chain.spec.ts` | core/common | 8 | hash chain |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
-| `apps/api/src/core/ecosystem/ecosystem.spec.ts` | core/ecosystem | 9 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosyste… |
+| `apps/api/src/core/ecosystem/ecosystem.spec.ts` | core/ecosystem | 12 | NEWAX Ecosystem Clients (Enterprise Multi-Tenant) · HttpEcosystemModuleGatewayClient · HttpEcosyste… |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |

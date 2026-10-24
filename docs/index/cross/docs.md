@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**267** markdown documents. These explain **why**; this index only says **where**.
+**616** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -16,12 +16,12 @@
    `ENTERPRISE-SCALE.md` overlap.
 4. Everything else, by topic.
 
-Architectural decisions go in `docs/implementation/DECISIONS.md` — a settled
-decision is not reopened without new evidence.
+Architectural decisions go in `docs/implementation/decisions/` (one file each, indexed by
+`docs/implementation/DECISIONS.md`) — a settled decision is not reopened without new evidence.
 
 ## Outlines
 
-### `.claude/agents/architect.md`  <sub>48 lines</sub>
+### `.claude/agents/architect.md`  <sub>49 lines</sub>
 
 _no second-level headings_
 
@@ -29,7 +29,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `.claude/agents/feature.md`  <sub>44 lines</sub>
+### `.claude/agents/feature.md`  <sub>45 lines</sub>
 
 _no second-level headings_
 
@@ -49,2129 +49,2455 @@ _no second-level headings_
 
 _no second-level headings_
 
+### `.claude/agents/ux.md`  <sub>47 lines</sub>
+
+_no second-level headings_
+
 ### `.claude/agents/verify.md`  <sub>45 lines</sub>
 
 _no second-level headings_
 
 ### `.claude/rules/configuration.md`  <sub>20 lines</sub>
 
-- Environment and configuration  <sub>:14</sub>
+_no second-level headings_
 
 ### `.claude/rules/database.md`  <sub>19 lines</sub>
 
-- Database change protocol  <sub>:10</sub>
+_no second-level headings_
 
-### `.claude/rules/decisions.md`  <sub>26 lines</sub>
+### `.claude/rules/decisions.md`  <sub>28 lines</sub>
 
-- Architectural decision records  <sub>:11</sub>
+_no second-level headings_
 
 ### `.claude/rules/dependencies.md`  <sub>23 lines</sub>
 
-- Dependency standard  <sub>:11</sub>
+_no second-level headings_
 
-### `.claude/rules/design.md`  <sub>136 lines</sub>
+### `.claude/rules/design.md`  <sub>179 lines</sub>
 
-- The design system  <sub>:17</sub>
-- Read the chapter before you build the thing  <sub>:42</sub>
-- The obligations, stated so they can be checked  <sub>:58</sub>
-- Promoting something into the system  <sub>:117</sub>
-- What is not enforced by any command  <sub>:124</sub>
+_no second-level headings_
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
-- Performance engineering  <sub>:13</sub>
+_no second-level headings_
 
-### `.claude/rules/security.md`  <sub>20 lines</sub>
+### `.claude/rules/security.md`  <sub>49 lines</sub>
 
-- Security engineering  <sub>:12</sub>
+_no second-level headings_
 
-### `.claude/rules/services.md`  <sub>31 lines</sub>
+### `.claude/rules/services.md`  <sub>49 lines</sub>
 
-- Error handling  <sub>:14</sub>
-- Observability  <sub>:23</sub>
+_no second-level headings_
 
 ### `.claude/rules/testing.md`  <sub>20 lines</sub>
 
-- Testing standard  <sub>:12</sub>
+_no second-level headings_
 
-### `.claude/rules/ui.md`  <sub>151 lines</sub>
+### `.claude/rules/ui.md`  <sub>217 lines</sub>
 
-- Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:64</sub>
-- No dead ends  <sub>:104</sub>
+_no second-level headings_
 
-### `.github/copilot-instructions.md`  <sub>80 lines</sub>
+### `.claude/skills/feature-scope/SKILL.md`  <sub>225 lines</sub>
+
+_no second-level headings_
+
+### `.claude/skills/restyle/SKILL.md`  <sub>90 lines</sub>
+
+_no second-level headings_
+
+### `.claude/skills/ux-audit/SKILL.md`  <sub>108 lines</sub>
+
+_no second-level headings_
+
+### `.claude/skills/ux-design/SKILL.md`  <sub>122 lines</sub>
+
+_no second-level headings_
+
+### `.claude/skills/ux-review/SKILL.md`  <sub>123 lines</sub>
+
+_no second-level headings_
+
+### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
-### `.junie/guidelines.md`  <sub>80 lines</sub>
-
-- Read the rules first  <sub>:9</sub>
-- Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
-
-### `AGENTS.md`  <sub>80 lines</sub>
+### `.junie/guidelines.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
-### `CLAUDE.md`  <sub>915 lines</sub>
+### `AGENTS.md`  <sub>81 lines</sub>
 
-- The seven laws  <sub>:13</sub>
-- Software engineering, not vibe coding  <sub>:35</sub>
-- Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
-- Scale: the three axes  <sub>:358</sub>
-- Look it up before you search  <sub>:415</sub>
-- The rule index  <sub>:486</sub>
-- Before you open a PR  <sub>:524</sub>
-- Deployment  <sub>:603</sub>
-- NEWAX Engineering Operating Protocol  <sub>:616</sub>
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
-### `CONTRIBUTING.md`  <sub>127 lines</sub>
+### `apps/api/src/modules/README.md`  <sub>35 lines</sub>
 
-- Layout  <sub>:6</sub>
-- Adding a module  <sub>:21</sub>
-- The rules that keep this working  <sub>:52</sub>
-- Before you push  <sub>:104</sub>
-- Local setup  <sub>:114</sub>
+_no second-level headings_
 
-### `DEPLOYMENT.md`  <sub>492 lines</sub>
+### `apps/mobile/README.md`  <sub>36 lines</sub>
 
-- 1. Provision the VPS  <sub>:39</sub>
-- 2. First login: base setup, a deploy user, and firewall  <sub>:53</sub>
-- 3. Install Docker  <sub>:83</sub>
-- 4. DNS  <sub>:100</sub>
-- 5. Clone the repo and create the `production` branch  <sub>:116</sub>
-- 6. First-time bootstrap on the VPS  <sub>:139</sub>
-- 7. GitHub Actions: secrets for automatic deploys  <sub>:240</sub>
-- 8. Day-to-day deploys  <sub>:283</sub>
-- 9. Backups, restore tests and off-site copies  <sub>:324</sub>
-- 10. Disk threshold alerts  <sub>:401</sub>
-- 11. Automatic restart at boot  <sub>:423</sub>
-- 12. Resource limits and connection pooling  <sub>:441</sub>
-- 13. Troubleshooting  <sub>:474</sub>
+_no second-level headings_
+
+### `Architecture.md`  <sub>32 lines</sub>
+
+_no second-level headings_
+
+### `CLAUDE.md`  <sub>866 lines</sub>
+
+_no second-level headings_
+
+### `CONTRIBUTING.md`  <sub>130 lines</sub>
+
+_no second-level headings_
+
+### `DEPLOYMENT.md`  <sub>529 lines</sub>
+
+_no second-level headings_
+
+### `Design.md`  <sub>41 lines</sub>
+
+_no second-level headings_
 
 ### `docs/brand/README.md`  <sub>97 lines</sub>
 
-- Files  <sub>:6</sub>
-- The artwork  <sub>:21</sub>
-- Colour  <sub>:47</sub>
-- Clear space and minimum size  <sub>:60</sub>
-- Don't  <sub>:74</sub>
-- Still open  <sub>:83</sub>
+_no second-level headings_
 
-### `docs/design/00-principles.md`  <sub>83 lines</sub>
+### `docs/design/accessibility/07-accessibility.md`  <sub>166 lines</sub>
 
-- The constitution  <sub>:8</sub>
-- Design philosophy  <sub>:13</sub>
-- Product principles  <sub>:29</sub>
-- UX principles  <sub>:42</sub>
-- Visual principles  <sub>:56</sub>
-- Decision principles  <sub>:67</sub>
+_no second-level headings_
 
-### `docs/design/01-foundations.md`  <sub>175 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>481 lines</sub>
 
-- Why tokens and not values  <sub>:12</sub>
-- Colour  <sub>:22</sub>
-- Typography  <sub>:36</sub>
-- Spacing — *unbuilt*  <sub>:49</sub>
-- Size — *unbuilt*  <sub>:71</sub>
-- Radius  <sub>:82</sub>
-- Shadow and elevation — *unbuilt*  <sub>:89</sub>
-- Z-index / layering — *unbuilt*  <sub>:101</sub>
-- Breakpoints  <sub>:121</sub>
-- Motion tokens — *unbuilt*  <sub>:132</sub>
-- Where tokens live  <sub>:165</sub>
+_no second-level headings_
 
-### `docs/design/02-layout.md`  <sub>121 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>235 lines</sub>
 
-- The page skeleton  <sub>:8</sub>
-- Grid  <sub>:21</sub>
-- Density  <sub>:35</sub>
-- The seven screens  <sub>:50</sub>
-- Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:79</sub>
-- The POS is a different animal  <sub>:92</sub>
-- Verifying  <sub>:105</sub>
+_no second-level headings_
 
-### `docs/design/03-components.md`  <sub>113 lines</sub>
+### `docs/design/content/06-content.md`  <sub>130 lines</sub>
 
-- The ladder  <sub>:10</sub>
-- Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:53</sub>
-- Patterns — *undocumented*  <sub>:64</sub>
-- Templates — *undocumented*  <sub>:81</sub>
-- Component contract  <sub>:92</sub>
-- What never gets hand-rolled  <sub>:107</sub>
+_no second-level headings_
 
-### `docs/design/04-states.md`  <sub>141 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>324 lines</sub>
 
-- The rule  <sub>:8</sub>
-- The state matrix  <sub>:14</sub>
-- Focus is not optional  <sub>:36</sub>
-- Disabled must explain itself  <sub>:42</sub>
-- Empty states  <sub>:49</sub>
-- Loading  <sub>:66</sub>
-- Validation  <sub>:81</sub>
-- Confirmation and destructive actions  <sub>:90</sub>
-- Permission states  <sub>:105</sub>
-- Notifications and system feedback  <sub>:119</sub>
-- Offline and degraded — the POS case  <sub>:127</sub>
+_no second-level headings_
 
-### `docs/design/05-motion.md`  <sub>193 lines</sub>
+### `docs/design/layout-composition/02-layout.md`  <sub>182 lines</sub>
 
-- The one test  <sub>:13</sub>
-- What motion may communicate  <sub>:28</sub>
-- The language  <sub>:43</sub>
-- Hierarchy of motion  <sub>:61</sub>
-- Continuity over replacement  <sub>:78</sub>
-- Orchestration  <sub>:94</sub>
-- Micro-interactions  <sub>:103</sub>
-- Scroll  <sub>:119</sub>
-- Responsive motion  <sub>:131</sub>
-- Reduced motion — required  <sub>:142</sub>
-- Performance  <sub>:161</sub>
-- Rejection list  <sub>:172</sub>
-- Benchmark, not template  <sub>:183</sub>
+_no second-level headings_
 
-### `docs/design/06-content.md`  <sub>121 lines</sub>
+### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
 
-- Voice  <sub>:10</sub>
-- Terminology — one word per concept  <sub>:29</sub>
-- Labels  <sub>:48</sub>
-- Microcopy  <sub>:58</sub>
-- Error messages  <sub>:66</sub>
-- Content hierarchy  <sub>:87</sub>
-- Localisation  <sub>:95</sub>
-- Verifying  <sub>:108</sub>
+_no second-level headings_
 
-### `docs/design/07-accessibility.md`  <sub>157 lines</sub>
+### `docs/design/layout-composition/14-navigation.md`  <sub>207 lines</sub>
 
-- Why this is grouped with i18n  <sub>:15</sub>
-- The target  <sub>:22</sub>
-- Keyboard  <sub>:26</sub>
-- Focus  <sub>:42</sub>
-- Screen readers  <sub>:53</sub>
-- Contrast  <sub>:68</sub>
-- Touch targets  <sub>:90</sub>
-- Reduced motion  <sub>:100</sub>
-- Semantic structure  <sub>:109</sub>
-- Right-to-left  <sub>:116</sub>
-- Internationalisation beyond direction  <sub>:133</sub>
-- What would make this real  <sub>:140</sub>
+_no second-level headings_
 
-### `docs/design/08-governance.md`  <sub>145 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>340 lines</sub>
 
-- Why a design system needs governance at all  <sub>:11</sub>
-- Naming  <sub>:19</sub>
-- What belongs in the system, and what does not  <sub>:40</sub>
-- Contribution  <sub>:60</sub>
-- Versioning  <sub>:81</sub>
-- Deprecation  <sub>:96</sub>
-- Change approval  <sub>:117</sub>
-- Keeping this system honest  <sub>:129</sub>
+_no second-level headings_
 
-### `docs/design/09-quality.md`  <sub>176 lines</sub>
+### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
-- The two columns  <sub>:12</sub>
-- Regression  <sub>:124</sub>
-- The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:165</sub>
+_no second-level headings_
 
-### `docs/design/10-laws.md`  <sub>850 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>942 lines</sub>
 
-- Why a catalogue, and why rulings  <sub>:19</sub>
-- PER · Perception  <sub>:59</sub>
-- COG · Cognition  <sub>:150</sub>
-- ACT · Action and time  <sub>:291</sub>
-- HEU · Nielsen's ten, ruled  <sub>:381</sub>
-- TYP · Typography  <sub>:439</sub>
-- COL · Colour  <sub>:501</sub>
-- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
-- MOT · Motion  <sub>:642</sub>
-- ACC · Accessibility  <sub>:690</sub>
-- GLO · Globalization  <sub>:752</sub>
-- What this chapter does not settle  <sub>:815</sub>
-- Sources  <sub>:830</sub>
+_no second-level headings_
 
-### `docs/design/11-workflow.md`  <sub>260 lines</sub>
+### `docs/design/process-governance/08-governance.md`  <sub>147 lines</sub>
 
-- The thing that actually goes wrong  <sub>:14</sub>
-- FLO · The laws  <sub>:33</sub>
-- Patterns  <sub>:164</sub>
-- What must be built  <sub>:232</sub>
-- Sources  <sub>:251</sub>
+_no second-level headings_
 
-### `docs/design/12-permissions.md`  <sub>214 lines</sub>
+### `docs/design/process-governance/09-quality.md`  <sub>189 lines</sub>
 
-- The problem, stated precisely  <sub>:13</sub>
-- PRM · The laws  <sub>:35</sub>
-- Patterns  <sub>:163</sub>
-- What must be built  <sub>:189</sub>
-- Sources  <sub>:207</sub>
+_no second-level headings_
 
-### `docs/design/13-composition.md`  <sub>197 lines</sub>
+### `docs/design/process-governance/11-workflow.md`  <sub>260 lines</sub>
 
-- What is actually being shipped  <sub>:14</sub>
-- MOD · The laws  <sub>:38</sub>
-- Patterns  <sub>:148</sub>
-- What must be built  <sub>:179</sub>
-- Sources  <sub>:190</sub>
+_no second-level headings_
 
-### `docs/design/14-navigation.md`  <sub>198 lines</sub>
+### `docs/design/process-governance/12-permissions.md`  <sub>220 lines</sub>
 
-- The scale problem  <sub>:13</sub>
-- NAV · The laws  <sub>:30</sub>
-- Patterns  <sub>:127</sub>
-- What must be built  <sub>:178</sub>
-- Sources  <sub>:191</sub>
+_no second-level headings_
 
-### `docs/design/15-integrity.md`  <sub>257 lines</sub>
+### `docs/design/process-governance/15-integrity.md`  <sub>260 lines</sub>
 
-- Why this chapter is different  <sub>:17</sub>
-- ITG · The laws  <sub>:35</sub>
-- The build order  <sub>:157</sub>
-- What a person still has to do  <sub>:230</sub>
-- Sources  <sub>:250</sub>
+_no second-level headings_
 
-### `docs/design/README.md`  <sub>109 lines</sub>
+### `docs/design/README.md`  <sub>120 lines</sub>
 
-- Precedence, before anything else  <sub>:12</sub>
-- The chapters  <sub>:24</sub>
-- How to use it  <sub>:45</sub>
-- The law families  <sub>:63</sub>
-- An honest statement of maturity  <sub>:76</sub>
-- The one thing this system refuses to do  <sub>:102</sub>
+_no second-level headings_
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
-- What runs, and what it reuses  <sub>:6</sub>
-- Read this first  <sub>:35</sub>
-- Setup  <sub>:57</sub>
-- Reading the mail  <sub>:267</sub>
-- Backups  <sub>:282</sub>
-- Staying out of spam  <sub>:303</sub>
-- Warming up  <sub>:348</sub>
-- Switching to a relay  <sub>:366</sub>
-- How it works  <sub>:381</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/_agent-cluster.md`  <sub>944 lines</sub>
-
-- Headline  <sub>:6</sub>
-- Duplicates  <sub>:236</sub>
-- Conflicts  <sub>:429</sub>
-- Cuts  <sub>:521</sub>
-- Catalogue Only  <sub>:528</sub>
-
-### `docs/erp-lenses/_agent-draft-auditor.md`  <sub>25 lines</sub>
-
-- Path  <sub>:6</sub>
-- Stance  <sub>:10</sub>
-- Lenses Included  <sub>:14</sub>
-- Line Count  <sub>:18</sub>
-- Summary  <sub>:22</sub>
-
-### `docs/erp-lenses/_agent-draft-teacher.md`  <sub>35 lines</sub>
-
-- Path  <sub>:6</sub>
-- Stance  <sub>:10</sub>
-- Lenses Included  <sub>:14</sub>
-- Line Count  <sub>:18</sub>
-- Summary  <sub>:22</sub>
-
-### `docs/erp-lenses/_agent-draft-terse.md`  <sub>37 lines</sub>
-
-- Path  <sub>:6</sub>
-- Stance  <sub>:10</sub>
-- Lenses Included  <sub>:14</sub>
-- Line Count  <sub>:18</sub>
-- Summary  <sub>:22</sub>
-
-### `docs/erp-lenses/_agent-final-writer.md`  <sub>70 lines</sub>
-
-- Index Path  <sub>:6</sub>
-- Section Path  <sub>:10</sub>
-- Conflicts Path  <sub>:14</sub>
-- Decisions Path  <sub>:18</sub>
-- Section Line Count  <sub>:22</sub>
-- Headline Lens Count  <sub>:26</sub>
-- Catalogue Lens Count  <sub>:30</sub>
-- Groups  <sub>:34</sub>
-- Notes  <sub>:43</sub>
-
-### `docs/erp-lenses/_agent-gap-departments.md`  <sub>46 lines</sub>
-
-- Angle  <sub>:6</sub>
-- Verdict  <sub>:10</sub>
-- Gaps  <sub>:14</sub>
-
-### `docs/erp-lenses/_agent-gap-editions-and-volume.md`  <sub>28 lines</sub>
-
-- Angle  <sub>:6</sub>
-- Verdict  <sub>:10</sub>
-- Gaps  <sub>:14</sub>
-
-### `docs/erp-lenses/_agent-gap-innovation.md`  <sub>46 lines</sub>
-
-- Angle  <sub>:6</sub>
-- Verdict  <sub>:10</sub>
-- Gaps  <sub>:14</sub>
-
-### `docs/erp-lenses/_agent-gap-repo-blindspots.md`  <sub>22 lines</sub>
-
-- Angle  <sub>:6</sub>
-- Verdict  <sub>:10</sub>
-- Gaps  <sub>:14</sub>
-
-### `docs/erp-lenses/_agent-gap-roles-ranks.md`  <sub>40 lines</sub>
-
-- Angle  <sub>:6</sub>
-- Verdict  <sub>:10</sub>
-- Gaps  <sub>:14</sub>
-
-### `docs/erp-lenses/_agent-integrate.md`  <sub>20 lines</sub>
+### `docs/erp-lenses/_meta/_agent-cluster.md`  <sub>944 lines</sub>
 
 _no second-level headings_
 
-### `docs/erp-lenses/_agent-judge-auditor.md`  <sub>84 lines</sub>
-
-- Scores  <sub>:6</sub>
-- Winner  <sub>:62</sub>
-- Must Fix  <sub>:66</sub>
-
-### `docs/erp-lenses/_agent-judge-engineer.md`  <sub>76 lines</sub>
-
-- Winner  <sub>:6</sub>
-- Must Fix  <sub>:10</sub>
-- Scores  <sub>:20</sub>
-
-### `docs/erp-lenses/_agent-judge-owner.md`  <sub>76 lines</sub>
-
-- Winner  <sub>:6</sub>
-- Must Fix  <sub>:10</sub>
-- Scores  <sub>:20</sub>
-
-### `docs/erp-lenses/_agent-manifest.md`  <sub>175 lines</sub>
+### `docs/erp-lenses/_meta/_agent-draft-auditor.md`  <sub>25 lines</sub>
 
 _no second-level headings_
 
-### `docs/erp-lenses/_canonical-decisions.md`  <sub>828 lines</sub>
-
-- Ruling 1. The ledger wins. Erasure pseudonymises the reference; it does not touch the row  <sub>:26</sub>
-- Ruling 2. The classification decides, and it is fixed at design time  <sub>:55</sub>
-- Ruling 3. Dry run wins on the decision; the single writer wins on the write  <sub>:74</sub>
-- Ruling 4. Schema is not UI. The column ships; the control waits for a second row  <sub>:95</sub>
-- Ruling 5. Write the column; do not write the rollup  <sub>:113</sub>
-- Ruling 6. Deactivation removes authority synchronously and never closes a fact synchronously  <sub>:132</sub>
-- Ruling 7. Scope wins over comparability, and the surface says so on its face  <sub>:154</sub>
-- Ruling 8. The registry is not relaxed. An upward flow is a fact or it does not exist  <sub>:170</sub>
-- Ruling 9. Two audit classes, declared per call site  <sub>:204</sub>
-- Ruling 10. A rule that must differ by brand does not become a `Setting`  <sub>:228</sub>
-- Ruling 11. Ruling 4 governs scope columns, not edges. An edge ships nullable, with null's meaning written down  <sub>:247</sub>
-- Ruling 12. Rank is its own axis. `Role.ceiling` is refused; a per-assignment override is allowed only above a rank  <sub>:282</sub>
-- Ruling 13. Scope-match first, then take the highest ceiling among the grants that survive  <sub>:313</sub>
-- Ruling 14. The guard refuses a revoke. It never refuses a deactivation — the deactivation names a successor  <sub>:344</sub>
-- Ruling 15. The document keeps its snapshot. Translation is a second rate, applied at the report, never written back  <sub>:380</sub>
-- Ruling 16. A control short of people degrades into a named, counted, recorded exception — never into silence and never into a wall  <sub>:425</sub>
-- Group 1 — The actor  <sub>:483</sub>
-- Group 2 — The authority  <sub>:515</sub>
-- Group 3 — The act in the world  <sub>:581</sub>
-- Group 4 — The money  <sub>:602</sub>
-- Group 5 — The scale  <sub>:655</sub>
-- Group 6 — The afterlife  <sub>:690</sub>
-- Catalogue merges  <sub>:757</sub>
-
-### `docs/erp-lenses/_claude-md-feature-scope.md`  <sub>212 lines</sub>
-
-- Feature scope: build the whole capability, not one slice of it  <sub>:1</sub>
-
-### `docs/erp-lenses/_cluster-analysis.md`  <sub>675 lines</sub>
-
-- The six groups, and the order they are in  <sub>:24</sub>
-- The duplicate map  <sub>:109</sub>
-- The conflicts  <sub>:333</sub>
-- The cut list  <sub>:568</sub>
-- The catalogue  <sub>:610</sub>
-
-### `docs/erp-lenses/_conflicts.md`  <sub>645 lines</sub>
-
-- 1. Immutable evidence against the right to erasure  <sub>:37</sub>
-- 2. A branch that must keep trading offline against an approval before the act  <sub>:84</sub>
-- 3. Dry run against the single writer  <sub>:122</sub>
-- 4. A scope column on every row against making the product look small  <sub>:157</sub>
-- 5. More dimensions on every fact against what the feature costs at scale  <sub>:194</sub>
-- 6. Closing the leaver's shift against never fabricating a count  <sub>:232</sub>
-- 7. Lists that open scoped against figures that must reconcile  <sub>:270</sub>
-- 8. Master data that must travel up against a registry that forbids it  <sub>:303</sub>
-- 9. Evidence-class audit against never blocking the sale  <sub>:335</sub>
-- 10. A rule that differs by brand against `Setting`'s actual shape  <sub>:369</sub>
-- 11. A scope column that must be NOT NULL against a ladder whose top rung has nobody above it  <sub>:405</sub>
-- 12. One ceiling per role name against ranks being an axis of their own  <sub>:448</sub>
-- 13. One rank per act against a resolver that unions every grant  <sub>:488</sub>
-- 14. Stripping a leaver's grants on the spot against a deployment that must stay administrable  <sub>:524</sub>
-- 15. A rate snapshotted once against a consolidation that must re-rate the period  <sub>:565</sub>
-- 16. A control that needs two people against a roster that has one  <sub>:608</sub>
-
-### `docs/erp-lenses/_draft-auditor.md`  <sub>194 lines</sub>
-
-- Feature scope: build the whole capability, not one slice of it  <sub>:6</sub>
-
-### `docs/erp-lenses/_draft-teacher.md`  <sub>194 lines</sub>
-
-- Feature scope: build the whole capability, not one slice of it  <sub>:7</sub>
-
-### `docs/erp-lenses/_draft-terse.md`  <sub>194 lines</sub>
-
-- Feature scope: build the whole capability, not one slice of it  <sub>:6</sub>
-
-### `docs/erp-lenses/_gap-departments.md`  <sub>211 lines</sub>
-
-- Checked and found already covered  <sub>:16</sub>
-- Gaps  <sub>:74</sub>
-- Verdict  <sub>:198</sub>
-
-### `docs/erp-lenses/_gap-editions-and-volume.md`  <sub>217 lines</sub>
-
-- What I checked and found already covered  <sub>:23</sub>
-- Gaps  <sub>:88</sub>
-- Verdict  <sub>:198</sub>
-
-### `docs/erp-lenses/_gap-innovation.md`  <sub>216 lines</sub>
-
-- What I checked and found already covered  <sub>:18</sub>
-- The gaps  <sub>:51</sub>
-- Result  <sub>:208</sub>
-
-### `docs/erp-lenses/_gap-repo-blindspots.md`  <sub>108 lines</sub>
-
-- What I checked and found already covered  <sub>:10</sub>
-- The gap  <sub>:51</sub>
-
-### `docs/erp-lenses/_gap-roles-ranks.md`  <sub>237 lines</sub>
-
-- Already covered — checked by name, not assumed  <sub>:15</sub>
-- Gaps  <sub>:50</sub>
-- Verdict  <sub>:224</sub>
-
-### `docs/erp-lenses/_index.md`  <sub>548 lines</sub>
-
-- How to run the pass  <sub>:14</sub>
-- How to read the table  <sub>:41</sub>
-- Promoted from the catalogue, after the fact  <sub>:57</sub>
-- The catalogue  <sub>:110</sub>
-- The six groups, and what each is for  <sub>:330</sub>
-- What this repository does not model yet  <sub>:366</sub>
-
-### `docs/erp-lenses/_integrate.md`  <sub>272 lines</sub>
-
-- What was promoted: nothing, in either pass  <sub>:16</sub>
-- What was demoted, and from where  <sub>:105</sub>
-- What was merged  <sub>:126</sub>
-- The six rulings the backfill forced  <sub>:157</sub>
-- Citations repaired during the merge  <sub>:196</sub>
-- The seven gaps that had no file, and now do  <sub>:245</sub>
-- What this merge did not do  <sub>:264</sub>
-
-### `docs/erp-lenses/_judge-auditor.md`  <sub>256 lines</sub>
-
-- Who is judging, and against what  <sub>:7</sub>
-- Score table  <sub>:18</sub>
-- Repo claims checked  <sub>:142</sub>
-- Winner  <sub>:163</sub>
-- What the winner must fix  <sub>:172</sub>
-- What to graft from the losers  <sub>:204</sub>
-
-### `docs/erp-lenses/_judge-engineer.md`  <sub>264 lines</sub>
-
-- What I verified in the repository  <sub>:11</sub>
-- Score table  <sub>:52</sub>
-- Winner: `_draft-terse.md`  <sub>:187</sub>
-- What the winner must fix  <sub>:194</sub>
-- Graft from the losers  <sub>:225</sub>
-
-### `docs/erp-lenses/_judge-owner.md`  <sub>261 lines</sub>
-
-- Who is judging  <sub>:3</sub>
-- What I verified before scoring fidelity  <sub>:17</sub>
-- The table  <sub>:63</sub>
-- Winner: `_draft-terse.md`  <sub>:177</sub>
-- What the winner must fix  <sub>:187</sub>
-- What to graft from the losers  <sub>:216</sub>
-
-### `docs/erp-lenses/00-uagent.md`  <sub>299 lines</sub>
-
-- Topology and editions  <sub>:10</sub>
-- Identity, permissions and scope  <sub>:63</sub>
-- Money, documents and the ledger  <sub>:110</sub>
-- Operations  <sub>:151</sub>
-- Platform machinery  <sub>:192</sub>
-- Surfaces and house rules  <sub>:233</sub>
-- What does not exist yet  <sub>:256</sub>
-
-### `docs/erp-lenses/00a-ground-topology.md`  <sub>57 lines</sub>
-
-- Facts  <sub>:7</sub>
-- The five "where/which" concepts (all read from schema files)  <sub>:11</sub>
-- Rulings that constrain feature scope  <sub>:29</sub>
-- Things that do not exist  <sub>:32</sub>
-- Where the code assumes one location / one brand  <sub>:39</sub>
-- Where a narrow build goes wrong here  <sub>:48</sub>
-
-### `docs/erp-lenses/00b-ground-identity.md`  <sub>83 lines</sub>
-
-- Facts  <sub>:7</sub>
-- The catalog (packages/shared/src/permissions.ts, 450 lines)  <sub>:9</sub>
-- How a role becomes a grant  <sub>:21</sub>
-- Scope  <sub>:38</sub>
-- Rank / grade / hierarchy / delegation  <sub>:48</sub>
-- Non-staff actors  <sub>:54</sub>
-- The seedPermissions/seedRoles trap  <sub>:65</sub>
-- Where a narrow build goes wrong here  <sub>:71</sub>
-
-### `docs/erp-lenses/00c-ground-money.md`  <sub>57 lines</sub>
-
-- Facts  <sub>:7</sub>
-- Where a narrow build goes wrong here  <sub>:47</sub>
-
-### `docs/erp-lenses/00d-ground-operations.md`  <sub>68 lines</sub>
-
-- Facts  <sub>:7</sub>
-- The single writer, and its one deliberate twin  <sub>:11</sub>
-- Writers per movement kind  <sub>:20</sub>
-- POS shift  <sub>:31</sub>
-- Stock count → variance  <sub>:34</sub>
-- Transfer  <sub>:37</sub>
-- Work order → BOM  <sub>:40</sub>
-- Where 10k products × 100 locations strains  <sub>:43</sub>
-- Where a narrow build goes wrong here  <sub>:57</sub>
-
-### `docs/erp-lenses/00e-ground-platform.md`  <sub>44 lines</sub>
-
-- Facts  <sub>:7</sub>
-- Where a narrow build goes wrong here  <sub>:33</sub>
-
-### `docs/erp-lenses/00f-ground-surfaces.md`  <sub>62 lines</sub>
-
-- Facts  <sub>:7</sub>
-- CLAUDE.md voice and format (873 lines, root of repo)  <sub>:9</sub>
-- Exact line ranges  <sub>:13</sub>
-- The thirty prior lenses (WO-22-lens-workflow-results.md, 539 lines, 10 domains x 3)  <sub>:20</sub>
-- Surfaces a capability must appear on to be reachable  <sub>:35</sub>
-- What does not exist (verified)  <sub>:44</sub>
-- Where a narrow build goes wrong here  <sub>:53</sub>
-
-### `docs/erp-lenses/01-identity-actor-types.md`  <sub>169 lines</sub>
-
-- Lens: The actor with three tables  <sub>:11</sub>
-- Lens: The credential with no permission key  <sub>:47</sub>
-- Lens: The access with no end date  <sub>:82</sub>
-- Not modelled yet  <sub>:115</sub>
-- Hardening record  <sub>:127</sub>
+### `docs/erp-lenses/_meta/_agent-draft-teacher.md`  <sub>35 lines</sub>
 
-### `docs/erp-lenses/01g-generate-identity-actor-types.md`  <sub>41 lines</sub>
+_no second-level headings_
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+### `docs/erp-lenses/_meta/_agent-draft-terse.md`  <sub>37 lines</sub>
 
-### `docs/erp-lenses/01h-harden-identity-actor-types.md`  <sub>36 lines</sub>
+_no second-level headings_
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-
-### `docs/erp-lenses/02-roles-ranks-orgchart.md`  <sub>216 lines</sub>
+### `docs/erp-lenses/_meta/_agent-final-writer.md`  <sub>70 lines</sub>
 
-- Lens: Rank is a ceiling, not a location  <sub>:11</sub>
-- Lens: Who may mint a role, and what a hundred of them costs  <sub>:41</sub>
-- Lens: The grant that never expires  <sub>:72</sub>
-- Lens: The actor with no role  <sub>:102</sub>
-- Not modelled yet  <sub>:133</sub>
-- Hardening record  <sub>:147</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/02g-generate-roles-ranks-orgchart.md`  <sub>49 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-departments.md`  <sub>46 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/02h-harden-roles-ranks-orgchart.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-editions-and-volume.md`  <sub>28 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/03-segregation-of-duties.md`  <sub>171 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-innovation.md`  <sub>46 lines</sub>
 
-- Lens: The conflict matrix has no home  <sub>:10</sub>
-- Lens: Detected at grant or at act  <sub>:41</sub>
-- Lens: Who counts the drawer they held  <sub>:78</sub>
-- Not modelled yet  <sub>:106</sub>
-- Hardening record  <sub>:121</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/03g-generate-segregation-of-duties.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-repo-blindspots.md`  <sub>22 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/03h-harden-segregation-of-duties.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-roles-ranks.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/04-approval-delegation.md`  <sub>128 lines</sub>
+### `docs/erp-lenses/_meta/_agent-integrate.md`  <sub>20 lines</sub>
 
-- Lens: The threshold nobody approves alone  <sub>:10</sub>
-- Lens: Acting cover has no clock  <sub>:48</sub>
-- Lens: The approval orphaned by a leaver  <sub>:81</sub>
-- Not modelled yet  <sub>:112</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/04g-generate-approval-delegation.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-auditor.md`  <sub>84 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/04h-harden-approval-delegation.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-engineer.md`  <sub>76 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/05-audit-evidence-hold.md`  <sub>159 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-owner.md`  <sub>76 lines</sub>
 
-- Lens: The trigger AuditLog doesn't have  <sub>:10</sub>
-- Lens: Who read it, not just who wrote it  <sub>:42</sub>
-- Lens: The hold that beats the delete button  <sub>:67</sub>
-- Not modelled yet  <sub>:93</sub>
-- Hardening record  <sub>:107</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/05g-generate-audit-evidence-hold.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/_meta/_agent-manifest.md`  <sub>175 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/05h-harden-audit-evidence-hold.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/_meta/_canonical-decisions.md`  <sub>828 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/06-workforce-shifts-jml.md`  <sub>169 lines</sub>
+### `docs/erp-lenses/_meta/_claude-md-feature-scope.md`  <sub>212 lines</sub>
 
-- Lens: The leaver keeps the keys  <sub>:11</sub>
-- Lens: Branch means database, not location  <sub>:44</sub>
-- Lens: The column with no producer  <sub>:79</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:126</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/06g-generate-workforce-shifts-jml.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/_meta/_cluster-analysis.md`  <sub>675 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/06h-harden-workforce-shifts-jml.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/_meta/_conflicts.md`  <sub>645 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/07-money-integrity-gl.md`  <sub>190 lines</sub>
+### `docs/erp-lenses/_meta/_draft-auditor.md`  <sub>194 lines</sub>
 
-- Lens: The unwritten posting rule  <sub>:12</sub>
-- Lens: Every column or none  <sub>:51</sub>
-- Lens: The period that already moved  <sub>:86</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:140</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/07g-generate-money-integrity-gl.md`  <sub>43 lines</sub>
+### `docs/erp-lenses/_meta/_draft-teacher.md`  <sub>194 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/07h-harden-money-integrity-gl.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/_meta/_draft-terse.md`  <sub>194 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/08-tax-jurisdiction-invoice.md`  <sub>214 lines</sub>
+### `docs/erp-lenses/_meta/_gap-departments.md`  <sub>211 lines</sub>
 
-- Lens: One tax regime, many legal entities  <sub>:11</sub>
-- Lens: Number series, one legal entity at a time  <sub>:43</sub>
-- Lens: Tax point is not the GL date  <sub>:76</sub>
-- Lens: The credit note is a filed document, not a status flip  <sub>:103</sub>
-- Not modelled yet  <sub>:139</sub>
-- Hardening record  <sub>:153</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/08g-generate-tax-jurisdiction-invoice.md`  <sub>47 lines</sub>
+### `docs/erp-lenses/_meta/_gap-editions-and-volume.md`  <sub>217 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/08h-harden-tax-jurisdiction-invoice.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/_meta/_gap-innovation.md`  <sub>216 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/09-treasury-cash-reconciliation.md`  <sub>157 lines</sub>
+### `docs/erp-lenses/_meta/_gap-repo-blindspots.md`  <sub>108 lines</sub>
 
-- Lens: One ledger line for every drawer and every bank  <sub>:10</sub>
-- Lens: The overshort that vanishes  <sub>:44</sub>
-- Lens: Reconciliation with nothing to reconcile against  <sub>:77</sub>
-- Not modelled yet  <sub>:107</sub>
-- Hardening record  <sub>:119</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/09g-generate-treasury-cash-reconciliation.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/_meta/_gap-roles-ranks.md`  <sub>237 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/09h-harden-treasury-cash-reconciliation.md`  <sub>39 lines</sub>
+### `docs/erp-lenses/_meta/_index.md`  <sub>550 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/10-costing-transfer-pricing.md`  <sub>218 lines</sub>
+### `docs/erp-lenses/_meta/_integrate.md`  <sub>272 lines</sub>
 
-- Lens: Transfer price fixed at cost  <sub>:12</sub>
-- Lens: Opt-in cost redaction  <sub>:51</sub>
-- Lens: The ledger's five unfilled columns  <sub>:90</sub>
-- Not modelled yet  <sub>:130</sub>
-- Hardening record  <sub>:146</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/10g-generate-costing-transfer-pricing.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/_meta/_judge-auditor.md`  <sub>256 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/10h-harden-costing-transfer-pricing.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/_meta/_judge-engineer.md`  <sub>264 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/11-pricing-discount-governance.md`  <sub>66 lines</sub>
+### `docs/erp-lenses/_meta/_judge-owner.md`  <sub>261 lines</sub>
 
-- Lens: The price that wins  <sub>:11</sub>
-- Lens: The number the auditor cannot see  <sub>:23</sub>
-- Lens: The till has no floor  <sub>:35</sub>
-- Not modelled yet  <sub>:47</sub>
-- Hardening record  <sub>:55</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/11g-generate-pricing-discount-governance.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/approval-delegation/04-approval-delegation.md`  <sub>128 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/11h-harden-pricing-discount-governance.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/approval-delegation/04g-generate-approval-delegation.md`  <sub>42 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/12-credit-receivables.md`  <sub>157 lines</sub>
+### `docs/erp-lenses/approval-delegation/04h-harden-approval-delegation.md`  <sub>40 lines</sub>
 
-- Lens: The receipt that doesn't find its bill  <sub>:10</sub>
-- Lens: The status nobody checks  <sub>:42</sub>
-- Lens: One customer, two ledgers  <sub>:68</sub>
-- Not modelled yet  <sub>:97</sub>
-- Hardening record  <sub>:113</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/12g-generate-credit-receivables.md`  <sub>44 lines</sub>
+### `docs/erp-lenses/assets-facilities-maintenance/37-assets-facilities-maintenance.md`  <sub>153 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/12h-harden-credit-receivables.md`  <sub>45 lines</sub>
+### `docs/erp-lenses/assets-facilities-maintenance/37g-generate-assets-facilities-maintenance.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/13-procurement-supplier-lifecycle.md`  <sub>162 lines</sub>
+### `docs/erp-lenses/assets-facilities-maintenance/37h-harden-assets-facilities-maintenance.md`  <sub>43 lines</sub>
 
-- Lens: The bill nobody checked  <sub>:10</sub>
-- Lens: Five commitments, one key  <sub>:50</sub>
-- Lens: A boolean is not a lifecycle  <sub>:86</sub>
-- Not modelled yet  <sub>:119</sub>
-- Hardening record  <sub>:131</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/13g-generate-procurement-supplier-lifecycle.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/audit-evidence-hold/05-audit-evidence-hold.md`  <sub>159 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/13h-harden-procurement-supplier-lifecycle.md`  <sub>37 lines</sub>
+### `docs/erp-lenses/audit-evidence-hold/05g-generate-audit-evidence-hold.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/14-planning-replenishment.md`  <sub>208 lines</sub>
+### `docs/erp-lenses/audit-evidence-hold/05h-harden-audit-evidence-hold.md`  <sub>35 lines</sub>
 
-- Lens: The reorder point has no address  <sub>:10</sub>
-- Lens: Not enough to go around  <sub>:49</sub>
-- Lens: A forecast is not a commitment  <sub>:92</sub>
-- Not modelled yet  <sub>:138</sub>
-- Hardening record  <sub>:156</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/14g-generate-planning-replenishment.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/automation-and-ai-surface/32-automation-and-ai-surface.md`  <sub>190 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/14h-harden-planning-replenishment.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/automation-and-ai-surface/32g-generate-automation-and-ai-surface.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/15-warehouse-logistics-fleet.md`  <sub>170 lines</sub>
+### `docs/erp-lenses/automation-and-ai-surface/32h-harden-automation-and-ai-surface.md`  <sub>37 lines</sub>
 
-- Lens: Bins are not built, locations are the floor  <sub>:9</sub>
-- Lens: The handoff that has no signer  <sub>:38</sub>
-- Lens: Shortage with no reason, no evidence  <sub>:75</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:128</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/15g-generate-warehouse-logistics-fleet.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/channels-franchise-wholesale/19-channels-franchise-wholesale.md`  <sub>240 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/15h-harden-warehouse-logistics-fleet.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/channels-franchise-wholesale/19g-generate-channels-franchise-wholesale.md`  <sub>49 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/16-production-bom-subcontract.md`  <sub>149 lines</sub>
+### `docs/erp-lenses/channels-franchise-wholesale/19h-harden-channels-franchise-wholesale.md`  <sub>43 lines</sub>
 
-- Lens: The cloth that leaves the building  <sub>:9</sub>
-- Lens: The scrap that has no reason code  <sub>:48</sub>
-- Not modelled yet  <sub>:86</sub>
-- Hardening record  <sub>:100</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/16g-generate-production-bom-subcontract.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/cost-to-serve/29-cost-to-serve.md`  <sub>185 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/16h-harden-production-bom-subcontract.md`  <sub>32 lines</sub>
+### `docs/erp-lenses/cost-to-serve/29g-generate-cost-to-serve.md`  <sub>40 lines</sub>
 
-- Kept (2)  <sub>:7</sub>
-- Killed (1)  <sub>:21</sub>
-- Citations corrected (1)  <sub>:25</sub>
-- Not modelled in this repo today  <sub>:29</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/17-merchandising-assortment.md`  <sub>172 lines</sub>
+### `docs/erp-lenses/cost-to-serve/29h-harden-cost-to-serve.md`  <sub>40 lines</sub>
 
-- Lens: Carried, not just in stock  <sub>:11</sub>
-- Lens: No such thing as a store grade  <sub>:44</sub>
-- Lens: The new store's first delivery  <sub>:76</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:125</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/17g-generate-merchandising-assortment.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/costing-transfer-pricing/10-costing-transfer-pricing.md`  <sub>218 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/17h-harden-merchandising-assortment.md`  <sub>39 lines</sub>
+### `docs/erp-lenses/costing-transfer-pricing/10g-generate-costing-transfer-pricing.md`  <sub>42 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/18-master-data-taxonomy.md`  <sub>185 lines</sub>
+### `docs/erp-lenses/costing-transfer-pricing/10h-harden-costing-transfer-pricing.md`  <sub>36 lines</sub>
 
-- Lens: The propose-up path that never opens  <sub>:10</sub>
-- Lens: The exact-string gate  <sub>:46</sub>
-- Lens: One column, one unit, forever  <sub>:80</sub>
-- Not modelled yet  <sub>:120</sub>
-- Hardening record  <sub>:133</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/18g-generate-master-data-taxonomy.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/credit-receivables/12-credit-receivables.md`  <sub>157 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/18h-harden-master-data-taxonomy.md`  <sub>37 lines</sub>
+### `docs/erp-lenses/credit-receivables/12g-generate-credit-receivables.md`  <sub>44 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/19-channels-franchise-wholesale.md`  <sub>240 lines</sub>
+### `docs/erp-lenses/credit-receivables/12h-harden-credit-receivables.md`  <sub>45 lines</sub>
 
-- Lens: Custody without ownership  <sub>:11</sub>
-- Lens: One price, however many doors  <sub>:45</sub>
-- Lens: The portal has no read scope  <sub>:77</sub>
-- Lens: The royalty has no revenue to read  <sub>:117</sub>
-- Not modelled yet  <sub>:152</sub>
-- Hardening record  <sub>:172</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/19g-generate-channels-franchise-wholesale.md`  <sub>49 lines</sub>
+### `docs/erp-lenses/day-two-operations/26-day-two-operations.md`  <sub>78 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/19h-harden-channels-franchise-wholesale.md`  <sub>43 lines</sub>
+### `docs/erp-lenses/day-two-operations/26g-generate-day-two-operations.md`  <sub>41 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (3)  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/20-service-cases-sla.md`  <sub>186 lines</sub>
+### `docs/erp-lenses/day-two-operations/26h-harden-day-two-operations.md`  <sub>43 lines</sub>
 
-- Lens: The complaint that isn't a record  <sub>:12</sub>
-- Lens: Compensation authority is a boolean, not a ceiling  <sub>:47</sub>
-- Lens: One case ID, or five unrelated tables  <sub>:91</sub>
-- Not modelled yet  <sub>:126</sub>
-- Hardening record  <sub>:143</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/20g-generate-service-cases-sla.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/enablement-onboarding/31-enablement-onboarding.md`  <sub>188 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/20h-harden-service-cases-sla.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/enablement-onboarding/31g-generate-enablement-onboarding.md`  <sub>47 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/21-omnichannel-parity.md`  <sub>172 lines</sub>
+### `docs/erp-lenses/enablement-onboarding/31h-harden-enablement-onboarding.md`  <sub>41 lines</sub>
 
-- Lens: The gate checked once, not per action  <sub>:11</sub>
-- Lens: The registry only one surface has  <sub>:41</sub>
-- Lens: The principal with no permission to check  <sub>:73</sub>
-- Not modelled yet  <sub>:106</sub>
-- Hardening record  <sub>:120</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/21g-generate-omnichannel-parity.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/extensibility-without-fork/28-extensibility-without-fork.md`  <sub>233 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/21h-harden-omnichannel-parity.md`  <sub>39 lines</sub>
+### `docs/erp-lenses/extensibility-without-fork/28g-generate-extensibility-without-fork.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/22-findability-at-scale.md`  <sub>227 lines</sub>
+### `docs/erp-lenses/extensibility-without-fork/28h-harden-extensibility-without-fork.md`  <sub>41 lines</sub>
 
-- Lens: The default is a scope, not a filter  <sub>:10</sub>
-- Lens: The view nobody can name back  <sub>:48</sub>
-- Lens: The selection that outlives the page  <sub>:79</sub>
-- Lens: The 21st row  <sub>:116</sub>
-- Not modelled yet  <sub>:153</sub>
-- Hardening record  <sub>:167</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/22g-generate-findability-at-scale.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/findability-at-scale/22-findability-at-scale.md`  <sub>227 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/22h-harden-findability-at-scale.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/findability-at-scale/22g-generate-findability-at-scale.md`  <sub>46 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (2)  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/23-loyalty-consent-data-rights.md`  <sub>67 lines</sub>
+### `docs/erp-lenses/findability-at-scale/22h-harden-findability-at-scale.md`  <sub>42 lines</sub>
 
-- Lens: Consent is a matrix, not a switch  <sub>:10</sub>
-- Lens: The liability with no account  <sub>:22</sub>
-- Lens: The request the ledger cannot obey  <sub>:34</sub>
-- Not modelled yet  <sub>:46</sub>
-- Hardening record  <sub>:52</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/23g-generate-loyalty-consent-data-rights.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/fraud-insider-risk/24-fraud-insider-risk.md`  <sub>187 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/23h-harden-loyalty-consent-data-rights.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/fraud-insider-risk/24g-generate-fraud-insider-risk.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/24-fraud-insider-risk.md`  <sub>187 lines</sub>
+### `docs/erp-lenses/fraud-insider-risk/24h-harden-fraud-insider-risk.md`  <sub>36 lines</sub>
 
-- Lens: The void that outruns the refund  <sub>:11</sub>
-- Lens: The write-off with no address  <sub>:46</sub>
-- Lens: The price nobody can point to  <sub>:80</sub>
-- Not modelled yet  <sub>:114</sub>
-- Hardening record  <sub>:129</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/24g-generate-fraud-insider-risk.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-38/38-gap-hr-payroll-no-posting-artifact-for-compe.md`  <sub>205 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/24h-harden-fraud-insider-risk.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/gap-38/38g-generate-gap.md`  <sub>42 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/25-privacy-retention-residency.md`  <sub>155 lines</sub>
+### `docs/erp-lenses/gap-38/38h-harden-gap.md`  <sub>50 lines</sub>
 
-- Lens: The row the ledger will not let you touch  <sub>:10</sub>
-- Lens: The payload that already left  <sub>:39</sub>
-- Lens: The retention clock with no dial  <sub>:69</sub>
-- Not modelled yet  <sub>:95</sub>
-- Hardening record  <sub>:108</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/25g-generate-privacy-retention-residency.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-39/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>159 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/25h-harden-privacy-retention-residency.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/gap-39/39g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/26-day-two-operations.md`  <sub>78 lines</sub>
+### `docs/erp-lenses/gap-39/39h-harden-gap.md`  <sub>48 lines</sub>
 
-- Lens: The number that pages, and the number that doesn't  <sub>:9</sub>
-- Lens: The stale clock nobody reads  <sub>:21</sub>
-- Lens: The operator's second door  <sub>:33</sub>
-- Not modelled yet  <sub>:45</sub>
-- Hardening record  <sub>:52</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/26g-generate-day-two-operations.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-40/40-gap-esg-the-file-s-title-promises-it-the-con.md`  <sub>177 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/26h-harden-day-two-operations.md`  <sub>43 lines</sub>
+### `docs/erp-lenses/gap-40/40g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/27-migration-cutover-restatement.md`  <sub>72 lines</sub>
+### `docs/erp-lenses/gap-40/40h-harden-gap.md`  <sub>49 lines</sub>
 
-- Lens: The ledger has no door for opening balances  <sub>:11</sub>
-- Lens: The crosswalk that doesn't exist  <sub>:23</sub>
-- Lens: A correction is indistinguishable from a refund  <sub>:35</sub>
-- Not modelled yet  <sub>:47</sub>
-- Hardening record  <sub>:53</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/27g-generate-migration-cutover-restatement.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-41/41-gap-legal-no-table-for-the-agreement-itself-.md`  <sub>134 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/27h-harden-migration-cutover-restatement.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/gap-41/41g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/28-extensibility-without-fork.md`  <sub>233 lines</sub>
+### `docs/erp-lenses/gap-41/41h-harden-gap.md`  <sub>42 lines</sub>
 
-- Lens: Five doors, one hallway  <sub>:11</sub>
-- Lens: The refusal that isn't graceful  <sub>:59</sub>
-- Lens: The field with no home  <sub>:102</sub>
-- Not modelled yet  <sub>:146</sub>
-- Hardening record  <sub>:161</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/28g-generate-extensibility-without-fork.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-42/42-gap-the-grant-with-no-ceiling-on-the-granter.md`  <sub>155 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/28h-harden-extensibility-without-fork.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-42/42g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/29-cost-to-serve.md`  <sub>185 lines</sub>
+### `docs/erp-lenses/gap-42/42h-harden-gap.md`  <sub>46 lines</sub>
 
-- Lens: The cost that multiplies by location  <sub>:10</sub>
-- Lens: The report that recomputes from scratch  <sub>:49</sub>
-- Lens: The write that doesn't chunk  <sub>:87</sub>
-- Not modelled yet  <sub>:126</sub>
-- Hardening record  <sub>:140</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/29g-generate-cost-to-serve.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-43/43-gap-rank-has-no-ladder-of-its-own-escalation.md`  <sub>208 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/29h-harden-cost-to-serve.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-43/43g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/30-time-periods-backdating.md`  <sub>193 lines</sub>
+### `docs/erp-lenses/gap-43/43h-harden-gap.md`  <sub>46 lines</sub>
 
-- Lens: One clock, a hundred branches  <sub>:11</sub>
-- Lens: The calendar every brand shares  <sub>:46</sub>
-- Lens: The day with no name  <sub>:82</sub>
-- Not modelled yet  <sub>:116</sub>
-- Hardening record  <sub>:130</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/30g-generate-time-periods-backdating.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-44/44-gap-no-composition-rule-for-a-person-holding.md`  <sub>187 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/30h-harden-time-periods-backdating.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/gap-44/44g-generate-gap.md`  <sub>34 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/31-enablement-onboarding.md`  <sub>188 lines</sub>
+### `docs/erp-lenses/gap-44/44h-harden-gap.md`  <sub>46 lines</sub>
 
-- Lens: The landing page assumes two roles  <sub>:11</sub>
-- Lens: Demo data has one persona  <sub>:39</sub>
-- Lens: Going live has no state  <sub>:69</sub>
-- Lens: Permission with no explanation  <sub>:99</sub>
-- Not modelled yet  <sub>:127</sub>
-- Hardening record  <sub>:142</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/31g-generate-enablement-onboarding.md`  <sub>47 lines</sub>
+### `docs/erp-lenses/gap-45/45-gap-the-catalogue-s-only-rank-lens-contradic.md`  <sub>220 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/31h-harden-enablement-onboarding.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-45/45g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/32-automation-and-ai-surface.md`  <sub>190 lines</sub>
+### `docs/erp-lenses/gap-45/45h-harden-gap.md`  <sub>50 lines</sub>
 
-- Lens: The machine caller's own scope  <sub>:10</sub>
-- Lens: Quota has no owner  <sub>:50</sub>
-- Lens: Narrate, never post  <sub>:86</sub>
-- Not modelled yet  <sub>:121</sub>
-- Hardening record  <sub>:142</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/32g-generate-automation-and-ai-surface.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-46/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md`  <sub>207 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/32h-harden-automation-and-ai-surface.md`  <sub>37 lines</sub>
+### `docs/erp-lenses/gap-46/46g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/33-operator-hands.md`  <sub>187 lines</sub>
+### `docs/erp-lenses/gap-46/46h-harden-gap.md`  <sub>54 lines</sub>
 
-- Lens: The barcode that already decided  <sub>:11</sub>
-- Lens: Which writes get the queue  <sub>:44</sub>
-- Lens: The tap that might have already landed  <sub>:86</sub>
-- Not modelled yet  <sub>:127</sub>
-- Hardening record  <sub>:139</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/33g-generate-operator-hands.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-47/47-gap-the-per-brand-currency-field-forces-the-.md`  <sub>179 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/33h-harden-operator-hands.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/gap-47/47g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/34-provenance-esg-statutory.md`  <sub>170 lines</sub>
+### `docs/erp-lenses/gap-47/47h-harden-gap.md`  <sub>46 lines</sub>
 
-- Lens: Every unit, not the whole SKU  <sub>:10</sub>
-- Lens: The claim, not the supplier  <sub>:47</sub>
-- Lens: The regulator's own boxes  <sub>:81</sub>
-- Not modelled yet  <sub>:115</sub>
-- Hardening record  <sub>:126</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/34g-generate-provenance-esg-statutory.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/gap-48/48-gap-group-currency-translation-for-consolida.md`  <sub>169 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/34h-harden-provenance-esg-statutory.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/gap-48/48g-generate-gap.md`  <sub>40 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/35-risk-insurance-continuity.md`  <sub>215 lines</sub>
+### `docs/erp-lenses/gap-48/48h-harden-gap.md`  <sub>48 lines</sub>
 
-- Lens: The insured value nobody can total  <sub>:11</sub>
-- Lens: The claim's evidence pack, not just the claim  <sub>:39</sub>
-- Lens: The branch that cannot trade tomorrow  <sub>:70</sub>
-- Lens: The risk register with no register  <sub>:104</sub>
-- Not modelled yet  <sub>:134</sub>
-- Hardening record  <sub>:149</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/35g-generate-risk-insurance-continuity.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/gap-49/49-gap-financial-close-as-a-managed-process-not.md`  <sub>175 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/35h-harden-risk-insurance-continuity.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/gap-49/49g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
-- Not modelled in this repo today  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/36-internal-audit-controls-testing.md`  <sub>188 lines</sub>
+### `docs/erp-lenses/gap-49/49h-harden-gap.md`  <sub>53 lines</sub>
 
-- Lens: The control has no name, only the fact does  <sub>:11</sub>
-- Lens: Testing is a record, not a query  <sub>:45</sub>
-- Lens: The auditor's key is not a master key  <sub>:77</sub>
-- Not modelled yet  <sub>:113</sub>
-- Hardening record  <sub>:130</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/36g-generate-internal-audit-controls-testing.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/gap-50/50-gap-landed-cost-apportionment-and-its-timing.md`  <sub>206 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/36h-harden-internal-audit-controls-testing.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/gap-50/50g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/37-assets-facilities-maintenance.md`  <sub>153 lines</sub>
+### `docs/erp-lenses/gap-50/50h-harden-gap.md`  <sub>48 lines</sub>
 
-- Lens: The register the ledger never sees  <sub>:10</sub>
-- Lens: Custody has no holder  <sub>:37</sub>
-- Lens: Downtime that outranks the sale  <sub>:62</sub>
-- Not modelled yet  <sub>:85</sub>
-- Hardening record  <sub>:98</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/37g-generate-assets-facilities-maintenance.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/gap-51/51-gap-the-approval-that-stalls-without-a-leave.md`  <sub>195 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/37h-harden-assets-facilities-maintenance.md`  <sub>43 lines</sub>
+### `docs/erp-lenses/gap-51/51g-generate-gap.md`  <sub>41 lines</sub>
 
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-for-compe.md`  <sub>205 lines</sub>
+### `docs/erp-lenses/gap-51/51h-harden-gap.md`  <sub>46 lines</sub>
 
-- Lens: The wage has no table  <sub>:11</sub>
-- Lens: The pay run is a document, not a report  <sub>:43</sub>
-- Lens: The overpayment has no way back  <sub>:82</sub>
-- Not modelled yet  <sub>:122</sub>
-- Hardening record  <sub>:137</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/38g-generate-gap.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/gap-52/52-gap-no-lens-classifies-a-new-table-s-replica.md`  <sub>46 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/38h-harden-gap.md`  <sub>50 lines</sub>
+### `docs/erp-lenses/gap-52/52g-generate-gap.md`  <sub>26 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>159 lines</sub>
+### `docs/erp-lenses/gap-52/52h-harden-gap.md`  <sub>40 lines</sub>
 
-- Lens: The lease nobody renews  <sub>:12</sub>
-- Lens: The service that has no due date  <sub>:42</sub>
-- Not modelled yet  <sub>:71</sub>
-- Hardening record  <sub>:88</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/39g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/ground/00-uagent.md`  <sub>299 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/39h-harden-gap.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/ground/00a-ground-topology.md`  <sub>57 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:46</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/40-gap-esg-the-file-s-title-promises-it-the-con.md`  <sub>177 lines</sub>
+### `docs/erp-lenses/ground/00b-ground-identity.md`  <sub>83 lines</sub>
 
-- Lens: The metric with nowhere to live  <sub>:11</sub>
-- Lens: Whose shipment, whose emissions  <sub>:42</sub>
-- Lens: The disclosure period has no lock  <sub>:75</sub>
-- Not modelled yet  <sub>:107</sub>
-- Hardening record  <sub>:119</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/40g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/ground/00c-ground-money.md`  <sub>57 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/40h-harden-gap.md`  <sub>49 lines</sub>
+### `docs/erp-lenses/ground/00d-ground-operations.md`  <sub>68 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:47</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/41-gap-legal-no-table-for-the-agreement-itself-.md`  <sub>134 lines</sub>
+### `docs/erp-lenses/ground/00e-ground-platform.md`  <sub>44 lines</sub>
 
-- Lens: The agreement is not the row it governs  <sub>:12</sub>
-- Lens: The renewal nobody is watching  <sub>:42</sub>
-- Not modelled yet  <sub>:69</sub>
-- Hardening record  <sub>:81</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/41g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/ground/00f-ground-surfaces.md`  <sub>62 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/41h-harden-gap.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01-identity-actor-types.md`  <sub>169 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:32</sub>
-- Corrections  <sub>:38</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/42-gap-the-grant-with-no-ceiling-on-the-granter.md`  <sub>155 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01g-generate-identity-actor-types.md`  <sub>41 lines</sub>
 
-- Lens: The mint has no ceiling  <sub>:12</sub>
-- Lens: The un-grant checks less than the grant  <sub>:41</sub>
-- Lens: The grant nobody can trace back  <sub>:68</sub>
-- Not modelled yet  <sub>:94</sub>
-- Hardening record  <sub>:108</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/42g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01h-harden-identity-actor-types.md`  <sub>36 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/42h-harden-gap.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36-internal-audit-controls-testing.md`  <sub>188 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/43-gap-rank-has-no-ladder-of-its-own-escalation.md`  <sub>208 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36g-generate-internal-audit-controls-testing.md`  <sub>42 lines</sub>
 
-- Lens: The manager column that doesn't exist  <sub>:11</sub>
-- Lens: The chain HR actually needs  <sub>:46</sub>
-- Lens: The ladder that must stay empty at Solo  <sub>:79</sub>
-- Not modelled yet  <sub>:110</sub>
-- Hardening record  <sub>:123</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/43g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36h-harden-internal-audit-controls-testing.md`  <sub>35 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/43h-harden-gap.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23-loyalty-consent-data-rights.md`  <sub>67 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/44-gap-no-composition-rule-for-a-person-holding.md`  <sub>187 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23g-generate-loyalty-consent-data-rights.md`  <sub>40 lines</sub>
 
-- Lens: The union that outruns its parts  <sub>:11</sub>
-- Lens: Scope must gate the ceiling, not just widen it  <sub>:49</sub>
-- Lens: The act nobody can trace to its grant  <sub>:87</sub>
-- Not modelled yet  <sub>:120</sub>
-- Hardening record  <sub>:138</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/44g-generate-gap.md`  <sub>34 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23h-harden-loyalty-consent-data-rights.md`  <sub>36 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/44h-harden-gap.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18-master-data-taxonomy.md`  <sub>185 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/45-gap-the-catalogue-s-only-rank-lens-contradic.md`  <sub>220 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18g-generate-master-data-taxonomy.md`  <sub>42 lines</sub>
 
-- Lens: Rank's own table, or a fused column  <sub>:15</sub>
-- Lens: The number nobody can group by  <sub>:66</sub>
-- Lens: Escalation across roles needs a number, not a name  <sub>:107</sub>
-- Not modelled yet  <sub>:148</sub>
-- Hardening record  <sub>:164</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/45g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18h-harden-master-data-taxonomy.md`  <sub>37 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/45h-harden-gap.md`  <sub>50 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17-merchandising-assortment.md`  <sub>172 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md`  <sub>207 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17g-generate-merchandising-assortment.md`  <sub>42 lines</sub>
 
-- Lens: The quorum of one  <sub>:12</sub>
-- Lens: The count nobody keeps  <sub>:58</sub>
-- Lens: The record that must outlive its own excuse  <sub>:99</sub>
-- Not modelled yet  <sub>:138</sub>
-- Hardening record  <sub>:151</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/46g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17h-harden-merchandising-assortment.md`  <sub>39 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/46h-harden-gap.md`  <sub>54 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27-migration-cutover-restatement.md`  <sub>72 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:47</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/47-gap-the-per-brand-currency-field-forces-the-.md`  <sub>179 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27g-generate-migration-cutover-restatement.md`  <sub>40 lines</sub>
 
-- Lens: The rate the sale never asked for  <sub>:12</sub>
-- Lens: The rate has no source to resolve from  <sub>:50</sub>
-- Lens: Consolidation trusts a number it never checked  <sub>:88</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:137</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/47g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27h-harden-migration-cutover-restatement.md`  <sub>35 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/47h-harden-gap.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07-money-integrity-gl.md`  <sub>190 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/48-gap-group-currency-translation-for-consolida.md`  <sub>169 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07g-generate-money-integrity-gl.md`  <sub>43 lines</sub>
 
-- Lens: The group presentation currency is not any brand's functional currency  <sub>:12</sub>
-- Lens: One rate model cannot serve both a flow account and a stock account  <sub>:45</sub>
-- Lens: The plug the balance trigger will not let through unnamed  <sub>:78</sub>
-- Not modelled yet  <sub>:109</sub>
-- Hardening record  <sub>:121</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/48g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07h-harden-money-integrity-gl.md`  <sub>35 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/48h-harden-gap.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21-omnichannel-parity.md`  <sub>172 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:44</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/49-gap-financial-close-as-a-managed-process-not.md`  <sub>175 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21g-generate-omnichannel-parity.md`  <sub>41 lines</sub>
 
-- Lens: The close that has no task list  <sub>:11</sub>
-- Lens: The lock with one signer  <sub>:46</sub>
-- Lens: The close nobody can see happening  <sub>:84</sub>
-- Not modelled yet  <sub>:122</sub>
-- Hardening record  <sub>:140</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/49g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21h-harden-omnichannel-parity.md`  <sub>39 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/49h-harden-gap.md`  <sub>53 lines</sub>
+### `docs/erp-lenses/operator-hands/33-operator-hands.md`  <sub>187 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/50-gap-landed-cost-apportionment-and-its-timing.md`  <sub>206 lines</sub>
+### `docs/erp-lenses/operator-hands/33g-generate-operator-hands.md`  <sub>40 lines</sub>
 
-- Lens: The apportionment basis nobody chose  <sub>:11</sub>
-- Lens: The bill that never reaches the shelf  <sub>:45</sub>
-- Lens: Inventory debited against stock that is already gone  <sub>:90</sub>
-- Not modelled yet  <sub>:135</sub>
-- Hardening record  <sub>:154</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/50g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/operator-hands/33h-harden-operator-hands.md`  <sub>36 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/50h-harden-gap.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/planning-replenishment/14-planning-replenishment.md`  <sub>208 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/51-gap-the-approval-that-stalls-without-a-leave.md`  <sub>195 lines</sub>
+### `docs/erp-lenses/planning-replenishment/14g-generate-planning-replenishment.md`  <sub>42 lines</sub>
 
-- Lens: The clock nobody starts  <sub>:12</sub>
-- Lens: Store time is not the approver's time  <sub>:53</sub>
-- Lens: Acted on, not delivered  <sub>:86</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:141</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/51g-generate-gap.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/planning-replenishment/14h-harden-planning-replenishment.md`  <sub>36 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/51h-harden-gap.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/pricing-discount-governance/11-pricing-discount-governance.md`  <sub>66 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/52-gap-no-lens-classifies-a-new-table-s-replica.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/pricing-discount-governance/11g-generate-pricing-discount-governance.md`  <sub>42 lines</sub>
 
-- Lens: The registration that either exists or gets carved around  <sub>:5</sub>
-- Lens: The quarantine nobody opens  <sub>:17</sub>
-- Not modelled yet  <sub>:29</sub>
-- Hardening record  <sub>:34</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/52g-generate-gap.md`  <sub>26 lines</sub>
+### `docs/erp-lenses/pricing-discount-governance/11h-harden-pricing-discount-governance.md`  <sub>35 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:22</sub>
+_no second-level headings_
 
-### `docs/erp-lenses/52h-harden-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/privacy-retention-residency/25-privacy-retention-residency.md`  <sub>155 lines</sub>
 
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:32</sub>
-- Corrections  <sub>:34</sub>
+_no second-level headings_
+
+### `docs/erp-lenses/privacy-retention-residency/25g-generate-privacy-retention-residency.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/privacy-retention-residency/25h-harden-privacy-retention-residency.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13-procurement-supplier-lifecycle.md`  <sub>162 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13g-generate-procurement-supplier-lifecycle.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13h-harden-procurement-supplier-lifecycle.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/production-bom-subcontract/16-production-bom-subcontract.md`  <sub>149 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/production-bom-subcontract/16g-generate-production-bom-subcontract.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/production-bom-subcontract/16h-harden-production-bom-subcontract.md`  <sub>32 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/provenance-esg-statutory/34-provenance-esg-statutory.md`  <sub>170 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/provenance-esg-statutory/34g-generate-provenance-esg-statutory.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/provenance-esg-statutory/34h-harden-provenance-esg-statutory.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/risk-insurance-continuity/35-risk-insurance-continuity.md`  <sub>215 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/risk-insurance-continuity/35g-generate-risk-insurance-continuity.md`  <sub>48 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/risk-insurance-continuity/35h-harden-risk-insurance-continuity.md`  <sub>48 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/roles-ranks-orgchart/02-roles-ranks-orgchart.md`  <sub>216 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/roles-ranks-orgchart/02g-generate-roles-ranks-orgchart.md`  <sub>49 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/roles-ranks-orgchart/02h-harden-roles-ranks-orgchart.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/segregation-of-duties/03-segregation-of-duties.md`  <sub>171 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/segregation-of-duties/03g-generate-segregation-of-duties.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/segregation-of-duties/03h-harden-segregation-of-duties.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/service-cases-sla/20-service-cases-sla.md`  <sub>186 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/service-cases-sla/20g-generate-service-cases-sla.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/service-cases-sla/20h-harden-service-cases-sla.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08-tax-jurisdiction-invoice.md`  <sub>214 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08g-generate-tax-jurisdiction-invoice.md`  <sub>47 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08h-harden-tax-jurisdiction-invoice.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/time-periods-backdating/30-time-periods-backdating.md`  <sub>193 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/time-periods-backdating/30g-generate-time-periods-backdating.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/time-periods-backdating/30h-harden-time-periods-backdating.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/treasury-cash-reconciliation/09-treasury-cash-reconciliation.md`  <sub>157 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/treasury-cash-reconciliation/09g-generate-treasury-cash-reconciliation.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/treasury-cash-reconciliation/09h-harden-treasury-cash-reconciliation.md`  <sub>39 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15-warehouse-logistics-fleet.md`  <sub>170 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15g-generate-warehouse-logistics-fleet.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15h-harden-warehouse-logistics-fleet.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/workforce-shifts-jml/06-workforce-shifts-jml.md`  <sub>169 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/workforce-shifts-jml/06g-generate-workforce-shifts-jml.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/erp-lenses/workforce-shifts-jml/06h-harden-workforce-shifts-jml.md`  <sub>35 lines</sub>
+
+_no second-level headings_
 
 ### `docs/implementation/00-HOUSE-RULES.md`  <sub>496 lines</sub>
 
-- 0. Before you start  <sub>:13</sub>
-- 1. The repository  <sub>:36</sub>
-- 2. The twelve rules  <sub>:53</sub>
-- 3. Definition of done  <sub>:308</sub>
-- 4. How to write a migration that cannot lose data  <sub>:338</sub>
-- 5. Things that are already true — do not "fix" them  <sub>:358</sub>
-- 6. Working with these briefs  <sub>:372</sub>
-- 7. Commit and PR conventions  <sub>:387</sub>
-- 8. Interface rules  <sub>:440</sub>
+_no second-level headings_
 
-### `docs/implementation/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
+### `docs/implementation/253-distribution-stack-capability-map.md`  <sub>772 lines</sub>
 
-- Why this phase is first  <sub>:18</sub>
-- What Phase 1 delivers  <sub>:32</sub>
-- Work orders  <sub>:42</sub>
-- WO-1.1 — Nav foundation  <sub>:60</sub>
-- WO-1.2 — The unified stock ledger  <sub>:149</sub>
-- WO-1.3 — Cost price and COGS  <sub>:318</sub>
-- WO-1.4 — Suppliers  <sub>:382</sub>
-- WO-1.5 — Purchase orders, goods receipts, and cost  <sub>:460</sub>
-- WO-1.6 — Reorder, low stock and slow movers  <sub>:710</sub>
-- WO-1.7 — Stock counts  <sub>:786</sub>
-- WO-1.8 — Admin screens  <sub>:866</sub>
-- WO-1.9 — Reports  <sub>:905</sub>
-- Phase 1 exit criteria  <sub>:922</sub>
+_no second-level headings_
 
-### `docs/implementation/02-admin-shell.md`  <sub>242 lines</sub>
+### `docs/implementation/254-office-replacement-program.md`  <sub>971 lines</sub>
 
-- Why  <sub>:5</sub>
-- Rules for this phase  <sub>:24</sub>
-- Work orders  <sub>:37</sub>
-- WO-2.1 — The small four  <sub>:54</sub>
-- WO-2.2 — DataTable and Pagination  <sub>:80</sub>
-- WO-2.3 — Modal and ConfirmDialog  <sub>:119</sub>
-- WO-2.4 — FilterBar with URL-synced state  <sub>:140</sub>
-- WO-2.5 — Migrate the pages  <sub>:164</sub>
-- WO-2.6 — Command palette, breadcrumbs, collapsible groups  <sub>:182</sub>
-- WO-2.7 — Error, not-found and loading states  <sub>:197</sub>
-- WO-2.8 — Permission-check cleanup  <sub>:211</sub>
-- Phase 2 exit criteria  <sub>:233</sub>
+_no second-level headings_
 
-### `docs/implementation/03-variants-sku-seo.md`  <sub>471 lines</sub>
+### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>102 lines</sub>
 
-- Why  <sub>:32</sub>
-- Work orders  <sub>:66</sub>
-- WO-3.1 — The option model  <sub>:82</sub>
-- WO-3.2 — Switch readers, then retire the columns  <sub>:216</sub>
-- WO-3.3 — SKU templates and barcodes  <sub>:235</sub>
-- WO-3.4 — The sectioned product editor  <sub>:265</sub>
-- WO-3.5 — The variant matrix builder  <sub>:297</sub>
-- WO-3.6 — Media with enforced alt text  <sub>:321</sub>
-- WO-3.7 — The SEO section and the publish gate  <sub>:345</sub>
-- WO-3.8 — Storefront SEO  <sub>:389</sub>
-- WO-3.9 — Redirects  <sub>:426</sub>
-- Phase 3 exit criteria  <sub>:460</sub>
+_no second-level headings_
 
-### `docs/implementation/04-finance.md`  <sub>239 lines</sub>
+### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>176 lines</sub>
 
-- Scope decision, already taken  <sub>:6</sub>
-- Work orders  <sub>:16</sub>
-- WO-4.1 — Expenses  <sub>:32</sub>
-- WO-4.2 — Order economics  <sub>:108</sub>
-- WO-4.3 — The P&L report  <sub>:148</sub>
-- WO-4.4 — Cash flow  <sub>:187</sub>
-- WO-4.5 — Screens  <sub>:201</sub>
-- WO-4.6 — Month-end close and export  <sub>:221</sub>
-- Phase 4 exit criteria  <sub>:231</sub>
+_no second-level headings_
 
-### `docs/implementation/05-promotions-giftcards.md`  <sub>320 lines</sub>
+### `docs/implementation/access-control-identity/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
-- Why now  <sub>:5</sub>
-- Work orders  <sub>:14</sub>
-- WO-5.1 — The rules engine  <sub>:31</sub>
-- WO-5.2 — Promo codes  <sub>:122</sub>
-- WO-5.3 — Checkout  <sub>:163</sub>
-- WO-5.4 — Gift cards  <sub>:196</sub>
-- WO-5.5 — Store credit  <sub>:267</sub>
-- WO-5.6 — Screens  <sub>:294</sub>
-- Phase 5 exit criteria  <sub>:310</sub>
+_no second-level headings_
 
-### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>288 lines</sub>
+### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>366 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:25</sub>
-- WO-6.1 — Shipping as a module  <sub>:40</sub>
-- WO-6.2 — The `CourierProvider` interface  <sub>:104</sub>
-- WO-6.3 — Real couriers  <sub>:135</sub>
-- WO-6.4 — Shipment lifecycle  <sub>:151</sub>
-- WO-6.5 — Tracking automation  <sub>:167</sub>
-- WO-6.6 — Returns and RMA  <sub>:184</sub>
-- WO-6.7 — RTO  <sub>:253</sub>
-- WO-6.8 — Screens  <sub>:268</sub>
-- Phase 6 exit criteria  <sub>:278</sub>
+_no second-level headings_
 
-### `docs/implementation/07-customer-portal.md`  <sub>186 lines</sub>
+### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>635 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:21</sub>
-- WO-7.1 — Portal shell  <sub>:37</sub>
-- WO-7.2 — Orders  <sub>:52</sub>
-- WO-7.3 — Self-service returns  <sub>:66</sub>
-- WO-7.4 — Credit and gift cards  <sub>:78</sub>
-- WO-7.5 — Reviews and Q&A  <sub>:89</sub>
-- WO-7.6 — Wishlist and back-in-stock  <sub>:128</sub>
-- WO-7.7 — Loyalty and referrals  <sub>:145</sub>
-- WO-7.8 — Notification preferences  <sub>:160</sub>
-- WO-7.9 — Mobile parity  <sub>:169</sub>
-- Phase 7 exit criteria  <sub>:178</sub>
+_no second-level headings_
 
-### `docs/implementation/08-content-marketing-search.md`  <sub>138 lines</sub>
+### `docs/implementation/access-control-identity/18-identity-verification.md`  <sub>149 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:13</sub>
-- WO-8.1 — CMS  <sub>:26</sub>
-- WO-8.2 — Collections and merchandising  <sub>:46</sub>
-- WO-8.3 — Search  <sub>:61</sub>
-- WO-8.4 — Campaigns and broadcasts  <sub>:85</sub>
-- WO-8.5 — Abandoned cart recovery  <sub>:104</sub>
-- WO-8.6 — On-site messaging  <sub>:120</sub>
-- Phase 8 exit criteria  <sub>:129</sub>
+_no second-level headings_
 
-### `docs/implementation/09-ai-layer.md`  <sub>221 lines</sub>
+### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>294 lines</sub>
 
-- The two rules that govern this entire phase  <sub>:5</sub>
-- Work orders, in payoff order  <sub>:36</sub>
-- WO-9.1 — Alt text and SEO copy  <sub>:53</sub>
-- WO-9.2 — Size recommendation  <sub>:74</sub>
-- WO-9.3 — Demand forecasting  <sub>:95</sub>
-- WO-9.4 — COD risk scoring  <sub>:113</sub>
-- WO-9.5 — Semantic and visual search  <sub>:133</sub>
-- WO-9.6 — Recommendations  <sub>:149</sub>
-- WO-9.7 — WhatsApp assistant  <sub>:163</sub>
-- WO-9.8 — Markdown suggestions  <sub>:180</sub>
-- WO-9.9 — Review summarisation  <sub>:191</sub>
-- WO-9.10 — Bulk-import cleanup  <sub>:200</sub>
-- Phase 9 exit criteria  <sub>:210</sub>
+_no second-level headings_
 
-### `docs/implementation/10-admin-dashboard.md`  <sub>1,843 lines</sub>
+### `docs/implementation/access-control-identity/212-role-scope-enforcement-gap.md`  <sub>129 lines</sub>
 
-- Why  <sub>:9</sub>
-- What Phase 10 delivers  <sub>:31</sub>
-- Base branch  <sub>:43</sub>
-- Work orders  <sub>:50</sub>
-- Rules for this phase  <sub>:82</sub>
-- The corrected route tree  <sub>:388</sub>
-- The card inventory (~55 cards)  <sub>:471</sub>
-- A live bug the rebuild must not inherit  <sub>:527</sub>
-- Track A — Foundations  <sub>:566</sub>
-- Track B — Finance and expenses  <sub>:833</sub>
-- Track C — BOM and manufacturing  <sub>:1146</sub>
-- Track D — The remaining analytics pages  <sub>:1604</sub>
-- Track E — Navigation and retirement  <sub>:1635</sub>
-- Dependency table  <sub>:1691</sub>
-- Sequencing  <sub>:1725</sub>
-- Migration safety register  <sub>:1754</sub>
-- Phase 10 definition of done  <sub>:1798</sub>
+_no second-level headings_
 
-### `docs/implementation/11-client-handover-model.md`  <sub>121 lines</sub>
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>553 lines</sub>
 
-- 1. The Business Goals  <sub>:3</sub>
-- 2. The Rejected Approaches  <sub>:12</sub>
-- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:22</sub>
-- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
-- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
-- 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
+_no second-level headings_
 
-### `docs/implementation/12-extractor-script-spec.md`  <sub>59 lines</sub>
+### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
-- Phase 1: Initialization & Validation  <sub>:6</sub>
-- Phase 2: The Engine Extraction (Backend)  <sub>:15</sub>
-- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:23</sub>
-- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:32</sub>
-- Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
-- Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
-- Phase 7: Delivery & Pull Request  <sub>:53</sub>
+_no second-level headings_
 
-### `docs/implementation/13-email-service-plan.md`  <sub>32 lines</sub>
+### `docs/implementation/admin-platform/10-admin-dashboard.md`  <sub>1,854 lines</sub>
 
-- 1. The Technology Stack  <sub>:5</sub>
-- 2. The Client Experience  <sub>:10</sub>
-- 3. Strict DNS Requirements (Crucial for Independence)  <sub>:14</sub>
-- 4. Application Architecture (How the API sends emails)  <sub>:23</sub>
-- 5. The Ultimate Agency Flex (Future API Integration)  <sub>:29</sub>
+_no second-level headings_
 
-### `docs/implementation/14-managed-services-module.md`  <sub>270 lines</sub>
+### `docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md`  <sub>244 lines</sub>
 
-- Why this is two modules, not one  <sub>:15</sub>
-- The load-bearing scope decision: where usage numbers actually come from  <sub>:33</sub>
-- Master side: the `agency` module  <sub>:58</sub>
-- Client side: the `managed-services` module  <sub>:181</sub>
-- Security notes  <sub>:205</sub>
-- Explicitly out of scope for v1  <sub>:221</sub>
-- Work orders  <sub>:234</sub>
-- When to actually build this  <sub>:261</sub>
+_no second-level headings_
 
-### `docs/implementation/15-tax-module.md`  <sub>178 lines</sub>
+### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>176 lines</sub>
 
-- The design decision this doc locks in  <sub>:16</sub>
-- Schema — new module `tax`  <sub>:24</sub>
-- The pricing math — and where the rounding trap is  <sub>:86</sub>
-- Checkout integration  <sub>:122</sub>
-- What this doc deliberately does not specify  <sub>:132</sub>
-- Work orders  <sub>:143</sub>
-- When to actually build this  <sub>:171</sub>
+_no second-level headings_
 
-### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
+### `docs/implementation/admin-platform/72-fragmented-tool-consolidation-import.md`  <sub>184 lines</sub>
 
-- The good news: the convention already exists, once  <sub>:35</sub>
-- Why this is scoped rather than built now  <sub>:57</sub>
-- The design  <sub>:68</sub>
-- Explicitly out of scope for this doc  <sub>:145</sub>
-- Work orders  <sub>:157</sub>
-- When to actually build this  <sub>:176</sub>
+_no second-level headings_
 
-### `docs/implementation/17-inventory-locations.md`  <sub>254 lines</sub>
+### `docs/implementation/admin-platform/75-managerial-todo-widget-coverage-note.md`  <sub>86 lines</sub>
 
-- Why the aggregate write is one atomic statement  <sub>:26</sub>
-- Why this is the risky one, specifically  <sub>:42</sub>
-- The design: additive first, single-location behavior byte-identical  <sub>:57</sub>
-- What every existing caller needs  <sub>:175</sub>
-- Explicitly out of scope for this doc  <sub>:184</sub>
-- Work orders  <sub>:197</sub>
-- Why one snippet in this doc was wrong  <sub>:239</sub>
-- When to actually build this  <sub>:247</sub>
+_no second-level headings_
 
-### `docs/implementation/18-identity-verification.md`  <sub>143 lines</sub>
+### `docs/implementation/ai-layer/09-ai-layer.md`  <sub>221 lines</sub>
 
-- What this is  <sub>:13</sub>
-- Design  <sub>:25</sub>
-- What's built  <sub>:83</sub>
-- Explicitly out of scope for this module  <sub>:109</sub>
-- Local setup  <sub>:131</sub>
+_no second-level headings_
 
-### `docs/implementation/18-trading-partner-network.md`  <sub>61 lines</sub>
+### `docs/implementation/ai-layer/116-agentic-integration-mcp.md`  <sub>161 lines</sub>
 
-- Work orders  <sub>:18</sub>
-- Out of scope (for now)  <sub>:54</sub>
+_no second-level headings_
 
-### `docs/implementation/DECISIONS.md`  <sub>1,238 lines</sub>
+### `docs/implementation/ai-layer/121-vector-multimodel-databases.md`  <sub>52 lines</sub>
 
-- How to read this  <sub>:13</sub>
-- ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
-- ADR-002 — A sector is a module pack behind an allowlist  <sub>:104</sub>
-- ADR-003 — Modules are independent; side effects cross through events  <sub>:145</sub>
-- ADR-004 — Events are delivered through a transactional outbox  <sub>:186</sub>
-- ADR-005 — Money is an integer in minor units  <sub>:222</sub>
-- ADR-006 — Customer-facing text is a row, not a column  <sub>:257</sub>
-- ADR-007 — Access control is permission-based, and the grants are data  <sub>:291</sub>
-- ADR-008 — Migrations are hand-written and forward-only  <sub>:331</sub>
-- ADR-009 — A branch is a node with its own database, not a tenant row  <sub>:370</sub>
-- ADR-010 — In-transit stock is a Location, not a flag  <sub>:410</sub>
-- ADR-011 — A till sale is a channel of `orders`  <sub>:449</sub>
-- ADR-012 — Cross-module references are bare scalars, not foreign keys  <sub>:484</sub>
-- ADR-013 — One deployment serves one brand  <sub>:522</sub>
-- ADR-014 — The repository index is generated and enforced, not written  <sub>:555</sub>
-- ADR-015 — Model and effort are routed per job, from one policy  <sub>:597</sub>
-- ADR-016 — Rules that apply to one kind of file are path-scoped  <sub>:640</sub>
-- ADR-017 — An observability backend  <sub>:682</sub>
-- ADR-018 — Horizontal replicas and load balancing  <sub>:719</sub>
-- ADR-019 — WO-B.4 ships against the live reports idiom, not Track A's unbuilt registry  <sub>:755</sub>
-- ADR-020 — `bom` (Track C) ships as a new module, `production` stays as-is  <sub>:859</sub>
-- ADR-021 — WO-23.3's scopeLevel pattern: a new core-owned enum, fail-closed on the money switch, and originNodeId as the node-prefix string  <sub>:948</sub>
-- ADR-022 — WO-23.3b enforces `allowBranchLocalPurchasing` through a new BranchPolicyRegistry extension point, keyed off the caller's own AdminScope grant  <sub>:1123</sub>
+_no second-level headings_
 
-### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
+### `docs/implementation/ai-layer/135-intent-router-voice-video-agent.md`  <sub>136 lines</sub>
 
-- The three axes  <sub>:12</sub>
-- S — Sector rules  <sub>:29</sub>
-- Br — Brand rules  <sub>:62</sub>
-- L — Branch (location) rules  <sub>:102</sub>
-- D — Data rules  <sub>:170</sub>
-- P — Permission rules  <sub>:191</sub>
-- What is actually enforced today  <sub>:205</sub>
+_no second-level headings_
 
-### `docs/implementation/MULTI-SECTOR.md`  <sub>806 lines</sub>
+### `docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md`  <sub>354 lines</sub>
 
-- The ruling, up front  <sub>:7</sub>
-- Why not `master_clothing_boutique`, `master_grocery`, …  <sub>:17</sub>
-- What a sector actually is  <sub>:55</sub>
-- The rule that makes this safe  <sub>:85</sub>
-- Branch naming  <sub>:255</sub>
-- Deployment model  <sub>:307</sub>
-- The database  <sub>:318</sub>
-- The API  <sub>:395</sub>
-- Adding a new sector  <sub>:444</sub>
-- When branches or repos WOULD be right  <sub>:464</sub>
-- Summary  <sub>:481</sub>
-- The two axes  <sub>:506</sub>
-- The finding that reorganised everything  <sub>:520</sub>
-- Sector packs, after reconciliation  <sub>:553</sub>
-- Capability modules for business models  <sub>:571</sub>
-- The blockers — read this before planning anything  <sub>:616</sub>
-- What a deployment looks like  <sub>:727</sub>
-- Sequencing  <sub>:754</sub>
-- Open questions for the owner  <sub>:794</sub>
+_no second-level headings_
+
+### `docs/implementation/ai-layer/86-ai-ml-edi-business-automation.md`  <sub>51 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md`  <sub>73 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/analytics-reporting/57-multiday-category-velocity.md`  <sub>130 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/analytics-reporting/58-live-operational-feed.md`  <sub>161 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md`  <sub>70 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>82 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>83 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>169 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md`  <sub>109 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>119 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>79 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>102 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>99 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>129 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>85 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>97 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>117 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/122-data-lake-cold-storage-architecture.md`  <sub>86 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md`  <sub>117 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/128-extension-point-coverage-audit.md`  <sub>194 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/130-machine-readable-capability-manifest.md`  <sub>135 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/131-versioned-domain-events.md`  <sub>84 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>77 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>82 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>126 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>91 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>124 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>184 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md`  <sub>192 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md`  <sub>166 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/143-micro-frontend-architecture.md`  <sub>199 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>319 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>610 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>94 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>73 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>75 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>89 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>72 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>68 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>89 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>66 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>292 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/43-visual-attendance-heatmap.md`  <sub>132 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/55-anti-proxy-verification-coverage-note.md`  <sub>56 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/59-workforce-attendance-ratios.md`  <sub>92 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/65-cctv-camera-repurposing.md`  <sub>89 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/85-ai-face-detection-proxy-attendance.md`  <sub>51 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/attendance-workforce/87-corporate-attendance-automation.md`  <sub>71 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md`  <sub>203 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>212 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`  <sub>513 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md`  <sub>566 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>222 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>175 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>131 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md`  <sub>164 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>299 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>298 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>188 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>385 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/211-cloud-subscription-offline-license-separation.md`  <sub>124 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>417 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/50-commercial-pricing-licensing-models.md`  <sub>243 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/51-free-demo-sandbox-onboarding.md`  <sub>225 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md`  <sub>67 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/82-tiered-capex-licensing.md`  <sub>101 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/83-entry-level-pos-deployment.md`  <sub>71 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`  <sub>65 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/commercial-licensing-agency/89-rapid-onboarding-customizable-reports.md`  <sub>87 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md`  <sub>496 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md`  <sub>661 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md`  <sub>534 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/171-03-layer2-versioned-module-packs-build-manifest.md`  <sub>441 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md`  <sub>940 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/173-05-layer4-resilience-engine-extensions.md`  <sub>459 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/174-06-layer5-control-center.md`  <sub>432 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md`  <sub>491 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/176-08-platform-resilience-failure-modes.md`  <sub>377 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/177-09-graph-derivability-pilot-scope-control.md`  <sub>235 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/178-10-mvp-vertical-slice-vs-full-rollout.md`  <sub>196 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md`  <sub>344 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/180-12-metrics-success-criteria.md`  <sub>403 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/181-13-risk-compliance-continuity-uae.md`  <sub>386 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/182-14-why-newax-builds-and-owns-this.md`  <sub>286 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/composable-resilience-platform/183-15-engineering-governance-two-agent-split.md`  <sub>233 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>167 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/content-marketing-search/251-checkout-abandonment-flow.md`  <sub>318 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/content-marketing-search/252-video-block-chapters.md`  <sub>124 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/DECISIONS.md`  <sub>134 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-001-a-modular-monolith-one-process-per-node.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-002-a-sector-is-a-module-pack-behind-an-allowlist.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-003-modules-are-independent-side-effects-cross-through-events.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-004-events-are-delivered-through-a-transactional-outbox.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-005-money-is-an-integer-in-minor-units.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-006-customer-facing-text-is-a-row-not-a-column.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-007-access-control-is-permission-based-and-the-grants-are-data.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-008-migrations-are-hand-written-and-forward-only.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-009-a-branch-is-a-node-with-its-own-database-not-a-tenant-row.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-010-in-transit-stock-is-a-location-not-a-flag.md`  <sub>40 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-011-a-till-sale-is-a-channel-of-orders.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-012-cross-module-references-are-bare-scalars-not-foreign-keys.md`  <sub>39 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-013-one-deployment-serves-one-brand.md`  <sub>34 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-014-the-repository-index-is-generated-and-enforced-not-written.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-015-model-and-effort-are-routed-per-job-from-one-policy.md`  <sub>44 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-016-rules-that-apply-to-one-kind-of-file-are-path-scoped.md`  <sub>43 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-017-an-observability-backend.md`  <sub>38 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-018-horizontal-replicas-and-load-balancing.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-019-wo-b-4-ships-against-the-live-reports-idiom-not-track-a-s-unbuilt.md`  <sub>105 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-020-bom-track-c-ships-as-a-new-module-production-stays-as-is.md`  <sub>92 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-021-wo-23-3-s-scopelevel-pattern-a-new-core-owned-enum-fail-closed-on-the.md`  <sub>178 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-022-wo-23-3b-enforces-allowbranchlocalpurchasing-through-a-new.md`  <sub>119 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-023-wo-23-3c-e-node-retailbrandid-a-separate-policyquarantine-table-and.md`  <sub>138 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-024-wo-23-3d-org-central-purchasing-recognized-narrowly-in.md`  <sub>145 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-025-wo-e-2-is-not-executed-its-own-prerequisites-wo-a-1-wo-a-2-were-never.md`  <sub>126 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-026-seven-heavier-extensibility-mechanisms-adopted-by-explicit-owner.md`  <sub>111 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-027-the-three-highest-risk-items-from-adr-026-withdrawn-no-wasm-sandbox.md`  <sub>89 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-028-wo-5-phase-5-discounts-promo-codes-gift-cards-store-credit-built-from.md`  <sub>135 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-029-third-party-gift-card-redemption-at-checkout-giftkarta-a.md`  <sub>90 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-030-docs-implementation-docs-erp-lenses-and-docs-design-reorganized-into.md`  <sub>76 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-031-wo-7-phase-7-customer-portal-reviews-wishlist-returns-loyalty-mobile.md`  <sub>305 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-032-phase-10-track-a-built-end-to-end-wo-a-1-a-5-superseding-adr-019-adr.md`  <sub>206 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-033-admin-platform-docs-02-44-72-75-completed-doc-75-s-own-claims.md`  <sub>180 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-034-the-wallet-module-doc-155-built-in-full-shipped-module-off-and.md`  <sub>203 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-035-phase-8-content-marketing-and-search-audited-and-confirmed-built-the.md`  <sub>106 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-036-wo-145-receivables-creditnote-debitnote-credit-limits-dunning-keys.md`  <sub>127 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-037-personal-api-keys-a-user-bound-token-capped-live-by-its-owner-an.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-038-doc-153-usage-based-pricing-metering-reads-a-tenant-s-own.md`  <sub>158 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-039-doc-14-managed-services-built-in-full-overriding-its-own-not-now.md`  <sub>181 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-040-finance-accounting-docs-04-56-68-79-137-147-151-49-completed-a.md`  <sub>165 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-041-an-intentrouter-core-extension-point-one-dispatch-shape-for-every.md`  <sub>99 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-042-doc-154-three-headline-commercial-plans-public-pricing-page-copy.md`  <sub>137 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-043-access-control-identity-docs-126-161-built-16-18-163-re-verified-125.md`  <sub>160 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-044-docs-19-20-org-tree-positions-and-ranks-orgunit-kept-orthogonal-to.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-045-doc-21-access-over-the-org-tree-orgunitgrant-built-exactly-as.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-046-doc-22-attendance-shifts-and-leave-attendanceevent-partitioned-by.md`  <sub>195 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-047-doc-165-cross-tenant-marketplace-directory-a-new-apps-platform-module.md`  <sub>114 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-048-doc-166-unified-product-reference-registry-a-globalproductreference.md`  <sub>134 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-049-docs-140-143-general-eav-metadata-driven-ui-bpmn-workflow-editor.md`  <sub>363 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-050-doc-23-task-allotment-status-and-tracking-built-exactly-as-specified.md`  <sub>84 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-051-docs-47-146-150-category-presets-wholesale-pricing-product-bundles.md`  <sub>110 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-052-docs-127-128-136-hardcoded-policy-sweep-extension-point-coverage.md`  <sub>125 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-053-doc-149-accounts-approvals-sector-packs-a-genuine-request-record.md`  <sub>203 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-054-doc-139-websocket-sse-gateway-verified-deliberately-left-unbuilt-doc.md`  <sub>128 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-055-doc-117-choreography-and-idempotency-and-doc-118-headless-composable.md`  <sub>109 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-056-docs-122-data-lake-130-capability-manifest-and-131-versioned-domain.md`  <sub>113 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-057-docs-133-dry-run-harness-134-hexagonal-purity-ci-check-and-138.md`  <sub>112 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-058-doc-165-cross-tenant-marketplace-directory-part-two-wo-165-1-165-2.md`  <sub>130 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-059-doc-166-unified-product-reference-registry-the-erp-1-side-pieces.md`  <sub>140 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-060-doc-24-internal-notifications-meetings-and-escalation-built-in-full.md`  <sub>124 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-061-docs-47-and-150-category-presets-product-bundles-the-missing-admin-ui.md`  <sub>118 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-062-doc-61-policy-communications-bulletin-board-built-inside-the-notify.md`  <sub>115 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-063-doc-167-bank-facility-management-promoted-from-a-gap-report-to-a.md`  <sub>133 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-064-doc-64-in-app-help-desk-built-as-a-new-standalone-module-with-a-per.md`  <sub>118 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-065-doc-148-external-customer-support-portal-built-as-a-second-contact.md`  <sub>168 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-066-doc-144-r20-r26-supply-chain-resilience-planning-engine-built-as-a.md`  <sub>141 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-067-docs-31-66-67-76-pos-hardware-category-the-till-hardware-layer-as.md`  <sub>162 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-068-doc-37-scalability-future-upgrades-the-versioning-policy-ships-inert.md`  <sub>127 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-069-docs-32-71-158-lots-serials-traceability-the-move-call-site-scoping.md`  <sub>219 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-070-doc-38-resilience-engineering-a-table-driven-contract-test-over-the.md`  <sub>143 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-071-docs-168-183-a-composable-resilience-first-sme-platform-for-du-built.md`  <sub>149 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-072-docs-168-183-revised-newax-s-own-product-not-a-du-owned-platform-du.md`  <sub>194 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-073-third-party-apps-docs-184-195-an-open-reviewed-directory-of-remote.md`  <sub>168 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-074-doc-205-video-rooms-for-doc-24-s-meetings-self-host-livekit-as-newax.md`  <sub>209 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-075-doc-206-rate-limiting-sudden-logout-ram-ceilings-connection-pooling.md`  <sub>139 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-076-doc-207-checkout-admission-queue-prevent-overselling-during-rush.md`  <sub>75 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-077-doc-208-l1-l2-l3-caching-each-tier-attached-to-a-found-hot-path-not.md`  <sub>141 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-078-doc-209-semantic-caching-applied-to-exactly-one-of-ten-aifeature-call.md`  <sub>70 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-079-doc-210-caching-third-party-api-calls-to-save-charges-checked-every.md`  <sub>60 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md`  <sub>67 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md`  <sub>77 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md`  <sub>2,065 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md`  <sub>52 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md`  <sub>55 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md`  <sub>562 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md`  <sub>305 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md`  <sub>304 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md`  <sub>174 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md`  <sub>80 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md`  <sub>54 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/04-finance.md`  <sub>321 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>84 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>358 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>259 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>253 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/167-bank-facility-management.md`  <sub>296 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md`  <sub>997 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/250-inter-branch-fund-transfers.md`  <sub>545 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>125 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>213 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`  <sub>86 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md`  <sub>177 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/GAP-ANALYSIS-ODOO-APPS.md`  <sub>164 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md`  <sub>138 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md`  <sub>150 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md`  <sub>145 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md`  <sub>143 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md`  <sub>92 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md`  <sub>98 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>117 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>52 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/220-housing-society-overview.md`  <sub>148 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/221-property-and-project-records.md`  <sub>86 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/222-members-and-customers.md`  <sub>84 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/223-bookings-and-sam-lifecycle.md`  <sub>162 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/224-installments-and-billing.md`  <sub>102 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/225-receipts-and-payments.md`  <sub>103 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/226-accounting-and-reports.md`  <sub>105 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/227-complaints-and-visitors.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/228-roles-permissions-and-configuration.md`  <sub>105 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/229-excel-import-and-migration.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/230-and-much-more-roadmap.md`  <sub>41 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/housing-society/README.md`  <sub>52 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>304 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>301 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/26-performance-reviews.md`  <sub>247 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/27-training-skill-development.md`  <sub>246 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/28-recruitment-onboarding-document-vault.md`  <sub>335 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/29-company-asset-tracking.md`  <sub>262 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/42-timesheet-approval-chains.md`  <sub>235 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/52-staff-self-service-mobile-app.md`  <sub>161 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/53-new-hire-joiner-tracking.md`  <sub>104 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/54-employee-document-lifecycle-alerts.md`  <sub>148 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/60-headcount-growth-metrics.md`  <sub>102 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/62-document-expiration-compliance.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/63-multi-tier-approval-hierarchies.md`  <sub>228 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/74-hr-dashboard-financial-overview.md`  <sub>116 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/78-hr-navigation-consolidation.md`  <sub>138 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>222 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/80-employee-training-certification.md`  <sub>161 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/hr-people-org/91-staff-portal-mobile-access.md`  <sub>55 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/101-agnostic-notification-webhooks.md`  <sub>71 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/102-hyperautomation-workflow-integration.md`  <sub>70 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/120-decoupled-integration-engines.md`  <sub>48 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/129-channel-abstraction-audit.md`  <sub>87 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/13-email-service-plan.md`  <sub>32 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/132-generic-inbound-webhook-receiver.md`  <sub>164 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/159-telephony-provider-integration.md`  <sub>288 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/160-dynamic-external-system-connectivity.md`  <sub>274 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/162-file-based-connector-integration.md`  <sub>271 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/18-trading-partner-network.md`  <sub>87 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md`  <sub>359 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/185-app-manifest-and-directory-catalog.md`  <sub>554 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/186-app-publisher-program-review-moderation.md`  <sub>571 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md`  <sub>818 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/188-app-runtime-event-delivery-to-apps.md`  <sub>587 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/189-app-runtime-scoped-client-credential.md`  <sub>568 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/190-app-runtime-apps-as-extension-point-providers.md`  <sub>436 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/191-app-revocation-kill-switch-tenant-isolation.md`  <sub>602 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/192-app-commercial-model-billing.md`  <sub>468 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/193-app-private-connection-escape-hatch.md`  <sub>226 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/194-app-platform-failure-modes.md`  <sub>282 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/195-app-platform-rollout-sequencing.md`  <sub>241 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>319 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/255-ecosystem-alignment-roadmap.md`  <sub>188 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>262 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md`  <sub>283 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/inventory-purchasing/152-purchase-requisition.md`  <sub>222 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/inventory-purchasing/156-single-employee-branch-loss-prevention.md`  <sub>308 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/inventory-purchasing/17-inventory-locations.md`  <sub>254 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/inventory-purchasing/70-realtime-stock-depletion.md`  <sub>77 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>236 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>928 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/launchpad-apps/README.md`  <sub>79 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>324 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/lots-serials-traceability/32-lots-batch-expiry-fefo.md`  <sub>265 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/lots-serials-traceability/71-recipe-batch-traceability.md`  <sub>270 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/MULTI-SECTOR.md`  <sub>854 lines</sub>
+
+_no second-level headings_
 
 ### `docs/implementation/NEWAX AI Engineering Master Protocol`  <sub>0 lines</sub>
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>154 lines</sub>
+### `docs/implementation/payroll/19-payroll.md`  <sub>522 lines</sub>
 
-- Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:24</sub>
-- The two module groups  <sub>:53</sub>
-- How a work order runs  <sub>:90</sub>
-- Known gaps not yet owned by a phase  <sub>:108</sub>
-- When a brief is wrong  <sub>:135</sub>
-- Scope, honestly  <sub>:148</sub>
+_no second-level headings_
 
-### `docs/implementation/RETAIL-ERP.md`  <sub>1,083 lines</sub>
+### `docs/implementation/payroll/25-advance-salary-and-payroll-posting.md`  <sub>266 lines</sub>
 
-- Context  <sub>:15</sub>
-- Part 1 — The topology  <sub>:78</sub>
-- Part 2 — The rulings  <sub>:135</sub>
-- Part 3 — Accounting (the pillar)  <sub>:378</sub>
-- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:575</sub>
-- Part 5 — The modules  <sub>:755</sub>
-- Part 6 — Replication and the apps  <sub>:801</sub>
-- Part 7 — Roadmap  <sub>:865</sub>
-- Part 8 — The briefs this spawns  <sub>:946</sub>
-- Acceptance  <sub>:990</sub>
+_no second-level headings_
+
+### `docs/implementation/payroll/40-itemized-payroll-deductions.md`  <sub>238 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/payroll/41-pending-vs-disbursed-payroll-tracking.md`  <sub>152 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/pos-hardware/31-sector-pos-hardware-integration.md`  <sub>312 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/pos-hardware/66-multi-form-factor-pos.md`  <sub>102 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/pos-hardware/67-secure-cash-drawer-triggering.md`  <sub>83 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/pos-hardware/76-pos-mobile-dashboard.md`  <sub>148 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`  <sub>347 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/README.md`  <sub>730 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/123-automated-degradation-resilience.md`  <sub>95 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/124-infrastructure-as-code.md`  <sub>73 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md`  <sub>392 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md`  <sub>351 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md`  <sub>229 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/208-l1-l2-l3-caching-architecture.md`  <sub>374 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/209-semantic-caching-rag-generation.md`  <sub>182 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/210-third-party-api-call-caching-status.md`  <sub>81 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>380 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>312 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/resilience-scalability/90-automatic-backups-local-support.md`  <sub>71 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/RETAIL-ERP.md`  <sub>1,108 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/RETAIL-VERTICAL-COVERAGE-MATRIX.md`  <sub>172 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/SDK-CONTRACT.md`  <sub>226 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md`  <sub>612 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/237-warehouse-management.md`  <sub>523 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/238-order-routing-omnichannel-fulfilment.md`  <sub>445 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/239-supply-network-sourcing-rules.md`  <sub>231 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/240-edi-gateway.md`  <sub>495 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/241-retailer-vendor-compliance.md`  <sub>549 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/242-multi-plant-manufacturing.md`  <sub>496 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/243-quality-inspection-holds.md`  <sub>283 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/244-rfid-phantom-inventory.md`  <sub>260 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/245-field-sales-distribution-architecture.md`  <sub>380 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/246-field-sales.md`  <sub>798 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/247-field-tracking.md`  <sub>510 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/248-customer-receipts-allocation.md`  <sub>586 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/supply-chain-operations/README.md`  <sub>51 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>224 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md`  <sub>1,813 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>239 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>264 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>232 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md`  <sub>224 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tax-compliance/112-pluggable-fiscal-engines.md`  <sub>51 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tax-compliance/15-tax-module.md`  <sub>232 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tax-compliance/46-fbr-verification-qr-codes.md`  <sub>143 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/tax-compliance/88-pral-fbr-pra-tax-compliance.md`  <sub>69 lines</sub>
+
+_no second-level headings_
 
 ### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>539 lines</sub>
 
-- Summary  <sub>:5</sub>
-- Completed domains (10)  <sub>:22</sub>
-- Domain: Notifications and communications  <sub>:37</sub>
-- Domain: Integration contracts and external systems  <sub>:77</sub>
-- Domain: Reporting, analytics and exports  <sub>:117</sub>
-- Domain: Multi-entity topology and isolation  <sub>:157</sub>
-- Domain: Scale-tier spectrum: retail to corporate  <sub>:197</sub>
-- Domain: Bulk operations, import and export  <sub>:237</sub>
-- Domain: Configurable policy and rules  <sub>:277</sub>
-- Domain: Resilience, degradation and offline operation  <sub>:317</sub>
-- Domain: Lifecycle reversal and the books  <sub>:357</sub>
-- Domain: Concurrency, volume and performance  <sub>:397</sub>
-- Failed agents (31)  <sub>:437</sub>
-- What never got a result  <sub>:480</sub>
-- Workflow Failure Analysis  <sub>:484</sub>
-- Integration Path for Next Session  <sub>:500</sub>
-- Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
-- Recommendation  <sub>:524</sub>
+_no second-level headings_
 
-### `GEMINI.md`  <sub>80 lines</sub>
+### `docs/security/security-architecture.md`  <sub>59 lines</sub>
+
+_no second-level headings_
+
+### `ECOSYSTEM.md`  <sub>110 lines</sub>
+
+_no second-level headings_
+
+### `GEMINI.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
-### `README.md`  <sub>349 lines</sub>
+### `Memory.md`  <sub>28 lines</sub>
 
-- Read this before touching anything  <sub>:12</sub>
-- Documentation map  <sub>:101</sub>
-- What is here today  <sub>:131</sub>
-- Running it  <sub>:152</sub>
-- Design decisions worth knowing  <sub>:223</sub>
-- Security architecture  <sub>:255</sub>
-- Commands  <sub>:309</sub>
-- Where the project is going  <sub>:323</sub>
-- Repository layout  <sub>:337</sub>
+_no second-level headings_
+
+### `Phases.md`  <sub>48 lines</sub>
+
+_no second-level headings_
+
+### `PRD.md`  <sub>185 lines</sub>
+
+_no second-level headings_
+
+### `README.md`  <sub>221 lines</sub>
+
+_no second-level headings_
+
+### `Rules.md`  <sub>30 lines</sub>
+
+_no second-level headings_
+
+### `START-HERE.md`  <sub>107 lines</sub>
+
+_no second-level headings_
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

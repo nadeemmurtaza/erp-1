@@ -219,3 +219,66 @@ model JournalEntryNumberCounter {
   counter      Int        @default(0)
   fiscalYear   FiscalYear @relation(fields: [fiscalYearId], references: [id], onDelete: Cascade)
 }
+
+/// Book depreciation for an `Asset` (hr.prisma, doc 79) — the "separately-
+/// scoped fixed-asset accounting capability" doc 79's own status note
+/// deferred. `Asset` never posts to the GL at acquisition (doc 79's own
+/// scope lens); this schedule is the first thing that does, monthly, once
+/// created. `accountingModule` reads `Asset` by its bare Prisma model, the
+/// same "core data, no module import" shape `PostingRulesSubscriber`
+/// already uses for `Order`/`Payment` — `accounting` still imports no other
+/// module (accounting.module.ts's own header comment, unchanged).
+enum DepreciationMethod {
+  STRAIGHT_LINE
+  DECLINING_BALANCE
+}
+
+model AssetDepreciationSchedule {
+  id      String             @id @default(cuid())
+  /// hr.prisma's Asset.id — one active schedule per asset at a time.
+  assetId String             @unique
+  method  DepreciationMethod
+
+  /// Snapshotted from Asset.purchaseCostMinor at schedule creation — never
+  /// re-read live, so a later correction to the asset's own record does not
+  /// silently reshape an in-progress schedule (the version-stamp discipline
+  /// this document's own scope lenses require).
+  acquisitionCostMinor Int
+  salvageValueMinor    Int      @default(0)
+  usefulLifeMonths     Int
+  /// DECLINING_BALANCE only; null for STRAIGHT_LINE.
+  decliningRateBps     Int?
+  startDate            DateTime
+
+  createdById String
+  createdAt   DateTime  @default(now())
+  /// Set when disposeAsset() closes this schedule out. A closed schedule's
+  /// own postings are never deleted — the reversal document lens.
+  closedAt    DateTime?
+
+  asset     Asset                      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  createdBy User                       @relation(fields: [createdById], references: [id])
+  postings  AssetDepreciationPosting[]
+
+  @@index([closedAt])
+}
+
+/// One row per period posted — the same "snapshot at write time, never
+/// re-derived" discipline PayRunLine/OrderEconomics already establish.
+/// Never updated or deleted once created; `postMonthlyDepreciation()`'s own
+/// idempotency (`@@unique([scheduleId, periodStart])` here, plus
+/// `findPostedEntry()`'s own key on the journal entry itself) makes a
+/// second run for an already-posted period a guaranteed no-op.
+model AssetDepreciationPosting {
+  id          String   @id @default(cuid())
+  scheduleId  String
+  periodStart DateTime
+  periodEnd   DateTime
+  amountMinor Int
+  postedAt    DateTime @default(now())
+
+  schedule AssetDepreciationSchedule @relation(fields: [scheduleId], references: [id])
+
+  @@unique([scheduleId, periodStart])
+  @@index([scheduleId])
+}

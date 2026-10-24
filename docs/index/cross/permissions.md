@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **41** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **135** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -22,9 +22,9 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
-- Permissions **no seeded role grants**: **0**
-- Keys required by a route but **not in the catalogue**: **0**
+- Permissions enforcing **no route**: **9** — `pricing.price-lists.approve`, `pos.terminal.configure`, `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `inventory.lots.override`, `notify.broadcast`, `support.tickets.handle`, `support.tickets.view_all`, `platform.resilience.oncall`
+- Permissions **no seeded role grants**: **8** — `pricing.price-lists.approve`, `hr.attendance.view`, `hr.attendance.record`, `hr.attendance.reconcile`, `tasks.admin`, `notify.broadcast`, `notify.escalation.manage`, `support.tickets.reassign`
+- Keys required by a route but **not in the catalogue**: **2** — `auction.bidders.manage`, `platform.flags.manage`
 
 ## The catalogue
 
@@ -32,32 +32,66 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 6 | 3 | STAFF, ADMIN |
-| `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
-| `organization.view` | View the organization/brand/branch dashboard | low | 4 | 1 | STAFF, ADMIN |
-| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 8 | 1 | ADMIN |
-| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
+| `analytics.view` | View dashboard analytics | low | 32 | 12 | STAFF, ADMIN |
+| `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
+| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 2 | STAFF, ADMIN |
+| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
+| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 2 | ADMIN |
+
+### Administration
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `launchpad.manage` | Switch launchpad apps on or off for the whole organization | medium | 2 | 1 | ADMIN |
+| `settings.manage` | Access the Settings screen | critical | 18 | 5 | ADMIN |
+| `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | ADMIN |
+| `settings.custom-fields.manage` | Define custom fields on Suppliers and other wired entities | medium | 4 | — | ADMIN |
+| `settings.embeds.manage` | Register and configure embeddable third-party widgets | medium | 4 | 1 | ADMIN |
+| `settings.fragments.manage` | Register and suspend micro-frontend fragments | critical | 5 | 1 | ADMIN |
+| `settings.metadata-forms.manage` | Define metadata-driven form field shapes | medium | 1 | — | ADMIN |
+| `settings.bpmn-workflows.manage` | Redraw approval workflow diagrams | critical | 1 | — | ADMIN |
+| `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
+| `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
+| `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
+| `audit.view` | View the audit log | medium | 1 | — | ADMIN |
+| `users.manage` | Create and manage back-office user accounts | high | 10 | 4 | ADMIN |
+| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | 1 | ADMIN |
+| `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
+| `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
+| `rag.ingest.manage` | Upload documents into a RAG corpus, and retry or remove one from the ingestion… | medium | 9 | 3 | STAFF, ADMIN |
+| `rag.query` | Run a retrieval or generated-answer query directly against a document corpus | medium | 3 | 2 | STAFF, ADMIN |
 
 ### Customers
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 18 | 3 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 31 | 15 | STAFF, ADMIN |
 
 ### Sales
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `orders.manage` | Manage orders and shipments | medium | 12 | 1 | STAFF, ADMIN |
+| `orders.manage` | Manage orders and shipments | medium | 12 | 3 | STAFF, ADMIN |
+| `pricing.price-lists.manage` | Create and edit wholesale price lists and quantity breaks | medium | 5 | — | STAFF, ADMIN |
+| `pricing.price-lists.approve` | Set a wholesale price below a variant's own base price | high | **0 — enforces nothing** | — | **none — no live user holds it** |
+| `pricing.assignments.manage` | Assign a price list to a customer or a customer tag | medium | 2 | — | STAFF, ADMIN |
 | `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | ADMIN |
-| `pos.operate` | Open and close till shifts, and record cash movements | medium | 9 | 1 | STAFF, ADMIN |
+| `pos.operate` | Open and close till shifts, and record cash movements | medium | 15 | 2 | STAFF, ADMIN |
+| `pos.instalments.cancel` | Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy | high | 1 | 1 | ADMIN |
+| `pos.instalments.default` | Mark a layby/instalment plan defaulted — writes off the unpaid balance | high | 1 | 1 | ADMIN |
+| `pos.terminal.configure` | Configure a terminal's order types and hardware driver wiring | medium | **0 — enforces nothing** | — | ADMIN |
+| `pos.dashboard.view` | View the till's own daily-sales/customers/low-stock snapshot | low | 1 | — | STAFF, ADMIN |
 | `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
+| `auction.view` | View auctions and their lots | low | 4 | 1 | ADMIN |
+| `auction.manage` | Create and edit auctions and lots, and cancel an auction before it opens | medium | 13 | 3 | ADMIN |
+| `auction.publish` | Schedule an auction so it opens to bidding at its start time | high | 2 | 2 | ADMIN |
+| `auction.settle` | See what auction winners owe, replay an invoice, cancel an unpaid win, and offe… | high | 7 | 2 | ADMIN |
 
 ### Production
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 1 | TAILOR, STAFF, ADMIN |
+| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 8 | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.manage_own` | Change stage on own assigned jobs only | low | **0 — enforces nothing** | — | TAILOR |
 | `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF, ADMIN |
@@ -71,19 +105,26 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `catalog.manage` | Manage products, categories and import | medium | 20 | 4 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 8 | 3 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 1 | 6 | ADMIN |
-| `inventory.count` | Run stock counts | low | 7 | 3 | STAFF, ADMIN |
-| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | — | STAFF, ADMIN |
+| `catalog.manage` | Manage products, categories and import | medium | 59 | 20 | STAFF, ADMIN |
+| `inventory.manage` | Adjust and view stock levels | medium | 18 | 13 | STAFF, ADMIN |
+| `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | ADMIN |
+| `inventory.count` | Run stock counts | low | 12 | 4 | STAFF, ADMIN |
+| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
+| `inventory.spot_checks.manage` | Configure unpredictable spot-check policies | medium | 3 | 1 | ADMIN |
+| `inventory.lots.manage` | Register and view lots — batch code, expiry, FEFO allocation | low | 4 | 1 | STAFF, ADMIN |
+| `inventory.lots.override` | Manually pick a specific lot to allocate from, overriding FEFO | medium | **0 — enforces nothing** | — | ADMIN |
+| `inventory.recall` | Look up every order a batch reached — exposes customer identity, narrower than… | high | 1 | 1 | ADMIN |
 
 ### Purchasing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `suppliers.manage` | Manage suppliers | medium | 8 | 1 | STAFF, ADMIN |
-| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 2 | STAFF, ADMIN |
+| `suppliers.manage` | Manage suppliers | medium | 8 | 2 | STAFF, ADMIN |
+| `purchasing.manage` | Create and receive purchase orders | medium | 18 | 10 | STAFF, ADMIN |
+| `purchasing.requisitions.create` | Request a purchase (not necessarily raise the PO) | low | 3 | 1 | STAFF, ADMIN |
+| `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 2 | ADMIN |
+| `planning.propagation.view` | Run a supply-chain shock scenario, view ranked recovery actions, the liquidity… | medium | 5 | 2 | ADMIN |
 | `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
 
 ### Account
@@ -92,32 +133,115 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `account.change_own_password` | Change their own password | low | 1 | 2 | CUSTOMER, TAILOR, STAFF, ADMIN |
 
-### Administration
-
-| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
-|---|---|---|---|---|---|
-| `settings.manage` | Access the Settings screen | critical | 16 | 3 | ADMIN |
-| `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
-| `marketing.manage` | Turn on automated marketing email and set its timing | low | 2 | 1 | ADMIN |
-| `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
-| `audit.view` | View the audit log | medium | 1 | — | ADMIN |
-| `users.manage` | Create and manage back-office user accounts | high | 8 | 1 | ADMIN |
-| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | — | ADMIN |
-
 ### Finance
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 5 | 2 | STAFF, ADMIN |
-| `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 25 | 24 | STAFF, ADMIN |
+| `finance.manage` | Record and edit expenses | medium | 11 | 1 | ADMIN |
+| `finance.wallets.adjust` | Issue a manual wallet balance correction, below the auto-approval threshold | medium | 3 | — | STAFF, ADMIN |
+| `finance.wallets.adjust.approve` | Approve a wallet adjustment at or above the auto-approval threshold — never the… | high | 2 | — | ADMIN |
+| `finance.merchant-payables.dispute` | Mark a merchant payable disputed (pulls it from the next payout run) or resolve… | high | 2 | — | ADMIN |
+| `finance.credit-notes.create` | Issue a credit note, and apply it to an invoice | medium | 3 | — | STAFF, ADMIN |
+| `finance.credit-notes.approve` | Approve a credit note above the approval threshold, and void one | high | 2 | — | ADMIN |
+| `finance.debit-notes.manage` | Issue and void debit notes against a supplier | medium | 3 | — | STAFF, ADMIN |
+| `finance.credit-terms.manage` | Set a customer's credit limit and payment terms, apply a credit hold, and edit… | high | 2 | — | ADMIN |
+| `finance.assets.depreciate` | Put a company asset on a depreciation schedule — a real accounting-policy decis… | medium | 2 | 1 | ADMIN |
+| `finance.assets.dispose` | Dispose an asset — posts a real loss/gain to the ledger | high | 1 | 1 | ADMIN |
+| `finance.settlement.view` | View settlement batches — what a bank or gateway actually paid out, reconciled… | medium | 3 | 1 | ADMIN |
+| `finance.settlement.reconcile` | Register expected settlement batches, reconcile them, and request writing off a… | medium | 7 | 3 | ADMIN |
+| `finance.settlement.approve_writeoff` | Approve writing off a settlement shortfall above the configured threshold | high | 1 | 2 | ADMIN |
+| `finance.facilities.view` | View bank facilities — a term loan, running finance, overdraft or LC/guarantee… | medium | 4 | 1 | ADMIN |
+| `finance.facilities.manage` | Register banks and facilities, and record drawdowns and repayments against them | high | 9 | 3 | ADMIN |
+| `finance.facilities.approve_drawdown` | Approve a bank facility drawdown above the configured threshold | high | 1 | 2 | ADMIN |
+
+### Fulfilment
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `fulfilment.view` | View shipments, manifests, RTO and returns | low | 12 | 5 | STAFF, ADMIN |
+| `fulfilment.manage` | Book, track and manifest shipments; decide returns | medium | 33 | 6 | STAFF, ADMIN |
 
 ### Manufacturing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `bom.view` | View bills of materials and raw stock | low | 10 | 4 | STAFF, ADMIN |
+| `bom.view` | View bills of materials and raw stock | low | 12 | 11 | STAFF, ADMIN |
 | `bom.manage` | Create and edit raw materials and recipes | medium | 9 | 4 | ADMIN |
 | `bom.produce` | Record a production run | low | 1 | 1 | STAFF, ADMIN |
+
+### Payroll
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `payroll.view_own` | View their own compensation, leave balance and payslips | low | 5 | 1 | TAILOR, STAFF, ADMIN |
+| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 7 | 4 | ADMIN |
+| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 7 | 2 | ADMIN |
+
+### Human Resources
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `hr.assets.manage` | Issue and return company equipment (laptops, phones, uniforms) to staff | medium | 6 | 3 | ADMIN |
+| `hr.assets.writeoff` | Mark an asset retired or lost — a real cost, separate from day-to-day issue/ret… | medium | 1 | 1 | ADMIN |
+| `hr.people.view` | View the people list, positions and the rank ladder | low | 5 | 1 | ADMIN |
+| `hr.people.manage` | Create positions, assign and end postings, manage the rank ladder | medium | 10 | 3 | ADMIN |
+| `hr.attendance.view` | View attendance events, shifts and exceptions | low | 3 | 1 | **none — no live user holds it** |
+| `hr.attendance.record` | Record a punch for someone else, or import paper sign-in sheets | medium | 9 | — | **none — no live user holds it** |
+| `hr.attendance.reconcile` | Clear an attendance exception — link it to a shift or accept it as-is | medium | 4 | 2 | **none — no live user holds it** |
+| `hr.bulletins.view` | Read the bulletin board — company policy notices and memos | low | 3 | 2 | STAFF |
+| `hr.bulletins.publish` | Post and retract notices on the bulletin board, within your own reach | medium | 2 | 2 | STAFF |
+
+### Organization
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `org.structure.view` | View the organization tree — offices, regions and departments | low | 4 | 1 | ADMIN |
+| `org.structure.manage` | Create, rename, move and close units in the organization tree | high | 9 | 6 | ADMIN |
+| `org.access.view` | See who reaches an organization unit, by posting or by grant | medium | 1 | 1 | ADMIN |
+| `org.access.grant` | Issue or revoke a time-boxed access grant over an organization unit | high | 4 | 2 | ADMIN |
+| `tasks.view` | View tasks — my work, a post queue, and a task's transition history | low | 4 | 1 | STAFF |
+| `tasks.assign` | Create tasks, assign them to a person, and move them between OPEN/IN_PROGRESS/B… | medium | 3 | 2 | STAFF |
+| `tasks.close` | Mark a task DONE or CANCELLED | medium | 1 | 1 | STAFF |
+| `tasks.admin` | Add or reorder a task workflow stage | high | 3 | 1 | **none — no live user holds it** |
+| `notify.send` | Send an internal message or call a meeting, within your own reach | low | 6 | 4 | STAFF |
+| `notify.broadcast` | Send an announcement above the quorum threshold (requires a countersignature) | high | **0 — enforces nothing** | — | **none — no live user holds it** |
+| `notify.escalation.manage` | Configure which stalled tasks escalate, and how far | high | 4 | 2 | **none — no live user holds it** |
+| `support.tickets.raise` | Raise an internal support ticket | low | 1 | 3 | STAFF |
+| `support.tickets.handle` | Be assigned support tickets, and work the ones assigned to you | medium | **0 — enforces nothing** | 1 | STAFF |
+| `support.tickets.view_all` | View every support ticket, not only your own | medium | **0 — enforces nothing** | 1 | STAFF |
+| `support.tickets.reassign` | Assign or reassign any support ticket | medium | 2 | 2 | **none — no live user holds it** |
+
+### Marketing
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `promotions.view` | View discounts, promo codes and their usage | low | 3 | 2 | STAFF, ADMIN |
+| `promotions.manage` | Create and edit discounts and promo codes | medium | 8 | — | STAFF, ADMIN |
+| `giftcards.view` | View gift cards, their ledgers and store credit balances | medium | 3 | 2 | STAFF, ADMIN |
+| `giftcards.manage` | Issue, cancel and adjust gift cards and store credit — real money | high | 3 | — | ADMIN |
+| `content.view` | View pages, blog posts, banners and menus | low | 6 | 1 | STAFF, ADMIN |
+| `content.manage` | Publish pages and posts, and edit banners and menus | medium | 18 | 1 | STAFF, ADMIN |
+| `collections.view` | View collections and their membership | low | 2 | 1 | STAFF, ADMIN |
+| `collections.manage` | Create and curate collections | medium | 8 | 1 | STAFF, ADMIN |
+| `search.view` | View the zero-result search report | low | 2 | 1 | STAFF, ADMIN |
+| `search.manage` | Edit search synonyms | low | 4 | 1 | STAFF, ADMIN |
+| `campaigns.view` | View campaigns and their send/open/click stats | low | 2 | 1 | STAFF, ADMIN |
+| `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | 6 | 1 | ADMIN |
+| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | 4 | 1 | STAFF, ADMIN |
+| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | 8 | 1 | STAFF, ADMIN |
+| `reviews.moderate` | Approve, reject and reply to customer product reviews | medium | 2 | 1 | STAFF, ADMIN |
+| `loyalty.view` | View loyalty point balances, tiers and referrals | low | 1 | 1 | STAFF, ADMIN |
+| `loyalty.manage` | Adjust a customer's loyalty points and configure tiers — real money once redeem… | high | 3 | — | ADMIN |
+
+### Platform
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `platform.flags.approve_rollout` | Approve a proposed 100% rollout or kill-switch clearance on a money/stock-path… | high | 1 | 1 | ADMIN |
+| `platform.resilience.view` | View the degradation matrix, circuit-breaker states, SLO/error-budget dashboard… | low | 4 | 1 | ADMIN |
+| `platform.resilience.oncall` | Be paged when a circuit breaker opens or a critical-path error budget is breach… | low | **0 — enforces nothing** | — | ADMIN |
+| `platform.resilience.tune` | Change a circuit breaker's failure threshold or cooldown window | medium | 2 | 1 | ADMIN |
 
 
 ## Role → permission, as seeded
@@ -131,9 +255,9 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 | Role | Grants | Permissions |
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
-| `TAILOR` | 4 | `account.change_own_password` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 27 | `account.change_own_password` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `bom.view` `bom.produce` |
-| `ADMIN` | 40 | `account.change_own_password` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` |
+| `TAILOR` | 7 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` `s own catalogue note.     ` `,     ` |
+| `STAFF` | 65 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `tasks.view` `tasks.assign` `tasks.close` `notify.send` `hr.bulletins.view` `hr.bulletins.publish` `support.tickets.raise` `support.tickets.handle` `support.tickets.view_all` `crm.manage` `orders.manage` `pricing.price-lists.manage` `pricing.assignments.manage` `payments.approve` `pos.operate` `pos.dashboard.view` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `inventory.lots.manage` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.wallets.adjust` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
+| `ADMIN` | 147 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `hr.people.view` `hr.people.manage` `org.structure.view` `org.structure.manage` `org.access.view` `org.access.grant` `org.structure.manage` `hr.people.manage` `org.access.grant` `Access Reviewer` `s own     // ` ` silhouette.     ` `,     ` `,     // Unlike org.access.grant/hr.attendance.reconcile above, tasks.close IS     // seeded onto ADMIN alongside tasks.assign — the toxic pair the two     // form (DECISIONS.md ADR-050) is a PER-INSTANCE check inside     // TaskService.close(), scoped to a task whose sourceType names a     // money-adjacent module, not a role-level refusal TOXIC_PERMISSION_PAIRS     // would catch here. Holding both is the ordinary, safe case for every     // other task; the instance check still refuses the one risky case     // (self-assign, then self-close, on a money-adjacent task).     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     // ` ` is deliberately NOT seeded here, the     // identical reasoning as ` ` just above: ADMIN already     // holds ` `, and TOXIC_PERMISSION_PAIRS refuses the two     // together (attendance-workforce/22-attendance-shifts-leave.md` `clearing your own exception and then paying it` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `pricing.price-lists.manage` `pricing.assignments.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `planning.propagation.view` `inventory.spot_checks.manage` `inventory.lots.manage` `inventory.lots.override` `inventory.recall` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `finance.assets.depreciate` `finance.assets.dispose` `finance.settlement.view` `finance.settlement.reconcile` `finance.settlement.approve_writeoff` `finance.facilities.view` `finance.facilities.manage` `finance.facilities.approve_drawdown` `auction.view` `auction.manage` `auction.publish` `auction.bidders.manage` `auction.settle` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `settings.sso.manage` `settings.custom-fields.manage` `settings.embeds.manage` `settings.fragments.manage` `launchpad.manage` `settings.metadata-forms.manage` `settings.bpmn-workflows.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `pos.instalments.cancel` `pos.instalments.default` `pos.terminal.configure` `pos.dashboard.view` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` `s own ` `     // refusal, not from withholding the permission — the same reasoning     // those two settlement/facility approve_* keys already establish, not     // the org.access.grant/hr.attendance.reconcile toxic-pair shape (doc     // 37` `The toxic pair` `platform.flags.manage` `platform.flags.approve_rollout` `platform.resilience.view` `platform.resilience.oncall` `platform.resilience.tune` |
 
 
 ## Admin nav → permission
@@ -141,9 +265,11 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 The sidebar is generated from `apps/web/src/components/admin/nav-registry.ts`.
 A nav entry with a permission is hidden from anyone who lacks it.
 
-_none_
+| Group | Label | Href | Permission | Module gate |
+|---|---|---|---|---|
+| overview | Apps | `'/admin/launchpad'` | — | — |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

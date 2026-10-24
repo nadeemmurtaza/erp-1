@@ -7,13 +7,13 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 
 
-**Registry note** (`modules.registry.ts`): Off by default — see docs/implementation/18-identity-verification.md.
+**Registry note** (`modules.registry.ts`): Off by default — see docs/implementation/access-control-identity/18-identity-verification.md.
 
-Source: `apps/api/src/modules/identity-verification/`
+Source: `apps/api/src/modules/system/identity-verification/`
 
-## Files (7 · 594 lines)
+## Files (7 · 615 lines)
 
-All paths relative to `apps/api/src/modules/identity-verification/dto`.
+All paths relative to `apps/api/src/modules/system/identity-verification/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/modules/identity-verification/dto`.
 | `identity-verification-provider.ts` | module | 76 | 4 | Extension point: identity-verification providers. |
 | `identity-verification.controller.ts` | controller | 51 | 1 |  |
 | `identity-verification.module.ts` | nest module | 11 | 1 |  |
-| `identity-verification.service.ts` | service | 149 | 1 |  |
+| `identity-verification.service.ts` | service | 170 | 1 |  |
 | `nid-callback-verification.spec.ts` | unit test | 123 | — |  |
 | `nid.provider.ts` | module | 176 | 1 | The one live IdentityVerificationProvider: calls Newax's own nID service (github.com/nadeemmurtaza/nID) over its extern… |
 
@@ -42,9 +42,9 @@ All paths relative to `apps/api/src/modules/identity-verification/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `IdentityVerificationApproved` | `identity_verification.approved` | `identity-verification.service.ts:138` |
-| `IdentityVerificationRejected` | `identity_verification.rejected` | `identity-verification.service.ts:139` |
-| `IdentityVerificationExpired` | `identity_verification.expired` | `identity-verification.service.ts:140` |
+| `IdentityVerificationApproved` | `identity_verification.approved` | `identity-verification.service.ts:159` |
+| `IdentityVerificationRejected` | `identity_verification.rejected` | `identity-verification.service.ts:160` |
+| `IdentityVerificationExpired` | `identity_verification.expired` | `identity-verification.service.ts:161` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -61,7 +61,7 @@ _none_
 
 Enums: `IdentityVerificationStatus` (5)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -81,6 +81,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `extension-points`
 - core `prisma`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -106,10 +107,10 @@ check there before adding another.
 | `IdentityVerificationProvider` | interface | `identity-verification-provider.ts:50` |  |
 | `IdentityVerificationController` | class | `identity-verification.controller.ts:12` |  |
 | `IdentityVerificationModule` | class | `identity-verification.module.ts:10` |  |
-| `IdentityVerificationService` | class | `identity-verification.service.ts:9` |  |
+| `IdentityVerificationService` | class | `identity-verification.service.ts:10` |  |
 | `NidVerificationProvider` | class | `nid.provider.ts:38` | The one live IdentityVerificationProvider: calls Newax's own nID service (github.com/nadeemmurtaza/nID) over… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

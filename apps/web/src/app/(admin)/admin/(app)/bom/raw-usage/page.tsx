@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatQuantity, type RawMaterialUnit } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { DataTable, EmptyState, PageHeader } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 const RAW_MATERIAL_KINDS = ['fabric', 'trim', 'packaging', 'consumable'] as const;
 type RawMaterialKind = (typeof RAW_MATERIAL_KINDS)[number];
@@ -32,7 +33,8 @@ interface RawUsageResult {
  * not the unbuilt Track A report registry).
  */
 export default function RawUsagePage() {
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canViewCost = can('inventory.view_cost');
 
   const [result, setResult] = useState<RawUsageResult | null>(null);
   const [busy, setBusy] = useState(true);
@@ -65,11 +67,6 @@ export default function RawUsagePage() {
       <PageHeader
         title="Raw-material usage"
         description="What production actually consumed, over time."
-        context={
-          <Link href="/admin/bom/production" className="hover:text-neutral-900">
-            ← Production
-          </Link>
-        }
       />
 
       {error ? (
@@ -79,12 +76,18 @@ export default function RawUsagePage() {
       ) : null}
 
       <div role="group" aria-label="Filter raw-material usage" className="mb-4 flex flex-wrap items-center gap-3">
-        <select value={days} onChange={(event) => setDays(event.target.value)} className="field-input w-auto" aria-label="Window">
-          <option value="7">Last 7 days</option>
-          <option value="30">Last 30 days</option>
-          <option value="90">Last 90 days</option>
-          <option value="365">Last year</option>
-        </select>
+        <Select
+          label="Window"
+          value={days}
+          onChange={setDays}
+          className="w-auto"
+          options={[
+            { value: '7', label: 'Last 7 days' },
+            { value: '30', label: 'Last 30 days' },
+            { value: '90', label: 'Last 90 days' },
+            { value: '365', label: 'Last year' },
+          ]}
+        />
         <select
           value={kind}
           onChange={(event) => setKind(event.target.value as RawMaterialKind | '')}

@@ -1,7 +1,7 @@
 // Tax: rate/class definitions and the pricing-mode setting. Universal
 // capability, pack `core` (MULTI-SECTOR.md) -- every shop, every sector,
 // every business model needs a tax answer, not just B2B's "tax exemption."
-// See docs/implementation/15-tax-module.md for the full design and the
+// See docs/implementation/tax-compliance/15-tax-module.md for the full design and the
 // reasoning behind the inclusive/exclusive split.
 
 model TaxClass {

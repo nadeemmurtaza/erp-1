@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 4 files
 
 
 
-Source: `apps/api/src/modules/tax/`
+Source: `apps/api/src/modules/money/tax/`
 
 ## Files (4 · 332 lines)
 
-All paths relative to `apps/api/src/modules/tax/dto`.
+All paths relative to `apps/api/src/modules/money/tax/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
@@ -55,7 +55,7 @@ _none_
 | `TaxRate` | 7 | :25 | One row per rate that has ever applied to a class. |
 
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -101,4 +101,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

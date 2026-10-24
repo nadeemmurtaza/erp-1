@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **37** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **73** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,40 +24,50 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `bom.production_completed`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
 
 ## Summary
 
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
-| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `orders`, `stitching` |
-| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `orders` |
-| `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
-| `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
-| `payment.failed` | `PaymentFailed` | `payments` | `payments` |
+| `order.placed` | `OrderPlaced` | core/`ecosystem`, `accounting`, `orders` | core/`ecosystem`, core/`events`, `crm`, `accounting`, `orders`, `stitching`, `example-hello-world-pack` |
+| `order.status_changed` | `OrderStatusChanged` | core/`ecosystem`, `orders` | core/`ecosystem`, `crm`, `finance`, `loyalty`, `orders` |
+| `order.cancelled` | `OrderCancelled` | core/`ecosystem`, `finance`, `orders` | core/`ecosystem`, `crm`, `auction`, `orders` |
+| `payment.succeeded` | `PaymentSucceeded` | core/`ecosystem`, `accounting`, `orders`, `payments` | core/`ecosystem`, `accounting`, `auction`, `payments` |
+| `payment.failed` | `PaymentFailed` | core/`ecosystem`, `payments` | core/`ecosystem`, `payments` |
 | `payment.awaiting_approval` | `PaymentAwaitingApproval` | `payments` | _none_ |
-| `payment.refunded` | `PaymentRefunded` | `payments` | `accounting`, `payments` |
-| `stitching.job_created` | `StitchingJobCreated` | `stitching` | `production` |
-| `stitching.job_stage_changed` | `StitchingJobStageChanged` | `stitching` | `production`, `stitching` |
+| `payment.refunded` | `PaymentRefunded` | core/`ecosystem`, `payments` | core/`ecosystem`, `accounting`, `payments` |
+| `stitching.job_created` | `StitchingJobCreated` | core/`ecosystem`, `stitching` | core/`ecosystem`, `production` |
+| `stitching.job_stage_changed` | `StitchingJobStageChanged` | core/`ecosystem`, `stitching` | core/`ecosystem`, `stitching`, `production` |
 | `stitching.order_created` | `StitchingOrderCreated` | `stitching` | _none_ |
 | `crm.contact_upserted` | `ContactUpserted` | **none** | _none_ |
 | `crm.lead_created` | `LeadCreated` | **none** | _none_ |
-| `user.registered` | `UserRegistered` | core/`auth` | `users` |
+| `user.registered` | `UserRegistered` | core/`auth`, core/`ecosystem` | core/`ecosystem`, `users` |
 | `user.password_changed` | `PasswordChanged` | core/`auth` | `users` |
 | `user.password_reset_requested` | `PasswordResetRequested` | core/`auth` | `users` |
 | `user.email_verification_requested` | `EmailVerificationRequested` | core/`auth` | `users` |
+| `user.api_key_issued` | `ApiKeyIssued` | core/`auth` | `users` |
+| `user.sso_account_linked` | `SsoAccountLinked` | core/`auth` | `users` |
+| `user.sso_user_provisioned` | `SsoUserProvisioned` | core/`auth` | _none_ |
 | `catalog.product_low_stock` | `ProductLowStock` | `inventory` | `inventory` |
 | `catalog.product_reorder_point_reached` | `ProductReorderPointReached` | `inventory` | `production`, `purchasing` |
 | `catalog.product_published` | `ProductPublished` | `catalog` | `catalog`, `tradingpartners` |
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
-| `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
+| `catalog.product_changed` | `ProductChanged` | `catalog` | `search` |
+| `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders`, `wishlist` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
-| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom` |
-| `bom.production_completed` | `BomProductionCompleted` | `bom` | _none_ |
+| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `planning`, `purchasing` |
+| `purchasing.requisition_created` | `RequisitionCreated` | `purchasing` | _none_ |
+| `purchasing.requisition_converted` | `RequisitionConverted` | `purchasing` | _none_ |
+| `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
+| `purchasing.supplier_deleted` | `SupplierDeleted` | `purchasing` | `entity-attributes` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
 | `analytics.supplier_digest_ready` | `SupplierDigestReady` | `analytics` | `tradingpartners` |
+| `partners.fact_received` | `PartnerFactReceived` | `tradingpartners` | `purchasing` |
+| `partners.fact_applied` | `PartnerFactApplied` | `purchasing` | `tradingpartners` |
+| `partners.fact_needs_review` | `PartnerFactNeedsReview` | `purchasing` | `tradingpartners` |
 | `production.work_order_created` | `WorkOrderCreated` | `production` | _none_ |
 | `production.work_order_released` | `WorkOrderReleased` | `production` | _none_ |
 | `production.work_order_completed` | `WorkOrderCompleted` | `production` | _none_ |
@@ -65,8 +75,34 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.approved` | `IdentityVerificationApproved` | `identity-verification` | _none_ |
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
-| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting` |
+| `hr.posting_ended` | `PostingEnded` | `hr` | `tasks` |
+| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting`, `finance` |
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
+| `payroll.run_posted` | `PayrollRunPosted` | `accounting`, `payroll` | `accounting` |
+| `payroll.adjustment_posted` | `PayrollAdjustmentPosted` | `accounting`, `payroll` | `accounting` |
+| `fulfilment.shipment_status_changed` | `ShipmentStatusChanged` | `fulfilment` | `orders` |
+| `fulfilment.shipment_rto` | `ShipmentReturnedToOrigin` | `fulfilment` | `crm`, `finance` |
+| `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment`, `measurements` |
+| `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
+| `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
+| `reviews.review_moderated` | `ReviewModerated` | `reviews` | `measurements`, `reviews` |
+| `wallet.credit_purchased` | `WalletCreditPurchased` | `accounting`, `wallet` | `accounting` |
+| `wallet.credit_redeemed` | `WalletCreditRedeemed` | `accounting`, `wallet` | `accounting` |
+| `wallet.credit_refunded` | `WalletCreditRefunded` | `wallet` | `accounting` |
+| `wallet.merchant_payable_created` | `MerchantPayableCreated` | `accounting`, `wallet` | _none_ |
+| `wallet.merchant_payable_paid` | `MerchantPayablePaid` | `wallet` | _none_ |
+| `receivables.credit_note_issued` | `CreditNoteIssued` | `accounting`, `receivables` | `accounting` |
+| `receivables.credit_note_voided` | `CreditNoteVoided` | `receivables` | `accounting` |
+| `receivables.debit_note_issued` | `DebitNoteIssued` | `accounting`, `receivables` | `accounting` |
+| `receivables.debit_note_voided` | `DebitNoteVoided` | `receivables` | `accounting` |
+| `receivables.credit_hold_applied` | `CreditHoldApplied` | `receivables` | _none_ |
+| `notification.sent` | `NotificationSent` | core/`notifications` | _none_ |
+| `settlement.shortfall_written_off` | `SettlementShortfallWrittenOff` | `accounting`, `settlements` | `accounting` |
+| `bank_facility.drawdown_posted` | `BankFacilityDrawdownPosted` | `accounting`, `bankfacilities` | `accounting` |
+| `bank_facility.repayment_recorded` | `BankFacilityRepaymentRecorded` | `accounting`, `bankfacilities` | `accounting` |
+| `bank_facility.markup_accrued` | `BankFacilityMarkupAccrued` | `accounting`, `bankfacilities` | `accounting` |
+| `notify.bulletin_published` | `BulletinPublished` | `notify` | `notify` |
+| `auction.lot_closed` | `AuctionLotClosed` | `auction` | `auction` |
 
 
 ## Detail
@@ -78,22 +114,26 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:48` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:155` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:339` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:542` | `orders` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:26` | core/`ecosystem` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:58` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:165` | `accounting` |
+| `apps/api/src/modules/sales/orders/auction-order-sink.ts:139` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:545` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:806` | `orders` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
+| `handleOrderPlaced()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:24` | core/`ecosystem` |
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:46` | `accounting` |
-| `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
-| `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
-| `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
-| `onOrderPlaced()` | `apps/api/src/modules/stitching/order.subscriber.ts:25` | `stitching` |
+| `onOrderPlaced()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:27` | `crm` |
+| `onOrderPlaced()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:56` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:70` | `orders` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/orders/order-replication.listener.ts:48` | `orders` |
+| `onOrderPlaced()` | `apps/api/src/modules/sales/stitching/order.subscriber.ts:25` | `stitching` |
+| `onOrderPlaced()` | `apps/api/src/modules/system/example-hello-world-pack/hello-world.listener.ts:23` | `example-hello-world-pack` |
 
 ### `order.status_changed`
 
@@ -102,16 +142,20 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:716` | `orders` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:31` | core/`ecosystem` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:833` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStatusChanged()` | `apps/api/src/modules/crm/order.subscriber.ts:66` | `crm` |
-| `onOrderStatusChanged()` | `apps/api/src/modules/finance/finance.listener.ts:18` | `finance` |
-| `onStatusChanged()` | `apps/api/src/modules/orders/notification.subscriber.ts:166` | `orders` |
+| `handleOrderStatusChanged()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:29` | core/`ecosystem` |
+| `onStatusChanged()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:66` | `crm` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/money/finance/finance.listener.ts:18` | `finance` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/sales/loyalty/loyalty-order.listener.ts:24` | `loyalty` |
+| `onStatusChanged()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:166` | `orders` |
 
 ### `order.cancelled`
 
@@ -120,16 +164,19 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:716` | `orders` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:36` | core/`ecosystem` |
+| `apps/api/src/modules/money/finance/finance.listener.ts:9` | `finance` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCancelled()` | `apps/api/src/modules/crm/order.subscriber.ts:71` | `crm` |
-| `onCancelled()` | `apps/api/src/modules/orders/notification.subscriber.ts:161` | `orders` |
+| `handleOrderCancelled()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:34` | core/`ecosystem` |
+| `onCancelled()` | `apps/api/src/modules/customers/crm/order.subscriber.ts:71` | `crm` |
+| `onOrderCancelled()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:33` | `auction` |
+| `onCancelled()` | `apps/api/src/modules/sales/orders/notification.subscriber.ts:161` | `orders` |
 
 ### `payment.succeeded`
 
@@ -138,19 +185,24 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:115` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:152` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:530` | `orders` |
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:41` | core/`ecosystem` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:162` | `accounting` |
+| `apps/api/src/modules/sales/orders/instalment-plan.service.ts:90` | `orders` |
+| `apps/api/src/modules/sales/orders/orders.service.ts:777` | `orders` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:301` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:349` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:113` | `accounting` |
-| `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
+| `handlePaymentSucceeded()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:39` | core/`ecosystem` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:123` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:28` | `auction` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
 
@@ -159,14 +211,17 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:46` | core/`ecosystem` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:301` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentFailed()` | `apps/api/src/modules/payments/notification.subscriber.ts:79` | `payments` |
+| `handlePaymentFailed()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:44` | core/`ecosystem` |
+| `onPaymentFailed()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:79` | `payments` |
 
 ### `payment.awaiting_approval`
 
@@ -175,7 +230,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:113` | `payments` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:124` | `payments` |
 
 
 **Subscribed by**
@@ -189,15 +244,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:316` | `payments` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:51` | core/`ecosystem` |
+| `apps/api/src/modules/sales/payments/payments.service.ts:408` | `payments` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:150` | `accounting` |
-| `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
+| `handlePaymentRefunded()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:49` | core/`ecosystem` |
+| `onPaymentRefunded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:160` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/sales/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
 
@@ -206,14 +263,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/jobs.service.ts:217` | `stitching` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:61` | core/`ecosystem` |
+| `apps/api/src/modules/sales/stitching/jobs.service.ts:217` | `stitching` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStitchingJobCreated()` | `apps/api/src/modules/production/stitching-cascade.listener.ts:30` | `production` |
+| `handleStitchingJobCreated()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:59` | core/`ecosystem` |
+| `onStitchingJobCreated()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:30` | `production` |
 
 ### `stitching.job_stage_changed`
 
@@ -222,15 +281,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/jobs.service.ts:379` | `stitching` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:66` | core/`ecosystem` |
+| `apps/api/src/modules/sales/stitching/jobs.service.ts:379` | `stitching` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStitchingJobStageChanged()` | `apps/api/src/modules/production/stitching-cascade.listener.ts:68` | `production` |
-| `onStageChanged()` | `apps/api/src/modules/stitching/order.subscriber.ts:48` | `stitching` |
+| `handleStitchingJobStageChanged()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:64` | core/`ecosystem` |
+| `onStageChanged()` | `apps/api/src/modules/sales/stitching/order.subscriber.ts:48` | `stitching` |
+| `onStitchingJobStageChanged()` | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.ts:68` | `production` |
 
 ### `stitching.order_created`
 
@@ -239,7 +300,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/stitching/stitching-orders.service.ts:148` | `stitching` |
+| `apps/api/src/modules/sales/stitching/stitching-orders.service.ts:148` | `stitching` |
 
 
 **Subscribed by**
@@ -277,14 +338,16 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:104` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:153` | core/`auth` |
+| `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:56` | core/`ecosystem` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onRegistered()` | `apps/api/src/modules/users/notification.subscriber.ts:21` | `users` |
+| `handleUserRegistered()` | `apps/api/src/core/ecosystem/ecosystem-event-bridge.service.ts:54` | core/`ecosystem` |
+| `onRegistered()` | `apps/api/src/modules/system/users/notification.subscriber.ts:21` | `users` |
 
 ### `user.password_changed`
 
@@ -293,15 +356,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:203` | core/`auth` |
-| `apps/api/src/core/auth/auth.service.ts:258` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:329` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:384` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:33` | `users` |
+| `onPasswordChanged()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:36` | `users` |
 
 ### `user.password_reset_requested`
 
@@ -310,14 +373,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:228` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:354` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:55` | `users` |
+| `onPasswordResetRequested()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:58` | `users` |
 
 ### `user.email_verification_requested`
 
@@ -326,14 +389,65 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:279` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:405` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:78` | `users` |
+| `onEmailVerificationRequested()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:81` | `users` |
+
+### `user.api_key_issued`
+
+> ApiKeysService issued a personal API key's secret — at create or at rotate (163-personal-api-keys.md).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/api-keys/api-keys.service.ts:255` | core/`auth` |
+| `apps/api/src/core/auth/api-keys/api-keys.service.ts:386` | core/`auth` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onApiKeyIssued()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:114` | `users` |
+
+### `user.sso_account_linked`
+
+> SsoService linked an existing account to a single sign-on identity (161-sso-identity-federation.md §3).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/sso.service.ts:614` | core/`auth` |
+| `apps/api/src/core/auth/sso.service.ts:634` | core/`auth` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onSsoAccountLinked()` | `apps/api/src/modules/system/users/security-notification.subscriber.ts:150` | `users` |
+
+### `user.sso_user_provisioned`
+
+> SsoService provisioned a brand-new account at its first single sign-on.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/sso.service.ts:674` | core/`auth` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 ### `catalog.product_low_stock`
 
@@ -342,14 +456,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:361` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:410` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `handleLowStock()` | `apps/api/src/modules/inventory/inventory.listener.ts:19` | `inventory` |
+| `handleLowStock()` | `apps/api/src/modules/supply-chain/inventory/inventory.listener.ts:19` | `inventory` |
 
 ### `catalog.product_reorder_point_reached`
 
@@ -359,15 +473,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:379` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:428` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onReorderPointReached()` | `apps/api/src/modules/production/reorder-work-order.listener.ts:19` | `production` |
-| `onReorderPointReached()` | `apps/api/src/modules/purchasing/reorder.listener.ts:25` | `purchasing` |
+| `onReorderPointReached()` | `apps/api/src/modules/supply-chain/production/reorder-work-order.listener.ts:19` | `production` |
+| `onReorderPointReached()` | `apps/api/src/modules/supply-chain/purchasing/reorder.listener.ts:33` | `purchasing` |
 
 ### `catalog.product_published`
 
@@ -377,15 +491,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:171` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:200` | `catalog` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onProductPublished()` | `apps/api/src/modules/catalog/product-replication.listener.ts:50` | `catalog` |
-| `onProductPublished()` | `apps/api/src/modules/tradingpartners/product-alerts.listener.ts:26` | `tradingpartners` |
+| `onProductPublished()` | `apps/api/src/modules/merchandising/catalog/product-replication.listener.ts:50` | `catalog` |
+| `onProductPublished()` | `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.ts:26` | `tradingpartners` |
 
 ### `catalog.product_price_changed`
 
@@ -395,15 +509,34 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:291` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:359` | `catalog` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onProductPriceChanged()` | `apps/api/src/modules/catalog/product-replication.listener.ts:55` | `catalog` |
-| `onProductPriceChanged()` | `apps/api/src/modules/tradingpartners/product-alerts.listener.ts:31` | `tradingpartners` |
+| `onProductPriceChanged()` | `apps/api/src/modules/merchandising/catalog/product-replication.listener.ts:55` | `catalog` |
+| `onProductPriceChanged()` | `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.ts:31` | `tradingpartners` |
+
+### `catalog.product_changed`
+
+> WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/merchandising/catalog/ai-suggestions.service.ts:296` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:210` | `catalog` |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts:367` | `catalog` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onProductChanged()` | `apps/api/src/modules/merchandising/search/search-reindex.listener.ts:17` | `search` |
 
 ### `inventory.stock_replenished`
 
@@ -413,14 +546,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:396` | `inventory` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:445` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockReplenished()` | `apps/api/src/modules/orders/backorder.listener.ts:29` | `orders` |
+| `onStockReplenished()` | `apps/api/src/modules/sales/orders/backorder.listener.ts:29` | `orders` |
+| `onStockReplenished()` | `apps/api/src/modules/sales/wishlist/back-in-stock.listener.ts:31` | `wishlist` |
 
 ### `inventory.stock_variance_recorded`
 
@@ -430,15 +564,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:279` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:347` | `inventory` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:289` | `accounting` |
+| `apps/api/src/modules/supply-chain/inventory/inventory.service.ts:396` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:277` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:287` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -447,14 +581,45 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:432` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:534` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
+| `recomputeAffectedRecipes()` | `apps/api/src/modules/supply-chain/bom/bom.listener.ts:22` | `bom` |
+| `onGoodsReceived()` | `apps/api/src/modules/supply-chain/planning/goods-received-lead-time.listener.ts:24` | `planning` |
+| `onGoodsReceived()` | `apps/api/src/modules/supply-chain/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
+
+### `purchasing.requisition_created`
+
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/requisition-task-source.ts:38` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/requisition.service.ts:72` | `purchasing` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `purchasing.requisition_converted`
+
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/requisition.service.ts:205` | `purchasing` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 ### `bom.production_completed`
 
@@ -464,12 +629,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/bom/production.service.ts:200` | `bom` |
+| `apps/api/src/modules/supply-chain/bom/production.service.ts:350` | `bom` |
 
 
 **Subscribed by**
 
-_Nothing subscribes. Publishing it is a no-op today._
+| Handler | Where | Module |
+|---|---|---|
+| `onBomProductionCompleted()` | `apps/api/src/modules/supply-chain/bom/bom-production-replication.listener.ts:38` | `bom` |
 
 ### `purchasing.supplier_bill_raised`
 
@@ -478,15 +645,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:573` | `purchasing` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:186` | `accounting` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:688` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:174` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:184` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -495,15 +662,32 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:637` | `purchasing` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:236` | `accounting` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:753` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:224` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:234` | `accounting` |
+
+### `purchasing.supplier_deleted`
+
+> PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:186` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onSupplierDeleted()` | `apps/api/src/modules/merchandising/entity-attributes/supplier-deleted.listener.ts:23` | `entity-attributes` |
 
 ### `transfers.inter_branch_invoiced`
 
@@ -513,15 +697,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:332` | `accounting` |
-| `apps/api/src/modules/transfers/transfers.service.ts:278` | `transfers` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:342` | `accounting` |
+| `apps/api/src/modules/supply-chain/transfers/transfers.service.ts:300` | `transfers` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:330` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:340` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -531,14 +715,65 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:82` | `analytics` |
+| `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts:82` | `analytics` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierDigestReady()` | `apps/api/src/modules/tradingpartners/supplier-digest.listener.ts:22` | `tradingpartners` |
+| `onSupplierDigestReady()` | `apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.ts:22` | `tradingpartners` |
+
+### `partners.fact_received`
+
+> A connected trading partner's fact was stored in PartnerFactInbox and acknowledged (WO-213.1, 213-partner-fact-exchange.md).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:94` | `tradingpartners` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPartnerFactReceived()` | `apps/api/src/modules/supply-chain/purchasing/partner-fact.listener.ts:20` | `purchasing` |
+
+### `partners.fact_applied`
+
+> The subscriber that owns the effect applied the fact — for `sale.dispatched`, a purchase order now exists (WO-213.2).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:113` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onApplied()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:29` | `tradingpartners` |
+
+### `partners.fact_needs_review`
+
+> The subscriber could not apply the fact without a person — an unknown barcode, a price far from the last (WO-213.2).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:196` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onNeedsReview()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:49` | `tradingpartners` |
 
 ### `production.work_order_created`
 
@@ -547,7 +782,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:114` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:114` | `production` |
 
 
 **Subscribed by**
@@ -561,7 +796,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:180` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:180` | `production` |
 
 
 **Subscribed by**
@@ -575,7 +810,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/production/work-orders.service.ts:223` | `production` |
+| `apps/api/src/modules/supply-chain/production/work-orders.service.ts:223` | `production` |
 
 
 **Subscribed by**
@@ -589,7 +824,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/crm/email-inbox/email-inbox.service.ts:100` | `crm` |
+| `apps/api/src/modules/customers/crm/email-inbox/email-inbox.service.ts:100` | `crm` |
 
 
 **Subscribed by**
@@ -603,7 +838,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:138` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:159` | `identity-verification` |
 
 
 **Subscribed by**
@@ -617,7 +852,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:139` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:160` | `identity-verification` |
 
 
 **Subscribed by**
@@ -631,12 +866,29 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:140` | `identity-verification` |
+| `apps/api/src/modules/system/identity-verification/identity-verification.service.ts:161` | `identity-verification` |
 
 
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
+
+### `hr.posting_ended`
+
+> PostingService.end() (hr-people-org/20-people-positions-ranks.md) — added for tasks-notifications-support/23-tasks-allotment-tracking.md (DECISIONS.md ADR-050): doc 20's own build never needed a doma…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/people/hr/people.service.ts:215` | `hr` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPostingEnded()` | `apps/api/src/modules/people/tasks/task-leaver.listener.ts:29` | `tasks` |
 
 ### `finance.expense_recorded`
 
@@ -646,16 +898,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
-| `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:530` | `finance` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:402` | `accounting` |
+| `apps/api/src/modules/money/finance/finance.service.ts:252` | `finance` |
+| `apps/api/src/modules/money/finance/finance.service.ts:645` | `finance` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:390` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:400` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/money/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
 
@@ -665,14 +918,454 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/finance/order-economics.service.ts:127` | `finance` |
+| `apps/api/src/modules/money/finance/order-economics.service.ts:143` | `finance` |
 
 
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
 
+### `payroll.run_posted`
+
+> PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:447` | `accounting` |
+| `apps/api/src/modules/people/payroll/pay-run.service.ts:186` | `payroll` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPayrollRunPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:445` | `accounting` |
+
+### `payroll.adjustment_posted`
+
+> PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:498` | `accounting` |
+| `apps/api/src/modules/people/payroll/pay-run.service.ts:237` | `payroll` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:496` | `accounting` |
+
+### `fulfilment.shipment_status_changed`
+
+> FulfilmentService's one writer for a shipment status transition (WO-6.5) — fires whether the change came from a courier poll or a manual status update.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:153` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:246` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onShipmentStatusChanged()` | `apps/api/src/modules/sales/orders/shipment-status.listener.ts:33` | `orders` |
+
+### `fulfilment.shipment_rto`
+
+> A courier-initiated RETURNED with no matching customer ReturnRequest (WO-6.7) — never fired for a return raised through the RMA flow.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/fulfilment/fulfilment.service.ts:261` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/customers/crm/rto-contact.listener.ts:19` | `crm` |
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/money/finance/rto-expense.listener.ts:25` | `finance` |
+
+### `fulfilment.return_status_changed`
+
+> ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:147` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:196` | `fulfilment` |
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:307` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onStatusChanged()` | `apps/api/src/modules/sales/fulfilment/return-notification.subscriber.ts:24` | `fulfilment` |
+| `onReturnRequestStatusChanged()` | `apps/api/src/modules/sales/measurements/size-bias.listener.ts:33` | `measurements` |
+
+### `fulfilment.return_fully_refunded`
+
+> A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/fulfilment/returns.service.ts:393` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onReturnFullyRefunded()` | `apps/api/src/modules/sales/orders/shipment-status.listener.ts:61` | `orders` |
+
+### `promotions.discount_redeemed`
+
+> OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/promotions/promotions.service.ts:512` | `promotions` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `reviews.review_moderated`
+
+> ReviewsService.moderate() (WO-7.5) — fires on every moderation decision, PUBLISHED or REJECTED alike, so a subscriber that only cares about the current published set (e.g.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/reviews/reviews.service.ts:127` | `reviews` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onReviewModerated()` | `apps/api/src/modules/sales/measurements/size-bias.listener.ts:21` | `measurements` |
+| `onReviewModerated()` | `apps/api/src/modules/sales/reviews/review-summary.listener.ts:13` | `reviews` |
+
+### `wallet.credit_purchased`
+
+> doc 155 (WO-155.2) — WalletService.purchaseCredit(): real money landed in Newax's own bank account.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:30` | `accounting` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:139` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditPurchased()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:28` | `accounting` |
+
+### `wallet.credit_redeemed`
+
+> WalletService.onMerchantConfirmed() — the RESERVE became a REDEEM; MerchantPayable was created in the same transaction (§3's own "one transaction" rule).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:64` | `accounting` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:251` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditRedeemed()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:62` | `accounting` |
+
+### `wallet.credit_refunded`
+
+> WalletService.refund() — reverses a PURCHASE (not yet redeemed) or a REDEEM (already redeemed, see refund()'s own CreditNote-port comment).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:338` | `wallet` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:376` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditRefunded()` | `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:121` | `accounting` |
+
+### `wallet.merchant_payable_created`
+
+> MerchantPayableService.createMerchantPayable() — notifications.ts (WO-155.5) subscribes for the merchant receipt.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:100` | `accounting` |
+| `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.ts:103` | `accounting` |
+| `apps/api/src/modules/sales/wallet/merchant-payable.service.ts:66` | `wallet` |
+| `apps/api/src/modules/sales/wallet/wallet.service.ts:263` | `wallet` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `wallet.merchant_payable_paid`
+
+> MerchantPayableService.processPayoutRun() — notifications.ts (WO-155.5) subscribes for the merchant payout receipt.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/wallet/merchant-payable.service.ts:149` | `wallet` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `receivables.credit_note_issued`
+
+> 145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue().
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:537` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:564` | `accounting` |
+| `apps/api/src/modules/money/receivables/credit-notes.service.ts:130` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onCreditNoteIssued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:535` | `accounting` |
+
+### `receivables.credit_note_voided`
+
+> CreditNotesService.void() on an already-ISSUED note — reverses the posted entry via AccountingService.reverseEntry(), never a second, opposite-signed posting.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/receivables/credit-notes.service.ts:181` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onCreditNoteVoided()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:562` | `accounting` |
+
+### `receivables.debit_note_issued`
+
+> DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:583` | `accounting` |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:609` | `accounting` |
+| `apps/api/src/modules/money/receivables/debit-notes.service.ts:93` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onDebitNoteIssued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:581` | `accounting` |
+
+### `receivables.debit_note_voided`
+
+> DebitNotesService.void() on an already-ISSUED note.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/receivables/debit-notes.service.ts:123` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onDebitNoteVoided()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:607` | `accounting` |
+
+### `receivables.credit_hold_applied`
+
+> CreditTermsService.setTerm() the moment isOnHold turns true — "Audience is a capability" lens: resolves its recipients from finance.credit-terms.manage, never a hardcoded address.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/receivables/credit-terms.service.ts:86` | `receivables` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `notification.sent`
+
+> NotificationsService.send() (doc 153, commercial-licensing-agency/ 153-usage-based-pricing-model.md, WO-153.2) — fires once per logical message, at the SAME consolidated call site every channel (emai…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/notifications/notifications.service.ts:73` | core/`notifications` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `settlement.shortfall_written_off`
+
+> 49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:627` | `accounting` |
+| `apps/api/src/modules/money/settlements/settlements.service.ts:210` | `settlements` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onSettlementShortfallWrittenOff()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:625` | `accounting` |
+
+### `bank_facility.drawdown_posted`
+
+> 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.postDrawdown(), fired only once a drawdown has actually posted (below-threshold immediately, above-threshold after approve()).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:665` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:204` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityDrawdownPosted()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:663` | `accounting` |
+
+### `bank_facility.repayment_recorded`
+
+> 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.recordRepayment().
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:697` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:249` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityRepaymentRecorded()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:695` | `accounting` |
+
+### `bank_facility.markup_accrued`
+
+> 167-bank-facility-management.md (WO-167.3) — the monthly markup-accrual cron's own posting, one event per facility per calendar month, idempotent via findPostedEntry(source, `${facilityId}:${monthKey…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:745` | `accounting` |
+| `apps/api/src/modules/money/bankfacilities/bankfacilities.service.ts:298` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityMarkupAccrued()` | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:743` | `accounting` |
+
+### `notify.bulletin_published`
+
+> BulletinsService.publish() (tasks-notifications-support/61-policy-communications-bulletin.md, WO-61.3).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/customers/notify/bulletins.service.ts:29` | `notify` |
+| `apps/api/src/modules/customers/notify/bulletins.service.ts:70` | `notify` |
+| `apps/api/src/modules/customers/notify/notify.module.ts:36` | `notify` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBulletinPublished()` | `apps/api/src/modules/customers/notify/bulletin-notification.listener.ts:26` | `notify` |
+
+### `auction.lot_closed`
+
+> launchpad-apps/234-auction-app.md §9 (WO-234.6).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/sales/auction/auction-lifecycle.service.ts:215` | `auction` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onLotClosed()` | `apps/api/src/modules/sales/auction/auction-settlement.subscriber.ts:23` | `auction` |
+
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

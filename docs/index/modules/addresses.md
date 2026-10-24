@@ -7,15 +7,15 @@ Pack **core** · always on · 4 files
 
 
 
-Source: `apps/api/src/modules/addresses/`
+Source: `apps/api/src/modules/sales/addresses/`
 
-## Files (4 · 255 lines)
+## Files (4 · 259 lines)
 
-All paths relative to `apps/api/src/modules/addresses`.
+All paths relative to `apps/api/src/modules/sales/addresses`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `addresses.controller.ts` | controller | 46 | 1 |  |
+| `addresses.controller.ts` | controller | 50 | 1 |  |
 | `addresses.module.ts` | nest module | 10 | 1 |  |
 | `addresses.service.ts` | service | 86 | 1 | A customer's own saved delivery addresses. |
 | `address.dto.ts` | dto | 113 | 2 |  |
@@ -25,10 +25,10 @@ All paths relative to `apps/api/src/modules/addresses`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/addresses` | signed-in | `AddressesController.list` :16 | The signed-in customer's saved addresses |
-| POST | `/addresses` | signed-in | `AddressesController.create` :23 | Save a new address |
-| DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` :42 | Remove a saved address |
-| PATCH | `/addresses/:id` | signed-in | `AddressesController.update` :30 | Edit a saved address |
+| GET | `/addresses` | signed-in | `AddressesController.list` :17 | The signed-in customer's saved addresses |
+| POST | `/addresses` | signed-in | `AddressesController.create` :25 | Save a new address |
+| DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` :46 | Remove a saved address |
+| PATCH | `/addresses/:id` | signed-in | `AddressesController.update` :33 | Edit a saved address |
 
 
 ## Domain events
@@ -84,4 +84,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

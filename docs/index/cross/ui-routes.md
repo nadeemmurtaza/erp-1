@@ -3,7 +3,7 @@
 
 # Screens
 
-All **137** routable files across the web app, the till and the mobile app.
+All **286** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -24,12 +24,14 @@ Order is `NAV_GROUPS`' order in `apps/web/src/components/admin/nav-registry.ts`
 and nothing else. A capability with no entry here is reachable only by typing a
 URL, which CLAUDE.md counts as not shipped.
 
-_none_
+| Group | Label | Href | Permission | Module |
+|---|---|---|---|---|
+| overview | Apps | `'/admin/launchpad'` | — | — |
 
 
 ## Every screen
 
-### admin (70)
+### admin (187)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -40,7 +42,21 @@ _none_
 | `/admin` | not-found | server | `apps/web/src/app/(admin)/admin/not-found.tsx` |
 | `/admin` | page | client | `apps/web/src/app/(admin)/admin/(app)/page.tsx` |
 | `/admin/account` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/page.tsx` |
+| `/admin/account/api-keys` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/api-keys/page.tsx` |
+| `/admin/accounting/fiscal-periods` | page | client | `apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx` |
+| `/admin/ai` | page | client | `apps/web/src/app/(admin)/admin/(app)/ai/page.tsx` |
+| `/admin/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx` |
+| `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
+| `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
+| `/admin/attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx` |
+| `/admin/auctions` | loading | server | `apps/web/src/app/(admin)/admin/(app)/auctions/loading.tsx` |
+| `/admin/auctions` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/page.tsx` |
+| `/admin/auctions/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
+| `/admin/b2b-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx` |
+| `/admin/b2b-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx` |
+| `/admin/bank-facilities` | page | client | `apps/web/src/app/(admin)/admin/(app)/bank-facilities/page.tsx` |
+| `/admin/bank-facilities/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]/page.tsx` |
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
 | `/admin/bom/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx` |
@@ -52,36 +68,112 @@ _none_
 | `/admin/bom/raw-usage` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
+| `/admin/bulletins` | page | client | `apps/web/src/app/(admin)/admin/(app)/bulletins/page.tsx` |
+| `/admin/bulletins/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bulletins/new/page.tsx` |
+| `/admin/bundles` | page | client | `apps/web/src/app/(admin)/admin/(app)/bundles/page.tsx` |
+| `/admin/campaigns` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx` |
+| `/admin/campaigns/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/[id]/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
+| `/admin/collections` | page | client | `apps/web/src/app/(admin)/admin/(app)/collections/page.tsx` |
+| `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
+| `/admin/contacts/import` | page | server | `apps/web/src/app/(admin)/admin/(app)/contacts/import/page.tsx` |
+| `/admin/content` | page | client | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` |
+| `/admin/credit-notes` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/page.tsx` |
+| `/admin/credit-notes/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/[id]/page.tsx` |
+| `/admin/credit-notes/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/new/page.tsx` |
+| `/admin/credit-terms` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-terms/page.tsx` |
+| `/admin/customers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx` |
+| `/admin/customers/gift-cards` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx` |
+| `/admin/customers/gift-cards/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx` |
+| `/admin/debit-notes` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/page.tsx` |
+| `/admin/debit-notes/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]/page.tsx` |
+| `/admin/debit-notes/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/new/page.tsx` |
+| `/admin/design-system` | page | server | `apps/web/src/app/(admin)/admin/design-system/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
+| `/admin/dunning-policy` | page | client | `apps/web/src/app/(admin)/admin/(app)/dunning-policy/page.tsx` |
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
+| `/admin/embeds` | page | client | `apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx` |
+| `/admin/feature-flags` | page | client | `apps/web/src/app/(admin)/admin/(app)/feature-flags/page.tsx` |
+| `/admin/feature-flags/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]/page.tsx` |
+| `/admin/finance` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/page.tsx` |
+| `/admin/finance/cash-flow` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx` |
 | `/admin/finance/expenses` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` |
-| `/admin/finance/expenses/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx` |
 | `/admin/finance/expenses/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx` |
+| `/admin/finance/expenses/import` | page | server | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/import/page.tsx` |
+| `/admin/finance/margins` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/margins/page.tsx` |
+| `/admin/finance/unit-economics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/unit-economics/page.tsx` |
+| `/admin/fulfilment/manifests` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests/page.tsx` |
+| `/admin/fulfilment/returns` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/page.tsx` |
+| `/admin/fulfilment/returns/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]/page.tsx` |
+| `/admin/fulfilment/rto` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/rto/page.tsx` |
+| `/admin/fulfilment/shipments` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments/page.tsx` |
+| `/admin/fulfilment/tracking` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking/page.tsx` |
 | `/admin/garments` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/page.tsx` |
 | `/admin/garments/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` |
+| `/admin/hr/assets` | page | client | `apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx` |
+| `/admin/hr/assets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` |
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |
 | `/admin/inbox` | page | client | `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` |
-| `/admin/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/insights/page.tsx` |
+| `/admin/inventory` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx` |
 | `/admin/inventory` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx` |
 | `/admin/inventory/[variantId]/chain` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx` |
 | `/admin/inventory/counts` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx` |
 | `/admin/inventory/counts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx` |
+| `/admin/inventory/lots` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/lots/page.tsx` |
+| `/admin/inventory/lots/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/lots/[id]/page.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
+| `/admin/inventory/serials` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/serials/page.tsx` |
+| `/admin/inventory/serials/[serialNumber]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/serials/[serialNumber]/page.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
+| `/admin/inventory/spot-checks` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/page.tsx` |
+| `/admin/inventory/spot-checks/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx` |
+| `/admin/inventory/variances/by-shift` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx` |
+| `/admin/inventory/wishlisted` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx` |
+| `/admin/invoices` | page | client | `apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx` |
+| `/admin/launchpad` | page | server | `apps/web/src/app/(admin)/admin/(app)/launchpad/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
+| `/admin/login/sso-complete` | page | client | `apps/web/src/app/(admin)/admin/login/sso-complete/page.tsx` |
+| `/admin/loyalty` | page | client | `apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx` |
+| `/admin/managed-services` | page | client | `apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx` |
 | `/admin/marketing` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx` |
+| `/admin/marketing/discounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx` |
+| `/admin/marketing/discounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx` |
+| `/admin/marketing/discounts/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new/page.tsx` |
+| `/admin/marketing/promo-codes` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx` |
+| `/admin/marketplace` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketplace/page.tsx` |
+| `/admin/merchant-payables` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx` |
+| `/admin/merchant-payables/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx` |
+| `/admin/my-actions` | page | client | `apps/web/src/app/(admin)/admin/(app)/my-actions/page.tsx` |
+| `/admin/my-attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx` |
+| `/admin/my-tasks` | page | client | `apps/web/src/app/(admin)/admin/(app)/my-tasks/page.tsx` |
+| `/admin/notify` | page | client | `apps/web/src/app/(admin)/admin/(app)/notify/page.tsx` |
+| `/admin/notify/escalation-rules` | page | client | `apps/web/src/app/(admin)/admin/(app)/notify/escalation-rules/page.tsx` |
+| `/admin/notify/meetings` | page | client | `apps/web/src/app/(admin)/admin/(app)/notify/meetings/page.tsx` |
 | `/admin/o` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/page.tsx` |
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
+| `/admin/o/[orgId]/policy-quarantine` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx` |
+| `/admin/onsite-messages` | page | client | `apps/web/src/app/(admin)/admin/(app)/onsite-messages/page.tsx` |
+| `/admin/options` | page | client | `apps/web/src/app/(admin)/admin/(app)/options/page.tsx` |
+| `/admin/orders` | loading | server | `apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx` |
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |
 | `/admin/orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` |
+| `/admin/org-structure` | page | client | `apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx` |
+| `/admin/org-structure/[unitId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx` |
 | `/admin/payments` | page | client | `apps/web/src/app/(admin)/admin/(app)/payments/page.tsx` |
+| `/admin/payroll/compensation` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx` |
+| `/admin/payroll/leave` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx` |
+| `/admin/payroll/me` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx` |
+| `/admin/payroll/runs` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx` |
+| `/admin/payroll/runs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx` |
+| `/admin/people` | page | client | `apps/web/src/app/(admin)/admin/(app)/people/page.tsx` |
+| `/admin/platform-resilience` | page | client | `apps/web/src/app/(admin)/admin/(app)/platform-resilience/page.tsx` |
+| `/admin/products` | loading | server | `apps/web/src/app/(admin)/admin/(app)/products/loading.tsx` |
 | `/admin/products` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/page.tsx` |
 | `/admin/products/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx` |
 | `/admin/products/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx` |
@@ -89,42 +181,76 @@ _none_
 | `/admin/purchase-orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/page.tsx` |
 | `/admin/purchase-orders/[id]/receive` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx` |
 | `/admin/purchase-orders/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx` |
+| `/admin/rag` | page | client | `apps/web/src/app/(admin)/admin/(app)/rag/page.tsx` |
+| `/admin/rag/query` | page | client | `apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
+| `/admin/requisitions` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/page.tsx` |
+| `/admin/requisitions/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/[id]/page.tsx` |
+| `/admin/requisitions/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx` |
+| `/admin/resilience` | page | client | `apps/web/src/app/(admin)/admin/(app)/resilience/page.tsx` |
+| `/admin/reviews` | page | client | `apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx` |
+| `/admin/search` | page | client | `apps/web/src/app/(admin)/admin/(app)/search/page.tsx` |
+| `/admin/segments` | page | client | `apps/web/src/app/(admin)/admin/(app)/segments/page.tsx` |
+| `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
+| `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
+| `/admin/settings/sso` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/sso/page.tsx` |
+| `/admin/settings/sso/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]/page.tsx` |
+| `/admin/settlements` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx` |
+| `/admin/settlements/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx` |
+| `/admin/statements` | page | client | `apps/web/src/app/(admin)/admin/(app)/statements/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |
 | `/admin/stitching/bookings/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]/page.tsx` |
 | `/admin/stitching/jobs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx` |
 | `/admin/suppliers` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx` |
 | `/admin/suppliers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx` |
+| `/admin/support/customer-tickets` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/page.tsx` |
+| `/admin/support/customer-tickets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]/page.tsx` |
+| `/admin/support/tickets` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/page.tsx` |
+| `/admin/support/tickets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]/page.tsx` |
+| `/admin/support/tickets/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/new/page.tsx` |
+| `/admin/tasks` | page | client | `apps/web/src/app/(admin)/admin/(app)/tasks/page.tsx` |
 | `/admin/tax` | page | client | `apps/web/src/app/(admin)/admin/(app)/tax/page.tsx` |
 | `/admin/trading-partners` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx` |
 | `/admin/trading-partners/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]/page.tsx` |
 | `/admin/trading-partners/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx` |
+| `/admin/transfers` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx` |
+| `/admin/transfers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx` |
+| `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
+| `/admin/users/api-keys` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/api-keys/page.tsx` |
+| `/admin/wallet` | page | client | `apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx` |
 
-### mobile (15)
+### mobile (22)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
 | `/account` | screen | client | `apps/mobile/app/(tabs)/account.tsx` |
 | `/cart` | screen | client | `apps/mobile/app/(tabs)/cart.tsx` |
 | `/checkout` | screen | client | `apps/mobile/app/checkout.tsx` |
+| `/credit` | screen | client | `apps/mobile/app/credit.tsx` |
 | `/index` | screen | client | `apps/mobile/app/(tabs)/index.tsx` |
 | `/login` | screen | client | `apps/mobile/app/login.tsx` |
+| `/loyalty` | screen | client | `apps/mobile/app/loyalty.tsx` |
 | `/measurements/edit` | screen | client | `apps/mobile/app/measurements/edit.tsx` |
 | `/measurements/index` | screen | client | `apps/mobile/app/measurements/index.tsx` |
+| `/notifications` | screen | client | `apps/mobile/app/notifications.tsx` |
 | `/orders/[number]` | screen | client | `apps/mobile/app/orders/[number].tsx` |
 | `/orders/index` | screen | client | `apps/mobile/app/orders/index.tsx` |
 | `/payment` | screen | client | `apps/mobile/app/payment.tsx` |
 | `/product/[slug]` | screen | client | `apps/mobile/app/product/[slug].tsx` |
+| `/returns/index` | screen | client | `apps/mobile/app/returns/index.tsx` |
+| `/returns/new` | screen | client | `apps/mobile/app/returns/new.tsx` |
+| `/reviews` | screen | client | `apps/mobile/app/reviews.tsx` |
 | `/stitching` | screen | client | `apps/mobile/app/(tabs)/stitching.tsx` |
 | `/stitching/[number]` | screen | client | `apps/mobile/app/stitching/[number].tsx` |
+| `/wishlist` | screen | client | `apps/mobile/app/wishlist.tsx` |
 | `/workshop/[id]` | screen | client | `apps/mobile/app/workshop/[id].tsx` |
 | `/workshop/index` | screen | client | `apps/mobile/app/workshop/index.tsx` |
 
-### pos (12)
+### pos (13)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -133,6 +259,7 @@ _none_
 | `/` | layout | server | `apps/pos/src/app/layout.tsx` |
 | `/` | not-found | server | `apps/pos/src/app/not-found.tsx` |
 | `/` | page | client | `apps/pos/src/app/page.tsx` |
+| `/dashboard` | page | client | `apps/pos/src/app/dashboard/page.tsx` |
 | `/login` | page | client | `apps/pos/src/app/login/page.tsx` |
 | `/receipt/[orderId]` | page | client | `apps/pos/src/app/receipt/[orderId]/page.tsx` |
 | `/returns` | page | client | `apps/pos/src/app/returns/page.tsx` |
@@ -141,7 +268,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (36)
+### storefront (60)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -154,16 +281,39 @@ _none_
 | `/[locale]` | page | server | `apps/web/src/app/(storefront)/[locale]/page.tsx` |
 | `/[locale]/account` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/page.tsx` |
 | `/[locale]/account/addresses` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/addresses/page.tsx` |
+| `/[locale]/account/api-keys` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx` |
+| `/[locale]/account/b2b` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b/page.tsx` |
+| `/[locale]/account/credit` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx` |
+| `/[locale]/account/loyalty` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx` |
 | `/[locale]/account/measurements` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx` |
+| `/[locale]/account/notifications` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/notifications/page.tsx` |
+| `/[locale]/account/overview` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/overview/page.tsx` |
+| `/[locale]/account/returns` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx` |
+| `/[locale]/account/returns/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx` |
+| `/[locale]/account/returns/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx` |
+| `/[locale]/account/reviews` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx` |
+| `/[locale]/account/support` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/page.tsx` |
+| `/[locale]/account/support/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx` |
+| `/[locale]/account/support/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx` |
+| `/[locale]/account/wallet` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx` |
+| `/[locale]/auctions` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/loading.tsx` |
+| `/[locale]/auctions` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/page.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/loading.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx` |
+| `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
+| `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |
 | `/[locale]/cart` | page | client | `apps/web/src/app/(storefront)/[locale]/cart/page.tsx` |
 | `/[locale]/checkout` | loading | server | `apps/web/src/app/(storefront)/[locale]/checkout/loading.tsx` |
 | `/[locale]/checkout` | page | client | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` |
+| `/[locale]/collections/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/collections/[slug]/page.tsx` |
 | `/[locale]/contact` | page | server | `apps/web/src/app/(storefront)/[locale]/(static)/contact/page.tsx` |
 | `/[locale]/forgot-password` | page | client | `apps/web/src/app/(storefront)/[locale]/forgot-password/page.tsx` |
 | `/[locale]/login` | page | client | `apps/web/src/app/(storefront)/[locale]/login/page.tsx` |
 | `/[locale]/orders` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/page.tsx` |
 | `/[locale]/orders/[number]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx` |
+| `/[locale]/orders/[number]/invoice` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice/page.tsx` |
+| `/[locale]/pages/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/pages/[slug]/page.tsx` |
 | `/[locale]/privacy` | page | server | `apps/web/src/app/(storefront)/[locale]/privacy/page.tsx` |
 | `/[locale]/product/[slug]` | loading | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/loading.tsx` |
 | `/[locale]/product/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx` |
@@ -180,6 +330,7 @@ _none_
 | `/[locale]/terms` | page | server | `apps/web/src/app/(storefront)/[locale]/terms/page.tsx` |
 | `/[locale]/unsubscribe` | page | client | `apps/web/src/app/(storefront)/[locale]/unsubscribe/page.tsx` |
 | `/[locale]/verify-email` | page | client | `apps/web/src/app/(storefront)/[locale]/verify-email/page.tsx` |
+| `/[locale]/verify-purchase` | page | client | `apps/web/src/app/(storefront)/[locale]/verify-purchase/page.tsx` |
 | `/[locale]/wishlist` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/wishlist/page.tsx` |
 
 ### web (4)
@@ -194,4 +345,4 @@ _none_
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

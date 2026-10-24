@@ -3,40 +3,47 @@
 
 # Module: `payments`
 
-Pack **core** · enabled by the `MODULES` allowlist · 10 files
+Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 
 
-Source: `apps/api/src/modules/payments/`
+Source: `apps/api/src/modules/sales/payments/`
 
-## Files (10 · 1,357 lines)
+## Files (16 · 2,088 lines)
 
-All paths relative to `apps/api/src/modules/payments`.
+All paths relative to `apps/api/src/modules/sales/payments`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 | 1 | Tells the customer their money arrived. |
-| `payment-provider.ts` | module | 73 | 4 | Extension point: payment providers. |
-| `payments.controller.ts` | controller | 117 | 2 |  |
-| `payments.module.ts` | nest module | 24 | 1 |  |
-| `payments.service.ts` | service | 353 | 1 | Payments, behind one interface. |
+| `payment-feed.source.spec.ts` | unit test | 69 | — |  |
+| `payment-feed.source.ts` | module | 58 | 1 | The live feed's payment source (analytics-reporting/58-live-operational-feed.md). |
+| `payment-provider.ts` | module | 113 | 4 | Extension point: payment providers. |
+| `payments.controller.ts` | controller | 135 | 2 |  |
+| `payments.module.ts` | nest module | 39 | 1 |  |
+| `payments.service.spec.ts` | unit test | 91 | — |  |
+| `payments.service.ts` | service | 445 | 1 | Payments, behind one interface. |
+| `account.provider.spec.ts` | unit test | 80 | — |  |
+| `account.provider.ts` | module | 83 | 1 | "Pay on account" — 149-b2b-accounts-approvals-sector-packs.md. |
 | `bank-transfer.provider.ts` | module | 54 | 1 | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from the dashboa… |
 | `callback-verification.spec.ts` | unit test | 159 | — |  |
 | `cod.provider.ts` | module | 41 | 1 | Cash on delivery — how most of Pakistan pays online. |
 | `easypaisa.provider.ts` | module | 184 | 1 | Easypaisa hosted checkout. |
+| `giftkarta.provider.ts` | module | 185 | 1 | Giftkarta — a third-party gift-card network the customer can redeem at checkout, distinct from the shop's own gift card… |
 | `jazzcash.provider.ts` | module | 184 | 1 | JazzCash hosted checkout. |
 
 
-## HTTP routes (6)
+## HTTP routes (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| POST | `/admin/payments/:paymentId/approve` | `payments.approve` | `PaymentsAdminController.approve` :99 | Confirm a bank transfer, or cash collected on delivery |
-| POST | `/admin/payments/:paymentId/refund` | `payments.approve` | `PaymentsAdminController.refund` :109 | Mark a paid payment refunded (full or partial) |
-| GET | `/admin/payments/awaiting-approval` | `payments.approve` | `PaymentsAdminController.awaitingApproval` :93 | Payments waiting on a human decision |
-| POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` :74 | Upload a bank-transfer receipt for staff to approve |
-| POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` :59 | Gateway return URL — verifies and settles a payment |
-| GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` :52 | Payment methods currently accepted |
+| POST | `/admin/payments/:paymentId/approve` | `payments.approve` | `PaymentsAdminController.approve` :117 | Confirm a bank transfer, or cash collected on delivery |
+| POST | `/admin/payments/:paymentId/refund` | `payments.approve` | `PaymentsAdminController.refund` :127 | Mark a paid payment refunded (full or partial) |
+| GET | `/admin/payments/awaiting-approval` | `payments.approve` | `PaymentsAdminController.awaitingApproval` :111 | Payments waiting on a human decision |
+| POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` :81 | Upload a bank-transfer receipt for staff to approve |
+| POST | `/payments/:paymentId/redeem-gift-card` | **PUBLIC** | `PaymentsController.redeemGiftCard` :98 | Redeem a third-party gift card code against a payment awaiting one (Giftkarta et al.) |
+| POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` :66 | Gateway return URL — verifies and settles a payment |
+| GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` :59 | Payment methods currently accepted |
 
 
 ## Domain events
@@ -45,10 +52,10 @@ All paths relative to `apps/api/src/modules/payments`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `PaymentSucceeded` | `payment.succeeded` | `payments.service.ts:188`, `payments.service.ts:257` |
-| `PaymentFailed` | `payment.failed` | `payments.service.ts:188` |
-| `PaymentAwaitingApproval` | `payment.awaiting_approval` | `payments.service.ts:113` |
-| `PaymentRefunded` | `payment.refunded` | `payments.service.ts:316` |
+| `PaymentSucceeded` | `payment.succeeded` | `payments.service.ts:199`, `payments.service.ts:301`, `payments.service.ts:349` |
+| `PaymentFailed` | `payment.failed` | `payments.service.ts:199`, `payments.service.ts:301` |
+| `PaymentAwaitingApproval` | `payment.awaiting_approval` | `payments.service.ts:124` |
+| `PaymentRefunded` | `payment.refunded` | `payments.service.ts:408` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -64,12 +71,12 @@ All paths relative to `apps/api/src/modules/payments`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Payment` | 19 | :17 |  |
+| `Payment` | 21 | :17 |  |
 
 
 Enums: `PaymentStatus` (6)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -77,9 +84,9 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`PaymentsModule`** (`payments.module.ts`)
-- imports: —
+- imports: `ReceivablesModule`
 - controllers: `PaymentsController`, `PaymentsAdminController`
-- providers: `PaymentsService`, `CodProvider`, `BankTransferProvider`, `JazzCashProvider`, `EasypaisaProvider`, `PaymentNotificationSubscriber`
+- providers: `PaymentsService`, `CodProvider`, `BankTransferProvider`, `JazzCashProvider`, `EasypaisaProvider`, `GiftkartaProvider`, `AccountProvider`, `PaymentNotificationSubscriber`, `PaymentFeedSource`
 - exports: `PaymentsService`
 
 
@@ -89,8 +96,10 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `feed`
 - core `notifications`
 - core `prisma`
+- core `resilience`
 - core `settings`
 - core `storage`
 - package `@newax/shared`
@@ -100,10 +109,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `payment-feed.source.spec.ts` | 5 | PaymentFeedSource — WO-58.2 |
+| `payments.service.spec.ts` | 2 | PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2 |
+| `account.provider.spec.ts` | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
 | `callback-verification.spec.ts` | 8 | Easypaisa callback verification · JazzCash callback verification |
 
 
@@ -112,20 +124,23 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `PaymentNotificationSubscriber` | class | `notification.subscriber.ts:26` | Tells the customer their money arrived. |
-| `PaymentContext` | interface | `payment-provider.ts:13` | Extension point: payment providers. |
-| `PaymentInitiation` | interface | `payment-provider.ts:23` |  |
-| `PaymentCallbackResult` | interface | `payment-provider.ts:37` |  |
-| `PaymentProvider` | interface | `payment-provider.ts:56` |  |
-| `PaymentsController` | class | `payments.controller.ts:46` |  |
-| `PaymentsAdminController` | class | `payments.controller.ts:88` |  |
-| `PaymentsModule` | class | `payments.module.ts:23` |  |
-| `PaymentsService` | class | `payments.service.ts:28` | Payments, behind one interface. |
+| `PaymentFeedSource` | class | `payment-feed.source.ts:16` | The live feed's payment source (analytics-reporting/58-live-operational-feed.md). |
+| `PaymentContext` | interface | `payment-provider.ts:16` | Extension point: payment providers. |
+| `PaymentInitiation` | interface | `payment-provider.ts:40` |  |
+| `PaymentCallbackResult` | interface | `payment-provider.ts:54` |  |
+| `PaymentProvider` | interface | `payment-provider.ts:73` |  |
+| `PaymentsController` | class | `payments.controller.ts:53` |  |
+| `PaymentsAdminController` | class | `payments.controller.ts:106` |  |
+| `PaymentsModule` | class | `payments.module.ts:38` |  |
+| `PaymentsService` | class | `payments.service.ts:31` | Payments, behind one interface. |
+| `AccountProvider` | class | `account.provider.ts:25` | "Pay on account" — 149-b2b-accounts-approvals-sector-packs.md. |
 | `BankTransferProvider` | class | `bank-transfer.provider.ts:26` | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from t… |
 | `CodProvider` | class | `cod.provider.ts:19` | Cash on delivery — how most of Pakistan pays online. |
 | `EasypaisaProvider` | class | `easypaisa.provider.ts:27` | Easypaisa hosted checkout. |
+| `GiftkartaProvider` | class | `giftkarta.provider.ts:51` | Giftkarta — a third-party gift-card network the customer can redeem at checkout, distinct from the shop's own… |
 | `JazzCashProvider` | class | `jazzcash.provider.ts:31` | JazzCash hosted checkout. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

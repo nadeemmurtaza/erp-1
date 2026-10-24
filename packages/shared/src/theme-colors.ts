@@ -15,3 +15,14 @@ import { BRAND } from './brand';
  */
 export const THEME_COLORS = BRAND.theme.colors;
 export type ThemeColors = typeof THEME_COLORS;
+
+/**
+ * The dark palette — the same roles, re-derived for a dark surface (COL-5).
+ * `THEME_COLORS` stays the light palette on purpose: 119 files import it, and
+ * none of them asked to change. Code that has to pick per theme — a chart, a
+ * canvas, React Native — reads `THEME_PALETTES[theme]`.
+ */
+export const THEME_COLORS_DARK = BRAND.theme.colorsDark;
+export type ThemeColorsDark = typeof THEME_COLORS_DARK;
+
+export const THEME_PALETTES = { light: THEME_COLORS, dark: THEME_COLORS_DARK } as const;

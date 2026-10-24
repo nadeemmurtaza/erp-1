@@ -58,11 +58,16 @@ export default function OrganizationDashboardPage() {
       <PageHeader
         title={scope.organization?.name ?? 'Organization'}
         action={
-          scope.isOrgWide ? (
-            <Link href={ROUTES.admin.organizationAccess(params.orgId)} className="btn-secondary">
-              Admin access
+          <div className="flex gap-2">
+            <Link href={ROUTES.admin.organizationPolicyQuarantine(params.orgId)} className="btn-secondary">
+              Policy quarantine
             </Link>
-          ) : undefined
+            {scope.isOrgWide ? (
+              <Link href={ROUTES.admin.organizationAccess(params.orgId)} className="btn-secondary">
+                Admin access
+              </Link>
+            ) : null}
+          </div>
         }
       />
 

@@ -3,45 +3,53 @@
 
 # Module: `accounting`
 
-Pack **core** · enabled by the `MODULES` allowlist · 19 files
+Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 
 
 **Registry note** (`modules.registry.ts`): Off by default — a deployment turns it on once it wants a real GL instead of the sum-of-tables reports in `finance`/`reports`.
 
-Source: `apps/api/src/modules/accounting/`
+Source: `apps/api/src/modules/money/accounting/`
 
-## Files (19 · 3,010 lines)
+## Files (24 · 4,669 lines)
 
-All paths relative to `apps/api/src/modules/accounting`.
+All paths relative to `apps/api/src/modules/money/accounting`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `accounting.module.ts` | nest module | 28 | 1 |  |
+| `accounting.module.ts` | nest module | 46 | 1 |  |
 | `accounting.service.spec.ts` | unit test | 92 | — |  |
 | `accounting.service.ts` | service | 279 | 4 |  |
-| `aging.spec.ts` | unit test | 75 | — |  |
-| `aging.ts` | module | 69 | 4 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `chart-of-accounts.ts` | module | 59 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
+| `asset-depreciation.controller.ts` | controller | 50 | 1 | 147-fixed-asset-depreciation.md — reads sit behind `finance.assets. |
+| `asset-depreciation.cron.ts` | scheduled job | 24 | 1 | 147-fixed-asset-depreciation.md WO-147.3 — first of each month, posting every active schedule's depreciation for the mo… |
+| `asset-depreciation.service.spec.ts` | unit test | 376 | — |  |
+| `asset-depreciation.service.ts` | service | 295 | 7 | "2026-09" — the calendar month a date falls in, UTC. |
+| `chart-of-accounts.ts` | module | 127 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
 | `consolidation.controller.ts` | controller | 38 | 1 | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for what "eli… |
 | `consolidation.service.spec.ts` | unit test | 128 | — |  |
 | `consolidation.service.ts` | service | 132 | 2 |  |
+| `asset-depreciation.dto.ts` | dto | 53 | 2 |  |
 | `fiscal-period.dto.ts` | dto | 38 | 2 |  |
 | `gl-reports.dto.ts` | dto | 24 | 2 | As-of a single date (trial balance, balance sheet, aged AR/AP) — everything POSTED on or before it. |
 | `fiscal-periods.controller.ts` | controller | 74 | 1 | Fiscal year/period administration (RETAIL-ERP.md R15, WO-19.5). |
 | `fiscal-periods.service.spec.ts` | unit test | 312 | — |  |
 | `fiscal-periods.service.ts` | service | 196 | 1 | Opens, closes and locks fiscal periods (RETAIL-ERP.md R15, WO-19.5). |
-| `gl-reports.controller.ts` | controller | 67 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
+| `gl-reports.controller.ts` | controller | 77 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
 | `gl-reports.service.spec.ts` | unit test | 174 | — |  |
 | `gl-reports.service.ts` | service | 298 | 2 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 502 | — |  |
-| `posting-rules.subscriber.ts` | event subscriber | 425 | 1 | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal entry. |
+| `posting-rules.subscriber.spec.ts` | unit test | 790 | — |  |
+| `posting-rules.subscriber.ts` | event subscriber | 771 | 1 | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal entry. |
+| `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 | — |  |
+| `wallet-posting-rules.subscriber.ts` | event subscriber | 135 | 1 | doc 155 §3's own "unwritten posting rule" — the same idempotent, event-subscriber posting pattern `posting-rules.subscr… |
 
 
-## HTTP routes (16)
+## HTTP routes (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.getSchedule` :21 | An asset's depreciation schedule and every period posted so far |
+| POST | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.createSchedule` :30 | Put an asset on a monthly depreciation schedule |
+| POST | `/admin/accounting/assets/:assetId/dispose` | `finance.assets.dispose` | `AssetDepreciationController.dispose` :41 | Dispose an asset — posts the remaining book value as a loss and any sale proceeds as a ga… |
 | GET | `/admin/accounting/consolidation/profit-and-loss` | `accounting.view` | `ConsolidationController.groupProfitAndLoss` :26 | Group P&L across every brand, with matched intercompany pairs eliminated |
 | GET | `/admin/accounting/consolidation/unmatched-intercompany` | `accounting.view` | `ConsolidationController.unmatchedIntercompany` :33 | Brand pairs whose intercompany volume did not net to zero — the exception report R17 asks… |
 | GET | `/admin/accounting/fiscal-periods` | `accounting.view` | `FiscalPeriodsController.listPeriods` :42 | List fiscal periods, optionally filtered by fiscal year |
@@ -52,12 +60,12 @@ All paths relative to `apps/api/src/modules/accounting`.
 | GET | `/admin/accounting/fiscal-years` | `accounting.view` | `FiscalPeriodsController.listFiscalYears` :21 | List fiscal years |
 | POST | `/admin/accounting/fiscal-years` | `accounting.manage_periods` | `FiscalPeriodsController.createFiscalYear` :28 | Open a fiscal year |
 | POST | `/admin/accounting/fiscal-years/:id/close` | `accounting.manage_periods` | `FiscalPeriodsController.closeFiscalYear` :35 | Year-end close — zeros INCOME/EXPENSE into Retained Earnings, permanent |
-| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` | `GlReportsController.agedPayables` :63 | Outstanding supplier balances as of a date, FIFO-aged the same way as receivables |
-| GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` :57 | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+ buckets |
-| GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` :44 | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
-| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` | `GlReportsController.cashFlow` :50 | Net movement on every bank/cash account for a date range |
-| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` | `GlReportsController.profitAndLoss` :37 | Income and expense for a date range, and the net |
-| GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` :31 | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or somethi… |
+| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` `finance.view` | `GlReportsController.agedPayables` :73 | Outstanding supplier balances as of a date, FIFO-aged the same way as receivables |
+| GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` :66 | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+ buckets |
+| GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` :52 | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
+| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` `finance.view` | `GlReportsController.cashFlow` :59 | Net movement on every bank/cash account for a date range |
+| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` :45 | Income and expense for a date range, and the net |
+| GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` :38 | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or somethi… |
 
 
 ## Domain events
@@ -66,27 +74,51 @@ All paths relative to `apps/api/src/modules/accounting`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:48`, `posting-rules.subscriber.ts:155` |
-| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:115`, `posting-rules.subscriber.ts:152` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:279` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:176` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:226` |
-| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:332` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:392` |
+| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:58`, `posting-rules.subscriber.ts:165` |
+| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:125`, `posting-rules.subscriber.ts:162` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:289` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:186` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:236` |
+| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:342` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:402` |
+| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:447` |
+| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:498` |
+| `WalletCreditPurchased` | `wallet.credit_purchased` | `wallet-posting-rules.subscriber.ts:30`, `wallet-posting-rules.subscriber.ts:125` |
+| `WalletCreditRedeemed` | `wallet.credit_redeemed` | `wallet-posting-rules.subscriber.ts:64` |
+| `MerchantPayableCreated` | `wallet.merchant_payable_created` | `wallet-posting-rules.subscriber.ts:100`, `wallet-posting-rules.subscriber.ts:103` |
+| `CreditNoteIssued` | `receivables.credit_note_issued` | `posting-rules.subscriber.ts:537`, `posting-rules.subscriber.ts:564` |
+| `DebitNoteIssued` | `receivables.debit_note_issued` | `posting-rules.subscriber.ts:583`, `posting-rules.subscriber.ts:609` |
+| `SettlementShortfallWrittenOff` | `settlement.shortfall_written_off` | `posting-rules.subscriber.ts:627` |
+| `BankFacilityDrawdownPosted` | `bank_facility.drawdown_posted` | `posting-rules.subscriber.ts:665` |
+| `BankFacilityRepaymentRecorded` | `bank_facility.repayment_recorded` | `posting-rules.subscriber.ts:697` |
+| `BankFacilityMarkupAccrued` | `bank_facility.markup_accrued` | `posting-rules.subscriber.ts:745` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
 | Event | Name | Handler |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:46` → `onOrderPlaced()` |
-| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:113` → `onPaymentSucceeded()` |
-| `PaymentRefunded` | `payment.refunded` | `posting-rules.subscriber.ts:150` → `onPaymentRefunded()` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:277` → `onStockVarianceRecorded()` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:174` → `onSupplierBillRaised()` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:224` → `onSupplierBillPaid()` |
-| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:330` → `onInterBranchTransferInvoiced()` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:390` → `onExpenseRecorded()` |
+| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:56` → `onOrderPlaced()` |
+| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:123` → `onPaymentSucceeded()` |
+| `PaymentRefunded` | `payment.refunded` | `posting-rules.subscriber.ts:160` → `onPaymentRefunded()` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:287` → `onStockVarianceRecorded()` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:184` → `onSupplierBillRaised()` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:234` → `onSupplierBillPaid()` |
+| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:340` → `onInterBranchTransferInvoiced()` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:400` → `onExpenseRecorded()` |
+| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:445` → `onPayrollRunPosted()` |
+| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:496` → `onPayrollAdjustmentPosted()` |
+| `WalletCreditPurchased` | `wallet.credit_purchased` | `wallet-posting-rules.subscriber.ts:28` → `onWalletCreditPurchased()` |
+| `WalletCreditRedeemed` | `wallet.credit_redeemed` | `wallet-posting-rules.subscriber.ts:62` → `onWalletCreditRedeemed()` |
+| `WalletCreditRefunded` | `wallet.credit_refunded` | `wallet-posting-rules.subscriber.ts:121` → `onWalletCreditRefunded()` |
+| `CreditNoteIssued` | `receivables.credit_note_issued` | `posting-rules.subscriber.ts:535` → `onCreditNoteIssued()` |
+| `CreditNoteVoided` | `receivables.credit_note_voided` | `posting-rules.subscriber.ts:562` → `onCreditNoteVoided()` |
+| `DebitNoteIssued` | `receivables.debit_note_issued` | `posting-rules.subscriber.ts:581` → `onDebitNoteIssued()` |
+| `DebitNoteVoided` | `receivables.debit_note_voided` | `posting-rules.subscriber.ts:607` → `onDebitNoteVoided()` |
+| `SettlementShortfallWrittenOff` | `settlement.shortfall_written_off` | `posting-rules.subscriber.ts:625` → `onSettlementShortfallWrittenOff()` |
+| `BankFacilityDrawdownPosted` | `bank_facility.drawdown_posted` | `posting-rules.subscriber.ts:663` → `onBankFacilityDrawdownPosted()` |
+| `BankFacilityRepaymentRecorded` | `bank_facility.repayment_recorded` | `posting-rules.subscriber.ts:695` → `onBankFacilityRepaymentRecorded()` |
+| `BankFacilityMarkupAccrued` | `bank_facility.markup_accrued` | `posting-rules.subscriber.ts:743` → `onBankFacilityMarkupAccrued()` |
 
 
 ## Tables it owns (`accounting.prisma`)
@@ -94,6 +126,8 @@ All paths relative to `apps/api/src/modules/accounting`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `Account` | 14 | :33 | The chart of accounts. |
+| `AssetDepreciationPosting` | 7 | :272 | One row per period posted — the same "snapshot at write time, never re-derived" discipline PayRunLine/OrderEc… |
+| `AssetDepreciationSchedule` | 14 | :236 |  |
 | `FiscalPeriod` | 10 | :91 | What a `JournalEntry` posts into. |
 | `FiscalYear` | 7 | :57 | A trading year. |
 | `JournalEntry` | 14 | :120 | One fact, posted as a balanced set of `JournalLine` rows. |
@@ -101,25 +135,31 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `JournalLine` | 17 | :162 | One debit or credit. |
 
 
-Enums: `AccountType` (5) · `FiscalPeriodStatus` (3) · `JournalEntryStatus` (2)
+Enums: `AccountType` (5) · `DepreciationMethod` (2) · `FiscalPeriodStatus` (3) · `JournalEntryStatus` (2)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 2 1 * *` | `run()` | `asset-depreciation.cron.ts:18` |  |
 
 
 ## Nest wiring
 
 **`AccountingModule`** (`accounting.module.ts`)
 - imports: —
-- controllers: `GlReportsController`, `FiscalPeriodsController`, `ConsolidationController`
-- providers: `AccountingService`, `PostingRulesSubscriber`, `GlReportsService`, `FiscalPeriodsService`, `ConsolidationService`
+- controllers: `GlReportsController`, `FiscalPeriodsController`, `ConsolidationController`, `AssetDepreciationController`
+- providers: `AccountingService`, `PostingRulesSubscriber`, `WalletPostingRulesSubscriber`, `GlReportsService`, `FiscalPeriodsService`, `ConsolidationService`, `AssetDepreciationService`, `AssetDepreciationCron`
 - exports: `AccountingService`
 
 
 ## Reaches out to
 
 - core `auth`
+- core `common`
 - core `events`
 - core `prisma`
 - core `settings`
@@ -130,48 +170,57 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `accounting.service.spec.ts` | 5 | AccountingService — WO-19.1 · postEntry |
-| `aging.spec.ts` | 7 | ageMovements |
+| `asset-depreciation.service.spec.ts` | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthlyDepreciation — WO-14… |
 | `consolidation.service.spec.ts` | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `fiscal-periods.service.spec.ts` | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod · lockPeriod · clos… |
 | `gl-reports.service.spec.ts` | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivables · agedPayables |
-| `posting-rules.subscriber.spec.ts` | 30 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSupplierBillRaised — WO-1… |
+| `posting-rules.subscriber.spec.ts` | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSupplierBillRaised — WO-1… |
+| `wallet-posting-rules.subscriber.spec.ts` | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWalletCreditRefunded |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AccountingModule` | class | `accounting.module.ts:27` |  |
+| `AccountingModule` | class | `accounting.module.ts:45` |  |
 | `PostLineInput` | interface | `accounting.service.ts:8` |  |
 | `PostEntryInput` | interface | `accounting.service.ts:27` |  |
 | `JournalEntryWithLines` | type | `accounting.service.ts:37` |  |
 | `AccountingService` | class | `accounting.service.ts:48` | The general ledger's write side (RETAIL-ERP.md R15, WO-19.1). |
-| `AgingMovement` | interface | `aging.ts:19` | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
-| `AgingBuckets` | interface | `aging.ts:25` |  |
-| `totalAgingBuckets` | function | `aging.ts:36` |  |
-| `ageMovements` | function | `aging.ts:42` |  |
+| `AssetDepreciationController` | class | `asset-depreciation.controller.ts:15` | 147-fixed-asset-depreciation.md — reads sit behind `finance.assets. |
+| `AssetDepreciationCron` | class | `asset-depreciation.cron.ts:13` | 147-fixed-asset-depreciation.md WO-147.3 — first of each month, posting every active schedule's depreciation… |
+| `monthKey` | function | `asset-depreciation.service.ts:9` | "2026-09" — the calendar month a date falls in, UTC. |
+| `startOfMonthUTC` | function | `asset-depreciation.service.ts:13` |  |
+| `endOfMonthUTC` | function | `asset-depreciation.service.ts:17` |  |
+| `monthsBetweenUTC` | function | `asset-depreciation.service.ts:22` | Whole calendar months between two UTC month-starts — 0 for the same month. |
+| `DepreciationInput` | interface | `asset-depreciation.service.ts:26` |  |
+| `monthlyDepreciation` | function | `asset-depreciation.service.ts:46` | Pure: schedule + how many months have already elapsed since `startDate` + how much has already been posted, i… |
+| `AssetDepreciationService` | class | `asset-depreciation.service.ts:77` | Book depreciation for hr.prisma's `Asset` (finance-accounting/147-fixed-asset-depreciation.md) — doc 79's own… |
 | `CHART_OF_ACCOUNTS` | const | `chart-of-accounts.ts:11` | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — se… |
-| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:42` | The codes above, named — so a posting rule never hand-types a magic string. |
+| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:96` | The codes above, named — so a posting rule never hand-types a magic string. |
 | `ConsolidationController` | class | `consolidation.controller.ts:21` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for… |
 | `IntercompanyPair` | interface | `consolidation.service.ts:4` |  |
 | `ConsolidationService` | class | `consolidation.service.ts:41` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — "if brand A transfers goods to brand B at a tran… |
+| `CreateDepreciationScheduleDto` | class | `asset-depreciation.dto.ts:6` |  |
+| `DisposeAssetDto` | class | `asset-depreciation.dto.ts:41` |  |
 | `CreateFiscalYearDto` | class | `fiscal-period.dto.ts:4` |  |
 | `CreateFiscalPeriodDto` | class | `fiscal-period.dto.ts:19` |  |
 | `AsOfQueryDto` | class | `gl-reports.dto.ts:5` | As-of a single date (trial balance, balance sheet, aged AR/AP) — everything POSTED on or before it. |
 | `DateRangeQueryDto` | class | `gl-reports.dto.ts:13` | A date range (P&L, cash flow) — both bounds inclusive of the whole day. |
 | `FiscalPeriodsController` | class | `fiscal-periods.controller.ts:15` | Fiscal year/period administration (RETAIL-ERP.md R15, WO-19.5). |
 | `FiscalPeriodsService` | class | `fiscal-periods.service.ts:29` | Opens, closes and locks fiscal periods (RETAIL-ERP.md R15, WO-19.5). |
-| `GlReportsController` | class | `gl-reports.controller.ts:26` | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gate… |
+| `GlReportsController` | class | `gl-reports.controller.ts:33` | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gate… |
 | `AccountBalance` | interface | `gl-reports.service.ts:7` |  |
 | `GlReportsService` | class | `gl-reports.service.ts:28` | The five reports R15 names as the payoff of a real ledger — "expenses, salaries, losses, profits, revenues an… |
-| `PostingRulesSubscriber` | class | `posting-rules.subscriber.ts:32` | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal e… |
+| `PostingRulesSubscriber` | class | `posting-rules.subscriber.ts:42` | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal e… |
+| `WalletPostingRulesSubscriber` | class | `wallet-posting-rules.subscriber.ts:22` | doc 155 §3's own "unwritten posting rule" — the same idempotent, event-subscriber posting pattern `posting-ru… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

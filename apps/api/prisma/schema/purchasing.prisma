@@ -56,6 +56,11 @@ model Supplier {
   expenses Expense[]
   // Note: purchaseOrders and bills are for WO-1.5, not included yet.
 
+  /// architecture-patterns/104-jsonb-eav-extensibility.md, WO-104.1 — a
+  /// bounded, admin-defined overlay (CustomFieldDefinition), never a
+  /// business-logic input; application code never branches on a value here.
+  customFields Json @default("{}")
+
   tradingPartner    TradingPartner?  @relation(fields: [tradingPartnerId], references: [id], onDelete: SetNull)
   preferredVariants ProductVariant[] @relation("PreferredSupplier")
   purchaseOrders    PurchaseOrder[]
@@ -112,7 +117,7 @@ model PurchaseOrder {
   /// today," and every deployment shipped so far is exactly one brand. A
   /// request, not itself a FACT (R2 names "goods receipt", not "purchase
   /// order") — ReplicationRegistry registers GoodsReceipt, not this model.
-  scopeLevel ScopeLevel @default(BRAND)
+  scopeLevel   ScopeLevel @default(BRAND)
   /// This node's own identifier (AppConfigService.nodeId) at the moment the
   /// PO was created — a bare string, never a Node row FK (a branch has no
   /// Node row for itself). Null for a PO raised before this column existed.
@@ -127,11 +132,23 @@ model PurchaseOrder {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  supplier  Supplier            @relation(fields: [supplierId], references: [id])
-  createdBy User?               @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  items     PurchaseOrderItem[]
-  receipts  GoodsReceipt[]
-  bills     SupplierBill[]
+  supplier          Supplier             @relation(fields: [supplierId], references: [id])
+  /// WO-213.2 (213-partner-fact-exchange.md). The `PartnerFactInbox` row this
+  /// order was created from, when a connected partner's `sale.dispatched` fact
+  /// made it. Null means "raised by a person, or from a requisition". A bare
+  /// scalar, no `@relation`: purchasing is decoupled from `tradingpartners`
+  /// (ADR-012). UNIQUE is the point: a fact is delivered at least once, so the
+  /// second attempt to create its order must be a no-op by constraint, not by
+  /// a check that two deliveries could race past.
+  sourceFactInboxId String? @unique
+  createdBy         User?                @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  items             PurchaseOrderItem[]
+  receipts          GoodsReceipt[]
+  bills             SupplierBill[]
+  /// The requisition this PO was converted from, if any — doc 152's own
+  /// "click the number" lens: the PO's own detail screen links back to why
+  /// it was bought. Back-relation only; the FK lives on PurchaseRequisition.
+  sourceRequisition PurchaseRequisition?
 
   @@index([status, createdAt])
   @@index([supplierId])
@@ -244,4 +261,72 @@ model SupplierBill {
 
   @@index([supplierId, status])
   @@index([status, dueAt])
+}
+
+/// 152-purchase-requisition.md. A request to buy, distinct from the
+/// PurchaseOrder that results once approved — the two different decisions
+/// ("should we buy this at all" vs. "is this specific PO's price/supplier
+/// right") this repository previously conflated into one PurchaseOrder row.
+enum RequisitionApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CONVERTED
+}
+
+model PurchaseRequisition {
+  id                       String                    @id @default(cuid())
+  requestedById            String
+  /// Named explicitly, never defaulted — the same discipline every other
+  /// location-aware write in this repository already follows.
+  locationId               String
+  justification            String
+  status                   RequisitionApprovalStatus @default(PENDING)
+  /// Set once, by convertToPurchaseOrder() — converting an already-CONVERTED
+  /// requisition is refused, so one requisition never produces two POs.
+  convertedPurchaseOrderId String?                   @unique
+  rejectionNote            String?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+
+  requestedBy            User              @relation("RequisitionRequester", fields: [requestedById], references: [id])
+  convertedPurchaseOrder PurchaseOrder?    @relation(fields: [convertedPurchaseOrderId], references: [id], onDelete: SetNull)
+  lines                  RequisitionLine[]
+
+  @@index([status, createdAt])
+  @@index([requestedById, createdAt])
+  @@index([locationId])
+}
+
+model RequisitionLine {
+  id                     String @id @default(cuid())
+  requisitionId          String
+  variantId              String
+  quantity               Int
+  /// A requester's own estimate — never a real cost until an actual PO line
+  /// snapshots one at convertToPurchaseOrder() time.
+  estimatedUnitCostMinor Int?
+
+  requisition PurchaseRequisition @relation(fields: [requisitionId], references: [id], onDelete: Cascade)
+  variant     ProductVariant      @relation(fields: [variantId], references: [id])
+
+  @@index([requisitionId])
+  @@index([variantId])
+}
+
+/// resilience-scalability/144-supply-chain-resilience-planning-engine.md
+/// (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time
+/// distribution from history already in the database. Populated by a
+/// listener on GoodsReceived (never new data entry). Bare scalars, no
+/// `@relation`: an observation stands on its own even if the PurchaseOrder
+/// or Supplier it cites is later deleted, the same "erasure the ledger
+/// cannot obey" shape this document set already applies elsewhere.
+model SupplierLeadTimeObservation {
+  id              String   @id @default(cuid())
+  supplierId      String
+  purchaseOrderId String
+  observedDays    Int
+  createdAt       DateTime @default(now())
+
+  @@index([supplierId, createdAt])
 }

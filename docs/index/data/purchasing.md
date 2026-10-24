@@ -3,7 +3,7 @@
 
 # Schema: `purchasing.prisma`
 
-7 models · 2 enums. Owned by module [`purchasing`](../modules/purchasing.md).
+10 models · 3 enums. Owned by module [`purchasing`](..\modules\purchasing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:159`</sub>
+### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:176`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -41,7 +41,7 @@ against a real database.
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([locationId])`
 
-### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:187`</sub>
+### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:204`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -58,7 +58,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([locationId])`
 
 Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 
-### `PurchaseOrder`  <sub>`apps/api/prisma/schema/purchasing.prisma:97`</sub>
+### `PurchaseOrder`  <sub>`apps/api/prisma/schema/purchasing.prisma:102`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -83,14 +83,16 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `supplier` | `Supplier` | relation | @relation(fields: [supplierId], references: [id]) |
+| `sourceFactInboxId` | `String?` | unique, optional | @unique |
 | `createdBy` | `User?` | relation, optional | @relation("PurchaseOrderCreator", fields: [createdById], references: [id], onDelete: SetN… |
 | `items` | `PurchaseOrderItem[]` |  |  |
 | `receipts` | `GoodsReceipt[]` |  |  |
 | `bills` | `SupplierBill[]` |  |  |
+| `sourceRequisition` | `PurchaseRequisition?` | optional |  |
 
 Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([scopeLevel])`
 
-### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:141`</sub>
+### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:158`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -107,6 +109,39 @@ Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([
 | `receiptItems` | `GoodsReceiptItem[]` |  |  |
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
+
+### `PurchaseRequisition`  <sub>`apps/api/prisma/schema/purchasing.prisma:277`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `requestedById` | `String` |  |  |
+| `locationId` | `String` |  |  |
+| `justification` | `String` |  |  |
+| `status` | `RequisitionApprovalStatus` |  | @default(PENDING) |
+| `convertedPurchaseOrderId` | `String?` | unique, optional | @unique |
+| `rejectionNote` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `requestedBy` | `User` | relation | @relation("RequisitionRequester", fields: [requestedById], references: [id]) |
+| `convertedPurchaseOrder` | `PurchaseOrder?` | relation, optional | @relation(fields: [convertedPurchaseOrderId], references: [id], onDelete: SetNull) |
+| `lines` | `RequisitionLine[]` |  |  |
+
+Indexes: `@@index([status, createdAt])` · `@@index([requestedById, createdAt])` · `@@index([locationId])`
+
+### `RequisitionLine`  <sub>`apps/api/prisma/schema/purchasing.prisma:301`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `requisitionId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `quantity` | `Int` |  |  |
+| `estimatedUnitCostMinor` | `Int?` | optional |  |
+| `requisition` | `PurchaseRequisition` | relation | @relation(fields: [requisitionId], references: [id], onDelete: Cascade) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id]) |
+
+Indexes: `@@index([requisitionId])` · `@@index([variantId])`
 
 ### `Supplier`  <sub>`apps/api/prisma/schema/purchasing.prisma:1`</sub>
 
@@ -135,6 +170,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 | `tradingPartnerId` | `String?` | optional |  |
 | `products` | `SupplierProduct[]` |  |  |
 | `expenses` | `Expense[]` |  |  |
+| `customFields` | `Json` |  | @default("{}") |
 | `tradingPartner` | `TradingPartner?` | relation, optional | @relation(fields: [tradingPartnerId], references: [id], onDelete: SetNull) |
 | `preferredVariants` | `ProductVariant[]` | relation | @relation("PreferredSupplier") |
 | `purchaseOrders` | `PurchaseOrder[]` |  |  |
@@ -142,7 +178,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 
 Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
-### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:210`</sub>
+### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:227`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -167,7 +203,21 @@ Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
 Indexes: `@@index([supplierId, status])` · `@@index([status, dueAt])`
 
-### `SupplierProduct`  <sub>`apps/api/prisma/schema/purchasing.prisma:69`</sub>
+### `SupplierLeadTimeObservation`  <sub>`apps/api/prisma/schema/purchasing.prisma:324`</sub>
+
+> resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time distribution from history already in the database.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `supplierId` | `String` |  |  |
+| `purchaseOrderId` | `String` |  |  |
+| `observedDays` | `Int` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([supplierId, createdAt])`
+
+### `SupplierProduct`  <sub>`apps/api/prisma/schema/purchasing.prisma:74`</sub>
 
 > What a given supplier charges for a given variant, and under what terms.
 
@@ -189,7 +239,7 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 
 ## Enums
 
-### `PurchaseOrderStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:89`</sub>
+### `PurchaseOrderStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:94`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -199,7 +249,18 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 | `RECEIVED` |  |
 | `CANCELLED` |  |
 
-### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:204`</sub>
+### `RequisitionApprovalStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:270`</sub>
+
+> 152-purchase-requisition.md.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `APPROVED` |  |
+| `REJECTED` |  |
+| `CONVERTED` |  |
+
+### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:221`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -210,4 +271,4 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

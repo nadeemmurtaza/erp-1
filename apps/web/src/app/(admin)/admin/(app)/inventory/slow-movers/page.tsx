@@ -1,10 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { formatMoney } from '@newax/shared';
-import { Loading } from '@/components/ui';
+import { DataTable, Tabs } from '@/components/ui';
+import { ToastStack } from '@/components/admin/toast-stack';
+import { useToast } from '@/hooks/use-toast';
+import type { MarkdownSuggestion } from '@/types/api';
 
 interface InventoryVariant {
   id: string;
@@ -21,17 +25,28 @@ interface InventoryVariant {
   product: { id: string; name: string };
 }
 
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
+export default function SlowMoversPage() {
   return (
-    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
-      {children}
-    </th>
+    <>
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Slow Movers</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
+        Stock that has stopped selling, and what to do about it.
+      </p>
+
+      <Tabs
+        label="Slow movers sections"
+        items={[
+          { key: 'variants', label: 'Slow movers', content: <SlowMoversTable /> },
+          { key: 'markdowns', label: 'Markdown suggestions', content: <MarkdownSuggestionsQueue /> },
+        ]}
+      />
+    </>
   );
 }
 
-export default function SlowMoversPage() {
-  const user = getStoredUser();
-  const canViewCost = user?.permissions.includes('inventory.view_cost');
+function SlowMoversTable() {
+  const { can } = useAdminSession();
+  const canViewCost = can('inventory.view_cost');
 
   const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -53,11 +68,6 @@ export default function SlowMoversPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Slow Movers</h1>
-      <p className="mb-6 text-sm text-neutral-900/60">
-        Variants with zero sales in the slow mover window.
-      </p>
-
       <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <span id="ageing-bucket-label" className="text-sm font-medium text-neutral-900/70">
           Ageing bucket:
@@ -85,66 +95,215 @@ export default function SlowMoversPage() {
       ) : null}
 
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead className="whitespace-nowrap">
-              <tr>
-                <Th>Product</Th>
-                <Th>SKU</Th>
-                <Th className="text-end">Stock</Th>
-                <Th className="text-end">Days of Cover</Th>
-                <Th className="text-end">Age (Days)</Th>
-                {canViewCost && (
-                  <Th className="text-end">Value at Risk</Th>
-                )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {busy && !variants ? (
-                <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                </tr>
-              ) : filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/60">
-                    No slow movers found for this bucket.
-                  </td>
-                </tr>
-              ) : (
-                filtered.map((variant) => (
-                  <tr key={variant.id} className="hover:bg-neutral-50/50">
-                    <td>
-                      <div className="font-medium text-neutral-900">{variant.product.name}</div>
-                      <div className="text-xs text-neutral-900/60">
-                        {[variant.size, variant.color].filter(Boolean).join(' / ')}
-                      </div>
-                    </td>
-                    <td className="text-neutral-900/80">{variant.sku}</td>
-                    <td className="text-end font-medium">
-                      {variant.stock}
-                    </td>
-                    <td className="text-end text-neutral-900/60">
-                      {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
-                        ? Math.round(variant.salesStat.daysOfCover)
-                        : '—'}
-                    </td>
-                    <td className="text-end text-amber-600 font-medium">
-                      {variant.salesStat?.ageDays ?? '—'}
-                    </td>
-                    {canViewCost && (
-                      <td className="text-end font-medium text-red-600">
-                        {formatMoney(variant.stock * variant.costPrice)}
-                      </td>
-                    )}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={filtered}
+          loading={busy && !variants}
+          emptyLabel="No slow movers found for this bucket."
+          rowKey={(variant) => variant.id}
+          columns={[
+            {
+              header: 'Product',
+              cell: (variant) => (
+                <>
+                  <div className="font-medium text-neutral-900">{variant.product.name}</div>
+                  <div className="text-xs text-neutral-900/60">
+                    {[variant.size, variant.color].filter(Boolean).join(' / ')}
+                  </div>
+                </>
+              ),
+            },
+            { header: 'SKU', cell: (variant) => variant.sku, className: 'text-neutral-900/80' },
+            {
+              header: 'Stock',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.stock,
+              className: 'font-medium',
+            },
+            {
+              header: 'Days of Cover',
+              align: 'end',
+              numeric: true,
+              cell: (variant) =>
+                variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null
+                  ? Math.round(variant.salesStat.daysOfCover)
+                  : '—',
+              className: 'text-neutral-900/60',
+            },
+            {
+              header: 'Age (Days)',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.salesStat?.ageDays ?? '—',
+              className: 'text-amber-600 font-medium',
+            },
+            ...(canViewCost
+              ? [
+                  {
+                    header: 'Value at Risk',
+                    align: 'end' as const,
+                    numeric: true,
+                    cell: (variant: InventoryVariant) => formatMoney(variant.stock * variant.costPrice),
+                    className: 'font-medium text-red-600',
+                  },
+                ]
+              : []),
+          ]}
+        />
       </div>
+    </>
+  );
+}
+
+function nameFor(suggestion: MarkdownSuggestion): string {
+  return suggestion.variant.product.translations[0]?.name ?? suggestion.variant.product.slug;
+}
+
+/**
+ * WO-9.8 (09-ai-layer.md) — the review queue MarkdownSuggestionsCron (via
+ * InventoryCron's own nightly pass) fills for ageing stock. Every row is a
+ * draft; "Create discount" is the only thing that ever activates one, and it
+ * marks down the WHOLE product (the promotions engine has no per-variant
+ * scope today) — said plainly here rather than implying a precision the
+ * discount itself cannot deliver.
+ */
+function MarkdownSuggestionsQueue() {
+  const { toasts, add: addToast, remove: removeToast } = useToast();
+  const [suggestions, setSuggestions] = useState<MarkdownSuggestion[] | null>(null);
+  const [busy, setBusy] = useState(true);
+  const [actingOn, setActingOn] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setBusy(true);
+    try {
+      setSuggestions(await adminFetch<MarkdownSuggestion[]>('/admin/inventory/markdown-suggestions'));
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not load markdown suggestions', 'error');
+    } finally {
+      setBusy(false);
+    }
+  }, [addToast]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  async function activate(id: string) {
+    setActingOn(id);
+    try {
+      await adminFetch(`/admin/inventory/markdown-suggestions/${id}/activate`, { method: 'POST' });
+      addToast('Discount created — the product is now marked down.', 'success');
+      await load();
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not create that discount', 'error');
+    } finally {
+      setActingOn(null);
+    }
+  }
+
+  async function dismiss(id: string) {
+    setActingOn(id);
+    try {
+      await adminFetch(`/admin/inventory/markdown-suggestions/${id}/dismiss`, { method: 'POST' });
+      addToast('Dismissed', 'success');
+      await load();
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not dismiss that suggestion', 'error');
+    } finally {
+      setActingOn(null);
+    }
+  }
+
+  return (
+    <>
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
+
+      <p className="mb-4 text-sm text-neutral-900/60">
+        Every figure below is an estimate — the clearance percentage assumes a shop-tunable relationship
+        between discount depth and sell-through speed (Settings → Inventory), not an observed fact.
+        Creating a discount marks down the whole product, every size, not just this one.
+      </p>
+
+      <DataTable
+        rows={suggestions}
+        loading={busy && !suggestions}
+        emptyLabel="Nothing waiting on you — no ageing stock has a pending suggestion right now."
+        rowKey={(suggestion) => suggestion.id}
+        columns={[
+          {
+            header: 'Product',
+            cell: (suggestion) => (
+              <>
+                <div className="font-medium text-neutral-900">{nameFor(suggestion)}</div>
+                <div className="text-xs text-neutral-900/60">
+                  {suggestion.variant.sku}
+                  {[suggestion.variant.size, suggestion.variant.color].filter(Boolean).length > 0
+                    ? ` · ${[suggestion.variant.size, suggestion.variant.color].filter(Boolean).join(' / ')}`
+                    : ''}
+                </div>
+              </>
+            ),
+          },
+          {
+            header: 'Suggested markdown',
+            align: 'end',
+            numeric: true,
+            cell: (suggestion) => `${(suggestion.suggestedBps / 100).toFixed(0)}% off`,
+            className: 'font-medium',
+          },
+          {
+            header: 'Est. clearance (30d)',
+            align: 'end',
+            numeric: true,
+            cell: (suggestion) => `${suggestion.estimatedClearancePct.toFixed(0)}%`,
+            className: 'text-neutral-900/70',
+          },
+          {
+            header: 'Est. days to clear',
+            align: 'end',
+            numeric: true,
+            cell: (suggestion) => suggestion.estimatedClearanceDays,
+            className: 'text-neutral-900/70',
+          },
+          {
+            header: 'Margin/unit',
+            align: 'end',
+            numeric: true,
+            cell: (suggestion) => (
+              <>
+                <span className="text-neutral-900/60 line-through">{formatMoney(suggestion.marginBeforePaisa)}</span>
+                {' → '}
+                <span className={cn('font-medium', suggestion.marginAfterPaisa < 0 ? 'text-red-600' : 'text-neutral-900')}>
+                  {formatMoney(suggestion.marginAfterPaisa)}
+                </span>
+              </>
+            ),
+          },
+          {
+            header: '',
+            cell: (suggestion) => (
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  className="btn-text"
+                  disabled={actingOn === suggestion.id}
+                  onClick={() => void activate(suggestion.id)}
+                >
+                  Create discount
+                </button>
+                <button
+                  type="button"
+                  className="btn-text text-feedback-negative"
+                  disabled={actingOn === suggestion.id}
+                  onClick={() => void dismiss(suggestion.id)}
+                >
+                  Dismiss
+                </button>
+              </div>
+            ),
+          },
+        ]}
+      />
     </>
   );
 }

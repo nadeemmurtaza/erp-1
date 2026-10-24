@@ -35,6 +35,24 @@ export interface PlacedPosSale {
   items: ReadonlyArray<{ nameEn: string; sku: string | null; quantity: number; unitPrice: number; lineTotal: number }>;
 }
 
+/**
+ * pos-hardware/31 WO-31.5 — a kitchen-facing ticket for a `TAB`/`TABLE`
+ * sale with modifiers: the same `ReceiptData` shape (so it reuses the one
+ * `ReceiptPrinter` driver interface, never a second document type), with
+ * every price field zeroed so nothing money-related prints on the kitchen
+ * copy — a kitchen never needs to see what a dish costs.
+ */
+export function toKitchenTicket(receipt: ReceiptData): ReceiptData {
+  return {
+    ...receipt,
+    lines: receipt.lines.map((line) => ({ ...line, unitPrice: 0, lineTotal: 0 })),
+    itemsSubtotal: 0,
+    grandTotal: 0,
+    tenderedMinor: 0,
+    changeMinor: 0,
+  };
+}
+
 export function toReceipt(
   sale: PlacedPosSale,
   cashierUserId: string,

@@ -128,7 +128,7 @@ could not enforce **direction**, because it had no record of which modules were
 core and which were apparel. So this passed lint:
 
 ```ts
-// apps/api/src/modules/inventory/inventory.service.ts   (core)
+// apps/api/src/modules/supply-chain/inventory/inventory.service.ts   (core)
 import { StitchingService } from '../stitching/stitching.service';   // apparel — wrong, but green
 ```
 
@@ -641,7 +641,7 @@ level. `size`/`color`/`colorHex` are untouched and still what every reader
 uses — the rest of Phase 3 (WO-3.2's reader switch, which needs a real
 production soak first; SKU templates; the sectioned editor; the SEO publish
 gate; storefront JSON-LD/sitemap/hreflang; redirects) is unbuilt. See
-[`03-variants-sku-seo.md`](./03-variants-sku-seo.md) — do not read "B2 done"
+[`03-variants-sku-seo.md`](./catalog-variants-pricing/03-variants-sku-seo.md) — do not read "B2 done"
 as "Phase 3 done."
 
 ### B3 — there is no checkout veto hook
@@ -657,7 +657,7 @@ to `orders.service.ts`.
 **Done as of 2026-09-03.** Was surfaced by B2B ("tax exemption") but was not
 a B2B-only feature — a Pakistani shop charging GST needed it regardless of
 sectors, and this was arguably the largest single gap the exercise found.
-See [`15-tax-module.md`](./15-tax-module.md) — a `tax` module with a
+See [`15-tax-module.md`](./tax-compliance/15-tax-module.md) — a `tax` module with a
 selectable inclusive/exclusive pricing mode, `tax.enabled=false` the
 ship-safe default, `/admin/tax` for classes and rates.
 
@@ -673,7 +673,7 @@ for stitching jobs is now `assertCanManage()`
 with `jobs.service.ts` migrated onto it as the reference call site. Multi-seller
 (C2C, B2B2C) still cannot be built until a second call site (`Product.sellerId`,
 list-endpoint row filtering) actually exists — that remains the real, structural
-price of a marketplace. See [`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md).
+price of a marketplace. See [`16-pbac-row-scoping.md`](./access-control-identity/16-pbac-row-scoping.md).
 
 ### B6 — stock has no location dimension
 
@@ -685,7 +685,7 @@ as scoped, with the one unavoidable invasive change (redefining what
 deployment today, which has exactly one `MAIN` location. Multi-location admin
 UI, fulfilment routing and per-location pricing/reorder points remain
 unbuilt, waiting on an actual second location or O2O plan. See
-[`17-inventory-locations.md`](./17-inventory-locations.md), including a note
+[`17-inventory-locations.md`](./inventory-purchasing/17-inventory-locations.md), including a note
 on a real concurrency bug the doc's own reference snippet had (a two-step
 aggregate-then-write race across two locations of one variant), caught only
 by writing the concurrent-locations test the doc's acceptance criteria
@@ -751,6 +751,54 @@ MODULES=catalog,cart,orders,payments,crm,analytics,reports,tracking,finance,digi
 Note the third: B2B and B2C together, no toggle. A shop is not "a B2B shop" — it
 enables the capabilities its trade needs.
 
+## Commercial-tier module conventions
+
+The sector examples above answer "what kind of business." Two commercial
+licensing work orders ask a related but different question — "what tier did
+this client buy" — and each names, without inventing a second enforcement
+mechanism, which of the existing `MODULES` allowlist entries that tier maps
+to. Both are documentation only: `MODULES` stays the same deployment-time env
+allowlist an operator sets at provisioning, per "What a sector actually is"
+above; no runtime, `PlatformPlan`-tier-based feature flag is introduced by
+either.
+
+**Basic vs. Standard capital-purchase licence**
+([`commercial-licensing-agency/82-tiered-capex-licensing.md`](./commercial-licensing-agency/82-tiered-capex-licensing.md))
+— a `PlatformPlan.pricingModel = ONE_TIME_LICENSE` client buys one of two
+recommended module sets:
+
+```bash
+# Basic — offline node (licenseDeploymentMode = OFFLINE): "Basic Accounts"
+# (finance) and "Basic Reports" (reports) only, no advanced analytics.
+MODULES=catalog,orders,pos,finance,reports
+
+# Standard — cloud-hosted (licenseDeploymentMode = ONLINE): adds inventory,
+# purchasing, bill-of-materials, payroll, CRM, tracking and the full
+# analytics surface (AnalyticsService's own existing breadth) on top of Basic.
+MODULES=catalog,orders,pos,finance,reports,inventory,purchasing,bom,payroll,crm,tracking,analytics
+```
+
+**HR-only micro-SaaS**
+([`commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`](./commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md))
+— a `PlatformPlan.pricingModel = PER_SEAT` client buys HR/leave/pay-run
+capability with none of the retail-facing surface. **There is no module
+named `hr` in `FEATURE_MODULES`**
+(`apps/api/src/modules/modules.registry.ts`): compensation rates, leave
+policy/balances and pay runs are all one module, `payroll`
+(`apps/api/src/modules/people/payroll/`), so the recommended allowlist is just:
+
+```bash
+# HR-only — no catalog, no orders, no pos; payroll alone carries
+# compensation, leave and pay runs. users/settings/addresses stay alwaysOn
+# regardless (modules.registry.ts), so staff accounts still work.
+MODULES=payroll
+```
+
+Neither mapping is enforced in code — an operator still sets `MODULES`
+directly at provisioning time. Naming each once here means "what does Basic
+include," "what does Standard add," and "what does the HR-only tier include"
+each have one documented answer instead of being reconstructed per sale.
+
 ## Sequencing
 
 **Status as of 2026-09-03: B1, B3, B4, B6 and B7 are done** (B7 mostly — one
@@ -760,12 +808,12 @@ guard) are done; the rest of B5 (an actual marketplace) is scoped in doc 16
 but not built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
-2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
+2. ~~B4 `tax`~~ ([`15-tax-module.md`](./tax-compliance/15-tax-module.md)). **Done** —
    `tax.enabled=false` by default, `/admin/tax` for classes/rates and the
    inclusive/exclusive toggle. WO-15.5 (FBR-specific invoice fields) still
    waits on real compliance requirements.
 2b. ~~B2 `ProductOption`/`ProductOptionValue`~~
-   ([`03-variants-sku-seo.md`](./03-variants-sku-seo.md) WO-3.1). **Done** —
+   ([`03-variants-sku-seo.md`](./catalog-variants-pricing/03-variants-sku-seo.md) WO-3.1). **Done** —
    the actual hard-block on electronics is gone at the schema level.
    WO-3.2's reader switch (and everything after it in Phase 3) still needs
    a real production dual-write soak before it can move, per that doc.
@@ -780,11 +828,11 @@ but not built. Updated sequencing:
 7. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
    tender is actually in play; `sellers`/`payouts`/`commissions` only if a
    marketplace is genuinely wanted — the `assertCanManage()` guard is ready
-   ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)), but `Product.sellerId`
+   ([`16-pbac-row-scoping.md`](./access-control-identity/16-pbac-row-scoping.md)), but `Product.sellerId`
    and row-filtered list endpoints remain the most expensive item here;
    `fulfilment` (routing an order to the nearest location with stock) when a
    physical second location or O2O is real — the location dimension itself
-   ([`17-inventory-locations.md`](./17-inventory-locations.md)) no longer
+   ([`17-inventory-locations.md`](./inventory-purchasing/17-inventory-locations.md)) no longer
    blocks that, it's built and dormant behind the single `MAIN` location.
 
 **May never be needed:** `submissions`, `storefronts`, `credentials`,

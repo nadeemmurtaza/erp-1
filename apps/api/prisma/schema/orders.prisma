@@ -21,6 +21,17 @@ enum OrderChannel {
   POS
 }
 
+/// WO-9.4 (09-ai-layer.md). The recommended action a rule-based COD-risk
+/// score sorts an order into — never an instruction the system carries out
+/// itself. "A person decides; the score sorts a queue" (the doc's own
+/// words): nothing in this codebase auto-cancels or auto-requires payment
+/// off this field alone.
+enum CodRiskAction {
+  AUTO_CONFIRM
+  CONFIRMATION_CALL
+  REQUIRE_ADVANCE_PAYMENT
+}
+
 model Order {
   id        String      @id @default(cuid())
   number    String      @unique // "YSN-2026-0001"
@@ -43,6 +54,14 @@ model Order {
   guestName  String?
   guestEmail String?
   guestPhone String?
+
+  /// WO-8.5 — which cart this order was placed from, set once at
+  /// checkout(place()) and never rewritten. Purely for the recovered-revenue
+  /// report: an order whose sourceCart had a reminder/incentive/first-touch
+  /// send before placedAt is revenue marketing recovered. SetNull, not
+  /// Cascade — a cart row can outlive or be pruned independently of an order
+  /// that already has its own full snapshot of everything it needs.
+  sourceCartId String?
 
   /// Address snapshots, not foreign keys — the address book is editable.
   shippingAddress Json
@@ -78,22 +97,60 @@ model Order {
   /// every DELIVERED order past the threshold on every run.
   reviewRequestSentAt DateTime?
 
-  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  contact        Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  items          OrderItem[]
-  payments       Payment[]
-  shipments      Shipment[]
-  statusEvents   OrderStatusEvent[]
-  convertedLeads Lead[]             @relation("LeadConvertedOrder")
-  /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
-  economics      OrderEconomics?
+  /// WO-9.4 — computed synchronously at place(), COD orders only (a paid
+  /// order has already cleared, RTO risk does not apply). Null for every
+  /// non-COD order, and for a COD order placed before this existed.
+  codRiskScore      Int?
+  codRiskAction     CodRiskAction?
+  codRiskComputedAt DateTime?
+  /// The single dominant reason CodRiskService picked codRiskAction — "start
+  /// with a transparent rule-based score. It is explainable to staff" (the
+  /// doc's own words). Staff-facing only, same as VariantForecast.reasonEn
+  /// (WO-9.3); never shown to the customer.
+  codRiskReasonEn   String?
 
+  /// Which other module asked for this order and by what key (an auction
+  /// settlement, WO-234.6). Null for every checkout and point-of-sale order.
+  /// Unique together, so asking twice for the same thing yields the first order
+  /// and never a second: the guard against a retry after a crash.
+  sourceType String?
+  sourceRef  String?
+
+  user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  sourceCart              Cart?                    @relation(fields: [sourceCartId], references: [id], onDelete: SetNull)
+  items                   OrderItem[]
+  payments                Payment[]
+  shipments               Shipment[]
+  statusEvents            OrderStatusEvent[]
+  convertedLeads          Lead[]                   @relation("LeadConvertedOrder")
+  /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
+  economics               OrderEconomics?
+  /// fulfilment.prisma's ReturnRequest (WO-6.6) — independent of
+  /// Order.status; see ReturnRequest's own doc comment for why a return
+  /// does not by itself move the order out of DELIVERED.
+  returnRequests          ReturnRequest[]
+  /// promotions.prisma's snapshot of every discount this order received (WO-5.3).
+  orderDiscounts          OrderDiscount[]
+  /// giftcards.prisma — gift-card/store-credit tender applied to this order, and any gift card this order purchased (WO-5.4/5.5).
+  giftCardTransactions    GiftCardTransaction[]
+  storeCreditTransactions StoreCreditTransaction[]
+  /// instalments.prisma (finance-accounting/151-layby-installment-sales.md)
+  /// — null for every ordinary immediate-tender-in-full sale.
+  instalmentPlan          InstalmentPlan?
+  giftCardsSold           GiftCard[]               @relation("GiftCardSourceOrder")
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  loyaltyTransactions     LoyaltyTransaction[]
+
+  @@unique([sourceType, sourceRef])
   @@index([status, placedAt])
   @@index([userId])
   @@index([contactId])
   @@index([guestPhone])
   @@index([channel])
   @@index([shiftId])
+  @@index([sourceCartId])
+  @@index([codRiskAction, placedAt])
 }
 
 enum OrderItemFulfillmentStatus {
@@ -172,10 +229,13 @@ model OrderItem {
 
   createdAt DateTime @default(now())
 
-  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product          Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
-  variant          ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
-  stitchingService Product?        @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
+  order              Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product            Product?            @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant            ProductVariant?     @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  stitchingService   Product?            @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
+  /// fulfilment.prisma (WO-6.4/6.6) — both core, same as economics above.
+  shipmentItems      ShipmentItem[]
+  returnRequestItems ReturnRequestItem[]
   // No `stitchingJob` relation field here on purpose (B7, MULTI-SECTOR.md):
   // core must never type-reference an apparel-pack model, or core.prisma
   // cannot compile without the apparel schema present — which breaks any
@@ -183,6 +243,9 @@ model OrderItem {
   // plain `orderItemId` scalar column pointing here instead of a Prisma
   // relation; the join happens in application code
   // (EntityEnrichmentRegistry, or StitchingJobsService.attachOrderContext).
+
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  review Review?
 
   @@index([orderId])
   @@index([productId])
@@ -215,7 +278,10 @@ enum ShipmentStatus {
 model Shipment {
   id             String         @id @default(cuid())
   orderId        String
-  /// Courier provider key: "manual", "tcs", "leopards".
+  /// Courier provider key: "manual", "tcs", "leopards" — matches a live
+  /// CourierProvider.key (fulfilment/courier-provider.ts), never trusted
+  /// beyond that: booking goes through the provider the key names, not a
+  /// courier-specific branch anywhere in this module.
   courier        String         @default("manual")
   trackingNumber String?
   trackingUrl    String?
@@ -226,10 +292,55 @@ model Shipment {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  /// WO-6.4's own extension fields (fulfilment module — Shipment itself
+  /// stays here because orders already owns its lifecycle columns).
+  methodId       String?
+  weightGrams    Int?
+  packageCount   Int       @default(1)
+  labelUrl       String?
+  manifestId     String?
+  /// Courier-specific detail (label payload, webhook body) that doesn't earn
+  /// its own column — never read for logic, only shown to support.
+  meta           Json?
+  /// Set the moment this shipment is recognised as a return-to-origin
+  /// (WO-6.7) — a courier-initiated RETURNED with no matching customer
+  /// ReturnRequest, as opposed to one raised through the returns flow.
+  isRto          Boolean   @default(false)
+  rtoAt          DateTime?
+  failedAttempts Int       @default(0)
+  /// FulfilmentCron's own bookkeeping: when this shipment was last polled,
+  /// so a consignment that hasn't moved in days is not hit every 30 minutes
+  /// forever (WO-6.5's own backoff rule) — see FulfilmentCron.pollActive().
+  lastPolledAt   DateTime?
+
+  order    Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  method   ShippingMethod? @relation(fields: [methodId], references: [id], onDelete: SetNull)
+  manifest Manifest?       @relation(fields: [manifestId], references: [id], onDelete: SetNull)
+  items    ShipmentItem[]
+  events   ShipmentEvent[]
 
   @@index([orderId])
   @@index([trackingNumber])
+  @@index([status])
+  @@index([manifestId])
+}
+
+/// WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's
+/// "city RTO rate" and "order value versus the city's average" signals.
+/// CodRiskCron recomputes every row from this node's own COD Shipment/Order
+/// history; place() reads a row by city (a single indexed lookup) rather
+/// than aggregating this on every checkout. Both counts come from the same
+/// COD-shipment population, so the two signals never disagree about which
+/// orders they're describing. A city absent from this table, or below the
+/// shop's own minimum-sample setting, is simply not trusted yet — CodRiskService
+/// treats that as "no signal", never as "zero risk".
+model CityCodRiskStat {
+  city           String   @id
+  totalShipments Int
+  rtoShipments   Int
+  /// paisa.
+  avgOrderValue  Int
+  computedAt     DateTime @default(now())
 }
 
 /// Backing store for sequential per-year order numbers (YSN-2026-0001). One

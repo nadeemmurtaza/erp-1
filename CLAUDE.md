@@ -5,8 +5,34 @@ session opened anywhere in this repo, which is the point: the rules used to
 live only in one person's private global config, so a teammate's agent, a
 cloud run or CI saw none of them.
 
-The long form is [`docs/implementation/00-HOUSE-RULES.md`](docs/implementation/00-HOUSE-RULES.md).
+The long form is [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md).
 That file is the contract; this one is the part you must not miss.
+
+---
+
+## Vision and scale
+
+**Build the ERP that bends.** The product moves small and medium
+businesses and large enterprises beyond monolithic systems on a modular,
+AI-driven architecture with a centrally connected ecosystem — not a
+single-tenant app with plugins bolted on. [`PRD.md`](./PRD.md) is the
+document of record for the full vision statement; this section changes no
+rule below, it names the number the rest of this file was already written
+against: **more than 50,000 SMEs and large enterprises**, not a handful of
+pilot clients.
+
+That is the reason, not a new requirement, behind rules already binding
+below: "Scale: the three axes" treats a sector, a brand and a branch as
+three different kinds of things rather than one flag; every module in
+`MODULES` must be survivably absent rather than assumed present;
+`ENTERPRISE-SCALE.md`'s "hundred-thousandth row" lens exists; and the AI
+layer (`AiService`/`AiProvider`, `docs/implementation/ai-layer/09-*.md`)
+is itself an extension point a deployment can run without, never a hard
+dependency load-bearing at that scale — "AI-driven" means every capability
+sits behind an interface it can be built and shipped without, not a
+chatbot bolted on. A change that only works for one shop, or that only
+works assuming a single AI provider or a single integration vendor is
+always reachable, fails this bar whether or not it fails a lint rule.
 
 ---
 
@@ -147,194 +173,7 @@ The owner's own standing instruction, stated directly and repeated because it
 was under-applied: naming a feature is not a request for the narrowest
 technical thing those words could mean. Building "a cart" is not done at
 add/remove line items — a cart nobody can check out with was never a complete
-feature, only a fragment presented as one. This section is the method for
-finding the rest of it, every time, before calling anything done.
-
-### The shop-scale five, in the owner's own words
-
-> Cart depends on saved addresses, shipping methods, payment methods, voucher
-> and discount application — the customer cannot complete a purchase without
-> them. The merchant side needs an abandoned-cart tracker, stage-of-abandonment
-> visibility, transactional email to bring the customer back. After a sale
-> completes, the customer can return it — so a return-item portal and a
-> written return policy are part of the same feature, not later work. Real
-> payment and delivery-partner integrations are part of it, not a status enum
-> standing in for one. Vouchers imply voucher creation and management, not
-> only redemption at checkout.
-
-1. **The transaction, start to finish.** What does the actor need, end to end, to
-   complete the real job? One that cannot carry a real transaction through is
-   not complete, whatever fraction of it is finished.
-2. **The other side of the same transaction.** Every customer-facing capability
-   has an operator-facing twin: cart's is the abandoned-cart tracker, an order's
-   the fulfilment queue, a return's the refund approval.
-3. **What happens after "done."** Returns, cancellations, disputes and refunds
-   are checkout's own back half, not later add-ons.
-4. **The integrations a real business needs, not a demo.** A payment method is a
-   gateway; a shipping method is rate, label and tracking.
-5. **The policy layer that governs it.** Vouchers imply management, not only
-   redemption; a return flow implies a written policy the flow enforces.
-
-Those five scope a feature for one shop with one till. The six groups below are
-what the **same feature** needs when the shop is a group: one `Organization`,
-several brands, 100+ locations across timezones, 10k+ products, 100+ kinds of
-actor, 100+ roles and as many ranks — ranks are not roles, and an approval ladder
-needs both — every department a group runs. One codebase, three editions: Solo,
-Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
-
-### 1. The actor — everything after this is a property of somebody
-
-- **The actor with three tables.** For every new actor or counterparty, name
-  which table it becomes — `User`, `Party`, `Contact`, `TradingPartner`, a
-  key-hash principal — and, where one party is two at once, the linking column.
-- **The principal with no permission key.** For every actor that is not a
-  `User`, name the `PERMISSION_CATALOG` keys it is checked against, or the path
-  authenticating it instead of `PermissionsGuard`, and which rows it reads.
-- **The grant that ends itself.** For every grant — role, override, admin scope,
-  acting cover — what ends it without a human remembering, and every row keyed to
-  that `userId` the deactivation transaction changes, pending decisions included.
-
-### 2. The authority — what bounds the act
-
-- **Whose rows, and which columns.** Name the entity each row names — org,
-  brand, node, `Location`, terminal — the actor who gets fewer rows and columns
-  on every list, export, schedule and drill-down, and the fields they never
-  see. One class-level `@RequirePermission('orders.manage')` on
-  `OrdersAdminController` lets the staff-note key push DELIVERED to RETURNED.
-- **The threshold nobody approves alone.** For each act committing money or
-  stock at a value: the amount bands, the role per band, who outranks whom on
-  escalation, the quorum on the top band, and the method checking before the row
-  leaves draft — then the same five for the undo, never the same authority.
-- **The toxic pair, caught at grant or at act.** Name the permission-key pair
-  this makes toxic together and the single enforcement point: a refusal in
-  `RolesService.create`/`.update`, or a throw comparing actor to a stored id —
-  `closeShift()` never compares `closedByUserId` to `openedByUserId`.
-- **Authority and blast radius.** Who may change this rule, at which scope, with
-  whose second signature, the worst value one can set before anything notices,
-  and the audit row carrying old and new value — not a list of changed fields.
-- **Audience is a capability, not an address.** Every message this feature
-  sends resolves its recipients from a `PERMISSION_CATALOG` key plus a scope
-  (brand, branch/`Location`, node) — never a literal address;
-  `inventory.listener.ts` mailing `ProductLowStock` to `store.supportEmail`
-  is the standing counter-example. State what a zero-holder query does (a
-  named escalation) and what a two-hundred-holder one does (a digest, never
-  two hundred pings).
-
-### 3. The act in the world — the write as a physical event
-
-- **Request or record — classify every write.** Is each write a request the
-  system may refuse, or a record of what already happened and may therefore
-  never be refused? Every record names its unconditional path, the variance row
-  a refusal would have been, its queue, and who clears it.
-- **The movement with no address.** Name the `locationId` on every stock or cash
-  write and where it comes from — if `InventoryService.defaultLocationId()`, which
-  of the 100+ locations that silently is, and what that branch sees on its shelf.
-- **Four hours down, the counter stays open.** Four hours unavailable
-  mid-trading: who was mid-task, what they do instead, the surface that ingests
-  their paper, its permission, and the reconciliation proving no double count.
-
-### 4. The money — what the act does to the books
-
-- **The unwritten posting rule.** Write it out: the domain event, the Dr/Cr codes
-  — naming any account the thirteen-account chart lacks — and the
-  `findPostedEntry(source, sourceRef)` key. Or the report reconciling it instead.
-- **Every column or none.** For every `JournalLine`, which of `organizationId` /
-  `retailBrandId` / `branchNodeId` / `costCentreId` / `counterpartyBrandId` it sets
-  and to what — or declare it undimensioned and name the report that may blend it.
-- **The period that already moved.** What happens when a fact dated inside a
-  `CLOSED` or `LOCKED` `FiscalPeriod` posts, and which report lists entries dated
-  outside their own period? `reverseEntry()` resolves the period from `now`.
-- **The second legal entity.** What breaks the day a second `RetailBrand` in a
-  second country goes live: the field holding its tax label, number and
-  currency, the counter key keeping its series gapless, the column closing its
-  period while the other brand's stays open.
-- **Dry run before live.** Can this rule replay over last month's real records
-  with nothing written? The deciding function takes inputs, returns the outcome,
-  holds no `prisma.` write and no `publish(`, and has a second read-only caller.
-- **Click the number.** Every figure a screen shows links to the exact rows
-  that produced it, pre-filtered, so the reader can click through and the
-  drill-down sums back to the tile. This repo already knows revenue four ways
-  — `Order`, `JournalEntry`, `PosShift`/`CashMovement` — and stock three ways
-  — `ProductVariant.stock`, `StockMovement`, `VariantLocationStock` — so where
-  two surfaces report the same fact, the plan states which is authoritative
-  and the enumerated reasons a delta is legitimate, never leaves it to be
-  discovered in a meeting.
-
-### 5. The scale — what the same code costs at three editions
-
-- **Three silhouettes, and the day the tier above appears.** Draw it as one
-  shop, a forty-branch chain, a group of brands: which tier-bearing columns are
-  in the first migration while never rendering on the Solo screen, and what
-  happens to rows already written the day a tier appears above them.
-- **The absent collaborator.** Every module this reads, writes or emits toward
-  that is off by default: what is still recorded, what is not, what the user
-  sees instead, and whether it degrades on an event or fails Nest boot.
-- **The second copy of the write.** The two moments this write arrives twice —
-  retried call, redelivered outbox event, a till replaying a timed-out sale —
-  and the column, with its unique constraint, making the second a no-op.
-- **The hundred-thousandth row.** The row count the largest table reaches at
-  Organization edition, the statements one page issues at that size, how many
-  come from an index, and whether a refreshable figure's columns are indexed.
-- **The adoption test.** Every human-readable code or number this feature
-  invents — a slug, a document number, a counter — must be safe for two nodes
-  to generate independently offline and merge without collision, the way
-  `documentNumber()` folds `nodeId` into the sequence while collapsing to the
-  identical `PREFIX-YEAR-SEQ` a Solo deployment has always seen. A bare
-  `@unique` on a generated string, or a counter upserted against one shared
-  row, fails the day a second node exists.
-
-### 6. The afterlife — what a narrow build always postpones
-
-- **The reversal document, not the reversal flag.** Name the reverse document:
-  entity, number series, amount field, the foreign key to the specific original
-  line — issuable for part, repeatedly, until exhausted.
-  (`PaymentsService.refund()` takes a partial amount; `onPaymentRefunded()`
-  ignores it and reverses receipt and sale in full, erasing the whole sale.)
-- **The undo fan-out.** Enumerate every side effect the forward path fires, each
-  marked one of three: reverses automatically (name the method), needs a human
-  (name the screen and the permission), or deliberately irreversible.
-- **The version stamp.** When this rule is edited next quarter, what happens to
-  records already created under the old one, and can the number on one be
-  explained from its own stored fields plus the policy version it names?
-- **The erasure the ledger cannot obey.** Name every table still holding the
-  person once the `User` row is gone — `JournalLine.contactId`, `AuditLog.data`,
-  `InboundEmail.bodyText`, `OutboxEvent.payload`, a pushed `ReplicationRecord`
-  — each given cascade, pseudonymise, or a named basis.
-- **The failure path, and who is allowed to walk it.** On the last failure: the
-  durable store it lands in with its payload, the screen listing it, the
-  permission opening it, the action replaying it, what makes a replay safe.
-
-### The scoping pass, and the artifact it produces
-
-Before the first line of a named feature, the plan in "Plan before build" below
-gains one more heading, beside `### Out of Scope`:
-
-```markdown
-### Scope lenses
-The movement with no address — the adjust screen sends its own `locationId`;
-  `InventoryService.defaultLocationId()` is reached on no path here.
-The second legal entity — n/a: writes no tax document, no numbered series.
-```
-
-One line per lens, in catalogue order. An answer names an artifact: a column, a
-table, a permission key, a service method, a screen, a number. "This feature
-writes no money fact" is a reason; "N/A" is not, and silence is not. What is
-separably larger — a CRM, a loyalty programme, payment orchestration — is named
-and sequenced as its own work order, never silently stubbed and never silently
-skipped. What ships is reachable: the UI to perform it, a nav entry so it is
-found by clicking, and every permission seeded through to a real grant a live
-user holds — not just the `Permission` row (`seedPermissions()` vs.
-`seedRoles()`'s one-time migration is this repo's own tracked instance).
-
-A reviewer fails the PR, naming the offending line, when there is no scope map;
-when a line is blank, "TBD", "handled", or any answer naming no artifact; when an
-`n/a` carries no reason, or a reason the diff contradicts; when an artifact the
-map named is absent from the diff; when a write was never classified REQUEST or
-RECORD; when a permission key named in the plan reaches no `ROLE_PERMISSION_SEED`
-grant, only a `Permission` row; or when a scope column ships nullable with no
-written meaning for null. An otherwise correct diff still fails on these.
-
-### The boundary, stated plainly
+feature, only a fragment presented as one.
 
 **A one-line fix runs no lenses; a named feature or capability runs all of
 them.** Nothing sits in between: *Change minimization* and *No speculative
@@ -346,12 +185,14 @@ smaller version of the feature, it is a broken one, and a scope column left out
 because this client has one brand is not a simpler schema, only a migration run
 later under deadline.
 
-The catalogue — every lens with its repository evidence, worked example and done
-test, plus the surface-specific ones held back here, catalogue findability at
-10k+ products among them — is [`_index.md`](docs/erp-lenses/_index.md). Where two
-lenses pull against each other the ruling is already written and numbered in
-[`_canonical-decisions.md`](docs/erp-lenses/_canonical-decisions.md); citing it is
-an answer, deciding it privately inside a PR is not.
+**The method lives in a skill, so it loads when a feature is being scoped and not in
+every session.** Before the plan for any named feature, read
+[`.claude/skills/feature-scope/SKILL.md`](.claude/skills/feature-scope/SKILL.md)
+(`/feature-scope` in Claude Code; any other agent opens the file). It holds the five
+shop-scale lenses, the six groups of lenses (the actor, the authority, the act in the
+world, the money, the scale, the afterlife), the `### Scope lenses` map the plan must
+carry, and what fails a PR. In short: a reviewer fails a named feature that has no scope
+map, or whose map names no artifact for a lens.
 
 ---
 
@@ -372,11 +213,11 @@ with a branch per client.
 > A location is a row. Keep each in its own kind of place.
 
 Hard rules, in full with reasoning in
-[`docs/implementation/ENTERPRISE-SCALE.md`](docs/implementation/ENTERPRISE-SCALE.md)
-and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md). Multi-branch
+[`docs/implementation/ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md)
+and [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md). Multi-branch
 chains — a brand with several locations plus a website, offline POS, and
 inter-branch transfers — are architected in full in
-[`docs/implementation/RETAIL-ERP.md`](docs/implementation/RETAIL-ERP.md),
+[`docs/implementation/RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md),
 which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 
 - **One `main`, one `production`.** No per-sector, per-client branch. A
@@ -395,7 +236,12 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 - **Extension points, not conditionals.** There is no `if (sector === …)`
   anywhere and there must never be.
 - **One deployment serves one brand**, resolved at build time. That is a
-  deliberate boundary; do not build toward multi-brand speculatively.
+  deliberate boundary; do not build toward multi-brand speculatively. The one
+  named exception is a hosting-provider control plane routing to many still
+  single-brand deployments — `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`,
+  adopted deliberately, never a default. It shares infrastructure, never a
+  database, across tenants; inside any one tenant's deployment this rule is
+  completely unchanged.
 - **Every movement of value names its location**, and any query that can span
   branches says which — there is no implicit "all branches" read.
 - **A branch is a node, not a tenant.** At chain scale it has its own database
@@ -408,13 +254,15 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
   `@RequirePermission` is authenticated-but-unrestricted, which is almost
   never intended.
 
-Three of these are **not machine-enforced yet** — branch-scoped reads,
-pack-absence boot, and undecorated routes. ENTERPRISE-SCALE.md names them, in
-the order they bite. Do not assume a green build proves them.
+Two of these are **not machine-enforced yet** — branch-scoped reads and
+pack-absence boot. ENTERPRISE-SCALE.md names them, in the order they bite. Do
+not assume a green build proves them. (Undecorated routes were the third; it
+is closed — `scripts/check-route-permissions.mjs` runs in `apps/api`'s lint.)
 
 ## Look it up before you search
 
-This repository is ~880 files and ~141k lines across four applications. A
+This repository is large — the live file and line count is the first line of
+`docs/index/README.md` — across four applications. A
 generated index of all of it lives in **`docs/index/`**, and it is regenerated
 and staged by `.githooks/pre-commit` on every commit, so it always describes
 the commit you are looking at.
@@ -496,7 +344,7 @@ makes it arrive when it applies, which is when it is most likely to be followed.
 | Rule file | Loads when you touch | What it governs |
 |---|---|---|
 | `.claude/rules/ui.md` | web / POS / mobile components and CSS | Use what exists (primitives, classes, `@newax/shared`) · Borders and boxes · No dead ends |
-| `.claude/rules/design.md` | web / POS / mobile components and CSS, theme and brand files | the design system in `docs/design/` — 16 chapters, **150 numbered laws** with stable IDs, and the obligations binding now: every state shipped, no dead end, no ring of content around an empty middle, layout closes over absent permissions and modules, motion that communicates, keyboard, targets, logical properties, one word per concept |
+| `.claude/rules/design.md` | web / POS / mobile components and CSS, theme and brand files | the design system in `docs/design/` — 16 chapters, **192 numbered laws** with stable IDs, and the obligations binding now: every state shipped, no dead end, no ring of content around an empty middle, layout closes over absent permissions and modules, motion that communicates, keyboard, targets, logical properties, one word per concept |
 | `.claude/rules/performance.md` | services, controllers, React components, Prisma | the performance engineering table — caching, indexing, N+1, pagination, bundles |
 | `.claude/rules/database.md` | `apps/api/prisma/**` | the database change protocol; migrations are hand-written and forward-only |
 | `.claude/rules/security.md` | auth, controllers, the permission catalogue | what a security review covers; server-side enforcement only |
@@ -519,6 +367,15 @@ a new one with a `paths:` frontmatter block — and add a row above.
 `scripts/check-rules.mjs` fails the build if a rule file exists that this table
 does not list, or a listed file that does not exist, so the index cannot drift
 from the rules it indexes.
+
+
+**Design before you build a screen.** A screen is designed before it is coded and
+reviewed before it merges. Four design skills in `.claude/skills/` hold the procedure and
+cite the design laws by ID: `/ux-design` (a one-page brief before the first line
+of JSX), `/ux-audit` (what is broken, with evidence; read-only), `/ux-review` (the
+diff, Ship or Fix first; read-only) and `/restyle` (remove the machine-made look;
+it edits files, so it runs only when asked). They are plain markdown, so any agent
+can follow them; `.claude/rules/design.md` says when each applies.
 
 
 ## Before you open a PR
@@ -550,14 +407,20 @@ pnpm check:rebrand                        # Law 1, brand axis — part of pnpm l
 node scripts/check-rebrand.mjs --self-test  # proves the matcher still catches a leak
 ```
 
-Three more design checks run inside `pnpm lint`, from
-`docs/design/15-integrity.md`'s build order. Each carries a declared baseline
+More design checks run inside `pnpm lint`, from
+`docs/design/process-governance/15-integrity.md`'s build order. Each carries a declared baseline
 of the debt it found on the day it was written — a count that may shrink and
 may not grow — and each has a `--self-test` that proves its own maths:
 
 ```bash
 pnpm check:contrast    # COL-3 / ITG-11 — WCAG floors, palette read from brand.ts
 pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan screen
+pnpm check:tells       # the machine-made look: gradients, glass, loud motion, heavy shadows,
+                       # round buttons, transition-all, layout-property transitions, emoji icons, hype copy,
+                       # "Success!" with nothing else
+pnpm check:clipboard   # CPY-3/5 — nothing touches the clipboard except lib/copy.ts (CopyButton)
+pnpm check:danger      # DNG-2 — a destructive label is a verb and its object, never "Yes" or "OK"
+pnpm check:menus       # MNU-6/MNU-2 — a short fixed list is not a native select; a date is not type="date"
 ```
 
 `eslint-plugin-jsx-a11y` runs on both apps for the same reason. What still has
@@ -679,7 +542,7 @@ Every non-trivial task gets a written plan first, proportional to the task
 ```
 
 `### Scope lenses` is required for a named feature and omitted for a fix — one
-line per lens, in the order *Feature scope* above lists them. That section is
+line per lens, in the order the `feature-scope` skill lists them. That skill is
 what a reviewer reads first.
 
 Every meaningful implementation traces back to a requirement — product
@@ -785,14 +648,15 @@ endpoints, placeholder infrastructure, unnecessary tables, unnecessary
 dependencies, unused permissions, unused env vars. Every addition needs a
 documented reason. For a named feature request, "required" is defined by
 "Feature scope: build the whole capability" near the top of this file, not
-by the narrowest reading of the request's literal words — that section's
-five lenses are the documented reason.
+by the narrowest reading of the request's literal words — the five lenses
+of the `feature-scope` skill are the documented reason.
 
 ### A feature ships whole, not backend-only
 
 See "Feature scope: build the whole capability" near the top of this file
-for the full method (the five lenses, the worked cart example, the
-build-vs-sequence boundary) — this is that section's mechanical checklist.
+and the `feature-scope` skill it points to for the full method (the five lenses,
+the worked cart example, the build-vs-sequence boundary) — this is that method's
+mechanical checklist.
 A work order is not done because the service and its tests pass. Every
 piece that ships also ships:
 
@@ -842,6 +706,64 @@ change production env vars without authorization, deploy unverified code,
 bypass CI, or disable a security control to make a deployment pass. Verify
 in development/preview first. (See this file's own Deployment section
 above — the same rule, restated here for the full protocol.)
+
+### No deletion of any kind without the owner's explicit confirmation
+
+Binding on every agent, developer and automated process working in this
+repository — added at the owner's own direct instruction. Before
+deleting anything, state exactly what will be deleted and why, then wait
+for the owner's explicit, deletion-specific confirmation. This covers
+every kind of data, not only production or the database: a database row
+or table, a business record (`Order`, `User`, `Location`, an invoice, a
+journal entry — anything, not only the obviously sensitive ones), a
+migration that drops a column or table, a file, a git branch, tag or
+commit (`reset --hard`, a force-push, `checkout --`, `clean -f`), a
+`docs/implementation/*.md` file or any other document, an environment
+value, an uploaded asset, a whole feature. A prior approval for a
+related action never carries over to a deletion — each one is asked for
+by name, even mid-task, even when the reasoning feels obvious ("this is
+clearly orphaned," "this test data isn't real," "this branch is already
+merged").
+
+**Branches are named explicitly because the owner named them explicitly:
+no branch is ever deleted — locally or on `origin` — without the
+owner's own explicit, per-branch confirmation, and `main` most of all,
+in any case, with no carve-out and no exception below reaching it.**
+`main` is never deleted, never force-pushed over, never reset, and never
+replaced wholesale, full stop — not for cleanup, not because it's "just
+a disconnected clone with no live deployment" (this file's own Deployment
+section), not because every commit on some other branch is already an
+ancestor of it, not for any reason that has not been confirmed by the
+owner in so many words for that exact operation on that exact branch. A
+non-`main` branch is barely looser: deleting even one already-merged
+branch requires the owner to confirm that specific branch by name — a
+general "clean up the merged branches" instruction is not, by itself,
+that confirmation, because it does not name which branches. Keep any
+work stashed, mirrored, or moved aside rather than assuming a branch
+that looks fully merged is safe to remove.
+
+Two further narrow carve-outs, so the rest of the rule stays enforceable
+rather than theoretical, not loopholes to reason a real deletion
+through — and neither one reaches a branch, per the paragraph above:
+
+- **Ephemeral, mechanically regenerable artifacts with no informational
+  content of their own** — a build cache, `node_modules`, a file under
+  `docs/index/` (already regenerated by `pnpm index` on every commit).
+  Deleting and regenerating one of these is not a data loss.
+- **The literal thing the owner just named, in the same instruction** —
+  "delete file X" is already the confirmation for X. This rule exists
+  for everything the owner did not explicitly name, not to demand a
+  second confirmation of a request already given in plain words.
+
+Prefer a reversible step over a delete wherever one exists — comment
+out, move aside, mark inactive/archived, a soft-delete column
+(`deletedAt`) instead of a row `DELETE` — and say so, rather than
+assuming deletion is the only option. This strengthens, and does not
+replace, the destructive-operations judgment every agent already
+applies in this environment; it is written down here, specifically, so
+it survives outside any one session and binds every future contributor
+and every cloud run or CI workflow too — the same reason every other
+rule in this file exists instead of living in one person's own head.
 
 ### Release safety
 
@@ -912,3 +834,32 @@ REMAINING RISKS
 FINAL STATUS
 Verified Locally / Blocked / Complete
 ```
+
+### Exact parameters, every time — no vague numbers on a security or performance decision
+
+Added at the owner's own direct instruction, binding on every agent. A rate
+limit, a cache TTL, a connection pool size, a compression level, a retry
+count, a memory ceiling, a token-bucket capacity or refill rate — any
+parameter that decides how the system behaves under load or under attack —
+is never described as "reasonable," "a sensible limit," or "tuned
+appropriately." State the exact number, the exact unit, and the one or two
+sentences of reasoning behind it, in the same reply that introduces it:
+
+```
+Parameter: / Exact value: / Applies to: / Why this number (not a smaller
+or larger one): / Where it's enforced: / How it degrades or fails:
+```
+
+This applies whether the parameter is being introduced for the first time
+or changed. "Rate limiting is now in place" is not a complete answer;
+"10 requests per 60 seconds per IP on `/auth/login`, enforced by
+`CREDENTIAL_THROTTLE` in `auth.controller.ts`, chosen because a login form
+is the one place an attacker gets to guess a secret" is. The reasoning
+does not need to be long — it needs to exist and be specific to the actual
+system, never copied from a generic security checklist unexamined.
+
+Every such decision is also recorded in `DECISIONS.md` as an ADR (existing
+template) or, where it's a small addition to an already-decided ADR, as a
+dated addendum to that ADR rather than a new one — never left to live only
+in a chat reply or a PR description, where it stops being discoverable by
+the next agent or the next session.

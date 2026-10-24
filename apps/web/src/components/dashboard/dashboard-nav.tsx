@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
 import { Link, usePathname } from '@/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
+import { request } from '@/lib/api-client';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 /**
  * The shopper's section nav.
@@ -27,23 +30,57 @@ interface Tab {
    * them.
    */
   exact?: boolean;
+  /** API module that owns this tab. Hidden when the module is off in MODULES — see @/utils/module-gate. */
+  module?: string;
 }
 
 const TABS: Tab[] = [
-  { href: ROUTES.storefront.account, key: 'profile', exact: true },
-  { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
-  { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
+  { href: ROUTES.storefront.accountOverview, key: 'overview' },
   { href: ROUTES.storefront.orders, key: 'orders' },
+  { href: ROUTES.storefront.accountReturns, key: 'returns' },
+  { href: ROUTES.storefront.accountSupport, key: 'support', module: 'support' },
+  { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
+  { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
   { href: ROUTES.storefront.wishlist, key: 'wishlist' },
+  { href: ROUTES.storefront.accountReviews, key: 'reviews' },
+  { href: ROUTES.storefront.accountCredit, key: 'credit' },
+  { href: ROUTES.storefront.accountLoyalty, key: 'loyalty' },
+  // doc 155 — off by default (`wallet` module); see DECISIONS.md.
+  { href: ROUTES.storefront.accountWallet, key: 'wallet', module: 'wallet' },
+  // 149-b2b-accounts-approvals-sector-packs.md — off by default (`accounts` module).
+  { href: ROUTES.storefront.accountB2B, key: 'b2b', module: 'accounts' },
+  { href: ROUTES.storefront.accountNotifications, key: 'notifications' },
+  // Personal API keys (163-personal-api-keys.md) — the same place, under the
+  // person's own account, as the admin's own "My API keys" (NAV-12).
+  { href: ROUTES.storefront.accountApiKeys, key: 'apiKeys' },
+  { href: ROUTES.storefront.account, key: 'profile', exact: true },
 ];
 
 export function DashboardNav() {
   const pathname = usePathname();
   const t = useTranslations('account.nav');
+  // `undefined` (not fetched yet) fails open, matching the admin shell's
+  // own choice (utils/module-gate.ts) — a module-tagged tab shows until
+  // /meta resolves, rather than the whole nav flickering empty on load.
+  const [enabledModules, setEnabledModules] = useState<readonly string[] | undefined>(undefined);
+
+  useEffect(() => {
+    let cancelled = false;
+    request<{ modules: string[] }>('/meta')
+      .then((meta) => {
+        if (!cancelled) setEnabledModules(meta.modules);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const tabs = TABS.filter((tab) => isModuleEnabled(tab.module, enabledModules));
 
   return (
     <nav aria-label={t('label')} className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100">
-      {TABS.map((tab) => {
+      {tabs.map((tab) => {
         const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
         return (
           <Link

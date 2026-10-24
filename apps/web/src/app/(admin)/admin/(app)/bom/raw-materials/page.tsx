@@ -3,11 +3,13 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatQuantity, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { DataTable, PageHeader } from '@/components/ui';
 import type { PaginatedResponse } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 const RAW_MATERIAL_KINDS = ['fabric', 'trim', 'packaging', 'consumable'] as const;
 type RawMaterialKind = (typeof RAW_MATERIAL_KINDS)[number];
@@ -39,7 +41,8 @@ interface RawMaterial {
  */
 export default function RawMaterialsPage() {
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
 
   const [materials, setMaterials] = useState<PaginatedResponse<RawMaterial> | null>(null);
   const [busy, setBusy] = useState(true);
@@ -107,28 +110,7 @@ export default function RawMaterialsPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : t.type === 'success'
-                    ? 'border-green-200 bg-green-50 text-green-800'
-                    : 'border-blue-200 bg-blue-50 text-blue-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title="Raw Materials"
@@ -238,19 +220,20 @@ export default function RawMaterialsPage() {
             </option>
           ))}
         </select>
-        <select
+        <Select
+          label="Status"
           value={filter}
-          onChange={(event) => {
+          onChange={(next) => {
             setPage(1);
-            setFilter(event.target.value as 'active' | 'inactive' | 'all');
+            setFilter(next as 'active' | 'inactive' | 'all');
           }}
-          className="field-input w-auto"
-          aria-label="Status"
-        >
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="all">All</option>
-        </select>
+          className="w-auto"
+          options={[
+            { value: 'active', label: 'Active' },
+            { value: 'inactive', label: 'Inactive' },
+            { value: 'all', label: 'All' },
+          ]}
+        />
       </div>
 
       <div className="overflow-hidden">

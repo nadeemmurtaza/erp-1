@@ -26,6 +26,13 @@ export const STORAGE_KEYS = {
     user: `${NS}.admin.user`,
     /** Which sidebar groups the person has collapsed. */
     navGroups: `${NS}.admin.navGroups`,
+    /**
+     * Which dashboard card groups are collapsed (10-admin-dashboard.md
+     * WO-A.4). The brief's own key literal is `yaseen.admin.dashboard.collapsed`
+     * — this file's own namespace note above is why that isn't used verbatim:
+     * `NS` stands in for the client's name everywhere else here.
+     */
+    dashboardCollapsed: `${NS}.admin.dashboard.collapsed`,
   },
   customer: {
     access: `${NS}.customer.access`,
@@ -48,4 +55,14 @@ export const STORAGE_KEYS = {
    */
   guestOrder: (number: string) => `${NS}.order.${number}`,
   guestBooking: (number: string) => `${NS}.stitching.${number}`,
+  /** WO-8.6 — dismissed on-site message ids, so a closed banner or popup stays closed. */
+  onsiteMessagesDismissed: `${NS}.onsite_messages.dismissed`,
+  /**
+   * The person's theme choice: `light`, `dark` or `system` (follow the
+   * device, which is also what an absent value means). Read by the inline
+   * script in every root layout before first paint, so it is a bare string,
+   * not JSON — that script cannot afford a parser, and must survive a value
+   * it does not recognise.
+   */
+  theme: `${NS}.theme`,
 } as const;

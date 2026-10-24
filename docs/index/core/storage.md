@@ -3,7 +3,7 @@
 
 # Core: `storage`
 
-Shared platform — available to every module, part of no feature · 7 files
+Shared platform — available to every module, part of no feature · 8 files
 
 
 > Extension point: file storage.
@@ -13,19 +13,20 @@ Source: `apps/api/src/core/storage/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 571 lines)
+## Files (8 · 722 lines)
 
 All paths relative to `apps/api/src/core/storage`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `files.controller.ts` | controller | 58 | 1 | Serves files stored by the local storage driver. |
-| `local-storage.driver.ts` | driver | 72 | 2 | Writes uploads to a directory on disk and serves them back through the API. |
-| `s3-storage.driver.ts` | driver | 77 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
-| `storage.driver.ts` | driver | 31 | 3 | Extension point: file storage. |
+| `files.controller.spec.ts` | unit test | 63 | — |  |
+| `files.controller.ts` | controller | 67 | 1 | Serves files stored by the local storage driver. |
+| `local-storage.driver.ts` | driver | 84 | 2 | Writes uploads to a directory on disk and serves them back through the API. |
+| `s3-storage.driver.ts` | driver | 92 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
+| `storage.driver.ts` | driver | 35 | 3 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 | 1 |  |
-| `storage.service.spec.ts` | unit test | 186 | — |  |
-| `storage.service.ts` | service | 133 | 1 | Front door for file storage. |
+| `storage.service.spec.ts` | unit test | 224 | — |  |
+| `storage.service.ts` | service | 143 | 2 |  |
 
 
 ## HTTP routes (1)
@@ -62,7 +63,6 @@ _none_
 
 ## Reaches out to
 
-- **module `settings`** ⚠ direct import
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -70,11 +70,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `storage.service.spec.ts` | 11 | StorageService.putImage · StorageService.putDocument |
+| `files.controller.spec.ts` | 3 | FilesController |
+| `storage.service.spec.ts` | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.md WO-38.1, degradati… |
 
 
 ## Every export in this unit
@@ -83,15 +84,16 @@ check there before adding another.
 |---|---|---|---|
 | `FilesController` | class | `files.controller.ts:27` | Serves files stored by the local storage driver. |
 | `LocalStorageDriver` | class | `local-storage.driver.ts:15` | Writes uploads to a directory on disk and serves them back through the API. |
-| `buildKey` | function | `local-storage.driver.ts:61` | "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-4f2a1b.jpg" |
-| `S3StorageDriver` | class | `s3-storage.driver.ts:13` | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
+| `buildKey` | function | `local-storage.driver.ts:73` | "products" + "Lawn Suit.JPG" -> "products/2026/08/lawn-suit-4f2a1b.jpg" |
+| `S3StorageDriver` | class | `s3-storage.driver.ts:14` | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
 | `StoredFile` | interface | `storage.driver.ts:8` | Extension point: file storage. |
 | `PutFileInput` | interface | `storage.driver.ts:17` |  |
 | `StorageDriver` | interface | `storage.driver.ts:25` |  |
 | `StorageModule` | class | `storage.module.ts:13` |  |
+| `MAX_IMAGE_BYTES` | const | `storage.service.ts:10` |  |
 | `StorageService` | class | `storage.service.ts:28` | Front door for file storage. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

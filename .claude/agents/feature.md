@@ -12,10 +12,11 @@ experimental:
 
 # A whole capability, end to end
 
-**sonnet · high effort · 1h prompt cache.** CLAUDE.md's five lenses make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
+**sonnet · high effort · 1h prompt cache.** The five lenses in the `feature-scope` skill make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
 
-Run the five lenses from `CLAUDE.md` ("Feature scope: build the whole
-capability") BEFORE implementing, and write the resulting map down:
+Read `.claude/skills/feature-scope/SKILL.md` (the "Feature scope" section
+that moved out of `CLAUDE.md`), then run its five lenses BEFORE implementing,
+and write the resulting map down:
 
 1. The transaction, start to finish.
 2. The other side of it — the operator-facing twin.

@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import { DataTable } from '@/components/ui';
-import type { AdminCategory } from '@/types/api';
+import { DataTable, Dialog, EmptyState } from '@/components/ui';
+import { cn } from '@/utils/cn';
+import type { AdminCategory, CategoryPreset, CategoryPresetPreview } from '@/types/api';
 
 interface Draft {
   id?: string;
@@ -30,6 +31,14 @@ export default function AdminCategoriesPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  // 47-preconfigured-sector-taxonomy.md WO-47.4 — "start from a template".
+  const [presetPicker, setPresetPicker] = useState(false);
+  const [presets, setPresets] = useState<CategoryPreset[] | null>(null);
+  const [presetError, setPresetError] = useState<string | null>(null);
+  const [selectedPreset, setSelectedPreset] = useState<CategoryPreset | null>(null);
+  const [presetPreview, setPresetPreview] = useState<CategoryPresetPreview | null>(null);
+  const [presetBusy, setPresetBusy] = useState(false);
+
   const load = useCallback(async () => {
     try {
       setCategories(await adminFetch<AdminCategory[]>('/admin/catalog/categories'));
@@ -41,6 +50,44 @@ export default function AdminCategoriesPage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  function openPresetPicker() {
+    setPresetError(null);
+    setSelectedPreset(null);
+    setPresetPreview(null);
+    setPresetPicker(true);
+    if (!presets) {
+      adminFetch<CategoryPreset[]>('/admin/catalog/category-presets')
+        .then(setPresets)
+        .catch((cause) => setPresetError(cause instanceof Error ? cause.message : 'Could not load the starter templates'));
+    }
+  }
+
+  async function choosePreset(preset: CategoryPreset) {
+    setSelectedPreset(preset);
+    setPresetPreview(null);
+    setPresetError(null);
+    try {
+      setPresetPreview(await adminFetch<CategoryPresetPreview>(`/admin/catalog/category-presets/${preset.key}/preview`));
+    } catch (cause) {
+      setPresetError(cause instanceof Error ? cause.message : 'Could not preview this template');
+    }
+  }
+
+  async function applyPreset() {
+    if (!selectedPreset) return;
+    setPresetBusy(true);
+    setPresetError(null);
+    try {
+      await adminFetch(`/admin/catalog/category-presets/${selectedPreset.key}/apply`, { method: 'POST' });
+      setPresetPicker(false);
+      await load();
+    } catch (cause) {
+      setPresetError(cause instanceof Error ? cause.message : 'Could not apply this template');
+    } finally {
+      setPresetBusy(false);
+    }
+  }
 
   async function save(event: React.FormEvent) {
     event.preventDefault();
@@ -104,7 +151,12 @@ export default function AdminCategoriesPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Categories</h1>
+      <div className="mb-1 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <h1 className="text-xl font-semibold text-neutral-900">Categories</h1>
+        <button type="button" onClick={openPresetPicker} className="btn-secondary shrink-0">
+          Start from a template
+        </button>
+      </div>
       <p className="mb-6 text-sm text-neutral-900/60">
         How the storefront navigation is organised. Both languages are shown to customers.
       </p>
@@ -117,6 +169,17 @@ export default function AdminCategoriesPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="overflow-hidden">
+          {categories.length === 0 ? (
+            <EmptyState
+              title="No categories yet"
+              description="Start from a ready-made taxonomy for your sector, or add categories one at a time on the right."
+              action={
+                <button type="button" onClick={openPresetPicker} className="btn-primary">
+                  Start from a template
+                </button>
+              }
+            />
+          ) : (
           <div className="overflow-x-auto">
             <DataTable
               rows={asTree(categories)}
@@ -188,6 +251,7 @@ export default function AdminCategoriesPage() {
               ]}
             />
           </div>
+          )}
         </div>
 
         <form onSubmit={save} className="card h-fit space-y-4 p-4">
@@ -265,6 +329,78 @@ export default function AdminCategoriesPage() {
           </div>
         </form>
       </div>
+
+      <Dialog
+        open={presetPicker}
+        onClose={() => setPresetPicker(false)}
+        title="Start from a template"
+        footer={
+          <>
+            <button type="button" onClick={() => setPresetPicker(false)} className="btn-ghost">
+              Cancel
+            </button>
+            <button type="button" onClick={() => void applyPreset()} disabled={!selectedPreset || presetBusy} className="btn-primary">
+              {presetBusy ? 'Applying…' : 'Apply'}
+            </button>
+          </>
+        }
+      >
+        {presetError ? (
+          <p role="alert" className="notice notice-error mb-4">
+            {presetError}
+          </p>
+        ) : null}
+
+        <div className="space-y-4">
+          <div>
+            <p className="field-label mb-2">Pick a starting taxonomy</p>
+            {!presets ? (
+              <p className="text-sm text-neutral-900/60">Loading templates…</p>
+            ) : (
+              <div className="grid gap-2 sm:grid-cols-2">
+                {presets.map((preset) => (
+                  <button
+                    key={preset.key}
+                    type="button"
+                    onClick={() => void choosePreset(preset)}
+                    className={cn(
+                      'rounded border p-3 text-start text-sm',
+                      selectedPreset?.key === preset.key
+                        ? 'border-accent bg-accent/5'
+                        : 'border-neutral-200 hover:bg-neutral-50',
+                    )}
+                  >
+                    <span className="block font-medium text-neutral-900">{preset.label}</span>
+                    {preset.description ? (
+                      <span className="mt-0.5 block text-xs text-neutral-900/60">{preset.description}</span>
+                    ) : null}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {selectedPreset ? (
+            <div className="rounded bg-neutral-50 p-3 text-sm">
+              {presetPreview ? (
+                <>
+                  <p className="text-neutral-900">
+                    Will create <strong>{presetPreview.created}</strong> new categor{presetPreview.created === 1 ? 'y' : 'ies'}.
+                  </p>
+                  {presetPreview.collisions.length > 0 ? (
+                    <p className="mt-1 text-neutral-900/70">
+                      Already exists, left unchanged: {presetPreview.collisions.join(', ')} — this template&apos;s own
+                      children still apply underneath them.
+                    </p>
+                  ) : null}
+                </>
+              ) : (
+                <p className="text-neutral-900/60">Checking what this would create…</p>
+              )}
+            </div>
+          ) : null}
+        </div>
+      </Dialog>
     </>
   );
 }

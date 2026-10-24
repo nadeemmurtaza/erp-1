@@ -1,14 +1,45 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { AuctionsFooterLink } from './auction/auctions-link';
 import { Logo } from './logo';
 import { ROUTES } from '@/constants/routes';
+import type { CmsMenuLink } from '@/types/api';
 
-export function Footer() {
+/** A CMS-driven link renders as an external <a> when its URL isn't a local path. */
+function FooterCmsLink({ item }: { item: CmsMenuLink }) {
+  const className = 'text-sm text-neutral-200 hover:text-white transition-colors block';
+  if (item.url.startsWith('/')) {
+    return (
+      <Link className={className} href={item.url}>
+        {item.label}
+      </Link>
+    );
+  }
+  return (
+    <a className={className} href={item.url} target="_blank" rel="noopener noreferrer">
+      {item.label}
+    </a>
+  );
+}
+
+export function Footer({
+  footerHelpMenu = [],
+  footerAboutMenu = [],
+}: {
+  /** WO-8.1 — CMS-editable, additive to the four columns below. Empty by default. */
+  footerHelpMenu?: CmsMenuLink[];
+  footerAboutMenu?: CmsMenuLink[];
+}) {
   const t = useTranslations('footer');
   const tSite = useTranslations('site');
 
+  // Pinned to the light palette (`data-theme="light"`). The footer is a dark
+  // band in both themes, and everything in it — neutral-200 links, neutral-500
+  // eyebrows, `text-white` hovers — is written against the light ramp's values
+  // (light text on #121111). A dark theme must not turn it into a pale band
+  // with the same classes.
   return (
-    <footer className="mt-20 border-t border-neutral-800 bg-neutral-900">
+    <footer data-theme="light" className="mt-20 border-t border-neutral-800 bg-neutral-900">
       <div className="container-page py-16 sm:py-20">
         <div className="grid gap-12 sm:gap-16 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           <div className="lg:col-span-1">
@@ -44,6 +75,16 @@ export function Footer() {
                   {t('sizeGuide')}
                 </Link>
               </li>
+              <li>
+                <Link className="text-sm text-neutral-200 hover:text-white transition-colors block" href={ROUTES.storefront.verifyPurchase}>
+                  {t('verifyPurchase')}
+                </Link>
+              </li>
+              {footerHelpMenu.map((item) => (
+                <li key={item.id}>
+                  <FooterCmsLink item={item} />
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -60,6 +101,12 @@ export function Footer() {
                   {t('stitchingService')}
                 </Link>
               </li>
+              <AuctionsFooterLink className="text-sm text-neutral-200 hover:text-white transition-colors block" />
+              {footerAboutMenu.map((item) => (
+                <li key={item.id}>
+                  <FooterCmsLink item={item} />
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -189,6 +189,24 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: {},
   },
   {
+    key: 'user.api_key_issued',
+    label: 'API Key Issued Notice',
+    category: 'Account',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent to the key’s owner whenever a personal API key’s secret is issued — created from POST /api-keys or rotated from POST /api-keys/:id/rotate (user.api_key_issued).',
+    sampleData: { surface: 'STOREFRONT', lastFour: 'x7Qa', reason: 'CREATED' },
+  },
+  {
+    key: 'user.sso_account_linked',
+    label: 'Single Sign-On Linked Notice',
+    category: 'Account',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent to the account holder when their first single sign-on links an existing account to that identity (user.sso_account_linked). Never sent for a brand-new account single sign-on creates — that person just signed in, live.',
+    sampleData: {},
+  },
+  {
     key: 'user.email_verification',
     label: 'Email Verification',
     category: 'Account',
@@ -198,12 +216,25 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: { token: 'preview-token' },
   },
   {
-    key: 'marketing.abandoned_cart_reminder',
-    label: 'Abandoned Cart (Email 1 — The Reminder)',
+    key: 'marketing.abandoned_cart_first_touch',
+    label: 'Abandoned Cart (Email 1 — First Touch)',
     category: 'Marketing',
     trigger: 'automatic',
     triggerDescription:
-      'Sent by MarketingAutomationCron (modules/marketing) when a logged-in customer\'s cart sits idle past marketing.abandoned_cart_reminder_hours (Settings). Guest carts have no email captured yet, so this covers logged-in customers only. Off by default (marketing.automation_enabled).',
+      'WO-8.5 — sent by MarketingAutomationCron marketing.abandoned_cart_first_touch_hours (Settings, default 1h) after a cart goes idle. A soft nudge only, deliberately no discount: sending one immediately trains customers to abandon. Off by default (marketing.automation_enabled).',
+    sampleData: {
+      items: sampleOrderItems,
+      cartUrl: `${BRAND.identity.url}/en/cart`,
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
+    },
+  },
+  {
+    key: 'marketing.abandoned_cart_reminder',
+    label: 'Abandoned Cart (Email 2 — The Reminder)',
+    category: 'Marketing',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent by MarketingAutomationCron marketing.abandoned_cart_reminder_hours (Settings, default 24h) after the first touch, if the cart is still not converted. Reaches a guest cart too when a phone was captured with marketing consent at checkout (Cart.guestPhone/guestMarketingConsentAt, WO-8.5) — via WhatsApp/SMS rather than email, since a guest has no address to send one to. Off by default (marketing.automation_enabled).',
     sampleData: {
       items: sampleOrderItems,
       cartUrl: `${BRAND.identity.url}/en/cart`,
@@ -212,11 +243,11 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
   },
   {
     key: 'marketing.abandoned_cart_incentive',
-    label: 'Abandoned Cart (Email 2 — The Incentive)',
+    label: 'Abandoned Cart (Email 3 — The Incentive)',
     category: 'Marketing',
     trigger: 'automatic',
     triggerDescription:
-      'Sent by the same cron, marketing.abandoned_cart_incentive_hours after the reminder, if the cart is still not converted. No discount-code system exists, so this goes out without one — discountCode/discountLabel stay unset rather than showing a fake code.',
+      'Sent by the same cron, marketing.abandoned_cart_incentive_hours (default 72h) after the reminder, if the cart is still not converted. WO-8.5 — carries a real single-use PromoCode minted against a lazily-created system Discount (marketing.abandoned_cart_discount_bps/_max_off/_valid_days, Settings), not a placeholder: discountCode/discountLabel are only unset if minting the code itself failed.',
     sampleData: {
       items: sampleOrderItems,
       cartUrl: `${BRAND.identity.url}/en/cart`,

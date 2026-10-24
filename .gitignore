@@ -26,11 +26,17 @@ pnpm-debug.log*
 
 # Prisma generated client
 apps/api/src/generated/
+apps/platform/src/generated/
 packages/shared/src/api/generated/
 
 # Local service data
 .data/
 uploads/
+
+# WO-39.7 — TenantExportRunner's local-filesystem export archives
+# (PLATFORM_EXPORT_STORAGE_DIR's own default). Never committed: these are
+# pg_dump output of a tenant's own isolated database, generated at runtime.
+apps/platform/exports/
 
 # Playwright
 test-results/
@@ -50,3 +56,19 @@ yaseen-backup-before-reset.sql
 
 # Worktree metadata from an external tool — machine-local, never shared.
 .freebuff/
+
+# Claude Code agent worktrees — isolated checkouts for background subagents,
+# machine-local scratch state, never shared or committed.
+.claude/worktrees/
+
+# scripts/sync-client.mjs's own scratch working directory — a client
+# repository built and committed here, never part of the Blueprint's own
+# history. See docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md.
+.client-build/
+
+# Redis local persistence dump (created by a local redis-server run, never committed)
+dump.rdb
+
+# Stray command-output captures
+check_output.txt
+raw_output.txt

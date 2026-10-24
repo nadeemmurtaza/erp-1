@@ -47,48 +47,146 @@ model User {
   /// transactional mail (order/payment/account), which isn't marketing.
   marketingEmailOptOut Boolean   @default(false)
   lastLoginAt          DateTime?
+  /// The single sign-on identity linked to this account
+  /// (access-control-identity/161-sso-identity-federation.md) —
+  /// `<issuer>#<sub>`, because an OIDC `sub` is only unique within its own
+  /// issuer. Null for a password-only account, which SSO leaves untouched.
+  /// Indexed, not unique: sign-in resolves by email first; the index serves
+  /// SsoService's refusal to link one external identity to a second account.
+  ssoExternalId        String?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  addresses               Address[]
-  refreshTokens           RefreshToken[]
-  passwordResetTokens     PasswordResetToken[]
-  emailVerificationTokens EmailVerificationToken[]
-  carts                   Cart[]
-  orders                  Order[]
-  orderStatusEvents       OrderStatusEvent[]
-  auditLogs               AuditLog[]
-  contact                 Contact?                 @relation("ContactUser")
-  identityVerification    IdentityVerification?
-  ownedContacts           Contact[]                @relation("ContactOwner")
-  ownedLeads              Lead[]                   @relation("LeadOwner")
-  interactions            Interaction[]
-  inboundEmailReplies     InboundEmailReply[]
-  assignedFollowUps       FollowUpTask[]           @relation("FollowUpAssignee")
-  approvedPayments        Payment[]                @relation("PaymentApprover")
-  segments                Segment[]
-  devices                 DeviceToken[]
-  stockAdjustments        StockAdjustment[]
-  stockMovements          StockMovement[]          @relation("StockMovementActor")
-  permissionOverrides     UserPermission[]
+  addresses                         Address[]
+  refreshTokens                     RefreshToken[]
+  passwordResetTokens               PasswordResetToken[]
+  emailVerificationTokens           EmailVerificationToken[]
+  /// Personal API keys this person issued — each one acts as them, capped
+  /// live by their permissions (access-control-identity/163-personal-api-keys.md).
+  apiKeys                           ApiKey[]                    @relation("ApiKeyOwner")
+  /// Keys this person revoked as someone else's administrator, or by
+  /// deactivating their owner.
+  apiKeysRevoked                    ApiKey[]                    @relation("ApiKeyRevoker")
+  carts                             Cart[]
+  orders                            Order[]
+  orderStatusEvents                 OrderStatusEvent[]
+  auditLogs                         AuditLog[]
+  contact                           Contact?                    @relation("ContactUser")
+  identityVerification              IdentityVerification?
+  ownedContacts                     Contact[]                   @relation("ContactOwner")
+  ownedLeads                        Lead[]                      @relation("LeadOwner")
+  interactions                      Interaction[]
+  inboundEmailReplies               InboundEmailReply[]
+  assignedFollowUps                 FollowUpTask[]              @relation("FollowUpAssignee")
+  approvedPayments                  Payment[]                   @relation("PaymentApprover")
+  segments                          Segment[]
+  devices                           DeviceToken[]
+  stockAdjustments                  StockAdjustment[]
+  stockMovements                    StockMovement[]             @relation("StockMovementActor")
+  permissionOverrides               UserPermission[]
   /// What this user's admin access is scoped to (RETAIL-ERP.md R10, WO-18.3)
   /// — empty for every deployment today. Model lives in organization.prisma
   /// (a togglable module), not here: this back-relation is the only mention
   /// of it core.prisma needs.
-  adminScopes             AdminScope[]
+  adminScopes                       AdminScope[]
   /// Which named `Role` rows this user holds — plural, unioned (roles.ts).
-  roleAssignments         UserRoleAssignment[]
-  purchaseOrdersCreated   PurchaseOrder[]          @relation("PurchaseOrderCreator")
-  goodsReceiptsReceived   GoodsReceipt[]           @relation("GoodsReceiptReceiver")
-  stockCountsCreated      StockCount[]             @relation("StockCountCreator")
-  stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
-  workOrdersCreated       WorkOrder[]              @relation("WorkOrderCreator")
-  expensesCreated         Expense[]                @relation("ExpenseCreator")
-  bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
-  bomProductionRuns       BomProductionRun[]       @relation("BomProductionOperator")
+  roleAssignments                   UserRoleAssignment[]
+  purchaseOrdersCreated             PurchaseOrder[]             @relation("PurchaseOrderCreator")
+  embeddedWidgetsCreated            EmbeddedWidget[]            @relation("EmbeddedWidgetCreator")
+  microFrontendFragmentsRegistered  MicroFrontendFragment[]     @relation("MicroFrontendFragmentRegisteredBy")
+  goodsReceiptsReceived             GoodsReceipt[]              @relation("GoodsReceiptReceiver")
+  requisitionsRequested             PurchaseRequisition[]       @relation("RequisitionRequester")
+  approvalStepsDecided              ApprovalStep[]              @relation("ApprovalStepDecider")
+  stockCountsCreated                StockCount[]                @relation("StockCountCreator")
+  stockCountsAssigned               StockCount[]                @relation("StockCountAssignee")
+  workOrdersCreated                 WorkOrder[]                 @relation("WorkOrderCreator")
+  expensesCreated                   Expense[]                   @relation("ExpenseCreator")
+  bomRecipesCreated                 BomRecipe[]                 @relation("BomRecipeCreator")
+  bomProductionRuns                 BomProductionRun[]          @relation("BomProductionOperator")
+  policyQuarantinesResolved         PolicyQuarantine[]          @relation("PolicyQuarantineResolver")
+  /// Payroll (docs/implementation/payroll/19-payroll.md) — one User is both the
+  /// payee (compensationRates, leaveBalances, ...) and, for an ADMIN,
+  /// possibly the actor who set a rate or decided a leave request; the two
+  /// relation names below keep those two roles distinct on the same model.
+  compensationRates                 CompensationRate[]
+  compensationRatesCreated          CompensationRate[]          @relation("CompensationRateCreator")
+  leaveBalances                     LeaveBalance[]
+  leaveRequests                     LeaveRequest[]              @relation("LeaveRequestUser")
+  leaveRequestsDecided              LeaveRequest[]              @relation("LeaveRequestDecider")
+  payRunsApproved                   PayRun[]                    @relation("PayRunApprover")
+  payRunsCreated                    PayRun[]                    @relation("PayRunCreator")
+  payRunLines                       PayRunLine[]
+  payRunAdjustments                 PayRunAdjustment[]
+  payRunAdjustmentsCreated          PayRunAdjustment[]          @relation("PayRunAdjustmentCreator")
+  /// hr.prisma (hr-people-org/79-employee-asset-management.md) — one User is
+  /// both a possible asset holder and, for an ADMIN, the actor who issued or
+  /// took back someone else's asset; three relation names for three distinct
+  /// roles on the same model, same idiom as the payroll block above.
+  assetAssignments                  AssetAssignment[]           @relation("AssetAssignmentHolder")
+  assetAssignmentsIssued            AssetAssignment[]           @relation("AssetAssignmentIssuer")
+  assetAssignmentsReturned          AssetAssignment[]           @relation("AssetAssignmentReturner")
+  /// hr.prisma (hr-people-org/20-people-positions-ranks.md, ADR-044) — no
+  /// separate Employee model; this User IS the employee when it holds a
+  /// Posting. employeeProfile is optional supplementary detail, never a
+  /// gate on whether a posting is possible.
+  employeeProfile                   EmployeeProfile?
+  postings                          Posting[]
+  /// org-structure.prisma (access-control-identity/21-access-over-the-org-tree.md)
+  /// — one User can hold a grant, issue one, and countersign a third at
+  /// once; three relation names for three distinct roles on the same model,
+  /// same idiom as the payroll and asset-assignment blocks above.
+  orgUnitGrantsHeld                 OrgUnitGrant[]              @relation("OrgUnitGrantHolder")
+  orgUnitGrantsIssued               OrgUnitGrant[]              @relation("OrgUnitGrantGranter")
+  orgUnitGrantsCountersigned        OrgUnitGrant[]              @relation("OrgUnitGrantCountersigner")
+  /// attendance.prisma (attendance-workforce/22-attendance-shifts-leave.md)
+  /// — this User's own punches and shifts, plus, for someone who reconciles
+  /// exceptions, the exceptions they resolved; three relation names for
+  /// three distinct roles on the same model, same idiom as the blocks above.
+  attendanceEvents                  AttendanceEvent[]
+  shifts                            Shift[]
+  attendanceExceptions              AttendanceException[]       @relation("AttendanceExceptionUser")
+  attendanceExceptionsResolved      AttendanceException[]       @relation("AttendanceExceptionResolver")
+  /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
+  /// — who set up a depreciation schedule, a real accounting-policy decision.
+  assetDepreciationSchedulesCreated AssetDepreciationSchedule[]
+  /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
+  manifestsCreated                  Manifest[]
+  returnRequests                    ReturnRequest[]
+  /// content.prisma (WO-8.1) — a staff account authoring a blog post.
+  blogPosts                         BlogPost[]
+  /// marketing.prisma (WO-8.4) — a staff account authoring a campaign.
+  campaignsCreated                  Campaign[]
+  /// giftcards.prisma (WO-5.5). SUM(StoreCreditTransaction.delta) — a cache,
+  /// never written outside StoreCreditService's own conditional update; the
+  /// ledger is the source of truth (see StoreCreditTransaction's own note).
+  storeCreditBalance                Int                         @default(0)
+  storeCreditTransactions           StoreCreditTransaction[]
+  giftCardsPurchased                GiftCard[]                  @relation("GiftCardPurchaser")
+
+  /// wallet.prisma (doc 155) — 1:1, distinct from storeCreditBalance above:
+  /// a Wallet is Newax-issued PURCHASED credit with its own RESERVE/REDEEM
+  /// lifecycle, never the goodwill/refund ledger StoreCreditTransaction is.
+  /// Module ships off by default — see DECISIONS.md.
+  walletAccount WalletAccount?
+
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  reviews                 Review[]
+  wishlistItems           WishlistItem[]
+  backInStockRequests     BackInStockRequest[]
+  /// WO-5.5's own cache pattern, reused: SUM(LoyaltyTransaction.points) — a
+  /// cache, never written outside LoyaltyService's own conditional update.
+  loyaltyPoints           Int                      @default(0)
+  loyaltyTransactions     LoyaltyTransaction[]
+  /// Generated lazily on first request (human-code.ts, WO-5's own helper) —
+  /// most customers never ask for a referral code, so most rows stay null.
+  referralCode            String?                  @unique
+  referralsMade           Referral[]               @relation("ReferralReferrer")
+  referredBy              Referral?                @relation("ReferralReferee")
+  notificationPreferences NotificationPreference[]
 
   @@index([role])
   @@index([createdAt])
+  @@index([ssoExternalId])
 }
 
 model RefreshToken {
@@ -100,11 +198,28 @@ model RefreshToken {
   userAgent String?
   ip        String?
   createdAt DateTime  @default(now())
+  /// Every token descended from one sign-in shares its familyId: a fresh
+  /// value at login, inherited on every rotation. Reuse of a rotated token
+  /// outside the grace window revokes the whole family at once
+  /// (206-rate-limiting-caching-compression-hardening.md §2.2). Tokens issued
+  /// before WO-206.3 were backfilled with their own id — each its own family.
+  familyId     String
+  /// When this token was exchanged for its successor. Null for a token that
+  /// was never rotated — live, or revoked some other way (logout, password
+  /// change, deactivation), which is never treated as reuse.
+  rotatedAt    DateTime?
+  /// The token that superseded this one. Set in the same transaction as
+  /// rotatedAt, so a replay inside the grace window can hand back the very
+  /// same successor instead of minting a second one.
+  replacedById String?       @unique
+  replacedBy   RefreshToken? @relation("RefreshTokenRotation", fields: [replacedById], references: [id], onDelete: SetNull)
+  replaces     RefreshToken? @relation("RefreshTokenRotation")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([expiresAt])
+  @@index([familyId])
 }
 
 /**
@@ -141,6 +256,86 @@ model EmailVerificationToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+/// Which request surface a personal API key acts on — two separate scope
+/// catalogues, never mixed (163-personal-api-keys.md §2). ADMIN keys carry
+/// `PERMISSION_CATALOG` keys (`permissionKeys`); STOREFRONT keys carry
+/// `CUSTOMER_SCOPE_CATALOG` keys (`customerScopes`).
+enum ApiKeySurface {
+  ADMIN
+  STOREFRONT
+}
+
+/// Why a key stopped working — kept on the row so the owner's own list can
+/// say it, not only the audit trail.
+enum ApiKeyRevocationReason {
+  /// The owner revoked it from their own list.
+  OWNER
+  /// A `users.manage` holder revoked it from the oversight list.
+  ADMINISTRATOR
+  /// UsersAdminService.update() deactivated the owner (canonical ruling 6).
+  OWNER_DEACTIVATED
+}
+
+/// A personal API key: a credential that acts as `user`, never as anyone more
+/// powerful. Its effective access on every request is
+/// `(permissionKeys or customerScopes) ∩ (user's live permissions) −
+/// NON_DELEGATABLE_PERMISSIONS`, recomputed by ApiKeyAuthService — nothing
+/// here is a snapshot of what the owner could do when it was made.
+///
+/// Written only by ApiKeysService. Node-local: deliberately not registered
+/// with ReplicationRegistry, so a credential never leaves the node that
+/// minted it. The migration adds what this DSL cannot say: a CHECK tying each
+/// row to exactly one catalogue, and a trigger making revocation final.
+model ApiKey {
+  id             String                  @id @default(cuid())
+  userId         String
+  surface        ApiKeySurface
+  /// Chosen by the owner. Shown to the owner and to `users.manage`, never
+  /// put in the security email (it is text the minting person chose).
+  name           String
+  /// SHA-256 of the raw secret (core/security/api-token.ts) — the raw value
+  /// is in exactly one HTTP response, the one that created or rotated it.
+  /// Same discipline as TradingPartner.inboundApiKeyHash. Never selected by
+  /// any read path.
+  keyHash        String                  @unique
+  /// The secret's last four characters, so a list can tell keys apart. The
+  /// other 252 bits of the secret stay unknown.
+  lastFour       String
+  /// `PERMISSION_CATALOG` keys chosen at create/edit — ADMIN keys only; the
+  /// CHECK keeps it empty on a STOREFRONT key.
+  permissionKeys String[]                @default([])
+  /// `CUSTOMER_SCOPE_CATALOG` keys — STOREFRONT keys only; the CHECK keeps it
+  /// empty on an ADMIN key.
+  customerScopes String[]                @default([])
+  /// Mandatory, at most API_KEY_MAX_LIFETIME_DAYS after create or rotate.
+  expiresAt      DateTime
+  /// Best-effort, written at most once a minute per key — operational, not
+  /// evidence; never fails a request.
+  lastUsedAt     DateTime?
+  /// Set by every rotate; null until the first.
+  rotatedAt      DateTime?
+  /// Null while the key is live. Once set, the row is final (trigger).
+  revokedAt      DateTime?
+  /// Set with revokedAt, never without it (CHECK).
+  revokedReason  ApiKeyRevocationReason?
+  /// Who revoked it: the owner, an administrator, or the admin who
+  /// deactivated the owner. Null while the key is live — and null again if
+  /// that person's own account is later erased (SetNull); revokedReason still
+  /// says which kind of actor it was.
+  revokedById    String?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+
+  user      User  @relation("ApiKeyOwner", fields: [userId], references: [id], onDelete: Cascade)
+  revokedBy User? @relation("ApiKeyRevoker", fields: [revokedById], references: [id], onDelete: SetNull)
+
+  // The owner's own list (WHERE userId ORDER BY createdAt DESC), and the
+  // deactivation revoke (WHERE userId AND revokedAt IS NULL).
+  @@index([userId, createdAt])
+  // The `users.manage` oversight list, newest first, paginated.
+  @@index([createdAt])
 }
 
 model Address {
@@ -186,7 +381,7 @@ enum EmailAccountPurpose {
 /// A connected mailbox: SMTP to send, optionally IMAP to receive. Multiple
 /// accounts may share a purpose (e.g. two marketing senders); the one with
 /// isDefault wins, then the most recently updated. Secrets are stored as
-/// AES-256-GCM ciphertext (core/security/secret-crypto.ts) — never plaintext,
+/// AES-256-GCM ciphertext (@newax/shared's secret-crypto.ts) — never plaintext,
 /// never returned by the API once saved.
 model EmailAccount {
   id        String              @id @default(cuid())
@@ -209,7 +404,7 @@ model EmailAccount {
   smtpVerifiedAt        DateTime?
 
   /// IMAP is optional per account. When configured, the mailbox poller
-  /// (modules/crm/email-inbox) logs in on a schedule and pulls new mail —
+  /// (modules/customers/crm/email-inbox) logs in on a schedule and pulls new mail —
   /// see imapLastPolledAt/imapLastUid below for its resume cursor.
   imapHost              String?
   imapPort              Int?
@@ -432,4 +627,61 @@ model AnalyticsEvent {
 
   @@index([type, createdAt])
   @@index([sessionId, createdAt])
+}
+
+/// Phase 9 (docs/implementation/ai-layer/09-ai-layer.md). Every AiProvider
+/// call, whichever feature triggered it — the doc's own non-negotiable
+/// ("Log tokens and cost per call, per feature") plus what AiService reads
+/// to enforce the monthly budget cap. Never deleted by a feature; only
+/// AiService writes here.
+enum AiFeature {
+  ALT_TEXT
+  SEO_COPY
+  SIZE_RECOMMENDATION
+  DEMAND_FORECAST
+  COD_RISK
+  SEMANTIC_SEARCH
+  VISUAL_SEARCH
+  RECOMMENDATIONS
+  WHATSAPP_ASSISTANT
+  MARKDOWN_SUGGESTION
+  REVIEW_SUMMARY
+  IMPORT_CLEANUP
+  // WO-35 (rag.prisma) — one AiCallKind each: EMBEDDING for both ingestion
+  // and a retrieval query's own embedding, VISION for the scanned-page OCR
+  // fallback, COMPLETION for generation.
+  RAG_INGESTION
+  RAG_RETRIEVAL
+  RAG_GENERATION
+  // 144-supply-chain-resilience-planning-engine.md (R23) — narrating an
+  // already-computed propagation/ranking result; the model writes prose
+  // around figures it is handed, never originates one of its own.
+  PLANNING_NARRATION
+}
+
+enum AiCallKind {
+  COMPLETION
+  EMBEDDING
+  VISION
+}
+
+model AiUsageLog {
+  id           String     @id @default(cuid())
+  feature      AiFeature
+  kind         AiCallKind
+  /// Matches the calling AiProvider's own `key` — "anthropic" | "openai".
+  provider     String
+  model        String
+  inputTokens  Int        @default(0)
+  outputTokens Int        @default(0)
+  /// Estimated from the provider's published per-token rate at call time —
+  /// see ai.service.ts's own PRICING table. Paisa, so it sums cleanly with
+  /// every other money figure in this codebase.
+  costPaisa    Int        @default(0)
+  succeeded    Boolean    @default(true)
+  errorMessage String?
+  createdAt    DateTime   @default(now())
+
+  @@index([feature, createdAt])
+  @@index([createdAt])
 }

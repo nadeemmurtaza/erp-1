@@ -103,7 +103,7 @@ export default function CartPage() {
 
           <Link
             href={ROUTES.storefront.shop}
-            className="mt-4 block text-center text-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-900 hover:underline"
+            className="mt-4 block text-center text-sm text-neutral-600 transition-colors duration-normal hover:text-neutral-900 hover:underline"
           >
             {t('continueShopping')}
           </Link>
@@ -154,7 +154,7 @@ function CartRow({
           <div className="min-w-0">
             <Link
               href={`/product/${line.slug}`}
-              className="text-sm font-medium text-neutral-900 transition-colors duration-200 hover:text-neutral-600"
+              className="text-sm font-medium text-neutral-900 transition-colors duration-normal hover:text-neutral-600"
             >
               {line.name}
             </Link>
@@ -166,7 +166,7 @@ function CartRow({
             onClick={() => void guarded(onRemove)}
             disabled={busy}
             aria-label={t('remove')}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors duration-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-neutral-400"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-neutral-400 transition-colors duration-normal hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-neutral-400"
           >
             <TrashIcon />
           </button>
@@ -259,7 +259,7 @@ function QuantityStepper({
         onClick={() => onChange(quantity - 1)}
         disabled={busy || quantity <= 1}
         aria-label={decreaseLabel}
-        className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-700 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+        className="flex h-7 w-7 items-center justify-center rounded text-neutral-700 transition-colors duration-normal hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <MinusIcon />
       </button>
@@ -269,7 +269,7 @@ function QuantityStepper({
         onClick={() => onChange(quantity + 1)}
         disabled={busy || quantity >= max}
         aria-label={increaseLabel}
-        className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-700 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+        className="flex h-7 w-7 items-center justify-center rounded text-neutral-700 transition-colors duration-normal hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <PlusIcon />
       </button>

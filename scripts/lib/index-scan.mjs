@@ -193,6 +193,27 @@ export function scanReExports(source) {
   return out;
 }
 
+/**
+ * The names a file takes from each module: `import { A, type B, C as D } from './x'` is
+ * `{ from: './x', names: ['A', 'B', 'C'] }` (the exported name, never the local alias).
+ * Default and namespace imports take no named binding and are left to `scanImports`.
+ * It exists so a usage count can see through a barrel: `import { PageHeader } from '@/components/ui'`
+ * names no file, and only the name says which file is meant.
+ */
+export function scanNamedImports(source) {
+  const out = [];
+  const re = /import\s+(?:type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*['"]([^'"]+)['"]/g;
+  let m;
+  while ((m = re.exec(source))) {
+    const names = m[1]
+      .split(',')
+      .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0].trim())
+      .filter(Boolean);
+    out.push({ from: m[2], names });
+  }
+  return out;
+}
+
 /** Local (relative and workspace) imports — the file's real dependency edges. */
 export function scanImports(source) {
   const out = new Set();
@@ -377,6 +398,44 @@ export function scanEventUsage(source, rel) {
     }
   });
   return { subscribes, references };
+}
+
+/**
+ * A named `Record<XStatus, XStatus[]>` constant — this repository's own
+ * explicit, checked-before-every-write state-transition table
+ * (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1).
+ * Matches only this one literal shape. A status enum whose transitions are
+ * instead enforced by scattered inline checks per method (no single named
+ * table) is real but outside what a line-based scanner can detect — the
+ * generated page says so rather than claiming a completeness it cannot have.
+ */
+export function scanStateMachines(source, rel) {
+  const lines = source.split('\n');
+  const out = [];
+  // The type param must itself look like a status/state enum (PascalCase,
+  // ending in "Status" or "State") — Record<string, string[]> and similar
+  // generic maps share the identical Record<X, X[]> shape but are not a
+  // state machine, and would otherwise be indistinguishable false positives.
+  const declPattern = /^\s*(?:export\s+)?const\s+([A-Za-z_$][\w$]*)\s*:\s*Record<\s*([A-Z][\w$]*(?:Status|State))\s*,\s*\2\[\]\s*>\s*=\s*\{/;
+  lines.forEach((line, i) => {
+    const m = line.match(declPattern);
+    if (!m) return;
+    const [, name, typeParam] = m;
+    let depth = 0;
+    let started = false;
+    const bodyLines = [];
+    for (let j = i; j < lines.length; j += 1) {
+      const current = lines[j];
+      for (const c of current) {
+        if (c === '{') { depth += 1; started = true; }
+        else if (c === '}') depth -= 1;
+      }
+      bodyLines.push(current);
+      if (started && depth === 0) break;
+    }
+    out.push({ name, typeParam, file: rel, line: i + 1, body: bodyLines.join('\n'), doc: docAbove(lines, i) });
+  });
+  return out;
 }
 
 /** `@Cron('expr')` — the background work nothing in the UI reveals. */

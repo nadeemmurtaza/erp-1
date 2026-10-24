@@ -4,7 +4,7 @@ import { ImapFlow } from 'imapflow';
 import { AppConfigService } from '../../config/app-config.service';
 import { AuditService } from '../../audit/audit.service';
 import { PrismaService } from '../../prisma/prisma.service';
-import { decryptSecret, encryptSecret } from '../../security/secret-crypto';
+import { decryptSecret, encryptSecret } from '@newax/shared/secret-crypto';
 import type { EmailAccount, EmailAccountPurpose } from '../../prisma/client';
 
 /** Everything but the two *Encrypted columns — what the API is allowed to return. */

@@ -2,11 +2,12 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { addWorkingDays } from '../src/modules/stitching/jobs.service';
+import { addWorkingDays } from '../src/modules/sales/stitching/jobs.service';
 import { setVariantStock } from './support/stock';
 
 /**
@@ -146,6 +147,7 @@ describe('Stitching operations (e2e)', () => {
     const order = await api()
       .post('/api/v1/orders')
       .set('Authorization', `Bearer ${customerToken}`)
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: ADDRESS, paymentMethod: 'cod' })
       .expect(201);
 
@@ -244,6 +246,7 @@ describe('Stitching operations (e2e)', () => {
 
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: ADDRESS, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(order.body.id);

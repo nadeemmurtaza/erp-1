@@ -4,7 +4,14 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    /*
+     * The colour, shadow and motion custom properties are NOT declared here
+     * either. `color-scheme`, every `--color-*`, `--shadow-*` and `--motion-*`
+     * come from packages/shared through tailwind.config.ts, for both themes —
+     * a second declaration in this file would win the tie on specificity and
+     * silently pin one theme. Switching theme is `data-theme` on <html>; see
+     * docs/design/foundations/01-foundations.md, "Theming".
+     */
 
     /*
      * --radius and --radius-lg are NOT declared here. They are injected into
@@ -19,10 +26,11 @@
      * The hover sweep. `--fill-duration` is long enough to read as a fill
      * rather than a flick, and the easing decelerates so it settles instead of
      * slamming — the difference between this feeling like a progress bar and
-     * feeling like a flash.
+     * feeling like a flash. Both are motion tokens (`sweep`, `decelerate`),
+     * aliased here only because the component layer below reads these names.
      */
-    --fill-duration: 420ms;
-    --fill-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --fill-duration: var(--motion-duration-sweep);
+    --fill-ease: var(--motion-easing-decelerate);
   }
 
   html {
@@ -41,6 +49,52 @@
   }
 
   /*
+   * Headings balance their lines instead of leaving a one-word widow; a
+   * paragraph avoids a short last line. Both are pure progressive
+   * enhancement — an engine that does not know them wraps as before.
+   */
+  :where(h1, h2, h3) {
+    text-wrap: balance;
+  }
+
+  :where(p) {
+    text-wrap: pretty;
+  }
+
+  /* Selected text in the brand ink, in either theme, at a tint that keeps the text readable. */
+  ::selection {
+    background-color: rgb(var(--color-accent-ink) / 0.25);
+  }
+
+  /*
+   * A native control that was not given `.field-input` still has to belong to
+   * the theme. @tailwindcss/forms paints every text-like control white with a
+   * grey edge (#fff / #6b7280) — correct on paper, a glowing slab in dark.
+   * Same selectors as the plugin's own, placed after it, so they win the
+   * specificity tie without `!important` and `.field-*` still beats both.
+   */
+  [type='text'],
+  input:where(:not([type])),
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select,
+  [type='checkbox'],
+  [type='radio'] {
+    @apply border-neutral-200 bg-white;
+  }
+
+  /*
    * Urdu is set in Nastaliq where the reader has the font, which needs more
    * line height than Latin type or the descenders collide.
    */
@@ -52,6 +106,14 @@
   /* Visible focus for keyboard users, in the brand colour rather than default blue. */
   :focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-neutral-50;
+  }
+
+  /*
+   * A landmark that script parks focus on (Dialog does it when the control that opened it has gone) is not
+   * a control, so it draws no ring: a frame round the whole page would look like an error.
+   */
+  main[tabindex='-1']:focus-visible {
+    @apply ring-0 ring-offset-0;
   }
 }
 
@@ -68,7 +130,8 @@
  * field uses these names on either surface, and there is no prefixed variant to
  * pick between.
  *
- * Two motions carry the whole system:
+ * Two motions carry the whole system, and the rest of the motion language
+ * (docs/design/motion/05-motion.md) is built around them:
  *
  *   Buttons fill. A button sits outlined and on hover the primary colour
  *   sweeps across it left to right, like a bar loading, and the label turns
@@ -100,20 +163,30 @@
    */
   .lift {
     transition:
-      transform 300ms var(--fill-ease),
-      box-shadow 300ms var(--fill-ease),
-      border-color 300ms var(--fill-ease);
+      transform var(--motion-duration-slow) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-slow) var(--motion-easing-settle),
+      border-color var(--motion-duration-slow) var(--motion-easing-settle);
   }
 
   .lift:hover,
   .lift:focus-within {
-    @apply border-neutral-200 shadow-lg;
+    @apply border-neutral-200 shadow-overlay;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .lift:hover,
     .lift:focus-within {
-      transform: translateY(-4px);
+      transform: translateY(calc(var(--motion-distance-lift) * -1));
+    }
+
+    /*
+     * Pressed: the card comes back down to rest and the shadow with it. A
+     * card is too big to scale (2% of 400px is 8px), so the press is the lift
+     * reversing, not a shrink.
+     */
+    .lift:active {
+      transform: translateY(0);
+      transition-duration: var(--motion-duration-instant);
     }
   }
 
@@ -126,20 +199,116 @@
   .btn {
     @apply relative inline-flex items-center justify-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50;
     /*
-     * Sized per tier rather than once. min-h-11 is 44px, the smallest target
+     * Sized per tier rather than once. min-h-touch is 44px, the smallest target
      * a thumb hits reliably, and it is the floor everywhere a touch screen is
      * plausible — that is most of the range here, not a mobile special case.
      * Text steps up only at lg, where a pointer is the likely input and 14px
      * stops looking generous and starts looking small.
      */
-    @apply min-h-11 px-4 py-2 text-sm xs:px-5 fold:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
+    @apply min-h-touch px-4 py-2 text-sm xs:px-5 fold:min-h-control-md lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
     border-radius: var(--radius);
     isolation: isolate;
     overflow: hidden;
     transition:
-      color 240ms var(--fill-ease),
-      background-color 240ms var(--fill-ease),
-      border-color 240ms var(--fill-ease);
+      color var(--motion-duration-normal) var(--fill-ease),
+      background-color var(--motion-duration-normal) var(--fill-ease),
+      border-color var(--motion-duration-normal) var(--fill-ease),
+      transform var(--motion-duration-fast) var(--motion-easing-settle);
+  }
+
+  /*
+   * Press. The acknowledgement a pointer or a finger is owed within one frame
+   * (ACT-3): the button sinks `micro` and shrinks to `press`, in `instant`
+   * going down and `fast` coming back, on the `settle` curve, which never
+   * overshoots — a business control does not bounce. Separate rules per class
+   * rather than one `:is()` list because `@apply btn` re-writes `.btn…`
+   * selectors for `.btn-primary` and friends one rule at a time.
+   */
+  .btn:active:not(:disabled) {
+    transform: translateY(var(--motion-distance-micro)) scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
+  }
+
+  /*
+   * The loading ring: anything that has accepted a request and is waiting says
+   * so with something that moves, beside its label. One revolution is two
+   * sweeps (840ms), slow enough to read as a ring rather than a flicker. Under
+   * reduced motion the global rule below stops it after a frame and the ring
+   * stays as a fixed arc — the label ("Working…", "Loading…") carries the rest.
+   */
+  .spinner {
+    @apply inline-block h-[1em] w-[1em] shrink-0 rounded-full border-2 border-current;
+    border-inline-end-color: transparent;
+    animation: ring-turn calc(var(--motion-duration-sweep) * 2) linear infinite;
+  }
+
+  /*
+   * The time a toast has left, as a line that drains over exactly that time.
+   * Its duration is set inline from the toast's own `duration`, the one value
+   * here that is data. `scaleX` from the inline-start edge, so it drains toward
+   * the start in either direction of writing.
+   */
+  .toast-timer {
+    @apply absolute inset-x-0 bottom-0 h-0.5 bg-current opacity-30;
+    transform-origin: left center;
+    animation: toast-drain 4s linear forwards;
+  }
+
+  [dir='rtl'] .toast-timer {
+    transform-origin: right center;
+  }
+
+  /*
+   * A side sheet enters from, and returns to, its own edge: `large` (64px)
+   * along the inline axis plus a fade, which reads as sliding in from the side
+   * without the sheet having to cross the viewport. `--sheet-sign` flips the
+   * direction in a right-to-left document, where the sheet sits on the left.
+   */
+  .sheet-in,
+  .sheet-out {
+    --sheet-sign: 1;
+  }
+
+  [dir='rtl'] .sheet-in,
+  [dir='rtl'] .sheet-out {
+    --sheet-sign: -1;
+  }
+
+  .sheet-in {
+    animation: sheet-in var(--motion-duration-slow) var(--motion-easing-settle) backwards;
+  }
+
+  .sheet-out {
+    animation: sheet-out var(--motion-duration-fast) var(--motion-easing-exit) forwards;
+  }
+
+  /*
+   * A moving indicator for a row of tabs. It is one element that glides to the
+   * selected tab (transform only: `translate` for the position and `scaleX` of
+   * a one-pixel-wide bar for the width, which is exact for a plain rectangle)
+   * instead of the underline vanishing from one tab and appearing on another.
+   * Until it has measured the tabs it stays hidden and the selected tab keeps
+   * its own underline, so the strip is correct before and without scripting.
+   * The numbers are physical because they come from `offsetLeft`; the tab strip
+   * measures them itself, in either direction of writing.
+   */
+  .tab-indicator {
+    @apply pointer-events-none absolute left-0 top-0 h-0.5 w-px bg-accent opacity-0;
+    transform-origin: left center;
+    transform: translate(var(--tab-x, 0px), var(--tab-y, 0px)) scaleX(var(--tab-w, 0));
+  }
+
+  [data-slide='ready'] > .tab-indicator {
+    opacity: 1;
+  }
+
+  /* Only once placed: the first position is a jump, every later one a glide. */
+  [data-animate] > .tab-indicator {
+    transition: transform var(--motion-duration-normal) var(--motion-easing-settle);
+  }
+
+  [data-slide='ready'] > [role='tab'][aria-selected='true'] {
+    border-color: transparent;
   }
 
   .btn::before {
@@ -167,25 +336,94 @@
     display: none;
   }
 
+  /*
+   * `--btn-fill` reads `backgroundColor.*`, not `colors.*`, everywhere below.
+   * A fill keeps its depth in both themes so the white label on it keeps
+   * reading; `colors.accent` is the INK, which is lighter in dark. Using the
+   * ink here would sweep a pale teal under a white label.
+   */
   .btn-primary {
     @apply btn bg-accent text-white;
-    --btn-fill: theme('colors.accent.hover');
+    --btn-fill: theme('backgroundColor.accent.hover');
   }
 
   /* The white button the fill was designed for. */
   .btn-secondary {
     @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-white;
-    --btn-fill: theme('colors.accent.DEFAULT');
+    --btn-fill: theme('backgroundColor.accent.DEFAULT');
   }
 
   .btn-ghost {
     @apply btn bg-transparent text-neutral-900;
-    --btn-fill: theme('colors.neutral.100');
+    --btn-fill: rgb(var(--color-neutral-100));
   }
 
   .btn-danger {
     @apply btn border border-red-600 bg-white text-red-700 hover:text-white;
-    --btn-fill: theme('colors.red.600');
+    --btn-fill: theme('backgroundColor.red.600');
+  }
+
+  /*
+   * The hold-to-confirm button (DNG-1, `HoldToConfirm`). It looks like the
+   * outlined red button (DNG-4: red only on destruction, outlined until it is
+   * acted on) but never fills on hover: a hover fill would answer "I am about
+   * to do it" before anyone has held anything. Progress is a ring beside the
+   * label and a line along the bottom edge, both read from `--hold` (0 to 1),
+   * which the component writes from the clock each frame, so the label keeps
+   * its contrast the whole time and nothing here depends on an animation.
+   * Only the drain on release is a transition (`fast`); while holding there is
+   * none, or the ring would trail the hand. Text selection and the touch
+   * callout are off because both interrupt a press that is meant to last.
+   */
+  .btn-hold {
+    @apply btn border border-red-600 bg-white text-red-700;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+
+  .btn-hold::before {
+    display: none;
+  }
+
+  .hold-ring {
+    @apply h-icon-md w-icon-md shrink-0;
+    transform: rotate(-90deg);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+  }
+
+  .hold-ring-track {
+    opacity: 0.25;
+  }
+
+  .hold-ring-fill {
+    stroke-dasharray: 1;
+    stroke-dashoffset: calc(1 - var(--hold, 0));
+    transition: stroke-dashoffset var(--motion-duration-fast) var(--motion-easing-exit);
+  }
+
+  .hold-bar {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-0.5 bg-red-600;
+    transform-origin: left center;
+    transform: scaleX(var(--hold, 0));
+    transition: transform var(--motion-duration-fast) var(--motion-easing-exit);
+  }
+
+  [dir='rtl'] .hold-bar {
+    transform-origin: right center;
+  }
+
+  .btn-hold[data-holding] .hold-ring-fill,
+  .btn-hold[data-holding] .hold-bar {
+    transition: none;
+  }
+
+  /* Armed by assistive technology and waiting for the second activation: a steady outline, since nothing is being held. */
+  .btn-hold[data-armed] {
+    @apply ring-2 ring-red-600;
   }
 
   .card {
@@ -194,19 +432,58 @@
   }
 
   /*
+   * A card lit from the top (CRD-4, FRM-5). One border, soft, as `.card`; the
+   * surface is a little lighter at the top edge and settles to the plain surface
+   * by 96px down. In the dark theme `overlay` is the lighter step, which is what
+   * makes it read as raised; in light the two steps are close and the effect is a
+   * whisper, which is right. No shadow at rest: `ui.md` forbids a border and a
+   * shadow on the same edge, so the shadow arrives with `.lift`, when the card
+   * rises under a pointer. `--inset` is the gap between this card's edge and
+   * what sits inside it (media, an inner panel), so `.media-concentric` can curve
+   * with it (CRD-5).
+   */
+  .card-lit {
+    @apply border border-neutral-100 bg-white;
+    --inset: 0.5rem;
+    border-radius: var(--radius-lg);
+    background-image: linear-gradient(to bottom, rgb(var(--color-overlay)), rgb(var(--color-surface)) 6rem);
+  }
+
+  /*
+   * The corner of something set inside a rounded container is the container's
+   * corner minus the gap (CRD-5). Written in CSS so it follows `--radius-lg` and
+   * `--inset` wherever they are set; never negative, so with the house shape
+   * (3px against an 8px inset) the inner corner is square. `concentricRadius` in
+   * @newax/shared is the same rule for the platforms with no CSS variables.
+   */
+  .media-concentric {
+    border-radius: max(0px, calc(var(--radius-lg) - var(--inset, 0px)));
+  }
+
+  /*
    * Shape only, no colour — a caller applies `chip` plus whichever state class
    * applies, the same choice the size selector, the filters and the stitching
    * options already make around one shared shape.
    */
   .chip {
-    @apply inline-flex items-center justify-center border text-sm font-medium transition-colors duration-200;
+    @apply inline-flex items-center justify-center border text-sm font-medium;
+    transition:
+      color var(--motion-duration-normal) var(--motion-easing-settle),
+      background-color var(--motion-duration-normal) var(--motion-easing-settle),
+      border-color var(--motion-duration-normal) var(--motion-easing-settle),
+      transform var(--motion-duration-fast) var(--motion-easing-settle);
     /*
      * inline-flex, not the default inline-block: the 44px touch floor below
      * `fold` would otherwise leave the label sitting at the top of a tall
      * pill instead of centred in it.
      */
-    @apply min-h-11 px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
+    @apply min-h-touch px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
     border-radius: var(--radius);
+  }
+
+  .chip:active:not(:disabled) {
+    transform: scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
   }
 
   .chip-selected {
@@ -226,10 +503,15 @@
    * Tailwind orders utilities after components.
    */
   .icon-btn {
-    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-normal ease-settle hover:scale-110;
     /* 44px on touch, back to the tighter 36px once a pointer is likely. */
-    @apply h-11 w-11 fold:h-9 fold:w-9;
+    @apply h-touch w-touch fold:h-9 fold:w-9;
     border-radius: var(--radius);
+  }
+
+  .icon-btn:active:not(:disabled) {
+    transform: scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
   }
 
   .field-label {
@@ -237,7 +519,16 @@
   }
 
   .field-input {
-    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none placeholder:text-neutral-400 focus:border-accent focus:ring-2 focus:ring-accent;
+    /*
+     * The focus ring is a box-shadow, which Tailwind's `transition-colors` does
+     * not list, so it used to pop in while the border eased. Both ease now, on
+     * the same curve, so focus reads as one movement.
+     */
+    transition:
+      border-color var(--motion-duration-fast) var(--motion-easing-settle),
+      background-color var(--motion-duration-fast) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-fast) var(--motion-easing-settle);
     /*
      * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
      * whole page when a focused input's text is under 16px, and then leaves
@@ -245,8 +536,32 @@
      * any field on an iPhone threw the layout. Above `sm` a phone keyboard is
      * no longer the likely input and 14px reads correctly again.
      */
-    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
+  }
+
+  /*
+   * The 56px field of a sign-in or sign-up form (FRM-2): one decision per
+   * screen, so the control is large. Add it to `.field-input`, never instead of
+   * it. The text stays 16px (iOS zooms below that) and the height holds from
+   * the narrowest screen up, since a 56px target is above the touch floor.
+   */
+  .field-xl {
+    @apply min-h-control-xl px-4 text-base;
+  }
+
+  /*
+   * An invalid field says so twice, so neither is the only signal: the edge
+   * and ring turn to the feedback colour, and the field gives one `nudge`
+   * (4px, one shake, ending where it began) at the moment it becomes invalid.
+   * The attribute is the contract — `aria-invalid="true"` is what a screen
+   * reader hears too — and the nudge replays each time it goes false → true.
+   */
+  .field-input[aria-invalid='true'],
+  .field-flat[aria-invalid='true'],
+  .field-inline[aria-invalid='true'] {
+    @apply border-feedback-negative focus:border-feedback-negative focus:ring-feedback-negative;
+    animation: nudge var(--motion-duration-slow) var(--motion-easing-standard);
   }
 
   /*
@@ -258,7 +573,13 @@
    * use; accent-hover is the pressed shade and does not belong here.
    */
   .field-check {
-    @apply border-neutral-200 text-accent focus:ring-accent disabled:opacity-50;
+    @apply border-neutral-200 focus:ring-accent disabled:opacity-50;
+    /*
+     * The checked box is painted with `currentColor`, so this is a FILL and
+     * takes the fill token, not `text-accent` (the ink, pale in dark) — a
+     * white tick on a pale teal box is a 2:1 tick.
+     */
+    color: theme('backgroundColor.accent.DEFAULT');
     border-radius: var(--radius);
   }
 
@@ -279,7 +600,7 @@
    * enough that nobody mistakes it for content, which is its whole job.
    */
   .eyebrow {
-    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/60;
   }
 
   /*
@@ -368,7 +689,7 @@
    */
   .metric.metric-open {
     @apply bg-white;
-    box-shadow: inset 0 -2px 0 0 theme('colors.accent.DEFAULT');
+    box-shadow: inset 0 -2px 0 0 rgb(var(--color-accent-ink));
   }
 
   /*
@@ -403,7 +724,7 @@
    * that competition is what the single-primary-action rule exists to stop.
    */
   .btn-text {
-    @apply inline-flex min-h-11 items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
+    @apply inline-flex min-h-touch items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
     @apply text-neutral-900/70 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40;
   }
 
@@ -415,7 +736,7 @@
   .field-inline {
     @apply w-full border-0 border-b border-neutral-100 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
     @apply placeholder:text-neutral-900/35 focus:border-accent focus:ring-0;
-    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: 0;
   }
 
@@ -427,7 +748,7 @@
   .field-flat {
     @apply w-full border-0 bg-neutral-50 text-neutral-900 shadow-none transition-colors;
     @apply placeholder:text-neutral-900/35 focus:bg-white focus:ring-1 focus:ring-accent;
-    @apply min-h-11 px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
   }
 
@@ -448,6 +769,25 @@
     border-radius: var(--radius);
   }
 
+  /*
+   * A notice that is announced (`role="alert"` or `role="status"`) also
+   * arrives: it settles in over `normal`, so a message that appeared where
+   * there was none is seen to appear rather than being a layout jump. An error
+   * then gives one `nudge`, after it has arrived (the delay is the arrive
+   * duration, so the two never fight over `transform`). A static `.notice`
+   * with no role is page furniture and does not move.
+   */
+  .notice[role='alert'],
+  .notice[role='status'] {
+    animation: arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  .notice-error[role='alert'] {
+    animation:
+      arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards,
+      nudge var(--motion-duration-slow) var(--motion-easing-standard) var(--motion-duration-normal);
+  }
+
   .notice-error {
     @apply bg-feedback-negative/10 text-feedback-negative;
   }
@@ -462,9 +802,19 @@
   }
 
   /*
-   * A status pill. Fully round on purpose, and the one place roundness
-   * survives: it separates "this is a state" from "this is a control", now
-   * that controls are square.
+   * Waiting on a human, or about to end — "access ends in 42 minutes",
+   * "2 rows need attention". The same amber pair as the Badge `warning`
+   * tone, so a warning is one colour whether it is a pill or a banner.
+   */
+  .notice-warning {
+    @apply bg-amber-50 text-amber-700;
+  }
+
+  /*
+   * A count chip: the number beside a label. Round on purpose, because a
+   * circle is how a count reads, and because it is not a control (controls
+   * wear the house corner). It is not a status: a status is a Badge, in the
+   * house corner (PER-3). Its colours come from the call site.
    */
   .pill {
     @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 text-xs font-medium;
@@ -482,7 +832,7 @@
 
   .table-flat thead th {
     @apply border-b border-neutral-200 px-3 py-2.5 text-start;
-    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/60;
   }
 
   .table-flat tbody td {
@@ -551,29 +901,317 @@
    * A width driven by a measured value still does; this did not.
    */
   .stagger > * {
-    animation: fadeIn 400ms var(--fill-ease) both;
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) both;
   }
 
   .stagger > *:nth-child(2) {
-    animation-delay: 80ms;
+    animation-delay: var(--motion-stagger-step);
   }
 
   .stagger > *:nth-child(3) {
-    animation-delay: 160ms;
+    animation-delay: calc(var(--motion-stagger-step) * 2);
   }
 
   .stagger > *:nth-child(4) {
-    animation-delay: 240ms;
+    animation-delay: calc(var(--motion-stagger-step) * 3);
   }
 
+  /* The cap (MOT-6): from the fifth peer on they share one delay, so a long list never feels slow. */
   .stagger > *:nth-child(n + 5) {
-    animation-delay: 320ms;
+    animation-delay: calc(var(--motion-stagger-step) * 4);
   }
 
+  /*
+   * The same ramp at the fine step, for a grid of many small peers (a product
+   * grid, CRD-6). `backwards` fill, not `both`: a card that has arrived must hand
+   * its `transform` back to `.lift`, and an animation that holds its end value
+   * would pin the card in place under the pointer. The same fill keeps a
+   * `transform` off the wrapper once it is finished, which would otherwise turn
+   * it into the containing block of any `position: fixed` child.
+   */
+  .stagger-fine > * {
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) backwards;
+  }
+
+  .stagger-fine > *:nth-child(2) {
+    animation-delay: var(--motion-stagger-fine);
+  }
+
+  .stagger-fine > *:nth-child(3) {
+    animation-delay: calc(var(--motion-stagger-fine) * 2);
+  }
+
+  .stagger-fine > *:nth-child(4) {
+    animation-delay: calc(var(--motion-stagger-fine) * 3);
+  }
+
+  .stagger-fine > *:nth-child(n + 5) {
+    animation-delay: calc(var(--motion-stagger-fine) * 4);
+  }
+
+  /*
+   * The keyframes of the motion language. Transform and opacity only (MOT-5),
+   * and every distance and scale is a token, so the whole vocabulary is
+   * retuned from brand.ts. `arrive` settles in from a small offset and a
+   * slightly smaller size; `leave` is its exit twin; `nudge` is a one-shot
+   * shake that ends where it began; `ring-turn` is the loading ring.
+   */
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-distance-small)) scale(var(--motion-scale-arrive));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes leave {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(0) scale(var(--motion-scale-arrive));
+    }
+  }
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(calc(var(--motion-distance-nudge) * -1));
+    }
+    40% {
+      transform: translateX(var(--motion-distance-nudge));
+    }
+    60% {
+      transform: translateX(calc(var(--motion-distance-nudge) * -0.5));
+    }
+    80% {
+      transform: translateX(calc(var(--motion-distance-nudge) * 0.25));
+    }
+  }
+
+  @keyframes toast-drain {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes sheet-in {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--motion-distance-large) * var(--sheet-sign, 1)));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes sheet-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(calc(var(--motion-distance-large) * var(--sheet-sign, 1)));
+    }
+  }
+
+  @keyframes ring-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(var(--motion-scale-pop));
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes sheen {
+    to {
+      transform: translateX(calc(100% * var(--sheen-sign)));
+    }
+  }
+
+  @keyframes ignite {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes draw-path {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes arrive-back {
+    from {
+      opacity: 0;
+      transform: translateY(calc(var(--motion-distance-small) * -1)) scale(var(--motion-scale-arrive));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes swap-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-distance-nudge));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes swap-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(calc(var(--motion-distance-lift) * -1));
+    }
+  }
+
+  @keyframes reveal-run {
+    to {
+      transform: translateX(calc(var(--reveal-shift, 0px) * var(--reveal-sign, -1)));
+    }
+  }
+
+  @keyframes arrive-from {
+    from {
+      opacity: 0;
+      transform: translate(var(--origin-dx, 0px), var(--origin-dy, var(--motion-distance-small))) scale(var(--motion-scale-arrive));
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+  }
+
+  /*
+   * Reveal on scroll (`lib/reveal.ts`). The script hides an element only after
+   * the page has painted nothing yet, so these rules never apply without it, and
+   * the server's markup is always the visible one. `hidden` holds the first
+   * frame; `shown` plays the arrival, delayed by its place in the batch.
+   */
+  [data-reveal='hidden'] {
+    opacity: 0;
+  }
+
+  [data-reveal='shown'] {
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) var(--reveal-delay, 0ms) backwards;
+  }
+
+  /* An element nobody scrolled to is still content: a printed page must not have holes in it. */
+  @media print {
+    [data-reveal] {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
+  /*
+   * Lock-on. Four corner marks close in around the thing being worked on when
+   * `data-active="true"` is set: "this is the one". One pseudo-element carries
+   * all eight bars as gradients, so it costs no markup, and it animates with
+   * transform and opacity only — from slightly larger to its own size, which is
+   * what makes the brackets read as closing on a target. The marks are drawn in
+   * the accent ink, which holds its contrast in both themes. Under reduced
+   * motion the global rule makes the change immediate: the marks are simply
+   * there when it is active, which is the whole of what they say.
+   */
+  .focus-frame {
+    @apply relative;
+    --frame-bar: 2px;
+    --frame-arm: 14px;
+  }
+
+  .focus-frame::after {
+    content: '';
+    position: absolute;
+    inset: calc(var(--motion-distance-micro) * -2);
+    pointer-events: none;
+    --frame-ink: linear-gradient(rgb(var(--color-accent-ink)), rgb(var(--color-accent-ink)));
+    background:
+      var(--frame-ink) top left / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) top left / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) top right / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) top right / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) bottom left / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) bottom left / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) bottom right / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) bottom right / var(--frame-bar) var(--frame-arm) no-repeat;
+    opacity: 0;
+    transform: scale(1.06);
+    transition:
+      transform var(--motion-duration-normal) var(--motion-easing-settle),
+      opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  }
+
+  .focus-frame[data-active='true']::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /*
+   * A loading placeholder. The old one swept white to neutral-50 to white,
+   * which on a white card is 1.04:1 against its surroundings — invisible, in
+   * light, and in dark it was the card colour itself. This is a real tint
+   * (`neutral-100`) with a highlight band, in the surface colour, that travels
+   * across it: the tint says "something goes here", the band says "it is on its
+   * way". Under reduced motion the global rule below stops the sweep after one
+   * frame and the tint stays, so the shape survives without the movement.
+   */
   .skeleton {
-    @apply bg-gradient-to-r from-white via-neutral-50 to-white;
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    @apply bg-neutral-100;
+    background-image: linear-gradient(90deg, transparent, rgb(var(--color-surface) / 0.7), transparent);
+    background-repeat: no-repeat;
+    background-size: 50% 100%;
+    animation: skeleton-sweep 1.6s var(--motion-easing-standard) infinite;
+  }
+
+  [dir='rtl'] .skeleton {
+    animation-direction: reverse;
+  }
+
+  @keyframes skeleton-sweep {
+    from {
+      background-position: -100% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
   }
 
   .chart-line {
@@ -588,11 +1226,289 @@
     }
   }
 
+  /*
+   * Pop. A mark too small for `arrive`'s 97% to read (a chart point, a badge
+   * dot) grows from `scale.pop` and fades in, once, on the `settle` curve: it
+   * lands, it does not bounce. `--pop-delay` lets a row of them arrive in
+   * sequence (a chart sets it from each point's place along the line, so a dot
+   * appears as the line reaches it). `transform-box: fill-box` makes the origin
+   * the mark's own centre for SVG elements; on HTML it changes nothing.
+   */
+  .pop,
+  .chart-point {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop var(--motion-duration-fast) var(--motion-easing-settle) backwards;
+    animation-delay: var(--pop-delay, 0ms);
+  }
+
+  /*
+   * Sheen. One highlight crosses a surface, once, to say "this just changed":
+   * a figure that was recomputed, a record that was created. It is a gradient
+   * on a pseudo-element translated across the box, so it costs a transform and
+   * nothing else, in the accent ink (readable in both themes) at 14%. The
+   * element must clip it (`overflow-hidden`); `data-fresh="true"` plays it and
+   * the caller clears the attribute afterwards (`useFreshOnChange`). It runs in
+   * the reading direction: `--sheen-sign` flips it in a right-to-left document.
+   * Never ambient: if nothing changed, nothing sweeps.
+   */
+  .sheen {
+    --sheen-sign: 1;
+    @apply relative overflow-hidden;
+  }
+
+  [dir='rtl'] .sheen {
+    --sheen-sign: -1;
+  }
+
+  .sheen[data-fresh='true']::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgb(var(--color-accent-ink) / 0.14) 50%,
+      transparent 60%
+    );
+    transform: translateX(calc(-100% * var(--sheen-sign)));
+    animation: sheen var(--motion-duration-sweep) var(--motion-easing-decelerate) forwards;
+  }
+
+  /*
+   * Ignite. A critical thing that just appeared (an error notice, an error
+   * toast) is outlined in its own colour for an instant and the outline fades:
+   * the eye is sent to it, once. It is a static 2px inset ring on a pseudo-element
+   * (inset, so a clipping container such as a toast cannot cut it off and it
+   * never moves layout) whose opacity runs 1 to 0 over `slow`; nothing blurs or glows. The notice
+   * itself is the information, so under reduced motion the ring is simply
+   * never seen and nothing is lost.
+   */
+  .ignite,
+  .notice-error[role='alert'] {
+    @apply relative;
+  }
+
+  .ignite::after,
+  .notice-error[role='alert']::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 2px rgb(var(--color-feedback-negative));
+    opacity: 0;
+    animation: ignite var(--motion-duration-slow) var(--motion-easing-settle) both;
+  }
+
+  /*
+   * Draw-on for a stroked icon (`DrawIcon`): each path has `pathLength="1"`, so
+   * a dash of 1 is the whole path whatever its length, and its offset runs 1
+   * to 0. Siblings start one stagger step apart, inside the cap. It is an SVG
+   * paint property rather than layout, the same as `ProgressRing`'s arc.
+   */
+  .draw-path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    animation: draw-path var(--motion-duration-slow) var(--motion-easing-settle) backwards;
+    animation-delay: calc(var(--draw-index, 0) * var(--motion-stagger-step));
+  }
+
+  /*
+   * Step hand-off. The step that is arriving comes from the direction the
+   * reader is going: forward rises from `small` below (`arrive`), back drops
+   * from `small` above (`arrive-back`). The outgoing step simply unmounts, so
+   * the motion is the entrance only; the direction is what it adds.
+   */
+  .step-forward {
+    animation: arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  .step-back {
+    animation: arrive-back var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  /*
+   * A determinate bar. The fill is full width and slides in from the inline
+   * start (`--p`, 0 to 1), so the value moves a transform and not a width, and
+   * the leading end stays a true semicircle (a `scaleX` would squash it into an
+   * ellipse). The head knob rides the same value. `data-segmented` cuts the track into
+   * segments with a mask on the static parent, so segments light one by one as
+   * the fill crosses them, with no per-segment timers. Between two samples of
+   * real progress the fill eases over `normal` on `standard`.
+   */
+  .progress-track {
+    @apply relative overflow-hidden rounded-full bg-neutral-100;
+    block-size: 0.375rem;
+  }
+
+  .progress-fill {
+    @apply absolute inset-0 rounded-full bg-accent;
+    transform: translateX(calc((var(--p, 0) - 1) * 100% * var(--progress-sign)));
+    transition: transform var(--motion-duration-normal) var(--motion-easing-standard);
+  }
+
+  .progress-track[data-segmented] {
+    --seg: 0.375rem;
+    --gap: 0.1875rem;
+    @apply rounded-none bg-transparent;
+    block-size: 0.75rem;
+    -webkit-mask-image: repeating-linear-gradient(to right, #000 0 var(--seg), transparent var(--seg) calc(var(--seg) + var(--gap)));
+    mask-image: repeating-linear-gradient(to right, #000 0 var(--seg), transparent var(--seg) calc(var(--seg) + var(--gap)));
+  }
+
+  [dir='rtl'] .progress-track[data-segmented] {
+    -webkit-mask-image: repeating-linear-gradient(to left, #000 0 var(--seg), transparent var(--seg) calc(var(--seg) + var(--gap)));
+    mask-image: repeating-linear-gradient(to left, #000 0 var(--seg), transparent var(--seg) calc(var(--seg) + var(--gap)));
+  }
+
+  /* The ghost of the whole scale, so a segmented bar shows what full would be. */
+  .progress-track[data-segmented]::before {
+    content: '';
+    @apply absolute inset-0 bg-neutral-200;
+  }
+
+  .progress-track[data-segmented] > .progress-fill {
+    @apply rounded-none;
+  }
+
+  /*
+   * The head knob sits outside the track (the track clips) and rides the same
+   * value on a transform: `cqw` is the wrapper's own width, so the travel is
+   * the track length less the knob, with no layout read and no script.
+   * `--progress-sign` flips the travel in a right-to-left document.
+   */
+  .progress {
+    --progress-sign: 1;
+    @apply relative;
+    container-type: inline-size;
+  }
+
+  [dir='rtl'] .progress {
+    --progress-sign: -1;
+  }
+
+  .progress-head {
+    @apply pointer-events-none absolute top-1/2 h-3 w-3 rounded-full bg-accent;
+    inset-inline-start: 0;
+    margin-block-start: -0.375rem;
+    box-shadow: 0 0 0 2px rgb(var(--color-surface));
+    transform: translateX(calc(var(--p, 0) * (100cqw - 0.75rem) * var(--progress-sign)));
+    transition: transform var(--motion-duration-normal) var(--motion-easing-standard);
+  }
+
+  /*
+   * Tone. A bar that has finished or failed says so in the feedback colours,
+   * never in the accent: the state is the information, so it is also carried
+   * by the caller's label and `aria-valuetext`, not by colour alone.
+   */
+  .progress[data-tone='positive'] .progress-fill,
+  .progress[data-tone='positive'] .progress-head {
+    @apply bg-feedback-positive;
+  }
+
+  .progress[data-tone='negative'] .progress-fill,
+  .progress[data-tone='negative'] .progress-head {
+    @apply bg-feedback-negative;
+  }
+
+  /*
+   * Swap. A short value that changes (a status label) hands over in place: the
+   * old text leaves up by `nudge` over `fast` while the new one arrives from
+   * `nudge` below over `normal`, stacked in one grid cell so the line never
+   * reflows mid-swap. Which child is which is the caller's (`SwapText`); the
+   * leaving copy is `aria-hidden` and unmounts when it has gone.
+   */
+  .swap {
+    display: inline-grid;
+  }
+
+  .swap > * {
+    grid-area: 1 / 1;
+  }
+
+  .swap-in {
+    animation: swap-in var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  .swap-out {
+    animation: swap-out var(--motion-duration-fast) var(--motion-easing-exit) forwards;
+  }
+
+  /*
+   * Truncate-reveal (`TruncateReveal`). A label cut short by an ellipsis scrolls
+   * to show the rest while it is hovered or focused, then holds. `--reveal-shift`
+   * is the hidden width in px, set from a measurement; the duration is set from
+   * the same measurement at the reading speed, and the travel is linear, since a
+   * line being read must move at a steady rate. It runs only on a user's own
+   * hover or focus (never ambient), and `--reveal-sign` runs it in the reading
+   * direction. The ellipsis stays when it is not running.
+   */
+  .reveal-run {
+    --reveal-sign: -1;
+    display: inline-block;
+    white-space: nowrap;
+    animation: reveal-run var(--reveal-duration, 0ms) linear var(--motion-duration-normal) forwards;
+  }
+
+  [dir='rtl'] .reveal-run {
+    --reveal-sign: 1;
+  }
+
+  /*
+   * Origin arrival (`Dialog`). A dialog that was opened from a control grows
+   * out of that control: it arrives from the offset between the trigger and its
+   * own centre (`--origin-dx`, `--origin-dy`, clamped by the caller to
+   * `distance.large`) at `arrive`'s scale, on the same curve and duration as
+   * `arrive`. The offset is the information; the fade carries the rest.
+   */
+  .arrive-from {
+    animation: arrive-from var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  /*
+   * Reel (`CountUp mode="reel"`). Each digit of a figure is a window one line
+   * tall onto a strip of 0 to 9; the figure changes by sliding the strips, and
+   * `--d` (the digit to show) is the only thing that moves. Digits stop one
+   * stagger step apart from the left, inside the cap, so the figure resolves
+   * the way it is read. The window is a little taller than the glyph so
+   * nothing is clipped, and the strip steps by the same height. It is
+   * `inline-flex` with `overflow: clip` (not `hidden`) so its baseline is its
+   * first digit's, and the digits sit on the baseline of the text around them.
+   */
+  .reel-digit {
+    --reel-line: 1.15em;
+    display: inline-flex;
+    overflow: clip;
+    block-size: var(--reel-line);
+    line-height: var(--reel-line);
+  }
+
+  .reel-strip {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(calc(var(--d, 0) * var(--reel-line) * -1));
+    transition: transform var(--motion-duration-sweep) var(--motion-easing-settle) var(--reel-delay, 0ms);
+  }
+
+  /*
+   * Reduced motion collapses every duration to a frame, and that has to reach
+   * the pseudo-elements (the button fill is a `::before`) and the delays. A
+   * staggered entrance keeps `both` fill, so a surviving 320ms delay would hold
+   * the element at opacity 0 for 320ms: the state would not jump, it would be
+   * missing. Zero delay plus a one-frame duration means every element is at its
+   * end state at once, and nothing the motion carried is lost (MOT-4).
+   */
   @media (prefers-reduced-motion: reduce) {
-    * {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
 
     html {

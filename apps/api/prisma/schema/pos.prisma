@@ -7,7 +7,9 @@
 // it is a follow-up, not faked by this file. WO-21.5 adds PosReceipt and a
 // return path (reusing OrdersService.changeStatus()/PaymentsService.refund()
 // through their EXISTING admin endpoints — no new pos -> payments coupling).
-// Park/retrieve and a till-side price override remain unbuilt.
+// pos-hardware/31 (WO-31.2/31.3) builds park/retrieve (PosParkedSale) and a
+// line's modifier set / non-typed quantity source (PosLineModifier,
+// PosLineQuantitySource) — a till-side price override remains unbuilt.
 
 enum PosTerminalStatus {
   /// Registered, no working device credential yet — cannot authenticate.
@@ -77,8 +79,13 @@ model PosShift {
   openedAt DateTime       @default(now())
   closedAt DateTime?
 
-  terminal      PosTerminal    @relation(fields: [terminalId], references: [id], onDelete: Restrict)
-  cashMovements CashMovement[]
+  terminal       PosTerminal     @relation(fields: [terminalId], references: [id], onDelete: Restrict)
+  cashMovements  CashMovement[]
+  /// 156-single-employee-branch-loss-prevention.md — variances attributed to
+  /// this shift's own custody window.
+  stockVariances StockVariance[]
+  /// pos-hardware/31 WO-31.2/31.3 — sales started but not yet tendered.
+  parkedSales    PosParkedSale[]
 
   @@index([terminalId])
   @@index([status])
@@ -132,4 +139,73 @@ model PosReceipt {
   createdAt  DateTime  @default(now())
 
   @@index([orderId])
+}
+
+/// pos-hardware/31 §2 (WO-31.2) — a modifier on a basket/receipt line, e.g.
+/// "extra shot", "no onions", "large". `priceDeltaMinor` is why this is not
+/// just a text note: it changes the till total, folded into the OrderItem's
+/// own `unitPrice` at `OrdersService.placeFromPos()` (no schema change to
+/// `orders` needed — "a richer line, no new coupling", doc 31's own words).
+/// This row is pos-owned display/audit metadata written best-effort AFTER
+/// the sale commits; it is never read back to compute money.
+model PosLineModifier {
+  id     String @id @default(cuid())
+  /// The basket line this modifier applies to — a bare scalar per this
+  /// file's existing decoupling convention (no `@relation` across the
+  /// pos/catalog/orders boundary): deliberately NOT a foreign key to the
+  /// `OrderItem` it produced, since `pos` never learns that item's id.
+  lineRef String
+  key     String
+  label   String
+  priceDeltaMinor Int @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([lineRef])
+}
+
+enum QuantitySource {
+  TYPED
+  SCALE_WEIGHT
+  BOM_RECIPE_SCALE
+}
+
+/// pos-hardware/31 §2 (WO-31.2) — extends the basket line concept with
+/// where its quantity came from: a scale reading or a scaled BOM recipe,
+/// not just a typed integer. Metadata on the line, not a new sale model;
+/// same bare-scalar `lineRef` convention as `PosLineModifier` above.
+model PosLineQuantitySource {
+  lineRef  String @id
+  source   QuantitySource
+  /// Set only when source = BOM_RECIPE_SCALE — which bom.prisma recipe this
+  /// line's formula came from. Read-only pointer; pos never writes to bom.
+  recipeId String?
+}
+
+enum PosOrderType {
+  COUNTER
+  TAB
+  TABLE
+}
+
+/// pos-hardware/31 §3 (WO-31.2/31.3) — a sale that has started but not
+/// tendered, exactly the "park/retrieve" pos.prisma's own header already
+/// named as unbuilt. A `COUNTER` sale never parks (retail/bakery counters
+/// tender immediately); `TAB`/`TABLE` sales may park repeatedly before final
+/// tender. Belongs to a shift, never floats free of one.
+model PosParkedSale {
+  id      String       @id @default(cuid())
+  shiftId String
+  orderType PosOrderType @default(COUNTER)
+  /// "Table 4", "Tab — Ahmed" — free text; this repository does not model a
+  /// restaurant floor plan, only a label a server recognizes.
+  label   String
+  /// The full basket snapshot (pos-core's own basket shape) — park/retrieve
+  /// replays the underlying maths, never a second sale model.
+  basketSnapshot Json
+  parkedAt    DateTime  @default(now())
+  retrievedAt DateTime?
+
+  shift PosShift @relation(fields: [shiftId], references: [id], onDelete: Restrict)
+
+  @@index([shiftId, retrievedAt])
 }

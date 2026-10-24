@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 493 tracked files in `apps/api`, by directory.
+All 1,306 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,11 +16,11 @@ All 493 tracked files in `apps/api`, by directory.
 | `eslint.config.mjs` | script | 36 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 26 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 76 |  |
+| `package.json` | json | 83 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
 | `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
-| `tsconfig.json` | json | 17 |  |
+| `tsconfig.json` | json | 25 |  |
 | `tsconfig.seed.json` | json | 10 |  |
 
 ### `apps/api/prisma` (3)
@@ -28,37 +28,76 @@ All 493 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
-| `backfill-product-options.ts` | module | 170 |  |
-| `seed.ts` | module | 3030 |  |
+| `backfill-product-options.ts` | module | 26 |  |
+| `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (24)
+### `apps/api/prisma/schema` (63)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
-| `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
-| `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 371 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 436 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
-| `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
+| `accounting.prisma` | prisma schema | 285 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
+| `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
+| `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
+| `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
+| `auction.prisma` | prisma schema | 389 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.5). |
+| `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
+| `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
+| `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
+| `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
+| `catalog.prisma` | prisma schema | 788 | Catalog: categories, products, variants, images. |
+| `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
+| `core.prisma` | prisma schema | 688 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
+| `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
+| `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
+| `entity-attributes.prisma` | prisma schema | 36 | A general EAV model, built by explicit owner override (ADR-026). |
+| `feature-flags.prisma` | prisma schema | 78 | Feature flags — the missing piece between "built" and "everyone has it" |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
+| `fragments.prisma` | prisma schema | 41 | Micro-frontend fragments, built by explicit owner override (ADR-026), |
+| `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
+| `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
+| `hr.prisma` | prisma schema | 176 | Employee assets: which physical equipment (laptop, phone, uniform) is |
+| `idempotency.prisma` | prisma schema | 34 | A client-supplied Idempotency-Key, closing the one gap doc 117's own |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
-| `inventory.prisma` | prisma schema | 236 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
+| `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
+| `inventory.prisma` | prisma schema | 525 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
+| `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `orders.prisma` | prisma schema | 258 | Orders and shipments. |
-| `organization.prisma` | prisma schema | 169 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
+| `metadata-forms.prisma` | prisma schema | 26 | A general metadata-driven UI engine, built by explicit owner override |
+| `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `notify.prisma` | prisma schema | 238 | Internal notifications, meetings and escalation |
+| `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
+| `orders.prisma` | prisma schema | 369 | Orders and shipments. |
+| `org-structure.prisma` | prisma schema | 132 | The org tree: offices, regions, departments — whatever shape a client's |
+| `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
-| `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
-| `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
+| `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
+| `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
+| `pos.prisma` | prisma schema | 212 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
+| `pricing.prisma` | prisma schema | 58 | The `pricing` module — 146-wholesale-tiered-pricing.md |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
-| `purchasing.prisma` | prisma schema | 248 |  |
-| `replication.prisma` | prisma schema | 134 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
-| `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
+| `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
+| `purchasing.prisma` | prisma schema | 333 |  |
+| `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
+| `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
+| `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
+| `resilience.prisma` | prisma schema | 53 | Resilience engineering (resilience-scalability/38-resilience-engineering.md, |
+| `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
+| `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
+| `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
+| `sso.prisma` | prisma schema | 73 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
+| `support.prisma` | prisma schema | 143 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- |
+| `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
-| `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
+| `trading-partners.prisma` | prisma schema | 176 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
+| `wallet.prisma` | prisma schema | 185 | 155-wallet-stored-value-merchant-escrow.md |
+| `whatsapp-assistant.prisma` | prisma schema | 62 | WO-9.7, docs/implementation/ai-layer/09-ai-layer.md. |
+| `wishlist.prisma` | prisma schema | 44 | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
 ### `apps/api/prisma/schema/migrations` (1)
 
@@ -414,56 +453,545 @@ All 493 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 63 |  |
 
+### `apps/api/prisma/schema/migrations/20260922072219_add_node_brand_and_policy_quarantine` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
+### `apps/api/prisma/schema/migrations/20260923172819_add_payroll` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 221 |  |
+
+### `apps/api/prisma/schema/migrations/20260924171933_add_option_templates_redirects_sku_seo` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 149 |  |
+
+### `apps/api/prisma/schema/migrations/20260924184848_add_promotions_giftcards_store_credit` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 194 |  |
+
+### `apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_loyalty` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 206 |  |
+
+### `apps/api/prisma/schema/migrations/20260924220000_add_fulfilment_shipping_returns` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 390 |  |
+
+### `apps/api/prisma/schema/migrations/20260925010000_add_content_collections_search_marketing_onsite` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 485 |  |
+
+### `apps/api/prisma/schema/migrations/20260925050000_add_ai_layer` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 242 |  |
+
+### `apps/api/prisma/schema/migrations/20260925120000_add_personal_api_keys` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 120 |  |
+
+### `apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 21 |  |
+
+### `apps/api/prisma/schema/migrations/20260925160000_add_requisitions_approvals_and_loss_prevention` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 206 |  |
+
+### `apps/api/prisma/schema/migrations/20260925160000_add_whatsapp_message_external_id` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 8 |  |
+
+### `apps/api/prisma/schema/migrations/20260925170000_add_review_summary_urdu` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 5 |  |
+
+### `apps/api/prisma/schema/migrations/20260925180000_add_wallet_merchant_payable` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 127 |  |
+
+### `apps/api/prisma/schema/migrations/20260925190000_add_receivables_credit_notes_dunning` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 105 |  |
+
+### `apps/api/prisma/schema/migrations/20260925200000_add_hr_assets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 62 |  |
+
+### `apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 59 |  |
+
+### `apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
+### `apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 9 |  |
+
+### `apps/api/prisma/schema/migrations/20260925230000_add_settlements` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 63 |  |
+
+### `apps/api/prisma/schema/migrations/20260925231500_add_settlement_writeoff_approval` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 10 |  |
+
+### `apps/api/prisma/schema/migrations/20260925234500_add_sso_identity_federation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
+### `apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 86 |  |
+
+### `apps/api/prisma/schema/migrations/20260926080000_add_org_structure` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 72 |  |
+
+### `apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 94 |  |
+
+### `apps/api/prisma/schema/migrations/20260926090000_add_custom_fields` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 31 |  |
+
+### `apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 38 |  |
+
+### `apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 27 |  |
+
+### `apps/api/prisma/schema/migrations/20260926100000_add_attendance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 148 |  |
+
+### `apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 28 |  |
+
+### `apps/api/prisma/schema/migrations/20260926110000_add_tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 84 |  |
+
+### `apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
+### `apps/api/prisma/schema/migrations/20260926130000_add_form_metadata` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 21 |  |
+
+### `apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 67 |  |
+
+### `apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 21 |  |
+
+### `apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 22 |  |
+
+### `apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 36 |  |
+
+### `apps/api/prisma/schema/migrations/20260926150000_add_idempotency_key` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
+### `apps/api/prisma/schema/migrations/20260926152210_wo149_b2b_accounts_approvals` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
+### `apps/api/prisma/schema/migrations/20260926203715_wo1656_sso_enforce_sso` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 3 |  |
+
+### `apps/api/prisma/schema/migrations/20260926210000_wo24_notify_meetings_escalation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 136 |  |
+
+### `apps/api/prisma/schema/migrations/20260926210218_wo166_product_reference_sync_provenance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 7 |  |
+
+### `apps/api/prisma/schema/migrations/20260927040000_add_bank_facilities` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 108 |  |
+
+### `apps/api/prisma/schema/migrations/20260927050000_wo61_bulletin_board` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
+### `apps/api/prisma/schema/migrations/20260927060000_wo64_support_ticketing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 52 |  |
+
+### `apps/api/prisma/schema/migrations/20260927070000_wo144_supplier_lead_time_observation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 23 |  |
+
+### `apps/api/prisma/schema/migrations/20260927070000_wo148_customer_support_portal` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 57 |  |
+
+### `apps/api/prisma/schema/migrations/20260927080000_wo31_pos_hardware_park_retrieve` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 53 |  |
+
+### `apps/api/prisma/schema/migrations/20260927090000_wo32_wo71_wo158_lots_serials_traceability` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 172 |  |
+
+### `apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
+### `apps/api/prisma/schema/migrations/20260927100000_wo38_request_outcomes` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
+### `apps/api/prisma/schema/migrations/20260928100000_wo206_refresh_token_reuse_detection` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 40 |  |
+
+### `apps/api/prisma/schema/migrations/20260930100000_wo213_1_partner_fact_inbox` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 62 |  |
+
+### `apps/api/prisma/schema/migrations/20260930110000_wo213_2_purchase_order_source_fact` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
+### `apps/api/prisma/schema/migrations/20261002100000_launchpad_manage_permission` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
+### `apps/api/prisma/schema/migrations/20261002180000_wo234_1_auction_foundation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
+### `apps/api/prisma/schema/migrations/20261002180100_wo234_1_auction_permissions` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 33 |  |
+
+### `apps/api/prisma/schema/migrations/20261002190000_wo234_2_bidding` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 76 |  |
+
+### `apps/api/prisma/schema/migrations/20261002200000_wo234_3_proxy_and_close` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 53 |  |
+
+### `apps/api/prisma/schema/migrations/20261003100000_wo234_5_bidder_trust` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 54 |  |
+
+### `apps/api/prisma/schema/migrations/20261003100100_wo234_5_bidders_permission` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 30 |  |
+
+### `apps/api/prisma/schema/migrations/20261007090000_order_source_ref` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
+### `apps/api/prisma/schema/migrations/20261007100000_wo234_6_settlement` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 81 |  |
+
+### `apps/api/prisma/schema/migrations/20261007100100_wo234_6_settle_permission` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 29 |  |
+
+### `apps/api/prisma/schema/migrations/20261009090000_wo234_12_lot_images` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 28 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 30 |  |
-| `main.ts` | module | 101 | Must come before AppModule: the module registry reads MODULES from the |
+| `app.module.ts` | nest module | 55 |  |
+| `main.ts` | module | 117 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 39 |  |
+| `core.module.ts` | nest module | 71 |  |
+
+### `apps/api/src/core/action-hub` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `action-hub-registry.service.spec.ts` | unit test | 82 |  |
+| `action-hub-registry.service.ts` | service | 66 |  |
+| `action-hub-source.ts` | module | 52 |  |
+| `action-hub.controller.ts` | controller | 26 |  |
+| `action-hub.module.ts` | nest module | 19 |  |
+
+### `apps/api/src/core/ai` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ai-provider.ts` | module | 67 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and StorageDriver). |
+| `ai.module.ts` | nest module | 13 |  |
+| `ai.service.spec.ts` | unit test | 298 |  |
+| `ai.service.ts` | service | 217 |  |
+
+### `apps/api/src/core/ai/providers` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `anthropic.provider.ts` | module | 143 |  |
+| `openai.provider.ts` | module | 115 |  |
+
+### `apps/api/src/core/anax` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `anax-sensor.service.ts` | service | 159 |  |
+| `anax.controller.ts` | controller | 81 |  |
+| `anax.module.ts` | nest module | 13 |  |
+| `anax.service.spec.ts` | unit test | 125 |  |
+| `anax.service.ts` | service | 565 |  |
+| `anax.types.ts` | module | 221 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidan… |
+
+### `apps/api/src/core/approvals` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `approval.service.spec.ts` | unit test | 176 |  |
+| `approval.service.ts` | service | 165 |  |
+| `approvals.module.ts` | nest module | 10 |  |
 
 ### `apps/api/src/core/audit` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `audit.module.ts` | nest module | 10 |  |
-| `audit.service.ts` | service | 49 |  |
+| `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (19)
+### `apps/api/src/core/auth` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auth.constants.ts` | module | 62 |  |
-| `auth.controller.ts` | controller | 197 |  |
-| `auth.module.ts` | nest module | 19 |  |
-| `auth.service.spec.ts` | unit test | 24 |  |
-| `auth.service.ts` | service | 429 |  |
-| `bearer-token.ts` | module | 16 |  |
-| `decorators.ts` | module | 53 |  |
-| `guards.ts` | module | 102 |  |
-| `jwt.strategy.ts` | auth strategy | 44 |  |
+| `auth.constants.ts` | module | 116 |  |
+| `auth.controller.ts` | controller | 229 |  |
+| `auth.module.ts` | nest module | 74 |  |
+| `auth.service.spec.ts` | unit test | 516 |  |
+| `auth.service.ts` | service | 712 |  |
+| `bearer-token.ts` | module | 31 |  |
+| `decorators.ts` | module | 91 |  |
+| `guards.spec.ts` | unit test | 212 |  |
+| `guards.ts` | module | 167 |  |
+| `identity-provider.ts` | module | 91 |  |
+| `jwt.strategy.spec.ts` | unit test | 57 |  |
+| `jwt.strategy.ts` | auth strategy | 50 |  |
+| `login-identifier.spec.ts` | unit test | 39 |  |
+| `login-identifier.ts` | module | 38 |  |
+| `login-throttle.service.spec.ts` | unit test | 111 |  |
+| `login-throttle.service.ts` | service | 168 |  |
+| `nid.controller.ts` | controller | 73 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
-| `password.util.ts` | module | 9 |  |
-| `permissions.service.spec.ts` | unit test | 85 |  |
-| `permissions.service.ts` | service | 64 |  |
+| `password.util.spec.ts` | unit test | 80 |  |
+| `password.util.ts` | module | 89 |  |
+| `permissions.service.spec.ts` | unit test | 317 |  |
+| `permissions.service.ts` | service | 219 |  |
+| `rate-limit-audit.service.spec.ts` | unit test | 76 |  |
+| `rate-limit-audit.service.ts` | service | 85 |  |
 | `roles.controller.ts` | controller | 44 |  |
-| `roles.service.spec.ts` | unit test | 236 |  |
-| `roles.service.ts` | service | 301 |  |
-| `scope.guard.spec.ts` | unit test | 151 |  |
-| `scope.guard.ts` | guard | 129 |  |
+| `roles.service.spec.ts` | unit test | 388 |  |
+| `roles.service.ts` | service | 359 |  |
+| `scope.guard.spec.ts` | unit test | 195 |  |
+| `scope.guard.ts` | guard | 170 |  |
+| `sso-admin.controller.ts` | controller | 82 |  |
+| `sso.controller.spec.ts` | unit test | 223 |  |
+| `sso.controller.ts` | controller | 230 |  |
+| `sso.service.spec.ts` | unit test | 656 |  |
+| `sso.service.ts` | service | 869 |  |
 
-### `apps/api/src/core/auth/dto` (2)
+### `apps/api/src/core/auth/api-keys` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `api-key-access.spec.ts` | unit test | 159 |  |
+| `api-key-access.ts` | module | 93 |  |
+| `api-key-auth.service.spec.ts` | unit test | 273 |  |
+| `api-key-auth.service.ts` | service | 194 |  |
+| `api-keys-admin.controller.ts` | controller | 41 |  |
+| `api-keys.controller.ts` | controller | 67 |  |
+| `api-keys.service.spec.ts` | unit test | 546 |  |
+| `api-keys.service.ts` | service | 712 |  |
+
+### `apps/api/src/core/auth/api-keys/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `api-key.dto.ts` | dto | 114 |  |
+
+### `apps/api/src/core/auth/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.dto.ts` | dto | 126 |  |
 | `role.dto.ts` | dto | 44 |  |
+| `sso.dto.ts` | dto | 188 |  |
+
+### `apps/api/src/core/auth/providers` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `nid.provider.spec.ts` | unit test | 226 |  |
+| `nid.provider.ts` | module | 332 |  |
+| `oidc.provider.spec.ts` | unit test | 205 |  |
+| `oidc.provider.ts` | module | 195 |  |
+
+### `apps/api/src/core/cache` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `in-process-cache.spec.ts` | unit test | 183 |  |
+| `in-process-cache.ts` | module | 88 |  |
+| `tiered-cache.spec.ts` | unit test | 247 |  |
+| `tiered-cache.ts` | module | 269 |  |
 
 ### `apps/api/src/core/checkout` (1)
 
@@ -471,11 +999,16 @@ All 493 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (2)
+### `apps/api/src/core/common` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cost-fields.ts` | module | 72 |  |
+| `aging.spec.ts` | unit test | 75 |  |
+| `aging.ts` | module | 76 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
+| `cost-fields.spec.ts` | unit test | 44 |  |
+| `cost-fields.ts` | module | 98 |  |
+| `hash-chain.spec.ts` | unit test | 59 |  |
+| `hash-chain.ts` | module | 83 |  |
 | `sales-revenue.ts` | module | 17 |  |
 
 ### `apps/api/src/core/common/dto` (1)
@@ -484,51 +1017,160 @@ All 493 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `pagination.dto.ts` | dto | 77 |  |
 
-### `apps/api/src/core/common/filters` (1)
+### `apps/api/src/core/common/filters` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `all-exceptions.filter.ts` | module | 136 |  |
+| `all-exceptions.filter.spec.ts` | unit test | 143 |  |
+| `all-exceptions.filter.ts` | module | 198 |  |
 
-### `apps/api/src/core/config` (6)
+### `apps/api/src/core/config` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-config.service.ts` | service | 64 |  |
+| `app-config.service.ts` | service | 104 |  |
 | `config.module.ts` | nest module | 23 |  |
-| `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 250 |  |
+| `enabled-modules.ts` | config | 15 |  |
+| `env.validation.spec.ts` | unit test | 190 |  |
+| `env.validation.ts` | config | 444 |  |
 | `load-env.ts` | config | 14 |  |
-| `meta.controller.ts` | controller | 41 |  |
+| `meta.controller.ts` | controller | 39 |  |
+| `vault-loader.spec.ts` | unit test | 129 |  |
+| `vault-loader.ts` | config | 122 |  |
 
-### `apps/api/src/core/events` (5)
+### `apps/api/src/core/crm` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 358 | The catalogue of domain events. |
+| `segment-filter-engine.ts` | module | 94 |  |
+
+### `apps/api/src/core/crypto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `crypto-mesh.service.spec.ts` | unit test | 80 |  |
+| `crypto-mesh.service.ts` | service | 238 |  |
+| `crypto.module.ts` | nest module | 10 |  |
+
+### `apps/api/src/core/ecosystem` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `customer-bridges.spec.ts` | unit test | 197 |  |
+| `customer-engagement-bridge.service.ts` | service | 115 |  |
+| `ecosystem-event-bridge.service.ts` | service | 81 |  |
+| `ecosystem-event-bus.client.ts` | module | 110 |  |
+| `ecosystem-inbound.service.ts` | service | 109 |  |
+| `ecosystem-module-gateway.client.ts` | module | 115 |  |
+| `ecosystem.constants.ts` | module | 92 |  |
+| `ecosystem.controller.ts` | controller | 76 |  |
+| `ecosystem.module.ts` | nest module | 57 |  |
+| `ecosystem.spec.ts` | unit test | 428 |  |
+| `index.ts` | module | 9 |  |
+| `marketing-dispatch-bridge.service.ts` | service | 96 |  |
+| `support-ticket-bridge.service.ts` | service | 112 |  |
+
+### `apps/api/src/core/events` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `contract-analyzer.ts` | module | 399 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
+| `domain-events.ts` | module | 833 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
+| `event-contracts.spec.ts` | unit test | 268 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (5)
+### `apps/api/src/core/extension-points` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `branch-policy.registry.ts` | registry | 43 |  |
+| `auction-order-sink.registry.ts` | registry | 113 |  |
+| `branch-policy.registry.spec.ts` | unit test | 44 |  |
+| `branch-policy.registry.ts` | registry | 68 |  |
+| `camera-people-count.registry.ts` | registry | 34 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
+| `employee-offboarding.registry.ts` | registry | 39 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 36 |  |
+| `extension-points.module.ts` | nest module | 55 |  |
+| `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
+| `task-source.registry.ts` | registry | 63 |  |
+| `workflow-steps.registry.ts` | registry | 39 |  |
 
-### `apps/api/src/core/health` (2)
+### `apps/api/src/core/feature-flags` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `health.controller.ts` | controller | 52 |  |
+| `feature-flags.module.ts` | nest module | 17 |  |
+| `feature-flags.service.spec.ts` | unit test | 95 |  |
+| `feature-flags.service.ts` | service | 123 |  |
+
+### `apps/api/src/core/feed` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feed-registry.service.spec.ts` | unit test | 83 |  |
+| `feed-registry.service.ts` | service | 89 |  |
+| `feed-source.ts` | module | 39 |  |
+| `feed.controller.ts` | controller | 32 |  |
+| `feed.module.ts` | nest module | 19 |  |
+
+### `apps/api/src/core/health` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `health.controller.spec.ts` | unit test | 67 |  |
+| `health.controller.ts` | controller | 62 |  |
 | `health.module.ts` | nest module | 6 |  |
 
-### `apps/api/src/core/notifications` (10)
+### `apps/api/src/core/idempotency` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `idempotency-key.constraint.spec.ts` | unit test | 40 |  |
+| `idempotency.cron.spec.ts` | unit test | 42 |  |
+| `idempotency.cron.ts` | scheduled job | 48 |  |
+| `idempotency.interceptor.spec.ts` | unit test | 161 |  |
+| `idempotency.interceptor.ts` | module | 90 |  |
+| `idempotency.module.ts` | nest module | 17 |  |
+| `idempotent-write.decorator.ts` | module | 13 |  |
+
+### `apps/api/src/core/intent` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `intent-router.module.ts` | nest module | 11 |  |
+| `intent-router.service.spec.ts` | unit test | 142 |  |
+| `intent-router.service.ts` | service | 82 |  |
+| `intent.types.ts` | module | 42 |  |
+
+### `apps/api/src/core/launchpad` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `launchpad.controller.ts` | controller | 46 |  |
+| `launchpad.module.ts` | nest module | 18 |  |
+| `launchpad.service.spec.ts` | unit test | 126 |  |
+| `launchpad.service.ts` | service | 113 |  |
+
+### `apps/api/src/core/launchpad/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `set-app-enablement.dto.ts` | dto | 8 |  |
+
+### `apps/api/src/core/metrics` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `metric-provider.ts` | module | 59 |  |
+| `metric-registry.service.spec.ts` | unit test | 267 |  |
+| `metric-registry.service.ts` | service | 137 |  |
+| `metrics.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/core/notifications` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -538,21 +1180,25 @@ All 493 tracked files in `apps/api`, by directory.
 | `expo-push.channel.ts` | channel | 89 |  |
 | `log.channel.ts` | channel | 26 |  |
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 |  |
-| `notifications.service.ts` | service | 59 |  |
+| `notification-preferences.service.ts` | service | 71 |  |
+| `notifications.module.ts` | nest module | 36 |  |
+| `notifications.service.spec.ts` | unit test | 121 |  |
+| `notifications.service.ts` | service | 80 |  |
+| `sms.channel.ts` | channel | 48 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
 | `unsubscribe.dto.ts` | dto | 15 |  |
+| `whatsapp.channel.ts` | channel | 63 |  |
 
 ### `apps/api/src/core/notifications/email` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `catalog.ts` | module | 342 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 557 |  |
+| `catalog.ts` | module | 373 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 628 |  |
 | `email-templates.admin.controller.ts` | controller | 59 |  |
 | `html.ts` | module | 414 |  |
-| `templates.spec.ts` | unit test | 365 |  |
-| `templates.ts` | module | 1005 |  |
+| `templates.spec.ts` | unit test | 392 |  |
+| `templates.ts` | module | 1124 |  |
 
 ### `apps/api/src/core/notifications/email-accounts` (3)
 
@@ -567,16 +1213,27 @@ All 493 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `client.ts` | module | 11 | Single import point for the generated Prisma client. |
-| `enums.spec.ts` | unit test | 66 |  |
+| `enums.spec.ts` | unit test | 72 |  |
 | `prisma.module.ts` | nest module | 10 |  |
 | `prisma.service.ts` | service | 46 |  |
 
-### `apps/api/src/core/replication` (18)
+### `apps/api/src/core/redis` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `redis.keyspaces.ts` | module | 82 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
+| `redis.module.ts` | nest module | 23 |  |
+| `redis.service.spec.ts` | unit test | 105 |  |
+| `redis.service.ts` | service | 222 |  |
+
+### `apps/api/src/core/replication` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `node-credential.service.spec.ts` | unit test | 51 |  |
 | `node-credential.service.ts` | service | 38 |  |
+| `policy-quarantine.service.spec.ts` | unit test | 80 |  |
+| `policy-quarantine.service.ts` | service | 73 |  |
 | `replication-apply.service.spec.ts` | unit test | 62 |  |
 | `replication-apply.service.ts` | service | 48 |  |
 | `replication-cursor.service.spec.ts` | unit test | 98 |  |
@@ -585,11 +1242,11 @@ All 493 tracked files in `apps/api`, by directory.
 | `replication-log.service.ts` | service | 81 |  |
 | `replication-quarantine.service.spec.ts` | unit test | 72 |  |
 | `replication-quarantine.service.ts` | service | 48 |  |
-| `replication-sync.agent.spec.ts` | unit test | 220 |  |
-| `replication-sync.agent.ts` | agent | 174 |  |
+| `replication-sync.agent.spec.ts` | unit test | 245 |  |
+| `replication-sync.agent.ts` | agent | 184 |  |
 | `replication.controller.spec.ts` | unit test | 104 |  |
 | `replication.controller.ts` | controller | 109 |  |
-| `replication.module.ts` | nest module | 46 |  |
+| `replication.module.ts` | nest module | 49 |  |
 | `replication.registry.spec.ts` | unit test | 41 |  |
 | `replication.registry.ts` | registry | 43 |  |
 | `replication.types.ts` | module | 50 |  |
@@ -600,198 +1257,121 @@ All 493 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `push-replication.dto.ts` | dto | 48 |  |
 
-### `apps/api/src/core/security` (5)
+### `apps/api/src/core/resilience` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `circuit-breaker.service.spec.ts` | unit test | 144 |  |
+| `circuit-breaker.service.ts` | service | 212 |  |
+| `circuit-breaker.ts` | module | 71 | Extension point (38-resilience-engineering.md §2): the three-state gate every existing extension-point call sits behind… |
+| `resilience.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/core/security` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-token.ts` | module | 17 |  |
-| `secret-crypto.spec.ts` | unit test | 36 |  |
-| `secret-crypto.ts` | module | 56 |  |
 | `unsubscribe-token.spec.ts` | unit test | 35 |  |
 | `unsubscribe-token.ts` | module | 24 |  |
 
-### `apps/api/src/core/settings` (6)
+### `apps/api/src/core/settings` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 45 |  |
-| `settings.defaults.ts` | module | 293 |  |
+| `document-prefix.ts` | module | 51 |  |
+| `settings.defaults.ts` | module | 615 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 103 |  |
+| `settings.service.spec.ts` | unit test | 125 |  |
+| `settings.service.ts` | service | 146 |  |
 
-### `apps/api/src/core/storage` (7)
+### `apps/api/src/core/slo` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `files.controller.ts` | controller | 58 |  |
-| `local-storage.driver.ts` | driver | 72 |  |
-| `s3-storage.driver.ts` | driver | 77 |  |
-| `storage.driver.ts` | driver | 31 | Extension point: file storage. |
+| `request-outcome-prune.cron.spec.ts` | unit test | 18 |  |
+| `request-outcome-prune.cron.ts` | scheduled job | 29 |  |
+| `slo-paths.ts` | module | 56 | The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a formal SLO. |
+| `slo-recorder.service.spec.ts` | unit test | 85 |  |
+| `slo-recorder.service.ts` | service | 139 |  |
+| `slo.module.ts` | nest module | 17 |  |
+
+### `apps/api/src/core/storage` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `files.controller.spec.ts` | unit test | 63 |  |
+| `files.controller.ts` | controller | 67 |  |
+| `local-storage.driver.ts` | driver | 84 |  |
+| `s3-storage.driver.ts` | driver | 92 |  |
+| `storage.driver.ts` | driver | 35 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 |  |
-| `storage.service.spec.ts` | unit test | 186 |  |
-| `storage.service.ts` | service | 133 |  |
+| `storage.service.spec.ts` | unit test | 224 |  |
+| `storage.service.ts` | service | 143 |  |
+
+### `apps/api/src/core/throttling` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app-throttler.guard.spec.ts` | unit test | 96 |  |
+| `app-throttler.guard.ts` | guard | 78 |  |
+| `global-throttle.ts` | module | 14 | The module-wide rate limit every route gets unless it declares its own `@Throttle`: 300 requests per 60 s per client IP… |
+| `shared-throttler-storage.spec.ts` | unit test | 102 |  |
+| `shared-throttler-storage.ts` | module | 107 |  |
 
 ### `apps/api/src/core/time` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `metric-window.spec.ts` | unit test | 85 |  |
-| `metric-window.ts` | module | 73 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
-| `shop-time.spec.ts` | unit test | 157 |  |
-| `shop-time.ts` | module | 223 | Calendar days in the shop's timezone. |
+| `metric-window.spec.ts` | unit test | 192 |  |
+| `metric-window.ts` | module | 105 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
+| `shop-time.spec.ts` | unit test | 175 |  |
+| `shop-time.ts` | module | 235 | Calendar days in the shop's timezone. |
 
-### `apps/api/src/modules` (2)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `module-packs.ts` | module | 83 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 145 |  |
-
-### `apps/api/src/modules/accounting` (17)
+### `apps/api/src/core/versioning` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `accounting.module.ts` | nest module | 28 |  |
-| `accounting.service.spec.ts` | unit test | 92 |  |
-| `accounting.service.ts` | service | 279 |  |
-| `aging.spec.ts` | unit test | 75 |  |
-| `aging.ts` | module | 69 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `chart-of-accounts.ts` | module | 59 |  |
-| `consolidation.controller.ts` | controller | 38 |  |
-| `consolidation.service.spec.ts` | unit test | 128 |  |
-| `consolidation.service.ts` | service | 132 |  |
-| `fiscal-periods.controller.ts` | controller | 74 |  |
-| `fiscal-periods.service.spec.ts` | unit test | 312 |  |
-| `fiscal-periods.service.ts` | service | 196 |  |
-| `gl-reports.controller.ts` | controller | 67 |  |
-| `gl-reports.service.spec.ts` | unit test | 174 |  |
-| `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 502 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 425 |  |
+| `api-version-policy.service.spec.ts` | unit test | 44 |  |
+| `api-version-policy.service.ts` | service | 58 |  |
+| `deprecation-header.interceptor.spec.ts` | unit test | 82 |  |
+| `deprecation-header.interceptor.ts` | module | 62 |  |
+| `versioning.module.ts` | nest module | 19 |  |
 
-### `apps/api/src/modules/accounting/dto` (2)
+### `apps/api/src/modules` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `fiscal-period.dto.ts` | dto | 38 |  |
-| `gl-reports.dto.ts` | dto | 24 |  |
+| `module-packs.ts` | module | 168 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 345 |  |
+| `README.md` | doc | 35 |  |
 
-### `apps/api/src/modules/addresses` (3)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `addresses.controller.ts` | controller | 46 |  |
-| `addresses.module.ts` | nest module | 10 |  |
-| `addresses.service.ts` | service | 86 |  |
-
-### `apps/api/src/modules/addresses/dto` (1)
+### `apps/api/src/modules/customers/crm` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `address.dto.ts` | dto | 113 |  |
-
-### `apps/api/src/modules/analytics` (6)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `analytics.comparison.spec.ts` | unit test | 309 |  |
-| `analytics.controller.ts` | controller | 73 |  |
-| `analytics.module.ts` | nest module | 11 |  |
-| `analytics.service.ts` | service | 779 |  |
-| `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
-| `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
-
-### `apps/api/src/modules/analytics/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `analytics.dto.ts` | dto | 10 |  |
-
-### `apps/api/src/modules/bom` (14)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `bom.controller.ts` | controller | 228 |  |
-| `bom.listener.spec.ts` | unit test | 80 |  |
-| `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.metrics.spec.ts` | unit test | 202 |  |
-| `bom.metrics.ts` | module | 131 |  |
-| `bom.module.ts` | nest module | 17 |  |
-| `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 527 |  |
-| `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
-| `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production.service.spec.ts` | unit test | 436 |  |
-| `production.service.ts` | service | 262 |  |
-| `raw-material.service.ts` | service | 218 |  |
-| `recipe.service.ts` | service | 501 |  |
-
-### `apps/api/src/modules/bom/dto` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `production-run.dto.ts` | dto | 48 |  |
-| `raw-material.dto.ts` | dto | 52 |  |
-| `raw-usage.dto.ts` | dto | 30 |  |
-| `recipe.dto.ts` | dto | 113 |  |
-
-### `apps/api/src/modules/cart` (3)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `cart.controller.ts` | controller | 179 |  |
-| `cart.module.ts` | nest module | 17 | Measurements typed straight into the stitching panel are validated |
-| `cart.service.ts` | service | 678 |  |
-
-### `apps/api/src/modules/cart/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `cart.dto.ts` | dto | 131 |  |
-
-### `apps/api/src/modules/catalog` (11)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `brand-admin.service.ts` | service | 170 |  |
-| `catalog-admin.controller.ts` | controller | 260 |  |
-| `catalog.controller.ts` | controller | 51 |  |
-| `catalog.module.ts` | nest module | 35 |  |
-| `catalog.service.ts` | service | 353 |  |
-| `category-admin.service.ts` | service | 192 |  |
-| `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 631 |  |
-| `product-import.service.ts` | service | 476 |  |
-| `product-replication.listener.spec.ts` | unit test | 120 |  |
-| `product-replication.listener.ts` | event subscriber | 77 |  |
-
-### `apps/api/src/modules/catalog/dto` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `brand.dto.ts` | dto | 63 |  |
-| `category.dto.ts` | dto | 68 |  |
-| `product-query.dto.ts` | dto | 88 |  |
-| `product.dto.ts` | dto | 253 |  |
-
-### `apps/api/src/modules/crm` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `crm.controller.ts` | controller | 199 |  |
-| `crm.module.ts` | nest module | 15 |  |
-| `crm.service.ts` | service | 526 |  |
+| `contact-import.service.spec.ts` | unit test | 81 |  |
+| `contact-import.service.ts` | service | 187 |  |
+| `crm.controller.ts` | controller | 238 |  |
+| `crm.module.ts` | nest module | 39 |  |
+| `crm.service.ts` | service | 556 |  |
 | `order.subscriber.ts` | event subscriber | 87 |  |
+| `rfm-scoring.cron.spec.ts` | unit test | 44 |  |
+| `rfm-scoring.cron.ts` | scheduled job | 47 |  |
+| `rto-contact.listener.ts` | event subscriber | 33 |  |
+| `segments.controller.ts` | controller | 48 |  |
+| `segments.service.spec.ts` | unit test | 105 |  |
+| `segments.service.ts` | service | 69 |  |
 
-### `apps/api/src/modules/crm/dto` (1)
+### `apps/api/src/modules/customers/crm/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `crm.dto.ts` | dto | 195 |  |
+| `segment.dto.ts` | dto | 42 |  |
 
-### `apps/api/src/modules/crm/email-inbox` (5)
+### `apps/api/src/modules/customers/crm/email-inbox` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -801,149 +1381,77 @@ All 493 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (10)
+### `apps/api/src/modules/customers/crm/whatsapp-assistant` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `finance.controller.ts` | controller | 112 |  |
-| `finance.cron.spec.ts` | unit test | 69 |  |
-| `finance.cron.ts` | scheduled job | 36 |  |
-| `finance.listener.spec.ts` | unit test | 48 |  |
-| `finance.listener.ts` | event subscriber | 27 |  |
-| `finance.module.ts` | nest module | 13 |  |
-| `finance.service.ts` | service | 558 |  |
-| `finance.spec.ts` | unit test | 522 |  |
-| `order-economics.service.spec.ts` | unit test | 216 |  |
-| `order-economics.service.ts` | service | 137 |  |
+| `whatsapp-assistant.controller.spec.ts` | unit test | 64 |  |
+| `whatsapp-assistant.controller.ts` | controller | 106 |  |
+| `whatsapp-assistant.dto.ts` | dto | 24 |  |
+| `whatsapp-assistant.service.spec.ts` | unit test | 312 |  |
+| `whatsapp-assistant.service.ts` | service | 427 |  |
+| `whatsapp-copy.spec.ts` | unit test | 31 |  |
+| `whatsapp-copy.ts` | module | 48 |  |
 
-### `apps/api/src/modules/finance/dto` (2)
+### `apps/api/src/modules/customers/notification-preferences` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `expense-category.dto.ts` | dto | 35 |  |
-| `expense.dto.ts` | dto | 107 |  |
+| `notification-preferences.controller.ts` | controller | 29 |  |
+| `notification-preferences.module.ts` | nest module | 18 |  |
 
-### `apps/api/src/modules/identity-verification` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `identity-verification-provider.ts` | module | 76 | Extension point: identity-verification providers. |
-| `identity-verification.controller.ts` | controller | 51 |  |
-| `identity-verification.module.ts` | nest module | 11 |  |
-| `identity-verification.service.ts` | service | 149 |  |
-
-### `apps/api/src/modules/identity-verification/dto` (1)
+### `apps/api/src/modules/customers/notification-preferences/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `submit-otp.dto.ts` | dto | 8 |  |
+| `notification-preference.dto.ts` | dto | 31 |  |
 
-### `apps/api/src/modules/identity-verification/providers` (2)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `nid-callback-verification.spec.ts` | unit test | 123 |  |
-| `nid.provider.ts` | module | 176 |  |
-
-### `apps/api/src/modules/inventory` (14)
+### `apps/api/src/modules/customers/notify` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 95 |  |
-| `inventory.cron.ts` | scheduled job | 124 |  |
-| `inventory.listener.spec.ts` | unit test | 70 |  |
-| `inventory.listener.ts` | event subscriber | 61 |  |
-| `inventory.module.ts` | nest module | 18 |  |
-| `inventory.service.spec.ts` | unit test | 442 |  |
-| `inventory.service.ts` | service | 576 |  |
-| `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
-| `stock-count.service.spec.ts` | unit test | 95 |  |
-| `stock-count.service.ts` | service | 233 |  |
-| `stock-variance.controller.ts` | controller | 30 |  |
-| `stock-variance.service.spec.ts` | unit test | 59 |  |
-| `stock-variance.service.ts` | service | 39 |  |
+| `audience.service.spec.ts` | unit test | 83 |  |
+| `audience.service.ts` | service | 114 |  |
+| `bulletin-notification.listener.spec.ts` | unit test | 67 |  |
+| `bulletin-notification.listener.ts` | event subscriber | 44 |  |
+| `bulletins.controller.ts` | controller | 63 |  |
+| `bulletins.service.spec.ts` | unit test | 167 |  |
+| `bulletins.service.ts` | service | 154 |  |
+| `escalation-rule.controller.ts` | controller | 38 |  |
+| `escalation-rule.service.spec.ts` | unit test | 33 |  |
+| `escalation-rule.service.ts` | service | 69 |  |
+| `escalation.cron.spec.ts` | unit test | 104 |  |
+| `escalation.cron.ts` | scheduled job | 135 |  |
+| `meetings.controller.ts` | controller | 60 |  |
+| `meetings.service.spec.ts` | unit test | 95 |  |
+| `meetings.service.ts` | service | 156 |  |
+| `notify.controller.ts` | controller | 39 |  |
+| `notify.module.ts` | nest module | 52 |  |
+| `notify.service.spec.ts` | unit test | 138 |  |
+| `notify.service.ts` | service | 186 |  |
 
-### `apps/api/src/modules/inventory/dto` (2)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `inventory.dto.ts` | dto | 31 |  |
-| `stock-variance.dto.ts` | dto | 9 |  |
-
-### `apps/api/src/modules/marketing` (5)
+### `apps/api/src/modules/customers/notify/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `marketing-automation.cron.spec.ts` | unit test | 299 |  |
-| `marketing-automation.cron.ts` | scheduled job | 347 |  |
-| `marketing-settings.service.ts` | service | 71 |  |
-| `marketing.controller.ts` | controller | 26 |  |
-| `marketing.module.ts` | nest module | 11 |  |
+| `notify.dto.ts` | dto | 175 |  |
 
-### `apps/api/src/modules/marketing/dto` (1)
+### `apps/api/src/modules/customers/onsitemessages` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `marketing-settings.dto.ts` | dto | 38 |  |
+| `onsite-messages.controller.ts` | controller | 95 |  |
+| `onsite-messages.module.ts` | nest module | 11 |  |
+| `onsite-messages.service.spec.ts` | unit test | 138 |  |
+| `onsite-messages.service.ts` | service | 205 |  |
 
-### `apps/api/src/modules/measurements` (5)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `garment-fields-seed.spec.ts` | unit test | 64 |  |
-| `measurements-admin.service.ts` | service | 283 |  |
-| `measurements.controller.ts` | controller | 137 |  |
-| `measurements.module.ts` | nest module | 16 |  |
-| `measurements.service.ts` | service | 204 |  |
-
-### `apps/api/src/modules/measurements/dto` (1)
+### `apps/api/src/modules/customers/onsitemessages/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `measurements.dto.ts` | dto | 236 |  |
+| `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (9)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `backorder.listener.spec.ts` | unit test | 84 |  |
-| `backorder.listener.ts` | event subscriber | 70 |  |
-| `notification.subscriber.ts` | event subscriber | 259 |  |
-| `order-replication.listener.spec.ts` | unit test | 54 |  |
-| `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 233 |  |
-| `orders.controller.ts` | controller | 148 |  |
-| `orders.module.ts` | nest module | 28 |  |
-| `orders.service.ts` | service | 1114 |  |
-
-### `apps/api/src/modules/orders/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `order.dto.ts` | dto | 145 |  |
-
-### `apps/api/src/modules/organization` (6)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `nodes.service.spec.ts` | unit test | 113 |  |
-| `nodes.service.ts` | service | 95 |  |
-| `organization.controller.ts` | controller | 131 |  |
-| `organization.module.ts` | nest module | 23 |  |
-| `organization.service.spec.ts` | unit test | 375 |  |
-| `organization.service.ts` | service | 291 |  |
-
-### `apps/api/src/modules/organization/dto` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `admin-scope.dto.ts` | dto | 34 |  |
-| `brand-policy.dto.ts` | dto | 21 |  |
-| `node.dto.ts` | dto | 19 |  |
-| `organization-policy.dto.ts` | dto | 10 |  |
-
-### `apps/api/src/modules/parties` (4)
+### `apps/api/src/modules/customers/parties` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -952,63 +1460,1099 @@ All 493 tracked files in `apps/api`, by directory.
 | `parties.service.spec.ts` | unit test | 129 |  |
 | `parties.service.ts` | service | 148 |  |
 
-### `apps/api/src/modules/parties/dto` (2)
+### `apps/api/src/modules/customers/parties/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `party-role.const.ts` | dto | 3 | Mirrors the Prisma PartyRoleName enum — kept as a plain array so DTOs can validate against it without importing the gen… |
 | `party.dto.ts` | dto | 44 |  |
 
-### `apps/api/src/modules/payments` (5)
+### `apps/api/src/modules/customers/support` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `customer-support.controller.ts` | controller | 114 |  |
+| `customer-support.service.spec.ts` | unit test | 242 |  |
+| `customer-support.service.ts` | service | 318 |  |
+| `support-handlers.service.spec.ts` | unit test | 63 |  |
+| `support-handlers.service.ts` | service | 68 |  |
+| `support-ticket-action.source.spec.ts` | unit test | 114 |  |
+| `support-ticket-action.source.ts` | module | 195 |  |
+| `support-tickets.controller.ts` | controller | 63 |  |
+| `support-tickets.service.spec.ts` | unit test | 212 |  |
+| `support-tickets.service.ts` | service | 189 |  |
+| `support.module.ts` | nest module | 38 |  |
+
+### `apps/api/src/modules/customers/support/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `customer-support.dto.ts` | dto | 48 |  |
+| `support.dto.ts` | dto | 39 |  |
+
+### `apps/api/src/modules/merchandising/catalog` (30)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ai-suggestions.controller.ts` | controller | 79 |  |
+| `ai-suggestions.service.spec.ts` | unit test | 314 |  |
+| `ai-suggestions.service.ts` | service | 352 |  |
+| `brand-admin.service.ts` | service | 170 |  |
+| `bundles.service.spec.ts` | unit test | 250 |  |
+| `bundles.service.ts` | service | 279 |  |
+| `catalog-admin.controller.ts` | controller | 358 |  |
+| `catalog-options-admin.controller.ts` | controller | 105 |  |
+| `catalog.controller.ts` | controller | 51 |  |
+| `catalog.module.ts` | nest module | 64 |  |
+| `catalog.service.ts` | service | 379 |  |
+| `category-admin.service.ts` | service | 192 |  |
+| `category-preset.service.spec.ts` | unit test | 100 |  |
+| `category-preset.service.ts` | service | 137 |  |
+| `import-assistant.service.spec.ts` | unit test | 387 |  |
+| `import-assistant.service.ts` | service | 392 |  |
+| `option-template-admin.service.ts` | service | 125 |  |
+| `product-admin.service.spec.ts` | unit test | 109 |  |
+| `product-admin.service.ts` | service | 751 |  |
+| `product-import.service.spec.ts` | unit test | 77 |  |
+| `product-import.service.ts` | service | 510 |  |
+| `product-option-admin.service.ts` | service | 248 |  |
+| `product-replication.listener.spec.ts` | unit test | 120 |  |
+| `product-replication.listener.ts` | event subscriber | 77 |  |
+| `publish-gate.ts` | module | 84 |  |
+| `redirect-admin.controller.ts` | controller | 78 |  |
+| `redirect-guard.ts` | module | 48 | WO-3.9 (03-variants-sku-seo.md) — the loop/chain guard, as a pure function so it can be dry-run and unit tested without… |
+| `redirect.service.ts` | service | 159 |  |
+| `seo-health.service.ts` | service | 64 |  |
+| `sync-option-model.ts` | module | 168 |  |
+
+### `apps/api/src/modules/merchandising/catalog/dto` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `brand.dto.ts` | dto | 63 |  |
+| `bundle.dto.ts` | dto | 37 |  |
+| `category.dto.ts` | dto | 68 |  |
+| `option.dto.ts` | dto | 103 |  |
+| `product-query.dto.ts` | dto | 88 |  |
+| `product.dto.ts` | dto | 335 |  |
+| `redirect.dto.ts` | dto | 23 |  |
+
+### `apps/api/src/modules/merchandising/collections` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `collection-rule-engine.ts` | module | 56 |  |
+| `collections.controller.ts` | controller | 97 |  |
+| `collections.module.ts` | nest module | 11 |  |
+| `collections.service.spec.ts` | unit test | 139 |  |
+| `collections.service.ts` | service | 259 |  |
+
+### `apps/api/src/modules/merchandising/collections/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `collections.dto.ts` | dto | 126 |  |
+
+### `apps/api/src/modules/merchandising/content` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `content-sanitizer.ts` | module | 82 |  |
+| `content.controller.ts` | controller | 182 |  |
+| `content.module.ts` | nest module | 11 |  |
+| `content.service.spec.ts` | unit test | 140 |  |
+| `content.service.ts` | service | 405 |  |
+
+### `apps/api/src/modules/merchandising/content/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `content.dto.ts` | dto | 398 |  |
+
+### `apps/api/src/modules/merchandising/custom-fields` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `custom-fields.controller.ts` | controller | 76 |  |
+| `custom-fields.module.ts` | nest module | 18 |  |
+| `custom-fields.service.spec.ts` | unit test | 118 |  |
+| `custom-fields.service.ts` | service | 146 |  |
+
+### `apps/api/src/modules/merchandising/custom-fields/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `custom-field.dto.ts` | dto | 44 |  |
+
+### `apps/api/src/modules/merchandising/embeds` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `embed-widgets.controller.ts` | controller | 63 |  |
+| `embed-widgets.service.spec.ts` | unit test | 110 |  |
+| `embed-widgets.service.ts` | service | 73 |  |
+| `embeds.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/modules/merchandising/embeds/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `embedded-widget.dto.ts` | dto | 37 |  |
+
+### `apps/api/src/modules/merchandising/entity-attributes` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `entity-attributes.controller.ts` | controller | 49 |  |
+| `entity-attributes.module.ts` | nest module | 20 |  |
+| `entity-attributes.service.spec.ts` | unit test | 82 |  |
+| `entity-attributes.service.ts` | service | 80 |  |
+| `supplier-deleted.listener.spec.ts` | unit test | 14 |  |
+| `supplier-deleted.listener.ts` | event subscriber | 29 |  |
+
+### `apps/api/src/modules/merchandising/entity-attributes/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `entity-attribute.dto.ts` | dto | 30 |  |
+
+### `apps/api/src/modules/merchandising/fragments` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `fragments.controller.ts` | controller | 72 |  |
+| `fragments.module.ts` | nest module | 19 |  |
+| `fragments.service.spec.ts` | unit test | 133 |  |
+| `fragments.service.ts` | service | 119 |  |
+
+### `apps/api/src/modules/merchandising/fragments/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `fragment.dto.ts` | dto | 60 |  |
+
+### `apps/api/src/modules/merchandising/marketing` (9)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `campaign-dispatch.cron.ts` | scheduled job | 34 |  |
+| `campaigns.controller.ts` | controller | 105 |  |
+| `campaigns.service.spec.ts` | unit test | 126 |  |
+| `campaigns.service.ts` | service | 263 |  |
+| `marketing-automation.cron.spec.ts` | unit test | 399 |  |
+| `marketing-automation.cron.ts` | scheduled job | 543 |  |
+| `marketing-settings.service.ts` | service | 71 |  |
+| `marketing.controller.ts` | controller | 41 |  |
+| `marketing.module.ts` | nest module | 14 |  |
+
+### `apps/api/src/modules/merchandising/marketing/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `campaign.dto.ts` | dto | 49 |  |
+| `marketing-settings.dto.ts` | dto | 38 |  |
+
+### `apps/api/src/modules/merchandising/metadata-forms` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `metadata-forms.controller.ts` | controller | 34 |  |
+| `metadata-forms.module.ts` | nest module | 17 |  |
+| `metadata-forms.service.spec.ts` | unit test | 70 |  |
+| `metadata-forms.service.ts` | service | 53 |  |
+
+### `apps/api/src/modules/merchandising/metadata-forms/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `form-metadata.dto.ts` | dto | 45 |  |
+
+### `apps/api/src/modules/merchandising/recommendations` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `recommendations.controller.ts` | controller | 69 |  |
+| `recommendations.cron.spec.ts` | unit test | 177 |  |
+| `recommendations.cron.ts` | scheduled job | 148 |  |
+| `recommendations.module.ts` | nest module | 16 |  |
+| `recommendations.service.spec.ts` | unit test | 228 |  |
+| `recommendations.service.ts` | service | 183 |  |
+
+### `apps/api/src/modules/merchandising/recommendations/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `recommendations.dto.ts` | dto | 17 |  |
+
+### `apps/api/src/modules/merchandising/search` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `search-embedding.cron.spec.ts` | unit test | 44 |  |
+| `search-embedding.cron.ts` | scheduled job | 34 |  |
+| `search-reindex.listener.spec.ts` | unit test | 34 |  |
+| `search-reindex.listener.ts` | event subscriber | 33 |  |
+| `search.controller.ts` | controller | 73 |  |
+| `search.module.ts` | nest module | 13 |  |
+| `search.service.spec.ts` | unit test | 331 |  |
+| `search.service.ts` | service | 419 |  |
+
+### `apps/api/src/modules/merchandising/search/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `search.dto.ts` | dto | 85 |  |
+
+### `apps/api/src/modules/money/accounting` (21)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `accounting.module.ts` | nest module | 46 |  |
+| `accounting.service.spec.ts` | unit test | 92 |  |
+| `accounting.service.ts` | service | 279 |  |
+| `asset-depreciation.controller.ts` | controller | 50 |  |
+| `asset-depreciation.cron.ts` | scheduled job | 24 |  |
+| `asset-depreciation.service.spec.ts` | unit test | 376 |  |
+| `asset-depreciation.service.ts` | service | 295 |  |
+| `chart-of-accounts.ts` | module | 127 |  |
+| `consolidation.controller.ts` | controller | 38 |  |
+| `consolidation.service.spec.ts` | unit test | 128 |  |
+| `consolidation.service.ts` | service | 132 |  |
+| `fiscal-periods.controller.ts` | controller | 74 |  |
+| `fiscal-periods.service.spec.ts` | unit test | 312 |  |
+| `fiscal-periods.service.ts` | service | 196 |  |
+| `gl-reports.controller.ts` | controller | 77 |  |
+| `gl-reports.service.spec.ts` | unit test | 174 |  |
+| `gl-reports.service.ts` | service | 298 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 790 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 771 |  |
+| `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
+| `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
+
+### `apps/api/src/modules/money/accounting/dto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `asset-depreciation.dto.ts` | dto | 53 |  |
+| `fiscal-period.dto.ts` | dto | 38 |  |
+| `gl-reports.dto.ts` | dto | 24 |  |
+
+### `apps/api/src/modules/money/analytics` (18)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `analytics.category-velocity.spec.ts` | unit test | 139 |  |
+| `analytics.comparison.spec.ts` | unit test | 314 |  |
+| `analytics.controller.ts` | controller | 253 |  |
+| `analytics.customers.spec.ts` | unit test | 171 |  |
+| `analytics.inventory.spec.ts` | unit test | 199 |  |
+| `analytics.lifecycle.spec.ts` | unit test | 118 |  |
+| `analytics.metrics.spec.ts` | unit test | 210 |  |
+| `analytics.metrics.ts` | module | 454 |  |
+| `analytics.module.ts` | nest module | 30 |  |
+| `analytics.orders.spec.ts` | unit test | 204 |  |
+| `analytics.products.spec.ts` | unit test | 265 |  |
+| `analytics.purchasing.spec.ts` | unit test | 388 |  |
+| `analytics.sales.spec.ts` | unit test | 157 |  |
+| `analytics.service.ts` | service | 2593 |  |
+| `analytics.summary.spec.ts` | unit test | 97 |  |
+| `analytics.workshop.spec.ts` | unit test | 185 |  |
+| `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
+| `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
+
+### `apps/api/src/modules/money/analytics/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `analytics.dto.ts` | dto | 10 |  |
+| `cards.dto.ts` | dto | 44 |  |
+
+### `apps/api/src/modules/money/bankfacilities` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bankfacilities.controller.ts` | controller | 88 |  |
+| `bankfacilities.cron.ts` | scheduled job | 24 |  |
+| `bankfacilities.module.ts` | nest module | 22 |  |
+| `bankfacilities.service.spec.ts` | unit test | 288 |  |
+| `bankfacilities.service.ts` | service | 309 |  |
+
+### `apps/api/src/modules/money/bankfacilities/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bank-facility.dto.ts` | dto | 100 |  |
+
+### `apps/api/src/modules/money/finance` (18)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `expense-import.service.spec.ts` | unit test | 75 |  |
+| `expense-import.service.ts` | service | 179 |  |
+| `expense-replication.listener.spec.ts` | unit test | 61 |  |
+| `expense-replication.listener.ts` | event subscriber | 50 |  |
+| `finance-margins.spec.ts` | unit test | 161 |  |
+| `finance.controller.ts` | controller | 187 |  |
+| `finance.cron.spec.ts` | unit test | 69 |  |
+| `finance.cron.ts` | scheduled job | 36 |  |
+| `finance.listener.spec.ts` | unit test | 48 |  |
+| `finance.listener.ts` | event subscriber | 27 |  |
+| `finance.metrics.spec.ts` | unit test | 63 |  |
+| `finance.metrics.ts` | module | 125 |  |
+| `finance.module.ts` | nest module | 26 |  |
+| `finance.service.ts` | service | 675 |  |
+| `finance.spec.ts` | unit test | 522 |  |
+| `order-economics.service.spec.ts` | unit test | 306 |  |
+| `order-economics.service.ts` | service | 205 |  |
+| `rto-expense.listener.ts` | event subscriber | 47 |  |
+
+### `apps/api/src/modules/money/finance/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `expense-category.dto.ts` | dto | 35 |  |
+| `expense.dto.ts` | dto | 130 |  |
+
+### `apps/api/src/modules/money/receivables` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `credit-notes.service.ts` | service | 188 |  |
+| `credit-terms.service.ts` | service | 165 |  |
+| `debit-notes.service.ts` | service | 130 |  |
+| `dunning.cron.spec.ts` | unit test | 120 |  |
+| `dunning.cron.ts` | scheduled job | 113 |  |
+| `dunning.service.spec.ts` | unit test | 70 |  |
+| `dunning.service.ts` | service | 48 |  |
+| `receivables.controller.ts` | controller | 200 |  |
+| `receivables.integration.spec.ts` | unit test | 338 |  |
+| `receivables.module.ts` | nest module | 38 |  |
+| `statements.service.spec.ts` | unit test | 63 |  |
+| `statements.service.ts` | service | 102 |  |
+
+### `apps/api/src/modules/money/receivables/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `receivables.dto.ts` | dto | 94 |  |
+
+### `apps/api/src/modules/money/reports` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `csv.util.ts` | module | 15 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
+| `reports-finance-exports.spec.ts` | unit test | 72 |  |
+| `reports.controller.ts` | controller | 135 |  |
+| `reports.module.ts` | nest module | 10 |  |
+| `reports.service.ts` | service | 651 |  |
+
+### `apps/api/src/modules/money/reports/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `reports.dto.ts` | dto | 33 |  |
+
+### `apps/api/src/modules/money/settlements` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settlement-connector.ts` | module | 30 | Extension point: financial institution settlement connectors (finance-accounting/49-financial-institution-settlement-pa… |
+| `settlements.controller.ts` | controller | 79 |  |
+| `settlements.cron.ts` | scheduled job | 26 |  |
+| `settlements.module.ts` | nest module | 23 |  |
+| `settlements.service.spec.ts` | unit test | 282 |  |
+| `settlements.service.ts` | service | 230 |  |
+
+### `apps/api/src/modules/money/settlements/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settlement.dto.ts` | dto | 27 |  |
+
+### `apps/api/src/modules/money/tax` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tax.controller.ts` | controller | 74 |  |
+| `tax.module.ts` | nest module | 13 |  |
+| `tax.service.ts` | service | 189 |  |
+
+### `apps/api/src/modules/money/tax/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tax.dto.ts` | dto | 56 |  |
+
+### `apps/api/src/modules/people/attendance` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `attendance-device-punch.controller.ts` | controller | 50 |  |
+| `attendance-device.controller.ts` | controller | 57 |  |
+| `attendance-device.service.spec.ts` | unit test | 146 |  |
+| `attendance-device.service.ts` | service | 116 |  |
+| `attendance-partition.cron.ts` | scheduled job | 57 |  |
+| `attendance-time.spec.ts` | unit test | 80 |  |
+| `attendance-time.ts` | module | 50 |  |
+| `attendance.controller.ts` | controller | 130 |  |
+| `attendance.module.ts` | nest module | 25 |  |
+| `attendance.service.spec.ts` | unit test | 324 |  |
+| `attendance.service.ts` | service | 507 |  |
+
+### `apps/api/src/modules/people/attendance/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `attendance-device.dto.ts` | dto | 34 |  |
+| `attendance.dto.ts` | dto | 83 |  |
+
+### `apps/api/src/modules/people/hr` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `assets.controller.ts` | controller | 73 |  |
+| `assets.service.spec.ts` | unit test | 211 |  |
+| `assets.service.ts` | service | 149 |  |
+| `hr.module.ts` | nest module | 21 |  |
+| `people.controller.ts` | controller | 87 |  |
+| `people.service.spec.ts` | unit test | 188 |  |
+| `people.service.ts` | service | 272 |  |
+
+### `apps/api/src/modules/people/hr/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `asset.dto.ts` | dto | 49 |  |
+| `people.dto.ts` | dto | 60 |  |
+
+### `apps/api/src/modules/people/organization` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `nodes.service.spec.ts` | unit test | 131 |  |
+| `nodes.service.ts` | service | 108 |  |
+| `organization.controller.ts` | controller | 159 |  |
+| `organization.module.ts` | nest module | 23 |  |
+| `organization.service.spec.ts` | unit test | 504 |  |
+| `organization.service.ts` | service | 347 |  |
+
+### `apps/api/src/modules/people/organization/dto` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `admin-scope.dto.ts` | dto | 34 |  |
+| `brand-policy.dto.ts` | dto | 21 |  |
+| `node-brand.dto.ts` | dto | 11 |  |
+| `node.dto.ts` | dto | 25 |  |
+| `organization-policy.dto.ts` | dto | 10 |  |
+| `policy-quarantine.dto.ts` | dto | 11 |  |
+
+### `apps/api/src/modules/people/orgstructure` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-access.cron.ts` | scheduled job | 25 |  |
+| `org-unit-grant.controller.ts` | controller | 52 |  |
+| `org-unit-grant.service.spec.ts` | unit test | 291 |  |
+| `org-unit-grant.service.ts` | service | 347 |  |
+| `org-unit.controller.ts` | controller | 79 |  |
+| `org-unit.service.spec.ts` | unit test | 185 |  |
+| `org-unit.service.ts` | service | 300 |  |
+| `orgstructure.module.ts` | nest module | 14 |  |
+
+### `apps/api/src/modules/people/orgstructure/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-unit-grant.dto.ts` | dto | 29 |  |
+| `org-unit.dto.ts` | dto | 45 |  |
+
+### `apps/api/src/modules/people/payroll` (14)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `leave-accrual.cron.spec.ts` | unit test | 73 |  |
+| `leave-accrual.cron.ts` | scheduled job | 45 |  |
+| `leave-request-action.source.spec.ts` | unit test | 84 |  |
+| `leave-request-action.source.ts` | module | 55 |  |
+| `leave.controller.ts` | controller | 81 |  |
+| `leave.service.spec.ts` | unit test | 224 |  |
+| `leave.service.ts` | service | 175 |  |
+| `pay-run.controller.ts` | controller | 73 |  |
+| `pay-run.service.spec.ts` | unit test | 285 |  |
+| `pay-run.service.ts` | service | 254 |  |
+| `payroll.controller.ts` | controller | 78 |  |
+| `payroll.module.ts` | nest module | 24 |  |
+| `payroll.service.spec.ts` | unit test | 182 |  |
+| `payroll.service.ts` | service | 159 |  |
+
+### `apps/api/src/modules/people/payroll/dto` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `compensation-rate.dto.ts` | dto | 40 |  |
+| `leave.dto.ts` | dto | 35 |  |
+| `pay-run-adjustment.dto.ts` | dto | 25 |  |
+| `pay-run.dto.ts` | dto | 19 |  |
+
+### `apps/api/src/modules/people/tasks` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `task-event-intake.service.spec.ts` | unit test | 81 |  |
+| `task-event-intake.service.ts` | service | 58 |  |
+| `task-leaver.listener.spec.ts` | unit test | 77 |  |
+| `task-leaver.listener.ts` | event subscriber | 62 |  |
+| `task-stage.service.spec.ts` | unit test | 54 |  |
+| `task-stage.service.ts` | service | 70 |  |
+| `task.controller.ts` | controller | 108 |  |
+| `task.service.spec.ts` | unit test | 350 |  |
+| `task.service.ts` | service | 480 |  |
+| `tasks.module.spec.ts` | unit test | 59 |  |
+| `tasks.module.ts` | nest module | 30 |  |
+
+### `apps/api/src/modules/people/tasks/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `task.dto.ts` | dto | 80 |  |
+
+### `apps/api/src/modules/sales/accounts` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `accounts.controller.ts` | controller | 174 |  |
+| `accounts.module.ts` | nest module | 33 |  |
+| `accounts.service.spec.ts` | unit test | 248 |  |
+| `accounts.service.ts` | service | 428 |  |
+
+### `apps/api/src/modules/sales/accounts/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `accounts.dto.ts` | dto | 49 |  |
+
+### `apps/api/src/modules/sales/addresses` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `addresses.controller.ts` | controller | 50 |  |
+| `addresses.module.ts` | nest module | 10 |  |
+| `addresses.service.ts` | service | 86 |  |
+
+### `apps/api/src/modules/sales/addresses/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `address.dto.ts` | dto | 113 |  |
+
+### `apps/api/src/modules/sales/auction` (39)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `auction-bid.controller.ts` | controller | 97 |  |
+| `auction-bidder.controller.ts` | controller | 75 |  |
+| `auction-bidder.service.spec.ts` | unit test | 575 |  |
+| `auction-bidder.service.ts` | service | 558 |  |
+| `auction-bidding.service.spec.ts` | unit test | 719 |  |
+| `auction-lifecycle.cron.ts` | scheduled job | 41 |  |
+| `auction-lifecycle.service.spec.ts` | unit test | 110 |  |
+| `auction-lifecycle.service.ts` | service | 272 |  |
+| `auction-lock.ts` | module | 18 |  |
+| `auction-lot-image.service.spec.ts` | unit test | 194 |  |
+| `auction-lot-image.service.ts` | service | 184 |  |
+| `auction-public.controller.spec.ts` | unit test | 74 |  |
+| `auction-public.controller.ts` | controller | 88 |  |
+| `auction-public.service.spec.ts` | unit test | 483 |  |
+| `auction-public.service.ts` | service | 442 |  |
+| `auction-realtime.service.spec.ts` | unit test | 301 |  |
+| `auction-realtime.service.ts` | service | 315 |  |
+| `auction-settlement.controller.spec.ts` | unit test | 33 |  |
+| `auction-settlement.controller.ts` | controller | 56 |  |
+| `auction-settlement.cron.ts` | scheduled job | 39 |  |
+| `auction-settlement.service.ts` | service | 770 |  |
+| `auction-settlement.subscriber.ts` | event subscriber | 38 |  |
+| `auction.controller.ts` | controller | 170 |  |
+| `auction.module.ts` | nest module | 44 |  |
+| `auction.service.spec.ts` | unit test | 539 |  |
+| `auction.service.ts` | service | 1152 |  |
+| `bidder-provision.ts` | module | 30 |  |
+| `bidder-trust.spec.ts` | unit test | 237 |  |
+| `bidder-trust.ts` | module | 205 | The pure half of bidder trust (launchpad-apps/234-auction-app.md §8, §15, WO-234.5): who may bid, how a registration is… |
+| `bidding.spec.ts` | unit test | 315 |  |
+| `bidding.ts` | module | 252 |  |
+| `lot-live.spec.ts` | unit test | 99 |  |
+| `lot-live.ts` | module | 104 | What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4). |
+| `lot-photos.spec.ts` | unit test | 51 |  |
+| `lot-photos.ts` | module | 38 |  |
+| `settlement-messages.spec.ts` | unit test | 42 |  |
+| `settlement-messages.ts` | module | 70 | What a winner is told, in their language (WO-234.6). |
+| `settlement.spec.ts` | unit test | 129 |  |
+| `settlement.ts` | module | 98 | What a won lot owes, and what may happen to the debt next (doc 234 §9, WO-234.6). |
+
+### `apps/api/src/modules/sales/auction/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `auction.dto.ts` | dto | 376 |  |
+
+### `apps/api/src/modules/sales/cart` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `cart.controller.ts` | controller | 217 |  |
+| `cart.guest-contact.spec.ts` | unit test | 89 |  |
+| `cart.module.ts` | nest module | 22 |  |
+| `cart.service.spec.ts` | unit test | 68 |  |
+| `cart.service.ts` | service | 721 |  |
+| `reorder.service.ts` | service | 69 |  |
+
+### `apps/api/src/modules/sales/cart/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `cart.dto.ts` | dto | 150 |  |
+
+### `apps/api/src/modules/sales/fulfilment` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `courier-provider.ts` | module | 59 | Extension point: courier providers. |
+| `fulfilment.controller.ts` | controller | 94 |  |
+| `fulfilment.cron.ts` | scheduled job | 80 |  |
+| `fulfilment.module.ts` | nest module | 48 |  |
+| `fulfilment.service.ts` | service | 470 |  |
+| `fulfilment.spec.ts` | unit test | 128 |  |
+| `return-notification.subscriber.ts` | event subscriber | 69 |  |
+| `returns.controller.ts` | controller | 160 |  |
+| `returns.service.ts` | service | 405 |  |
+| `returns.spec.ts` | unit test | 185 |  |
+| `shipping-migration.spec.ts` | unit test | 90 |  |
+| `shipping.controller.ts` | controller | 114 |  |
+| `shipping.service.ts` | service | 328 |  |
+
+### `apps/api/src/modules/sales/fulfilment/dto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `fulfilment.dto.ts` | dto | 93 |  |
+| `returns.dto.ts` | dto | 124 |  |
+| `shipping.dto.ts` | dto | 331 |  |
+
+### `apps/api/src/modules/sales/fulfilment/providers` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `manual.provider.ts` | module | 49 |  |
+
+### `apps/api/src/modules/sales/giftcards` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `giftcards-account.controller.ts` | controller | 36 |  |
+| `giftcards.controller.ts` | controller | 67 |  |
+| `giftcards.module.ts` | nest module | 15 |  |
+| `giftcards.service.ts` | service | 202 |  |
+| `store-credit-account.controller.ts` | controller | 27 |  |
+| `store-credit-reconcile.cron.ts` | scheduled job | 26 |  |
+| `store-credit.service.ts` | service | 162 |  |
+
+### `apps/api/src/modules/sales/giftcards/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `gift-card.dto.ts` | dto | 62 |  |
+| `store-credit.dto.ts` | dto | 21 |  |
+
+### `apps/api/src/modules/sales/loyalty` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty-admin.controller.ts` | controller | 46 |  |
+| `loyalty-order.listener.ts` | event subscriber | 45 |  |
+| `loyalty.controller.ts` | controller | 74 |  |
+| `loyalty.module.ts` | nest module | 15 |  |
+| `loyalty.service.ts` | service | 255 |  |
+
+### `apps/api/src/modules/sales/loyalty/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty.dto.ts` | dto | 52 |  |
+
+### `apps/api/src/modules/sales/measurements` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `garment-fields-seed.spec.ts` | unit test | 64 |  |
+| `measurements-admin.service.ts` | service | 283 |  |
+| `measurements.controller.ts` | controller | 166 |  |
+| `measurements.module.ts` | nest module | 19 |  |
+| `measurements.service.ts` | service | 204 |  |
+| `size-bias.listener.spec.ts` | unit test | 96 |  |
+| `size-bias.listener.ts` | event subscriber | 55 |  |
+| `size-bias.service.spec.ts` | unit test | 172 |  |
+| `size-bias.service.ts` | service | 115 |  |
+| `size-recommendation.service.spec.ts` | unit test | 143 |  |
+| `size-recommendation.service.ts` | service | 96 |  |
+
+### `apps/api/src/modules/sales/measurements/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `measurements.dto.ts` | dto | 233 |  |
+
+### `apps/api/src/modules/sales/orders` (20)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `auction-order-sink.ts` | module | 190 |  |
+| `backorder.listener.spec.ts` | unit test | 84 |  |
+| `backorder.listener.ts` | event subscriber | 70 |  |
+| `cod-risk.cron.spec.ts` | unit test | 84 |  |
+| `cod-risk.cron.ts` | scheduled job | 82 |  |
+| `cod-risk.service.spec.ts` | unit test | 105 |  |
+| `cod-risk.service.ts` | service | 86 |  |
+| `instalment-plan.controller.ts` | controller | 54 |  |
+| `instalment-plan.service.spec.ts` | unit test | 239 |  |
+| `instalment-plan.service.ts` | service | 228 |  |
+| `notification.subscriber.ts` | event subscriber | 259 |  |
+| `order-feed.source.spec.ts` | unit test | 77 |  |
+| `order-feed.source.ts` | module | 57 |  |
+| `order-replication.listener.spec.ts` | unit test | 54 |  |
+| `order-replication.listener.ts` | event subscriber | 53 |  |
+| `orders-pos.service.spec.ts` | unit test | 441 |  |
+| `orders.controller.ts` | controller | 155 |  |
+| `orders.module.ts` | nest module | 61 |  |
+| `orders.service.ts` | service | 1400 |  |
+| `shipment-status.listener.ts` | event subscriber | 80 |  |
+
+### `apps/api/src/modules/sales/orders/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `instalment-plan.dto.ts` | dto | 16 |  |
+| `order.dto.ts` | dto | 177 |  |
+
+### `apps/api/src/modules/sales/payments` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 |  |
-| `payment-provider.ts` | module | 73 | Extension point: payment providers. |
-| `payments.controller.ts` | controller | 117 |  |
-| `payments.module.ts` | nest module | 24 |  |
-| `payments.service.ts` | service | 353 |  |
+| `payment-feed.source.spec.ts` | unit test | 69 |  |
+| `payment-feed.source.ts` | module | 58 |  |
+| `payment-provider.ts` | module | 113 | Extension point: payment providers. |
+| `payments.controller.ts` | controller | 135 |  |
+| `payments.module.ts` | nest module | 39 |  |
+| `payments.service.spec.ts` | unit test | 91 |  |
+| `payments.service.ts` | service | 445 |  |
 
-### `apps/api/src/modules/payments/providers` (5)
+### `apps/api/src/modules/sales/payments/providers` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `account.provider.spec.ts` | unit test | 80 |  |
+| `account.provider.ts` | module | 83 |  |
 | `bank-transfer.provider.ts` | module | 54 |  |
 | `callback-verification.spec.ts` | unit test | 159 |  |
 | `cod.provider.ts` | module | 41 |  |
 | `easypaisa.provider.ts` | module | 184 |  |
+| `giftkarta.provider.ts` | module | 185 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
-### `apps/api/src/modules/pos` (16)
+### `apps/api/src/modules/sales/pos` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `pos-catalog.controller.ts` | controller | 26 |  |
-| `pos-catalog.service.spec.ts` | unit test | 59 |  |
-| `pos-catalog.service.ts` | service | 71 |  |
+| `pos-catalog.controller.ts` | controller | 32 |  |
+| `pos-catalog.service.spec.ts` | unit test | 88 |  |
+| `pos-catalog.service.ts` | service | 109 |  |
+| `pos-dashboard.controller.ts` | controller | 31 |  |
+| `pos-dashboard.service.spec.ts` | unit test | 70 |  |
+| `pos-dashboard.service.ts` | service | 86 |  |
+| `pos-parked-sales.controller.ts` | controller | 39 |  |
+| `pos-parked-sales.service.spec.ts` | unit test | 104 |  |
+| `pos-parked-sales.service.ts` | service | 66 |  |
 | `pos-receipts.controller.ts` | controller | 24 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 |  |
 | `pos-receipts.service.ts` | service | 94 |  |
-| `pos-sales.controller.ts` | controller | 24 |  |
-| `pos-sales.service.spec.ts` | unit test | 79 |  |
-| `pos-sales.service.ts` | service | 59 |  |
+| `pos-sales.controller.ts` | controller | 41 |  |
+| `pos-sales.service.spec.ts` | unit test | 173 |  |
+| `pos-sales.service.ts` | service | 106 |  |
 | `pos-shifts.controller.ts` | controller | 55 |  |
 | `pos-shifts.service.spec.ts` | unit test | 177 |  |
 | `pos-shifts.service.ts` | service | 139 |  |
-| `pos-terminals.controller.ts` | controller | 49 |  |
+| `pos-terminals.controller.ts` | controller | 51 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 |  |
 | `pos-terminals.service.ts` | service | 116 |  |
-| `pos.module.ts` | nest module | 44 |  |
+| `pos.module.ts` | nest module | 68 |  |
 
-### `apps/api/src/modules/pos/dto` (3)
+### `apps/api/src/modules/sales/pos/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `pos-sale.dto.ts` | dto | 40 |  |
+| `pos-parked-sale.dto.ts` | dto | 27 | pos-hardware/31 §3 — the same local-tuple `IsEnum` convention `pos-sale.dto.ts` |
+| `pos-sale.dto.ts` | dto | 156 |  |
 | `pos-shift.dto.ts` | dto | 44 |  |
 | `pos-terminal.dto.ts` | dto | 27 |  |
 
-### `apps/api/src/modules/production` (10)
+### `apps/api/src/modules/sales/pricing` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `pricing.controller.ts` | controller | 72 |  |
+| `pricing.module.ts` | nest module | 22 |  |
+| `pricing.service.spec.ts` | unit test | 212 |  |
+| `pricing.service.ts` | service | 255 |  |
+
+### `apps/api/src/modules/sales/pricing/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `pricing.dto.ts` | dto | 93 |  |
+
+### `apps/api/src/modules/sales/promotions` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `promotions-public.controller.ts` | controller | 49 |  |
+| `promotions.controller.ts` | controller | 92 |  |
+| `promotions.module.ts` | nest module | 12 |  |
+| `promotions.service.ts` | service | 526 |  |
+
+### `apps/api/src/modules/sales/promotions/dto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `discount.dto.ts` | dto | 151 |  |
+| `preview-checkout.dto.ts` | dto | 57 |  |
+| `promo-code.dto.ts` | dto | 82 |  |
+
+### `apps/api/src/modules/sales/reviews` (9)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `review-summary.listener.spec.ts` | unit test | 36 |  |
+| `review-summary.listener.ts` | event subscriber | 26 |  |
+| `review-summary.service.spec.ts` | unit test | 244 |  |
+| `review-summary.service.ts` | service | 188 |  |
+| `reviews-public.controller.ts` | controller | 57 |  |
+| `reviews.controller.ts` | controller | 26 |  |
+| `reviews.module.ts` | nest module | 14 |  |
+| `reviews.service.spec.ts` | unit test | 68 |  |
+| `reviews.service.ts` | service | 136 |  |
+
+### `apps/api/src/modules/sales/reviews/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `review.dto.ts` | dto | 67 |  |
+
+### `apps/api/src/modules/sales/stitching` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `design-options.service.ts` | service | 320 |  |
+| `jobs.service.ts` | service | 500 |  |
+| `order.subscriber.ts` | event subscriber | 126 |  |
+| `stitching-orders.service.ts` | service | 283 |  |
+| `stitching.controller.ts` | controller | 275 |  |
+| `stitching.module.ts` | nest module | 21 |  |
+| `stitching.service.ts` | service | 234 |  |
+
+### `apps/api/src/modules/sales/stitching/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `stitching.dto.ts` | dto | 401 |  |
+
+### `apps/api/src/modules/sales/tracking` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tracking.controller.ts` | controller | 30 |  |
+| `tracking.module.ts` | nest module | 10 |  |
+| `tracking.service.ts` | service | 100 |  |
+
+### `apps/api/src/modules/sales/tracking/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tracking.dto.ts` | dto | 46 |  |
+
+### `apps/api/src/modules/sales/wallet` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `merchant-payable.controller.ts` | controller | 73 |  |
+| `merchant-payable.service.spec.ts` | unit test | 203 |  |
+| `merchant-payable.service.ts` | service | 237 |  |
+| `wallet-account.controller.ts` | controller | 41 |  |
+| `wallet-admin.controller.ts` | controller | 72 |  |
+| `wallet-credit-note.port.spec.ts` | unit test | 50 |  |
+| `wallet-credit-note.port.ts` | module | 110 |  |
+| `wallet.module.ts` | nest module | 41 |  |
+| `wallet.service.spec.ts` | unit test | 426 |  |
+| `wallet.service.ts` | service | 538 |  |
+
+### `apps/api/src/modules/sales/wallet/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `wallet.dto.ts` | dto | 87 |  |
+
+### `apps/api/src/modules/sales/wishlist` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `back-in-stock.listener.ts` | event subscriber | 76 |  |
+| `wishlist-admin.controller.ts` | controller | 19 |  |
+| `wishlist.controller.ts` | controller | 70 |  |
+| `wishlist.module.ts` | nest module | 13 |  |
+| `wishlist.service.ts` | service | 179 |  |
+
+### `apps/api/src/modules/sales/wishlist/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `wishlist.dto.ts` | dto | 30 |  |
+
+### `apps/api/src/modules/supply-chain/bom` (18)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bom-cards.metrics.spec.ts` | unit test | 61 |  |
+| `bom-cards.metrics.ts` | module | 126 |  |
+| `bom-production-replication.listener.spec.ts` | unit test | 62 |  |
+| `bom-production-replication.listener.ts` | event subscriber | 50 |  |
+| `bom.controller.ts` | controller | 242 |  |
+| `bom.listener.spec.ts` | unit test | 88 |  |
+| `bom.listener.ts` | event subscriber | 49 |  |
+| `bom.metrics.spec.ts` | unit test | 209 |  |
+| `bom.metrics.ts` | module | 131 |  |
+| `bom.module.ts` | nest module | 29 |  |
+| `bom.service.ts` | service | 47 |  |
+| `bom.spec.ts` | unit test | 536 |  |
+| `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
+| `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
+| `production.service.spec.ts` | unit test | 540 |  |
+| `production.service.ts` | service | 424 |  |
+| `raw-material.service.ts` | service | 218 |  |
+| `recipe.service.ts` | service | 501 |  |
+
+### `apps/api/src/modules/supply-chain/bom/dto` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `production-run.dto.ts` | dto | 54 |  |
+| `raw-material.dto.ts` | dto | 52 |  |
+| `raw-usage.dto.ts` | dto | 30 |  |
+| `recipe.dto.ts` | dto | 113 |  |
+
+### `apps/api/src/modules/supply-chain/inventory` (33)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `inventory.controller.ts` | controller | 76 |  |
+| `inventory.cron.spec.ts` | unit test | 348 |  |
+| `inventory.cron.ts` | scheduled job | 281 |  |
+| `inventory.listener.spec.ts` | unit test | 70 |  |
+| `inventory.listener.ts` | event subscriber | 61 |  |
+| `inventory.metrics.spec.ts` | unit test | 70 |  |
+| `inventory.metrics.ts` | module | 135 |  |
+| `inventory.module.ts` | nest module | 53 |  |
+| `inventory.service.spec.ts` | unit test | 541 |  |
+| `inventory.service.ts` | service | 626 |  |
+| `lot-allocation.spec.ts` | unit test | 62 |  |
+| `lot-allocation.ts` | module | 76 | 32-lots-batch-expiry-fefo.md §2. |
+| `lots.controller.ts` | controller | 53 |  |
+| `lots.service.spec.ts` | unit test | 149 |  |
+| `lots.service.ts` | service | 260 |  |
+| `markdown-suggestions.controller.ts` | controller | 37 |  |
+| `markdown-suggestions.service.spec.ts` | unit test | 160 |  |
+| `markdown-suggestions.service.ts` | service | 116 |  |
+| `serialized-units.controller.ts` | controller | 77 |  |
+| `serialized-units.service.spec.ts` | unit test | 152 |  |
+| `serialized-units.service.ts` | service | 254 |  |
+| `spot-check.controller.ts` | controller | 68 |  |
+| `spot-check.service.spec.ts` | unit test | 150 |  |
+| `spot-check.service.ts` | service | 228 |  |
+| `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
+| `stock-count.service.spec.ts` | unit test | 97 |  |
+| `stock-count.service.ts` | service | 233 |  |
+| `stock-variance.controller.ts` | controller | 36 |  |
+| `stock-variance.service.spec.ts` | unit test | 109 |  |
+| `stock-variance.service.ts` | service | 70 |  |
+| `suspicious-traffic.controller.ts` | controller | 18 |  |
+| `suspicious-traffic.service.spec.ts` | unit test | 69 |  |
+| `suspicious-traffic.service.ts` | service | 59 |  |
+
+### `apps/api/src/modules/supply-chain/inventory/dto` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `inventory.dto.ts` | dto | 31 |  |
+| `lots.dto.ts` | dto | 20 |  |
+| `markdown-suggestion.dto.ts` | dto | 13 |  |
+| `serialized-units.dto.ts` | dto | 36 |  |
+| `stock-variance.dto.ts` | dto | 9 |  |
+
+### `apps/api/src/modules/supply-chain/marketplace` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace-webhook.controller.spec.ts` | unit test | 20 |  |
+| `marketplace-webhook.controller.ts` | controller | 30 |  |
+| `marketplace-webhook.guard.spec.ts` | unit test | 38 |  |
+| `marketplace-webhook.guard.ts` | guard | 39 |  |
+| `marketplace.controller.ts` | controller | 49 |  |
+| `marketplace.module.ts` | nest module | 24 |  |
+| `marketplace.service.spec.ts` | unit test | 116 |  |
+| `marketplace.service.ts` | service | 147 |  |
+| `product-reference-sync.service.spec.ts` | unit test | 180 |  |
+| `product-reference-sync.service.ts` | service | 204 |  |
+| `product-references.controller.spec.ts` | unit test | 131 |  |
+| `product-references.controller.ts` | controller | 142 |  |
+
+### `apps/api/src/modules/supply-chain/marketplace/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace.dto.ts` | dto | 98 |  |
+| `product-reference.dto.ts` | dto | 113 |  |
+
+### `apps/api/src/modules/supply-chain/planning` (20)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `action-ranking.spec.ts` | unit test | 58 |  |
+| `action-ranking.ts` | module | 117 |  |
+| `dependency-graph.spec.ts` | unit test | 53 |  |
+| `dependency-graph.ts` | module | 99 |  |
+| `goods-received-lead-time.listener.spec.ts` | unit test | 54 |  |
+| `goods-received-lead-time.listener.ts` | event subscriber | 42 |  |
+| `liquidity-forecast.service.spec.ts` | unit test | 60 |  |
+| `liquidity-forecast.service.ts` | service | 103 |  |
+| `narration.service.spec.ts` | unit test | 53 |  |
+| `narration.service.ts` | service | 95 |  |
+| `online-stock.service.spec.ts` | unit test | 89 |  |
+| `online-stock.service.ts` | service | 102 |  |
+| `planning.controller.ts` | controller | 86 |  |
+| `planning.module.ts` | nest module | 41 |  |
+| `planning.service.spec.ts` | unit test | 48 |  |
+| `planning.service.ts` | service | 111 |  |
+| `propagation.spec.ts` | unit test | 52 |  |
+| `propagation.ts` | module | 104 |  |
+| `supplier-resilience.service.spec.ts` | unit test | 112 |  |
+| `supplier-resilience.service.ts` | service | 93 |  |
+
+### `apps/api/src/modules/supply-chain/planning/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `planning.dto.ts` | dto | 67 |  |
+
+### `apps/api/src/modules/supply-chain/production` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1023,205 +2567,309 @@ All 493 tracked files in `apps/api`, by directory.
 | `work-orders.service.spec.ts` | unit test | 188 |  |
 | `work-orders.service.ts` | service | 270 |  |
 
-### `apps/api/src/modules/production/dto` (2)
+### `apps/api/src/modules/supply-chain/production/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `bom.dto.ts` | dto | 24 |  |
 | `work-order.dto.ts` | dto | 26 |  |
 
-### `apps/api/src/modules/purchasing` (9)
+### `apps/api/src/modules/supply-chain/purchasing` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
+| `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
+| `partner-fact-applier.integration.spec.ts` | unit test | 314 |  |
+| `partner-fact-applier.service.spec.ts` | unit test | 277 |  |
+| `partner-fact-applier.service.ts` | service | 206 |  |
+| `partner-fact-plan.spec.ts` | unit test | 311 |  |
+| `partner-fact-plan.ts` | module | 230 |  |
+| `partner-fact.listener.spec.ts` | unit test | 31 |  |
+| `partner-fact.listener.ts` | event subscriber | 26 |  |
+| `purchase-order-feed.source.spec.ts` | unit test | 69 |  |
+| `purchase-order-feed.source.ts` | module | 62 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
-| `purchasing.cron.spec.ts` | unit test | 67 |  |
-| `purchasing.cron.ts` | scheduled job | 71 |  |
-| `purchasing.module.ts` | nest module | 18 |  |
-| `purchasing.service.ts` | service | 654 |  |
-| `purchasing.spec.ts` | unit test | 233 |  |
-| `reorder.listener.spec.ts` | unit test | 79 |  |
-| `reorder.listener.ts` | event subscriber | 51 |  |
-| `supplier-bill.spec.ts` | unit test | 230 |  |
+| `purchasing.cron.spec.ts` | unit test | 144 |  |
+| `purchasing.cron.ts` | scheduled job | 118 |  |
+| `purchasing.metrics.spec.ts` | unit test | 74 |  |
+| `purchasing.metrics.ts` | module | 135 |  |
+| `purchasing.module.ts` | nest module | 38 |  |
+| `purchasing.service.ts` | service | 770 |  |
+| `purchasing.spec.ts` | unit test | 369 |  |
+| `reorder.listener.spec.ts` | unit test | 146 |  |
+| `reorder.listener.ts` | event subscriber | 83 |  |
+| `requisition-task-source.spec.ts` | unit test | 59 |  |
+| `requisition-task-source.ts` | module | 61 |  |
+| `requisition.controller.ts` | controller | 63 |  |
+| `requisition.service.spec.ts` | unit test | 207 |  |
+| `requisition.service.ts` | service | 214 |  |
+| `supplier-bill.spec.ts` | unit test | 234 |  |
 
-### `apps/api/src/modules/purchasing/dto` (3)
+### `apps/api/src/modules/supply-chain/purchasing/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `purchase-order.dto.ts` | dto | 104 |  |
+| `purchase-order.dto.ts` | dto | 125 |  |
+| `requisition.dto.ts` | dto | 50 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
 
-### `apps/api/src/modules/reports` (4)
+### `apps/api/src/modules/supply-chain/resilience` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `csv.util.ts` | module | 15 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
-| `reports.controller.ts` | controller | 99 |  |
-| `reports.module.ts` | nest module | 10 |  |
-| `reports.service.ts` | service | 509 |  |
+| `resilience-admin.controller.ts` | controller | 90 |  |
+| `resilience-admin.module.ts` | nest module | 15 |  |
 
-### `apps/api/src/modules/reports/dto` (1)
+### `apps/api/src/modules/supply-chain/resilience/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `reports.dto.ts` | dto | 25 |  |
+| `resilience.dto.ts` | dto | 48 |  |
 
-### `apps/api/src/modules/settings` (3)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `settings-admin.controller.ts` | controller | 61 |  |
-| `settings-admin.module.ts` | nest module | 10 |  |
-| `settings-admin.service.ts` | service | 117 |  |
-
-### `apps/api/src/modules/settings/dto` (1)
+### `apps/api/src/modules/supply-chain/tradingpartners` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `settings.dto.ts` | dto | 94 |  |
-
-### `apps/api/src/modules/stitching` (7)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `design-options.service.ts` | service | 320 |  |
-| `jobs.service.ts` | service | 500 |  |
-| `order.subscriber.ts` | event subscriber | 126 |  |
-| `stitching-orders.service.ts` | service | 283 |  |
-| `stitching.controller.ts` | controller | 275 |  |
-| `stitching.module.ts` | nest module | 21 |  |
-| `stitching.service.ts` | service | 234 |  |
-
-### `apps/api/src/modules/stitching/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `stitching.dto.ts` | dto | 401 |  |
-
-### `apps/api/src/modules/tax` (3)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `tax.controller.ts` | controller | 74 |  |
-| `tax.module.ts` | nest module | 13 |  |
-| `tax.service.ts` | service | 189 |  |
-
-### `apps/api/src/modules/tax/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `tax.dto.ts` | dto | 56 |  |
-
-### `apps/api/src/modules/tracking` (3)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `tracking.controller.ts` | controller | 30 |  |
-| `tracking.module.ts` | nest module | 10 |  |
-| `tracking.service.ts` | service | 100 |  |
-
-### `apps/api/src/modules/tracking/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `tracking.dto.ts` | dto | 46 |  |
-
-### `apps/api/src/modules/tradingpartners` (19)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `invoice.service.spec.ts` | unit test | 106 |  |
-| `invoice.service.ts` | service | 117 |  |
-| `invoices.controller.ts` | controller | 31 |  |
+| `invoice.service.spec.ts` | unit test | 150 |  |
+| `invoice.service.ts` | service | 139 |  |
+| `invoices.controller.ts` | controller | 37 |  |
 | `offer.service.spec.ts` | unit test | 73 |  |
 | `offer.service.ts` | service | 53 |  |
 | `offers.controller.ts` | controller | 25 |  |
+| `partner-fact-inbox.integration.spec.ts` | unit test | 223 |  |
+| `partner-fact-inbox.service.spec.ts` | unit test | 299 |  |
+| `partner-fact-inbox.service.ts` | service | 190 |  |
+| `partner-fact-status.listener.spec.ts` | unit test | 69 |  |
+| `partner-fact-status.listener.ts` | event subscriber | 67 |  |
 | `product-alerts.listener.spec.ts` | unit test | 72 |  |
 | `product-alerts.listener.ts` | event subscriber | 44 |  |
-| `quote.service.spec.ts` | unit test | 96 |  |
+| `quote.service.spec.ts` | unit test | 111 |  |
 | `quote.service.ts` | service | 102 |  |
 | `quotes.controller.ts` | controller | 31 |  |
 | `supplier-digest.listener.spec.ts` | unit test | 51 |  |
 | `supplier-digest.listener.ts` | event subscriber | 35 |  |
-| `trading-partner-portal.controller.spec.ts` | unit test | 63 |  |
-| `trading-partner-portal.controller.ts` | controller | 46 |  |
-| `trading-partners.controller.ts` | controller | 62 |  |
-| `trading-partners.module.ts` | nest module | 53 |  |
-| `trading-partners.service.spec.ts` | unit test | 385 |  |
-| `trading-partners.service.ts` | service | 299 |  |
+| `trading-partner-portal.controller.spec.ts` | unit test | 91 |  |
+| `trading-partner-portal.controller.ts` | controller | 73 |  |
+| `trading-partners.controller.ts` | controller | 79 |  |
+| `trading-partners.module.ts` | nest module | 57 |  |
+| `trading-partners.service.spec.ts` | unit test | 472 |  |
+| `trading-partners.service.ts` | service | 341 |  |
 
-### `apps/api/src/modules/tradingpartners/dto` (4)
+### `apps/api/src/modules/supply-chain/tradingpartners/dto` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `invoice.dto.ts` | dto | 67 |  |
+| `invoice.dto.ts` | dto | 77 |  |
 | `offer.dto.ts` | dto | 25 |  |
+| `partner-fact.dto.spec.ts` | unit test | 80 |  |
+| `partner-fact.dto.ts` | dto | 157 |  |
 | `quote.dto.ts` | dto | 56 |  |
 | `trading-partner.dto.ts` | dto | 55 |  |
 
-### `apps/api/src/modules/transfers` (4)
+### `apps/api/src/modules/supply-chain/transfers` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `transfers.controller.ts` | controller | 44 |  |
 | `transfers.module.ts` | nest module | 22 |  |
-| `transfers.service.spec.ts` | unit test | 701 |  |
-| `transfers.service.ts` | service | 469 |  |
+| `transfers.service.spec.ts` | unit test | 823 |  |
+| `transfers.service.ts` | service | 510 |  |
 
-### `apps/api/src/modules/transfers/dto` (1)
+### `apps/api/src/modules/supply-chain/transfers/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `transfer.dto.ts` | dto | 109 |  |
 
-### `apps/api/src/modules/users` (6)
+### `apps/api/src/modules/system/bpmn-workflows` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bpmn-compiler.spec.ts` | unit test | 108 |  |
+| `bpmn-compiler.ts` | module | 120 |  |
+| `bpmn-workflows.controller.ts` | controller | 42 |  |
+| `bpmn-workflows.module.ts` | nest module | 19 |  |
+| `bpmn-workflows.service.spec.ts` | unit test | 74 |  |
+| `bpmn-workflows.service.ts` | service | 52 |  |
+
+### `apps/api/src/modules/system/bpmn-workflows/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bpmn-workflow.dto.ts` | dto | 10 |  |
+
+### `apps/api/src/modules/system/example-hello-world-pack` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `example-hello-world-pack.module.ts` | nest module | 17 |  |
+| `hello-world.listener.ts` | event subscriber | 28 |  |
+
+### `apps/api/src/modules/system/feature-flags` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feature-flag-audit.cron.spec.ts` | unit test | 30 |  |
+| `feature-flag-audit.cron.ts` | scheduled job | 44 |  |
+| `feature-flags-admin.controller.ts` | controller | 66 |  |
+| `feature-flags-admin.module.ts` | nest module | 17 |  |
+| `feature-flags-admin.service.spec.ts` | unit test | 185 |  |
+| `feature-flags-admin.service.ts` | service | 167 |  |
+
+### `apps/api/src/modules/system/feature-flags/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feature-flag.dto.ts` | dto | 78 |  |
+
+### `apps/api/src/modules/system/identity-verification` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `identity-verification-provider.ts` | module | 76 | Extension point: identity-verification providers. |
+| `identity-verification.controller.ts` | controller | 51 |  |
+| `identity-verification.module.ts` | nest module | 11 |  |
+| `identity-verification.service.ts` | service | 170 |  |
+
+### `apps/api/src/modules/system/identity-verification/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `submit-otp.dto.ts` | dto | 8 |  |
+
+### `apps/api/src/modules/system/identity-verification/providers` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `nid-callback-verification.spec.ts` | unit test | 123 |  |
+| `nid.provider.ts` | module | 176 |  |
+
+### `apps/api/src/modules/system/managed-services` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `managed-services.controller.ts` | controller | 25 |  |
+| `managed-services.module.ts` | nest module | 19 |  |
+| `managed-services.service.spec.ts` | unit test | 56 |  |
+| `managed-services.service.ts` | service | 57 |  |
+
+### `apps/api/src/modules/system/rag` (20)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `chunking.spec.ts` | unit test | 71 |  |
+| `chunking.ts` | module | 61 |  |
+| `pdf-extraction.service.spec.ts` | unit test | 196 |  |
+| `pdf-extraction.service.ts` | service | 341 | Pinned to the last major (3.x) whose "legacy" Node build ships as |
+| `pg-vector.store.spec.ts` | unit test | 170 |  |
+| `pg-vector.store.ts` | module | 118 |  |
+| `rag-admin.controller.spec.ts` | unit test | 226 |  |
+| `rag-admin.controller.ts` | controller | 266 |  |
+| `rag-corpus-access.ts` | module | 52 |  |
+| `rag-corpus.service.spec.ts` | unit test | 200 |  |
+| `rag-corpus.service.ts` | service | 273 |  |
+| `rag-generation.service.spec.ts` | unit test | 135 |  |
+| `rag-generation.service.ts` | service | 134 |  |
+| `rag-ingestion.cron.ts` | scheduled job | 27 |  |
+| `rag-ingestion.service.spec.ts` | unit test | 238 |  |
+| `rag-ingestion.service.ts` | service | 279 |  |
+| `rag-retrieval.service.spec.ts` | unit test | 95 |  |
+| `rag-retrieval.service.ts` | service | 74 |  |
+| `rag.module.ts` | nest module | 34 |  |
+| `vector-store.ts` | module | 79 |  |
+
+### `apps/api/src/modules/system/rag/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `rag.dto.ts` | dto | 70 |  |
+
+### `apps/api/src/modules/system/settings` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settings-admin.controller.ts` | controller | 80 |  |
+| `settings-admin.module.ts` | nest module | 10 |  |
+| `settings-admin.service.spec.ts` | unit test | 107 |  |
+| `settings-admin.service.ts` | service | 161 |  |
+
+### `apps/api/src/modules/system/settings/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settings.dto.ts` | dto | 114 |  |
+
+### `apps/api/src/modules/system/users` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 43 |  |
-| `security-notification.subscriber.ts` | event subscriber | 115 |  |
-| `users-admin.controller.ts` | controller | 83 |  |
+| `security-notification.subscriber.spec.ts` | unit test | 67 |  |
+| `security-notification.subscriber.ts` | event subscriber | 184 |  |
+| `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
-| `users-admin.service.spec.ts` | unit test | 88 |  |
-| `users-admin.service.ts` | service | 340 |  |
+| `users-admin.service.spec.ts` | unit test | 319 |  |
+| `users-admin.service.ts` | service | 376 |  |
 
-### `apps/api/src/modules/users/dto` (1)
+### `apps/api/src/modules/system/users/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (18)
+### `apps/api/test` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
+| `api-keys.e2e-spec.ts` | e2e test | 371 |  |
+| `auction-bidders.e2e-spec.ts` | e2e test | 507 |  |
+| `auction-bidding.e2e-spec.ts` | e2e test | 265 |  |
+| `auction-http.e2e-spec.ts` | e2e test | 234 |  |
+| `auction-lifecycle.e2e-spec.ts` | e2e test | 424 |  |
+| `auction-lot-photos.e2e-spec.ts` | e2e test | 266 |  |
+| `auction-realtime.e2e-spec.ts` | e2e test | 410 |  |
+| `auction-settlement.e2e-spec.ts` | e2e test | 464 |  |
+| `auction.e2e-spec.ts` | e2e test | 114 |  |
+| `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
-| `catalog.e2e-spec.ts` | e2e test | 407 |  |
-| `crm.e2e-spec.ts` | e2e test | 489 |  |
+| `catalog.e2e-spec.ts` | e2e test | 411 |  |
+| `crm.e2e-spec.ts` | e2e test | 491 |  |
+| `customer-portal.e2e-spec.ts` | e2e test | 256 |  |
+| `customer-scope-routes.spec.ts` | unit test | 243 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |
 | `email-inbox.e2e-spec.ts` | e2e test | 225 |  |
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
+| `giftkarta-checkout.e2e-spec.ts` | e2e test | 217 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |
-| `orders.e2e-spec.ts` | e2e test | 950 |  |
-| `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |
+| `orders.e2e-spec.ts` | e2e test | 1088 |  |
+| `payments-gateway.e2e-spec.ts` | e2e test | 217 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
+| `permissions-cache.e2e-spec.ts` | e2e test | 231 |  |
+| `promotions-checkout.e2e-spec.ts` | e2e test | 334 |  |
+| `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
+| `session-only-routes.spec.ts` | unit test | 75 |  |
+| `settings-cache.e2e-spec.ts` | e2e test | 144 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
-| `stitching.e2e-spec.ts` | e2e test | 590 |  |
+| `sso.e2e-spec.ts` | e2e test | 414 |  |
+| `stitching.e2e-spec.ts` | e2e test | 593 |  |
+| `tiered-cache.e2e-spec.ts` | e2e test | 221 |  |
 
-### `apps/api/test/support` (1)
+### `apps/api/test/support` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `outbox.ts` | module | 38 |  |
 | `stock.ts` | module | 43 |  |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/api.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\api.md) · [← index home](..\README.md)

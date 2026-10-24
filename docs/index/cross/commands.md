@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**72**), plus the repository's own check scripts.
+Every script in every `package.json` (**95**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -44,6 +44,17 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `db:backfill-parties` | `ts-node --project tsconfig.seed.json prisma/backfill-parties.ts` |
 | `db:studio` | `prisma studio` |
 
+### `@newax/desktop-runtime`  <sub>`packages/desktop-runtime/package.json`</sub>
+
+| Script | Runs |
+|---|---|
+| `build` | `tsc -p tsconfig.json` |
+| `dev` | `tsc -p tsconfig.json --watch` |
+| `typecheck` | `tsc -p tsconfig.json --noEmit` |
+| `lint` | `eslint src` |
+| `test` | `NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests` |
+| `test:integration` | `NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests` |
+
 ### `@newax/mobile`  <sub>`apps/mobile/package.json`</sub>
 
 | Script | Runs |
@@ -54,6 +65,21 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `web` | `expo start --web` |
 | `typecheck` | `tsc --noEmit` |
 | `test` | `jest --passWithNoTests` |
+
+### `@newax/platform`  <sub>`apps/platform/package.json`</sub>
+
+| Script | Runs |
+|---|---|
+| `build` | `nest build` |
+| `dev` | `nest start --watch` |
+| `start` | `node dist/main.js` |
+| `typecheck` | `tsc -p tsconfig.json --noEmit` |
+| `lint` | `eslint src` |
+| `test` | `jest --passWithNoTests` |
+| `db:generate` | `prisma generate` |
+| `db:migrate` | `prisma migrate dev` |
+| `db:deploy` | `prisma migrate deploy` |
+| `db:reset` | `prisma migrate reset --force` |
 
 ### `@newax/pos`  <sub>`apps/pos/package.json`</sub>
 
@@ -95,7 +121,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `start` | `next start --port 3000` |
 | `lint` | `eslint src` |
 | `typecheck` | `tsc --noEmit` |
-| `test` | `echo "no unit tests in web yet — covered by Playwright" && exit 0` |
+| `test` | `vitest run` |
 | `placeholders` | `node scripts/generate-placeholders.mjs` |
 
 ### `yaseenecom`  <sub>`package.json`</sub>
@@ -104,17 +130,24 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 |---|---|
 | `build` | `turbo run build` |
 | `dev` | `turbo run dev` |
-| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node s…` |
+| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node s…` |
 | `typecheck` | `turbo run typecheck` |
 | `test` | `turbo run test` |
 | `format` | `prettier --write "**/*.{ts,tsx,js,mjs,json,md}"` |
 | `format:check` | `prettier --check "**/*.{ts,tsx,js,mjs,json,md}"` |
 | `boundaries` | `node scripts/check-module-boundaries.mjs` |
+| `check:hexagonal-purity` | `node scripts/check-hexagonal-purity.mjs` |
+| `check:metadata-renderer` | `node scripts/check-metadata-renderer.mjs` |
+| `check:hardcoded-policy` | `node scripts/check-hardcoded-policy.mjs` |
 | `check:secrets` | `node scripts/check-frontend-secrets.mjs` |
 | `check:env` | `node scripts/check-env-templates.mjs` |
 | `check:rebrand` | `node scripts/check-rebrand.mjs` |
 | `check:contrast` | `node scripts/check-contrast.mjs` |
 | `check:links` | `node scripts/check-links.mjs` |
+| `check:danger` | `node scripts/check-danger.mjs` |
+| `check:menus` | `node scripts/check-menus.mjs` |
+| `check:clipboard` | `node scripts/check-clipboard.mjs` |
+| `check:tells` | `node scripts/check-tells.mjs` |
 | `check:overflow` | `node scripts/check-overflow.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
@@ -138,28 +171,38 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2511 |  |
+| `scripts/build-index.mjs` | 2638 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
-| `scripts/check-contrast.mjs` | 425 |  |
+| `scripts/check-chart-imports.mjs` | 117 |  |
+| `scripts/check-clipboard.mjs` | 174 |  |
+| `scripts/check-contrast.mjs` | 650 |  |
+| `scripts/check-danger.mjs` | 220 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
-| `scripts/check-links.mjs` | 402 |  |
-| `scripts/check-module-boundaries.mjs` | 542 |  |
+| `scripts/check-hardcoded-policy.mjs` | 85 |  |
+| `scripts/check-hexagonal-purity.mjs` | 149 |  |
+| `scripts/check-links.mjs` | 416 |  |
+| `scripts/check-menus.mjs` | 229 |  |
+| `scripts/check-metadata-renderer.mjs` | 134 |  |
+| `scripts/check-module-boundaries.mjs` | 652 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
+| `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
-| `scripts/check-rules.mjs` | 148 |  |
+| `scripts/check-rules.mjs` | 224 |  |
+| `scripts/check-tells.mjs` | 658 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
-| `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
-| `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/index-scan.mjs` | 965 | Scanners for the repository index. |
+| `scripts/lib/model-routing.mjs` | 401 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
+| `scripts/load-auction.mjs` | 312 |  |
 | `scripts/nested-borders.py` | 0 |  |
-| `scripts/sync-client.mjs` | 243 | scripts/sync-client.mjs |
+| `scripts/sync-client.mjs` | 723 | scripts/sync-client.mjs — the Extractor. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

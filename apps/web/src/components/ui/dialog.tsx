@@ -1,7 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
+import { originOffset } from '@/lib/motion';
 
 /**
  * A modal dialog, with the behaviour every modal is supposed to have.
@@ -23,6 +25,13 @@ import { cn } from '@/utils/cn';
  *   - Body scroll is locked, and released even if the component unmounts
  *     while open.
  *   - `role="dialog"` + `aria-modal`, labelled by the title.
+ *   - It arrives and it leaves. The panel settles in (`arrive`, from the side
+ *     of the control that opened it when there is one; a side sheet
+ *     slides in from its own edge, in either direction of writing), the scrim
+ *     fades, and on close both play the `fast` exit before unmounting
+ *     (`useExitTransition`). While leaving, the whole thing is `inert`: focus
+ *     has already been handed back and a click already reaches the page, so
+ *     the exit never makes the interface wait on it.
  */
 export function Dialog({
   open,
@@ -47,9 +56,17 @@ export function Dialog({
    * heading above that would be a second thing to read past.
    */
   header?: ReactNode;
-  /** Top for a palette, which should not jump as its result count changes. */
-  align?: 'center' | 'top';
+  /**
+   * `top` for a palette, which should not jump as its result count changes.
+   * `end` for a side sheet: the panel is full height against the inline-end
+   * edge (right in English, left in Urdu) and the page behind stays visible
+   * past its edge — the detail of one row, opened without leaving the list.
+   * It keeps everything a dialog has: Escape, the backdrop, the close button,
+   * the focus trap and the scroll lock.
+   */
+  align?: 'center' | 'top' | 'end';
 }) {
+  const { mounted, leaving } = useExitTransition(open);
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 
@@ -67,9 +84,41 @@ export function Dialog({
     }
 
     return () => {
-      previouslyFocused.current?.focus?.();
+      const opener = previouslyFocused.current;
+      if (opener?.isConnected) {
+        opener.focus?.();
+        return;
+      }
+      // The control that opened the dialog is gone (a confirmed delete removed its row), so handing focus
+      // back would drop it on `<body>` and a keyboard user would start again from the top of the page.
+      // Land on the page's own `<main>` instead, which is where the work they were doing now is.
+      const main = document.querySelector<HTMLElement>('main');
+      if (!main) return;
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+      main.focus({ preventScroll: true });
     };
   }, [open]);
+
+  // Where the panel arrives from. When a control opened the dialog it still has focus at this point
+  // (the effect above has not moved it yet), so the panel rises from the side that control is on,
+  // by the offset between the two centres held to `distance.large`. No focused control (opened by
+  // script, or from the body) leaves the default, which is `arrive` itself: `small` below.
+  // Read before the first paint and before the animation has moved the panel, so both rects are at rest.
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    const trigger = document.activeElement;
+    if (!open || align === 'end' || !panel) return;
+    if (!(trigger instanceof HTMLElement) || trigger === document.body || panel.contains(trigger)) return;
+    const from = trigger.getBoundingClientRect();
+    const to = panel.getBoundingClientRect();
+    if (from.width === 0 && from.height === 0) return;
+    const { dx, dy } = originOffset(
+      { x: from.left + from.width / 2, y: from.top + from.height / 2 },
+      { x: to.left + to.width / 2, y: to.top + to.height / 2 },
+    );
+    panel.style.setProperty('--origin-dx', `${dx}px`);
+    panel.style.setProperty('--origin-dy', `${dy}px`);
+  }, [open, align]);
 
   // Scroll lock. The cleanup restores the previous value rather than clearing
   // it, so a dialog opened from inside another locked context does not free
@@ -114,17 +163,23 @@ export function Dialog({
     [onClose],
   );
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
     <div
+      inert={leaving}
       className={cn(
-        'fixed inset-0 z-50 flex justify-center p-4',
-        align === 'top' ? 'items-start pt-[10vh]' : 'items-center',
+        'fixed inset-0 z-modal flex justify-center',
+        align === 'top' && 'items-start p-4 pt-[10vh]',
+        align === 'center' && 'items-center p-4',
+        align === 'end' && 'justify-end',
       )}
     >
       <div
-        className="absolute inset-0 bg-neutral-900/40 backdrop-blur-sm animate-fadeIn"
+        className={cn(
+          'absolute inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+          leaving ? 'opacity-0' : 'animate-fadeIn',
+        )}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -151,7 +206,10 @@ export function Dialog({
         tabIndex={-1}
         onKeyDown={onKeyDown}
         className={cn(
-          'card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
+          'card relative z-raised flex w-full flex-col bg-overlay outline-none',
+          align === 'end'
+            ? cn('h-full max-w-md rounded-none border-y-0 border-e-0', leaving ? 'sheet-out' : 'sheet-in')
+            : cn('max-h-[85vh] max-w-lg', leaving ? 'animate-leave' : 'arrive-from'),
           className,
         )}
       >
@@ -164,7 +222,7 @@ export function Dialog({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -260,4 +260,115 @@ export interface ShippingQuote {
   codFee: number;
 }
 
+// --- Phase 7: customer portal ------------------------------------------------
+
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  price: number;
+  variantId: string | null;
+  variantLabel: string | null;
+  inStock: boolean;
+  createdAt: string;
+}
+
+export type ReviewStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED';
+
+export interface Review {
+  id: string;
+  productId: string;
+  userId: string;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  status: ReviewStatus;
+  staffReply: string | null;
+  helpfulCount: number;
+  createdAt: string;
+}
+
+/** WO-6.6's seeded, editable reason list — never free text. */
+export interface ReturnReason {
+  id: string;
+  key: string;
+  translations: Array<{ locale: string; label: string }>;
+}
+
+export type ReturnStatus =
+  | 'REQUESTED'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'IN_TRANSIT'
+  | 'RECEIVED'
+  | 'INSPECTED'
+  | 'REFUNDED'
+  | 'CLOSED';
+
+export interface ReturnRequest {
+  id: string;
+  number: string;
+  status: ReturnStatus;
+  resolution: string | null;
+  customerNote: string | null;
+  refundAmount: number | null;
+  requestedAt: string;
+  order: { number: string };
+  items: Array<{
+    id: string;
+    quantity: number;
+    restockable: boolean | null;
+    reason: { translations: Array<{ locale: string; label: string }> };
+    orderItem: { nameEn: string; nameUr: string | null; variantLabel: string | null };
+  }>;
+}
+
+export interface LoyaltyTier {
+  id: string;
+  name: string;
+  minSpend: number;
+  benefitDescriptionEn: string;
+  benefitDescriptionUr: string | null;
+}
+
+export interface LoyaltyBalance {
+  points: number;
+  tier: LoyaltyTier | null;
+  trailing12MonthSpend: number;
+}
+
+export interface LoyaltyLedgerEntry {
+  id: string;
+  type: 'EARNED' | 'REDEEMED' | 'REVERSED' | 'ADJUSTED';
+  points: number;
+  note: string | null;
+  createdAt: string;
+}
+
+export interface Referral {
+  id: string;
+  rewardedAt: string | null;
+  createdAt: string;
+}
+
+export interface StoreCreditLedgerEntry {
+  id: string;
+  delta: number;
+  balanceAfter: number;
+  reason: string;
+  note: string | null;
+  createdAt: string;
+}
+
+export type NotificationChannel = 'EMAIL' | 'SMS' | 'WHATSAPP' | 'PUSH';
+export type NotificationCategory = 'STITCHING_PROGRESS' | 'MARKETING' | 'BACK_IN_STOCK';
+
+export interface NotificationPreferenceCell {
+  channel: NotificationChannel;
+  category: NotificationCategory;
+  enabled: boolean;
+}
+
 export type { Locale };

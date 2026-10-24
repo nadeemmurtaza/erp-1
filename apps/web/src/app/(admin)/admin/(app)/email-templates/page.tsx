@@ -168,6 +168,10 @@ export default function EmailTemplatesPage() {
                       title={`${selected.label} preview`}
                       srcDoc={preview.html}
                       sandbox=""
+                      // An email is a document designed on white and carries no
+                      // background of its own: pinned, so it never renders
+                      // dark-on-dark in the dark theme.
+                      data-theme="light"
                       className="h-[70vh] w-full bg-white"
                     />
                   </>
@@ -187,7 +191,7 @@ function TriggerBadge({ trigger }: { trigger: EmailTemplateCatalogEntry['trigger
   return (
     <span
       className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-        trigger === 'automatic' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+        trigger === 'automatic' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
       }`}
     >
       {trigger === 'automatic' ? 'Automatic' : 'Manual'}

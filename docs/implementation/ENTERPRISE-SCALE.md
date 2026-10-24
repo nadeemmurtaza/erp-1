@@ -97,6 +97,18 @@ every formatter takes it as an argument, and `brand.ts` becomes the default
 rather than the answer. **Do not build toward this speculatively.** Until one
 of those signals is real, the static brand is the cheaper correct design.
 
+**The second signal ("per-deployment cost") has its brief written:**
+`39-shared-cross-tenant-hosting-tier.md` (see also `DECISIONS.md`'s "adopt
+a shared cross-tenant hosting tier" entry). It resolves brand at the host
+exactly as described above, but via shared-infrastructure/isolated-data —
+a control plane routing to many still-single-brand deployments, each its
+own database — rather than a shared schema. **This does not change Br1
+for any individual tenant's own deployment**: inside one tenant's world,
+brand is still resolved statically at build time, unchanged. Adopting doc
+39 is still a real decision with its own cost, not a default — this
+pointer exists so the brief is found instead of re-derived, not to imply
+it should be built without the trigger actually being real.
+
 ---
 
 ## L — Branch (location) rules

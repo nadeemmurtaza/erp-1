@@ -3,7 +3,7 @@
 
 # Files — pos
 
-All 31 tracked files in `apps/pos`, by directory.
+All 33 tracked files in `apps/pos`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -32,11 +32,17 @@ All 31 tracked files in `apps/pos`, by directory.
 |---|---|---|---|
 | `error.tsx` | error | 34 |  |
 | `global-error.tsx` | global-error | 76 |  |
-| `globals.css` | stylesheet | 73 |  |
+| `globals.css` | stylesheet | 76 |  |
 | `layout.tsx` | layout | 29 |  |
 | `manifest.ts` | module | 26 |  |
 | `not-found.tsx` | not-found | 21 |  |
 | `page.tsx` | page | 31 |  |
+
+### `apps/pos/src/app/dashboard` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 102 |  |
 
 ### `apps/pos/src/app/login` (1)
 
@@ -78,7 +84,7 @@ All 31 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 288 |  |
+| `page.tsx` | page | 789 |  |
 
 ### `apps/pos/src/components` (2)
 
@@ -91,20 +97,21 @@ All 31 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `routes.ts` | constants | 9 |  |
+| `routes.ts` | constants | 11 |  |
 | `storage.ts` | constants | 12 | Its own localStorage/IndexedDB namespace — a till session is not an admin-panel session, even signed in as the same sta… |
 
-### `apps/pos/src/lib` (5)
+### `apps/pos/src/lib` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api-client.ts` | utility | 67 |  |
+| `api-client.ts` | utility | 68 |  |
 | `auth-client.ts` | utility | 80 |  |
+| `hardware.ts` | utility | 83 |  |
 | `outbox-db.ts` | utility | 55 |  |
-| `outbox-sync.ts` | utility | 39 |  |
-| `pos-client.ts` | utility | 195 |  |
+| `outbox-sync.ts` | utility | 44 |  |
+| `pos-client.ts` | utility | 295 |  |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/pos.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\pos.md) · [← index home](..\README.md)

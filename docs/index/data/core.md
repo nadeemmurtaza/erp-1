@@ -3,7 +3,7 @@
 
 # Schema: `core.prisma`
 
-17 models · 6 enums. Foundational — owned by no single module.
+19 models · 10 enums. Foundational — owned by no single module.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,13 +20,13 @@ against a real database.
 
 ## Models
 
-### `Address`  <sub>`apps/api/prisma/schema/core.prisma:146`</sub>
+### `Address`  <sub>`apps/api/prisma/schema/core.prisma:341`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `userId` | `String?` | optional |  |
-| `label` | `String?` | optional | "Home", "Office" |
+| `label` | `String?` | optional |  |
 | `fullName` | `String` |  |  |
 | `phone` | `String` |  |  |
 | `line1` | `String` |  |  |
@@ -42,30 +42,75 @@ against a real database.
 
 Indexes: `@@index([userId])`
 
-### `AnalyticsEvent`  <sub>`apps/api/prisma/schema/core.prisma:424`</sub>
+### `AiUsageLog`  <sub>`apps/api/prisma/schema/core.prisma:668`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `feature` | `AiFeature` |  |  |
+| `kind` | `AiCallKind` |  |  |
+| `provider` | `String` |  |  |
+| `model` | `String` |  |  |
+| `inputTokens` | `Int` |  | @default(0) |
+| `outputTokens` | `Int` |  | @default(0) |
+| `costPaisa` | `Int` |  | @default(0) |
+| `succeeded` | `Boolean` |  | @default(true) |
+| `errorMessage` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([feature, createdAt])` · `@@index([createdAt])`
+
+### `AnalyticsEvent`  <sub>`apps/api/prisma/schema/core.prisma:619`</sub>
 
 > Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `type` | `String` |  | "page_view" \| "add_to_cart" \| "checkout_started" |
-| `path` | `String?` | optional | for page_view: the route, e.g. "/en/product/lawn-suit-42" |
-| `source` | `String` |  | "direct" \| "organic" \| "social" \| "referral" \| "email" |
-| `sessionId` | `String` |  | opaque, anonymous, client-generated — never joined to a user |
+| `type` | `String` |  |  |
+| `path` | `String?` | optional |  |
+| `source` | `String` |  | @default("direct") |
+| `sessionId` | `String` |  |  |
 | `meta` | `Json?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 
 Indexes: `@@index([type, createdAt])` · `@@index([sessionId, createdAt])`
 
-### `AuditLog`  <sub>`apps/api/prisma/schema/core.prisma:236`</sub>
+### `ApiKey`  <sub>`apps/api/prisma/schema/core.prisma:291`</sub>
+
+> A personal API key: a credential that acts as `user`, never as anyone more powerful.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `userId` | `String` |  |  |
+| `surface` | `ApiKeySurface` |  |  |
+| `name` | `String` |  |  |
+| `keyHash` | `String` | unique | @unique |
+| `lastFour` | `String` |  |  |
+| `permissionKeys` | `String[]` |  | @default([]) |
+| `customerScopes` | `String[]` |  | @default([]) |
+| `expiresAt` | `DateTime` |  |  |
+| `lastUsedAt` | `DateTime?` | optional |  |
+| `rotatedAt` | `DateTime?` | optional |  |
+| `revokedAt` | `DateTime?` | optional |  |
+| `revokedReason` | `ApiKeyRevocationReason?` | optional |  |
+| `revokedById` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `user` | `User` | relation | @relation("ApiKeyOwner", fields: [userId], references: [id], onDelete: Cascade) |
+| `revokedBy` | `User?` | relation, optional | @relation("ApiKeyRevoker", fields: [revokedById], references: [id], onDelete: SetNull) |
+
+Indexes: `@@index([userId, createdAt])` · `@@index([createdAt])`
+
+### `AuditLog`  <sub>`apps/api/prisma/schema/core.prisma:431`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `actorId` | `String?` | optional |  |
-| `action` | `String` |  | "product.updated", "order.status_changed" |
-| `entity` | `String` |  | "Product", "Order" |
+| `action` | `String` |  |  |
+| `entity` | `String` |  |  |
 | `entityId` | `String?` | optional |  |
 | `data` | `Json?` | optional |  |
 | `ip` | `String?` | optional |  |
@@ -74,7 +119,7 @@ Indexes: `@@index([type, createdAt])` · `@@index([sessionId, createdAt])`
 
 Indexes: `@@index([entity, entityId])` · `@@index([actorId])` · `@@index([createdAt])`
 
-### `DeviceToken`  <sub>`apps/api/prisma/schema/core.prisma:404`</sub>
+### `DeviceToken`  <sub>`apps/api/prisma/schema/core.prisma:599`</sub>
 
 > A push notification target: one installation of the mobile app.
 
@@ -92,14 +137,14 @@ Indexes: `@@index([entity, entityId])` · `@@index([actorId])` · `@@index([crea
 
 Indexes: `@@index([userId])`
 
-### `EmailAccount`  <sub>`apps/api/prisma/schema/core.prisma:191`</sub>
+### `EmailAccount`  <sub>`apps/api/prisma/schema/core.prisma:386`</sub>
 
 > A connected mailbox: SMTP to send, optionally IMAP to receive.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `label` | `String` |  | "Orders", "Support Inbox", "Marketing PK" |
+| `label` | `String` |  |  |
 | `purpose` | `EmailAccountPurpose` |  | @default(TRANSACTIONAL) |
 | `isActive` | `Boolean` |  | @default(true) |
 | `isDefault` | `Boolean` |  | @default(false) |
@@ -126,7 +171,7 @@ Indexes: `@@index([userId])`
 
 Indexes: `@@index([purpose, isActive])`
 
-### `EmailVerificationToken`  <sub>`apps/api/prisma/schema/core.prisma:132`</sub>
+### `EmailVerificationToken`  <sub>`apps/api/prisma/schema/core.prisma:247`</sub>
 
 > A one-time token mailed to confirm an email address.
 
@@ -142,14 +187,14 @@ Indexes: `@@index([purpose, isActive])`
 
 Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
-### `OutboxEvent`  <sub>`apps/api/prisma/schema/core.prisma:377`</sub>
+### `OutboxEvent`  <sub>`apps/api/prisma/schema/core.prisma:572`</sub>
 
 > Transactional outbox.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `name` | `String` |  | "order.placed" |
+| `name` | `String` |  |  |
 | `payload` | `Json` |  |  |
 | `status` | `OutboxStatus` |  | @default(PENDING) |
 | `attempts` | `Int` |  | @default(0) |
@@ -160,7 +205,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@index([status, availableAt])` · `@@index([name])`
 
-### `PasswordResetToken`  <sub>`apps/api/prisma/schema/core.prisma:115`</sub>
+### `PasswordResetToken`  <sub>`apps/api/prisma/schema/core.prisma:230`</sub>
 
 > A one-time token mailed to reset a forgotten password.
 
@@ -176,7 +221,7 @@ Indexes: `@@index([status, availableAt])` · `@@index([name])`
 
 Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
-### `Permission`  <sub>`apps/api/prisma/schema/core.prisma:257`</sub>
+### `Permission`  <sub>`apps/api/prisma/schema/core.prisma:452`</sub>
 
 > A single grantable capability, e.g.
 
@@ -191,7 +236,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | `userOverrides` | `UserPermission[]` |  |  |
 | `roleGrants` | `RoleGrant[]` |  |  |
 
-### `RefreshToken`  <sub>`apps/api/prisma/schema/core.prisma:94`</sub>
+### `RefreshToken`  <sub>`apps/api/prisma/schema/core.prisma:192`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -203,11 +248,16 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | `userAgent` | `String?` | optional |  |
 | `ip` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
+| `familyId` | `String` |  |  |
+| `rotatedAt` | `DateTime?` | optional |  |
+| `replacedById` | `String?` | unique, optional | @unique |
+| `replacedBy` | `RefreshToken?` | relation, optional | @relation("RefreshTokenRotation", fields: [replacedById], references: [id], onDelete: Set… |
+| `replaces` | `RefreshToken?` | relation, optional | @relation("RefreshTokenRotation") |
 | `user` | `User` | relation | @relation(fields: [userId], references: [id], onDelete: Cascade) |
 
-Indexes: `@@index([userId])` · `@@index([expiresAt])`
+Indexes: `@@index([userId])` · `@@index([expiresAt])` · `@@index([familyId])`
 
-### `Role`  <sub>`apps/api/prisma/schema/core.prisma:323`</sub>
+### `Role`  <sub>`apps/api/prisma/schema/core.prisma:518`</sub>
 
 > A named, reusable bundle of permissions a super admin defines — "roles are data, not code" (House Rule 9) taken to its actual conclusion.
 
@@ -221,7 +271,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | `grants` | `RoleGrant[]` |  |  |
 | `assignments` | `UserRoleAssignment[]` |  |  |
 
-### `RoleGrant`  <sub>`apps/api/prisma/schema/core.prisma:337`</sub>
+### `RoleGrant`  <sub>`apps/api/prisma/schema/core.prisma:532`</sub>
 
 > Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.
 
@@ -236,7 +286,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@unique([roleId, permissionId])` · `@@index([roleId])`
 
-### `RolePermission`  <sub>`apps/api/prisma/schema/core.prisma:273`</sub>
+### `RolePermission`  <sub>`apps/api/prisma/schema/core.prisma:468`</sub>
 
 > Which roles currently hold a given permission.
 
@@ -250,7 +300,7 @@ Indexes: `@@unique([roleId, permissionId])` · `@@index([roleId])`
 
 Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 
-### `Setting`  <sub>`apps/api/prisma/schema/core.prisma:169`</sub>
+### `Setting`  <sub>`apps/api/prisma/schema/core.prisma:364`</sub>
 
 > Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.
 
@@ -267,7 +317,7 @@ Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `email` | `String?` | unique, optional | @unique |
-| `phone` | `String?` | unique, optional | normalised E.164 |
+| `phone` | `String?` | unique, optional | @unique |
 | `passwordHash` | `String?` | optional |  |
 | `firstName` | `String?` | optional |  |
 | `lastName` | `String?` | optional |  |
@@ -279,12 +329,15 @@ Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 | `emailVerifiedAt` | `DateTime?` | optional |  |
 | `marketingEmailOptOut` | `Boolean` |  | @default(false) |
 | `lastLoginAt` | `DateTime?` | optional |  |
+| `ssoExternalId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `addresses` | `Address[]` |  |  |
 | `refreshTokens` | `RefreshToken[]` |  |  |
 | `passwordResetTokens` | `PasswordResetToken[]` |  |  |
 | `emailVerificationTokens` | `EmailVerificationToken[]` |  |  |
+| `apiKeys` | `ApiKey[]` | relation | @relation("ApiKeyOwner") |
+| `apiKeysRevoked` | `ApiKey[]` | relation | @relation("ApiKeyRevoker") |
 | `carts` | `Cart[]` |  |  |
 | `orders` | `Order[]` |  |  |
 | `orderStatusEvents` | `OrderStatusEvent[]` |  |  |
@@ -305,17 +358,62 @@ Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 | `adminScopes` | `AdminScope[]` |  |  |
 | `roleAssignments` | `UserRoleAssignment[]` |  |  |
 | `purchaseOrdersCreated` | `PurchaseOrder[]` | relation | @relation("PurchaseOrderCreator") |
+| `embeddedWidgetsCreated` | `EmbeddedWidget[]` | relation | @relation("EmbeddedWidgetCreator") |
+| `microFrontendFragmentsRegistered` | `MicroFrontendFragment[]` | relation | @relation("MicroFrontendFragmentRegisteredBy") |
 | `goodsReceiptsReceived` | `GoodsReceipt[]` | relation | @relation("GoodsReceiptReceiver") |
+| `requisitionsRequested` | `PurchaseRequisition[]` | relation | @relation("RequisitionRequester") |
+| `approvalStepsDecided` | `ApprovalStep[]` | relation | @relation("ApprovalStepDecider") |
 | `stockCountsCreated` | `StockCount[]` | relation | @relation("StockCountCreator") |
 | `stockCountsAssigned` | `StockCount[]` | relation | @relation("StockCountAssignee") |
 | `workOrdersCreated` | `WorkOrder[]` | relation | @relation("WorkOrderCreator") |
 | `expensesCreated` | `Expense[]` | relation | @relation("ExpenseCreator") |
 | `bomRecipesCreated` | `BomRecipe[]` | relation | @relation("BomRecipeCreator") |
 | `bomProductionRuns` | `BomProductionRun[]` | relation | @relation("BomProductionOperator") |
+| `policyQuarantinesResolved` | `PolicyQuarantine[]` | relation | @relation("PolicyQuarantineResolver") |
+| `compensationRates` | `CompensationRate[]` |  |  |
+| `compensationRatesCreated` | `CompensationRate[]` | relation | @relation("CompensationRateCreator") |
+| `leaveBalances` | `LeaveBalance[]` |  |  |
+| `leaveRequests` | `LeaveRequest[]` | relation | @relation("LeaveRequestUser") |
+| `leaveRequestsDecided` | `LeaveRequest[]` | relation | @relation("LeaveRequestDecider") |
+| `payRunsApproved` | `PayRun[]` | relation | @relation("PayRunApprover") |
+| `payRunsCreated` | `PayRun[]` | relation | @relation("PayRunCreator") |
+| `payRunLines` | `PayRunLine[]` |  |  |
+| `payRunAdjustments` | `PayRunAdjustment[]` |  |  |
+| `payRunAdjustmentsCreated` | `PayRunAdjustment[]` | relation | @relation("PayRunAdjustmentCreator") |
+| `assetAssignments` | `AssetAssignment[]` | relation | @relation("AssetAssignmentHolder") |
+| `assetAssignmentsIssued` | `AssetAssignment[]` | relation | @relation("AssetAssignmentIssuer") |
+| `assetAssignmentsReturned` | `AssetAssignment[]` | relation | @relation("AssetAssignmentReturner") |
+| `employeeProfile` | `EmployeeProfile?` | optional |  |
+| `postings` | `Posting[]` |  |  |
+| `orgUnitGrantsHeld` | `OrgUnitGrant[]` | relation | @relation("OrgUnitGrantHolder") |
+| `orgUnitGrantsIssued` | `OrgUnitGrant[]` | relation | @relation("OrgUnitGrantGranter") |
+| `orgUnitGrantsCountersigned` | `OrgUnitGrant[]` | relation | @relation("OrgUnitGrantCountersigner") |
+| `attendanceEvents` | `AttendanceEvent[]` |  |  |
+| `shifts` | `Shift[]` |  |  |
+| `attendanceExceptions` | `AttendanceException[]` | relation | @relation("AttendanceExceptionUser") |
+| `attendanceExceptionsResolved` | `AttendanceException[]` | relation | @relation("AttendanceExceptionResolver") |
+| `assetDepreciationSchedulesCreated` | `AssetDepreciationSchedule[]` |  |  |
+| `manifestsCreated` | `Manifest[]` |  |  |
+| `returnRequests` | `ReturnRequest[]` |  |  |
+| `blogPosts` | `BlogPost[]` |  |  |
+| `campaignsCreated` | `Campaign[]` |  |  |
+| `storeCreditBalance` | `Int` |  | @default(0) |
+| `storeCreditTransactions` | `StoreCreditTransaction[]` |  |  |
+| `giftCardsPurchased` | `GiftCard[]` | relation | @relation("GiftCardPurchaser") |
+| `walletAccount` | `WalletAccount?` | optional |  |
+| `reviews` | `Review[]` |  |  |
+| `wishlistItems` | `WishlistItem[]` |  |  |
+| `backInStockRequests` | `BackInStockRequest[]` |  |  |
+| `loyaltyPoints` | `Int` |  | @default(0) |
+| `loyaltyTransactions` | `LoyaltyTransaction[]` |  |  |
+| `referralCode` | `String?` | unique, optional | @unique |
+| `referralsMade` | `Referral[]` | relation | @relation("ReferralReferrer") |
+| `referredBy` | `Referral?` | relation, optional | @relation("ReferralReferee") |
+| `notificationPreferences` | `NotificationPreference[]` |  |  |
 
-Indexes: `@@index([role])` · `@@index([createdAt])`
+Indexes: `@@index([role])` · `@@index([createdAt])` · `@@index([ssoExternalId])`
 
-### `UserPermission`  <sub>`apps/api/prisma/schema/core.prisma:294`</sub>
+### `UserPermission`  <sub>`apps/api/prisma/schema/core.prisma:489`</sub>
 
 > A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.
 
@@ -331,7 +429,7 @@ Indexes: `@@index([role])` · `@@index([createdAt])`
 
 Indexes: `@@unique([userId, permissionId])` · `@@index([userId])`
 
-### `UserRoleAssignment`  <sub>`apps/api/prisma/schema/core.prisma:352`</sub>
+### `UserRoleAssignment`  <sub>`apps/api/prisma/schema/core.prisma:547`</sub>
 
 > Which `Role` rows a user holds.
 
@@ -349,7 +447,57 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 ## Enums
 
-### `DevicePlatform`  <sub>`apps/api/prisma/schema/core.prisma:392`</sub>
+### `AiCallKind`  <sub>`apps/api/prisma/schema/core.prisma:662`</sub>
+
+| Value | Meaning |
+|---|---|
+| `COMPLETION` |  |
+| `EMBEDDING` |  |
+| `VISION` |  |
+
+### `AiFeature`  <sub>`apps/api/prisma/schema/core.prisma:637`</sub>
+
+> Phase 9 (docs/implementation/ai-layer/09-ai-layer.md).
+
+| Value | Meaning |
+|---|---|
+| `ALT_TEXT` |  |
+| `SEO_COPY` |  |
+| `SIZE_RECOMMENDATION` |  |
+| `DEMAND_FORECAST` |  |
+| `COD_RISK` |  |
+| `SEMANTIC_SEARCH` |  |
+| `VISUAL_SEARCH` |  |
+| `RECOMMENDATIONS` |  |
+| `WHATSAPP_ASSISTANT` |  |
+| `MARKDOWN_SUGGESTION` |  |
+| `REVIEW_SUMMARY` |  |
+| `IMPORT_CLEANUP` |  |
+| `RAG_INGESTION` |  |
+| `RAG_RETRIEVAL` |  |
+| `RAG_GENERATION` |  |
+| `PLANNING_NARRATION` |  |
+
+### `ApiKeyRevocationReason`  <sub>`apps/api/prisma/schema/core.prisma:272`</sub>
+
+> Why a key stopped working — kept on the row so the owner's own list can say it, not only the audit trail.
+
+| Value | Meaning |
+|---|---|
+| `OWNER` |  |
+| `ADMINISTRATOR` |  |
+| `OWNER_DEACTIVATED` |  |
+
+### `ApiKeySurface`  <sub>`apps/api/prisma/schema/core.prisma:265`</sub>
+
+> Which request surface a personal API key acts on — two separate scope catalogues, never mixed (163-personal-api-keys.md §2).
+
+| Value | Meaning |
+|---|---|
+| `ADMIN` |  |
+| `STOREFRONT` |  |
+
+### `DevicePlatform`  <sub>`apps/api/prisma/schema/core.prisma:587`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -357,7 +505,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `ANDROID` |  |
 | `WEB` |  |
 
-### `EmailAccountPurpose`  <sub>`apps/api/prisma/schema/core.prisma:180`</sub>
+### `EmailAccountPurpose`  <sub>`apps/api/prisma/schema/core.prisma:375`</sub>
 
 > What an EmailAccount is for, so EmailChannel can route an outgoing message to the right mailbox instead of every email leaving from one address.
 
@@ -367,7 +515,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `MARKETING` |  |
 | `SUPPORT` |  |
 
-### `OutboxStatus`  <sub>`apps/api/prisma/schema/core.prisma:366`</sub>
+### `OutboxStatus`  <sub>`apps/api/prisma/schema/core.prisma:561`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -376,7 +524,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `DONE` |  |
 | `FAILED` |  |
 
-### `PermissionEffect`  <sub>`apps/api/prisma/schema/core.prisma:285`</sub>
+### `PermissionEffect`  <sub>`apps/api/prisma/schema/core.prisma:480`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -407,4 +555,4 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -77,6 +77,28 @@ export interface EmailCopy {
     heading: string;
     intro: string;
   };
+  /** A personal API key's secret was issued — at create or at rotate (163-personal-api-keys.md). */
+  apiKeyIssued: {
+    subject: string;
+    heading: string;
+    /** `lastFour` identifies the key; the key's own name is deliberately never in this mail. */
+    created: (lastFour: string, surface: 'ADMIN' | 'STOREFRONT') => string;
+    rotated: (lastFour: string, surface: 'ADMIN' | 'STOREFRONT') => string;
+    notYou: string;
+    cta: string;
+  };
+  /**
+   * An existing account was linked to a single sign-on identity at its first
+   * sign-in that way (161-sso-identity-federation.md). Names no identity
+   * provider and no credential — only that a new way in exists, and what to
+   * do if it was not them.
+   */
+  ssoAccountLinked: {
+    subject: string;
+    heading: string;
+    intro: string;
+    notYou: string;
+  };
   passwordReset: {
     subject: string;
     heading: string;
@@ -93,6 +115,7 @@ export interface EmailCopy {
   /** Default call-to-action for marketing mail with no order or reset link to point at. */
   shopNow: string;
   marketing: {
+    abandonedCartFirstTouch: { subject: string; heading: string; intro: string; cta: string };
     abandonedCartReminder: { subject: string; heading: string; intro: string; cta: string };
     abandonedCartIncentive: {
       subject: string;
@@ -264,6 +287,24 @@ const en: EmailCopy = {
     intro:
       'Your password was just changed. If this was you, no action is needed. If it was not, contact us right away — reply to this email.',
   },
+  apiKeyIssued: {
+    subject: 'A new API key was issued for your account',
+    heading: 'A new API key was issued for your account',
+    created: (lastFour, surface) =>
+      `A new ${surface === 'ADMIN' ? 'admin' : 'store'} API key ending in ${lastFour} was just created on your account. Whoever holds it can act as you, within the access it was given.`,
+    rotated: (lastFour, surface) =>
+      `Your ${surface === 'ADMIN' ? 'admin' : 'store'} API key was just given a new secret, ending in ${lastFour}. The old secret no longer works.`,
+    notYou:
+      'If this was you, no action is needed. If it was not, revoke the key now, change your password, and reply to this email.',
+    cta: 'Review your API keys',
+  },
+  ssoAccountLinked: {
+    subject: `Single sign-on was linked to your ${BRAND.identity.shortName} account`,
+    heading: 'A new way to sign in was added to your account',
+    intro: `Your ${BRAND.identity.shortName} account can now be signed in to through your organization's single sign-on. It was linked the first time this email address signed in that way.`,
+    notYou:
+      'If this was you, no action is needed. If it was not, reply to this email right away — we will remove it and sign you out everywhere.',
+  },
   passwordReset: {
     subject: 'Reset your password',
     heading: 'Reset your password',
@@ -280,6 +321,12 @@ const en: EmailCopy = {
   },
   shopNow: 'Shop now',
   marketing: {
+    abandonedCartFirstTouch: {
+      subject: 'Still in your cart',
+      heading: 'You left this behind',
+      intro: 'Just a quick nudge — these items are still saved in your cart.',
+      cta: 'View your cart',
+    },
     abandonedCartReminder: {
       subject: 'You left something in your cart',
       heading: 'Still thinking it over?',
@@ -456,6 +503,24 @@ const ur: EmailCopy = {
     intro:
       'ابھی آپ کا پاس ورڈ تبدیل کیا گیا ہے۔ اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً ہم سے رابطہ کریں — اس ای میل کا جواب دیں۔',
   },
+  apiKeyIssued: {
+    subject: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
+    heading: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
+    created: (lastFour, surface) =>
+      `ابھی آپ کے اکاؤنٹ پر ایک نئی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید بنائی گئی ہے جس کے آخری حروف ${lastFour} ہیں۔ جس کے پاس یہ کلید ہو وہ اسے دی گئی رسائی کی حد میں آپ کی جگہ کام کر سکتا ہے۔`,
+    rotated: (lastFour, surface) =>
+      `ابھی آپ کی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید کو نیا خفیہ کوڈ دیا گیا ہے جس کے آخری حروف ${lastFour} ہیں۔ پرانا خفیہ کوڈ اب کام نہیں کرتا۔`,
+    notYou:
+      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو ابھی یہ کلید منسوخ کریں، اپنا پاس ورڈ تبدیل کریں اور اس ای میل کا جواب دیں۔',
+    cta: 'اپنی API کلیدیں دیکھیں',
+  },
+  ssoAccountLinked: {
+    subject: `آپ کے ${BRAND.identity.nameUr} اکاؤنٹ سے سنگل سائن آن منسلک کر دیا گیا`,
+    heading: 'آپ کے اکاؤنٹ میں سائن اِن کا ایک نیا طریقہ شامل کیا گیا',
+    intro: `اب آپ کے ${BRAND.identity.nameUr} اکاؤنٹ میں آپ کے ادارے کے سنگل سائن آن کے ذریعے سائن اِن کیا جا سکتا ہے۔ یہ اُس وقت منسلک ہوا جب اس ای میل ایڈریس سے پہلی بار اس طریقے سے سائن اِن کیا گیا۔`,
+    notYou:
+      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً اس ای میل کا جواب دیں — ہم اسے ہٹا دیں گے اور آپ کو ہر جگہ سے سائن آؤٹ کر دیں گے۔',
+  },
   passwordReset: {
     subject: 'اپنا پاس ورڈ ری سیٹ کریں',
     heading: 'اپنا پاس ورڈ ری سیٹ کریں',
@@ -472,6 +537,12 @@ const ur: EmailCopy = {
   },
   shopNow: 'ابھی خریداری کریں',
   marketing: {
+    abandonedCartFirstTouch: {
+      subject: 'ابھی تک آپ کے کارٹ میں',
+      heading: 'آپ یہ چھوڑ گئے',
+      intro: 'بس ایک مختصر یاد دہانی — یہ اشیاء ابھی تک آپ کے کارٹ میں محفوظ ہیں۔',
+      cta: 'اپنا کارٹ دیکھیں',
+    },
     abandonedCartReminder: {
       subject: 'آپ نے اپنے کارٹ میں کچھ چھوڑ دیا',
       heading: 'ابھی تک سوچ رہے ہیں؟',

@@ -3,33 +3,52 @@
 
 # Module: `purchasing`
 
-Pack **core** · enabled by the `MODULES` allowlist · 12 files
+Pack **core** · enabled by the `MODULES` allowlist · 31 files
 
 
 
-Source: `apps/api/src/modules/purchasing/`
+Source: `apps/api/src/modules/supply-chain/purchasing/`
 
-## Files (12 · 1,829 lines)
+## Files (31 · 4,947 lines)
 
-All paths relative to `apps/api/src/modules/purchasing/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/purchasing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `purchase-order.dto.ts` | dto | 104 | 4 |  |
+| `purchase-order.dto.ts` | dto | 125 | 4 |  |
+| `requisition.dto.ts` | dto | 50 | 4 |  |
 | `supplier-bill.dto.ts` | dto | 67 | 2 |  |
 | `supplier.dto.ts` | dto | 104 | 3 |  |
+| `goods-receipt-replication.listener.spec.ts` | unit test | 127 | — |  |
+| `goods-receipt-replication.listener.ts` | event subscriber | 82 | 1 | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples ("goods r… |
+| `partner-fact-applier.integration.spec.ts` | unit test | 314 | — |  |
+| `partner-fact-applier.service.spec.ts` | unit test | 277 | — |  |
+| `partner-fact-applier.service.ts` | service | 206 | 2 | What applying a fact did. |
+| `partner-fact-plan.spec.ts` | unit test | 311 | — |  |
+| `partner-fact-plan.ts` | module | 230 | 11 | The stored fact's shape, as far as the plan needs it. |
+| `partner-fact.listener.spec.ts` | unit test | 31 | — |  |
+| `partner-fact.listener.ts` | event subscriber | 26 | 1 | Applies a connected partner's `sale.dispatched` fact the moment it is stored (WO-213.2). |
+| `purchase-order-feed.source.spec.ts` | unit test | 69 | — |  |
+| `purchase-order-feed.source.ts` | module | 62 | 1 | The live feed's purchasing source (analytics-reporting/58-live-operational-feed.md). |
 | `purchasing.controller.ts` | controller | 151 | 3 |  |
-| `purchasing.cron.spec.ts` | unit test | 67 | — |  |
-| `purchasing.cron.ts` | scheduled job | 71 | 1 | The nightly safety-net sweep for reorder drafting. |
-| `purchasing.module.ts` | nest module | 18 | 1 |  |
-| `purchasing.service.ts` | service | 654 | 1 |  |
-| `purchasing.spec.ts` | unit test | 233 | — |  |
-| `reorder.listener.spec.ts` | unit test | 79 | — |  |
-| `reorder.listener.ts` | event subscriber | 51 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
-| `supplier-bill.spec.ts` | unit test | 230 | — |  |
+| `purchasing.cron.spec.ts` | unit test | 144 | — |  |
+| `purchasing.cron.ts` | scheduled job | 118 | 1 | The nightly safety-net sweep for reorder drafting. |
+| `purchasing.metrics.spec.ts` | unit test | 74 | — |  |
+| `purchasing.metrics.ts` | module | 135 | 2 | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
+| `purchasing.module.ts` | nest module | 38 | 1 |  |
+| `purchasing.service.ts` | service | 770 | 1 |  |
+| `purchasing.spec.ts` | unit test | 369 | — |  |
+| `reorder.listener.spec.ts` | unit test | 146 | — |  |
+| `reorder.listener.ts` | event subscriber | 83 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
+| `requisition-task-source.spec.ts` | unit test | 59 | — |  |
+| `requisition-task-source.ts` | module | 61 | 1 | WO-23.3's own real, single demonstration registration: `purchasing. |
+| `requisition.controller.ts` | controller | 63 | 1 |  |
+| `requisition.service.spec.ts` | unit test | 207 | — |  |
+| `requisition.service.ts` | service | 214 | 1 | 152-purchase-requisition.md. |
+| `supplier-bill.spec.ts` | unit test | 234 | — |  |
 
 
-## HTTP routes (17)
+## HTTP routes (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -38,6 +57,13 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | GET | `/admin/purchase-orders/:id` | `purchasing.manage` | `PurchaseOrderAdminController.findOne` :91 | Get a purchase order |
 | POST | `/admin/purchase-orders/:id/receive` | `purchasing.manage` | `PurchaseOrderAdminController.receiveGoods` :112 | Receive goods against a purchase order |
 | POST | `/admin/purchase-orders/:id/send` | `purchasing.manage` | `PurchaseOrderAdminController.markSent` :105 | Mark a purchase order as sent |
+| GET | `/admin/requisitions` | `purchasing.requisitions.approve` | `RequisitionController.findAll` :17 | List requisitions — the review queue for whoever can approve them |
+| POST | `/admin/requisitions` | `purchasing.requisitions.create` | `RequisitionController.create` :38 | Request a purchase — any staff member, not necessarily one who can raise a PO |
+| GET | `/admin/requisitions/:id` | `purchasing.requisitions.create` | `RequisitionController.findOne` :31 | Get a requisition |
+| POST | `/admin/requisitions/:id/approve` | `purchasing.requisitions.approve` | `RequisitionController.approve` :45 | Approve a requisition — never its own requester |
+| POST | `/admin/requisitions/:id/convert` | `purchasing.manage` | `RequisitionController.convert` :59 | Convert an approved requisition into a real purchase order — a separate, explicit action |
+| POST | `/admin/requisitions/:id/reject` | `purchasing.requisitions.approve` | `RequisitionController.reject` :52 | Reject a requisition — terminal; the requester raises a new one, never reopens this |
+| GET | `/admin/requisitions/mine` | `purchasing.requisitions.create` | `RequisitionController.findMine` :24 | The current user's own requisitions |
 | GET | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.findAll` :125 | List supplier bills, optionally filtered by supplier |
 | POST | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.create` :139 | Raise a bill against a supplier — distinct from the goods receipt it may relate to |
 | GET | `/admin/supplier-bills/:id` | `purchasing.manage` | `SupplierBillAdminController.findOne` :132 | Get a supplier bill |
@@ -58,61 +84,74 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:432` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:573` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:637` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:534` |
+| `RequisitionCreated` | `purchasing.requisition_created` | `requisition-task-source.ts:38`, `requisition.service.ts:72` |
+| `RequisitionConverted` | `purchasing.requisition_converted` | `requisition.service.ts:205` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:688` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:753` |
+| `SupplierDeleted` | `purchasing.supplier_deleted` | `purchasing.service.ts:186` |
+| `PartnerFactApplied` | `partners.fact_applied` | `partner-fact-applier.service.ts:113` |
+| `PartnerFactNeedsReview` | `partners.fact_needs_review` | `partner-fact-applier.service.ts:196` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
 | Event | Name | Handler |
 |---|---|---|
-| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `reorder.listener.ts:25` → `onReorderPointReached()` |
+| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `reorder.listener.ts:33` → `onReorderPointReached()` |
+| `GoodsReceived` | `purchasing.goods_received` | `goods-receipt-replication.listener.ts:70` → `onGoodsReceived()` |
+| `PartnerFactReceived` | `partners.fact_received` | `partner-fact.listener.ts:20` → `onPartnerFactReceived()` |
 
 
 ## Tables it owns (`purchasing.prisma`)
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GoodsReceipt` | 14 | :159 |  |
-| `GoodsReceiptItem` | 10 | :187 |  |
-| `PurchaseOrder` | 25 | :97 |  |
-| `PurchaseOrderItem` | 11 | :141 |  |
-| `Supplier` | 27 | :1 |  |
-| `SupplierBill` | 18 | :210 |  |
-| `SupplierProduct` | 10 | :69 | What a given supplier charges for a given variant, and under what terms. |
+| `GoodsReceipt` | 14 | :176 |  |
+| `GoodsReceiptItem` | 10 | :204 |  |
+| `PurchaseOrder` | 27 | :102 |  |
+| `PurchaseOrderItem` | 11 | :158 |  |
+| `PurchaseRequisition` | 12 | :277 |  |
+| `RequisitionLine` | 7 | :301 |  |
+| `Supplier` | 28 | :1 |  |
+| `SupplierBill` | 18 | :227 |  |
+| `SupplierLeadTimeObservation` | 5 | :324 | resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods rec… |
+| `SupplierProduct` | 10 | :74 | What a given supplier charges for a given variant, and under what terms. |
 
 
-Enums: `PurchaseOrderStatus` (5) · `SupplierBillStatus` (3)
+Enums: `PurchaseOrderStatus` (5) · `RequisitionApprovalStatus` (4) · `SupplierBillStatus` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
 
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
-| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing.cron.ts:28` |  |
+| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing.cron.ts:36` |  |
 
 
 ## Nest wiring
 
 **`PurchasingModule`** (`purchasing.module.ts`)
 - imports: `InventoryModule`, `PartiesModule`, `SettingsModule`
-- controllers: `PurchasingController`, `PurchaseOrderAdminController`, `SupplierBillAdminController`
-- providers: `PurchasingService`, `PurchasingCron`, `PurchasingReorderListener`
-- exports: `PurchasingService`
+- controllers: `PurchasingController`, `PurchaseOrderAdminController`, `SupplierBillAdminController`, `RequisitionController`
+- providers: `PurchasingService`, `RequisitionService`, `PurchasingCron`, `PurchasingReorderListener`, `GoodsReceiptReplicationListener`, `RequisitionTaskSource`, `PurchasingMetricsProvider`, `PurchasingSpendMetricsProvider`, `PurchaseOrderFeedSource`, `PartnerFactApplierService`, `PartnerFactListener`
+- exports: `PurchasingService`, `RequisitionService`
 
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
-- **module `parties`** ⚠ direct import
+- core `approvals`
 - core `auth`
 - core `config`
 - core `events`
 - core `extension-points`
+- core `feed`
+- core `metrics`
 - core `prisma`
+- core `redis`
+- core `replication`
 - core `settings`
 - package `@newax/shared`
 
@@ -121,13 +160,22 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (4)
+## Tests (13)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `purchasing.cron.spec.ts` | 2 | PurchasingCron |
-| `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
-| `reorder.listener.spec.ts` | 5 | PurchasingReorderListener |
+| `goods-receipt-replication.listener.spec.ts` | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onGoodsReceived |
+| `partner-fact-applier.integration.spec.ts` | 10 | Partner fact applier — real database (WO-213.2) |
+| `partner-fact-applier.service.spec.ts` | 14 | PartnerFactApplierService · apply — a fact that checks out · apply — a fact that is not ours to apply · apply — a fact… |
+| `partner-fact-plan.spec.ts` | 20 | planSaleFact · when everything checks out · the supplier · the currency · matching lines to products · the price review… |
+| `partner-fact.listener.spec.ts` | 3 | PartnerFactListener |
+| `purchase-order-feed.source.spec.ts` | 5 | PurchaseOrderFeedSource — WO-58.2 |
+| `purchasing.cron.spec.ts` | 5 | PurchasingCron |
+| `purchasing.metrics.spec.ts` | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
+| `purchasing.spec.ts` | 15 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
+| `reorder.listener.spec.ts` | 9 | PurchasingReorderListener |
+| `requisition-task-source.spec.ts` | 4 | RequisitionTaskSource |
+| `requisition.service.spec.ts` | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refusal · convertToPurcha… |
 | `supplier-bill.spec.ts` | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 
 
@@ -138,21 +186,46 @@ check there before adding another.
 | `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:6` |  |
 | `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:24` |  |
 | `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:63` |  |
-| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:73` |  |
+| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:94` |  |
+| `CreateRequisitionLineDto` | class | `requisition.dto.ts:4` |  |
+| `CreateRequisitionDto` | class | `requisition.dto.ts:19` |  |
+| `DecideRequisitionDto` | class | `requisition.dto.ts:35` |  |
+| `ConvertRequisitionDto` | class | `requisition.dto.ts:41` |  |
 | `CreateSupplierBillDto` | class | `supplier-bill.dto.ts:4` |  |
 | `RecordSupplierBillPaymentDto` | class | `supplier-bill.dto.ts:47` |  |
 | `CreateSupplierDto` | class | `supplier.dto.ts:4` |  |
 | `UpdateSupplierDto` | class | `supplier.dto.ts:57` |  |
 | `AddSupplierProductDto` | class | `supplier.dto.ts:70` |  |
+| `GoodsReceiptReplicationListener` | class | `goods-receipt-replication.listener.ts:30` | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples… |
+| `ApplyResult` | type | `partner-fact-applier.service.ts:15` | What applying a fact did. |
+| `PartnerFactApplierService` | class | `partner-fact-applier.service.ts:56` | WO-213.2 — applies a connected partner's `sale.dispatched` fact on the buyer's side: a purchase order (the bu… |
+| `SaleFactLine` | interface | `partner-fact-plan.ts:20` | The stored fact's shape, as far as the plan needs it. |
+| `SaleFact` | interface | `partner-fact-plan.ts:29` |  |
+| `LinkedSupplier` | interface | `partner-fact-plan.ts:36` |  |
+| `KnownVariant` | interface | `partner-fact-plan.ts:43` |  |
+| `PlanInput` | interface | `partner-fact-plan.ts:50` |  |
+| `LineStatus` | type | `partner-fact-plan.ts:61` |  |
+| `LineOutcome` | interface | `partner-fact-plan.ts:63` |  |
+| `PlannedLine` | interface | `partner-fact-plan.ts:71` |  |
+| `SaleFactPlan` | type | `partner-fact-plan.ts:80` |  |
+| `parseSaleFact` | function | `partner-fact-plan.ts:101` | Reads a stored payload back into a `SaleFact`, or null when it is not one. |
+| `planSaleFact` | function | `partner-fact-plan.ts:140` |  |
+| `PartnerFactListener` | class | `partner-fact.listener.ts:17` | Applies a connected partner's `sale.dispatched` fact the moment it is stored (WO-213.2). |
+| `PurchaseOrderFeedSource` | class | `purchase-order-feed.source.ts:22` | The live feed's purchasing source (analytics-reporting/58-live-operational-feed.md). |
 | `PurchasingController` | class | `purchasing.controller.ts:9` |  |
 | `PurchaseOrderAdminController` | class | `purchasing.controller.ts:78` |  |
 | `SupplierBillAdminController` | class | `purchasing.controller.ts:119` |  |
-| `PurchasingCron` | class | `purchasing.cron.ts:19` | The nightly safety-net sweep for reorder drafting. |
-| `PurchasingModule` | class | `purchasing.module.ts:17` |  |
-| `PurchasingService` | class | `purchasing.service.ts:70` |  |
-| `PurchasingReorderListener` | class | `reorder.listener.ts:16` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
+| `PurchasingCron` | class | `purchasing.cron.ts:27` | The nightly safety-net sweep for reorder drafting. |
+| `PurchasingMetricsProvider` | class | `purchasing.metrics.ts:17` | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
+| `PurchasingSpendMetricsProvider` | class | `purchasing.metrics.ts:102` | `purchasing.spend` alone — see the class doc above for why it is split out. |
+| `PurchasingModule` | class | `purchasing.module.ts:37` |  |
+| `PurchasingService` | class | `purchasing.service.ts:72` |  |
+| `PurchasingReorderListener` | class | `reorder.listener.ts:24` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
+| `RequisitionTaskSource` | class | `requisition-task-source.ts:30` | WO-23.3's own real, single demonstration registration: `purchasing. |
+| `RequisitionController` | class | `requisition.controller.ts:11` |  |
+| `RequisitionService` | class | `requisition.service.ts:25` | 152-purchase-requisition.md. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

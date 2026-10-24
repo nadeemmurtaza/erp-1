@@ -9,7 +9,7 @@ export default [
   // `next/core-web-vitals` carries only a handful of jsx-a11y rules. The
   // recommended set is the rest — and it is the cheapest large accessibility
   // win available here, because the alternative is hand-written aria with
-  // nothing checking it (docs/design/09-quality.md ranks it first).
+  // nothing checking it (docs/design/process-governance/09-quality.md ranks it first).
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:jsx-a11y/recommended'),
   {
     rules: {

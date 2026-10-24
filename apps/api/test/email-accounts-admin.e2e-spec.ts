@@ -5,7 +5,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { AppConfigService } from '../src/core/config/app-config.service';
-import { decryptSecret } from '../src/core/security/secret-crypto';
+import { decryptSecret } from '@newax/shared/secret-crypto';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 
 /**

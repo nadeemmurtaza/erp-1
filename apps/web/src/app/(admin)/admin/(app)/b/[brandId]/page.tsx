@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import type { BrandPolicy, MyScope, UpdateBrandPolicyInput } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
 import { ScopeChips } from '@/components/admin/scope-chips';
+import { useAdminSession } from '@/components/admin/session';
 
 const POLICY_SWITCHES: Array<{ key: keyof UpdateBrandPolicyInput; label: string; description: string }> = [
   {
@@ -122,6 +123,7 @@ function BrandPolicySection({ brandId, canManage }: { brandId: string; canManage
  */
 export default function BrandDashboardPage() {
   const params = useParams<{ brandId: string }>();
+  const { can } = useAdminSession();
   const [scope, setScope] = useState<MyScope | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -152,7 +154,7 @@ export default function BrandDashboardPage() {
   if (!scope) return <Loading />;
 
   const brand = scope.brands.find((candidate) => candidate.id === params.brandId);
-  const canManage = getStoredUser()?.permissions.includes('organization.manage') ?? false;
+  const canManage = can('organization.manage');
 
   return (
     <>

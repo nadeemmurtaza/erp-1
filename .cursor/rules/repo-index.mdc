@@ -41,6 +41,7 @@ instead of forty.
 | a permission: what enforces it, which roles hold it | `docs/index/cross/permissions.md` |
 | a table, column or enum | `docs/index/cross/data-model.md` |
 | how two modules talk (domain events) | `docs/index/cross/events.md` |
+| an entity’s valid status transitions | `docs/index/cross/state-machines.md` |
 | a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
 | whether a component already exists | `docs/index/cross/components.md` |
 | how something should look, behave or read | `docs/index/cross/design-system.md` |

@@ -2,13 +2,17 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { Public } from '../auth/decorators';
+import { RedisService } from '../redis/redis.service';
 
 @ApiTags('health')
 @Controller('health')
 export class HealthController {
   private readonly startedAt = Date.now();
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   @Public()
   @Get()
@@ -24,7 +28,7 @@ export class HealthController {
    */
   @Public()
   @Get('ready')
-  @ApiOperation({ summary: 'Readiness probe — checks the database' })
+  @ApiOperation({ summary: 'Readiness probe — checks the database and the rate-limit Redis' })
   async ready() {
     const checks: Record<string, { ok: boolean; detail?: string }> = {};
 
@@ -37,6 +41,12 @@ export class HealthController {
         detail: error instanceof Error ? error.message : String(error),
       };
     }
+
+    // 206-rate-limiting-caching-compression-hardening.md: without it, sign-in
+    // and every route with its own rate limit answer 503 (fail closed) while
+    // the rest keeps serving on per-process limits — degraded, not down, so
+    // it is reported here and never moves the liveness probe.
+    checks.redis = await this.redis.ping('rateLimit');
 
     const pendingEvents = checks.database.ok
       ? await this.prisma.outboxEvent.count({ where: { status: 'PENDING' } })

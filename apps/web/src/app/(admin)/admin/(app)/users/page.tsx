@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminUser, BackOfficeRole, RoleSummary } from '@/types/api';
+import { DataTable } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface Draft {
   email: string;
@@ -101,62 +103,46 @@ export default function AdminUsersPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="table-flat">
-              <thead>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Role
-                  </th>
-                  <th>
-                    Status
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {users.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                      No back-office users yet.
-                    </td>
-                  </tr>
-                ) : (
-                  users.map((user) => (
-                    <tr key={user.id} className="hover:bg-neutral-50">
-                      <td>
-                        <span className="font-medium text-neutral-900">
-                          {[user.firstName, user.lastName].filter(Boolean).join(' ') ||
-                            user.email ||
-                            user.phone}
-                        </span>
-                        <p className="text-xs text-neutral-900/60">{user.email ?? user.phone}</p>
-                      </td>
-                      <td className="text-neutral-900/70">{user.role}</td>
-                      <td>
-                        {user.isActive ? (
-                          <span className="text-xs font-medium text-green-700">Active</span>
-                        ) : (
-                          <span className="text-xs font-medium text-red-700">Deactivated</span>
-                        )}
-                      </td>
-                      <td className="text-end">
-                        <Link
-                          href={`/admin/users/${user.id}`}
-                          className="rounded px-2 py-1 text-xs text-accent-hover hover:bg-neutral-50"
-                        >
-                          Manage
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            rows={users}
+            emptyLabel="No back-office users yet."
+            rowKey={(user) => user.id}
+            columns={[
+              {
+                header: 'Name',
+                cell: (user) => (
+                  <>
+                    <span className="font-medium text-neutral-900">
+                      {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone}
+                    </span>
+                    <p className="text-xs text-neutral-900/60">{user.email ?? user.phone}</p>
+                  </>
+                ),
+              },
+              { header: 'Role', cell: (user) => user.role, muted: true },
+              {
+                header: 'Status',
+                cell: (user) =>
+                  user.isActive ? (
+                    <span className="text-xs font-medium text-green-700">Active</span>
+                  ) : (
+                    <span className="text-xs font-medium text-red-700">Deactivated</span>
+                  ),
+              },
+              {
+                header: '',
+                align: 'end',
+                cell: (user) => (
+                  <Link
+                    href={`/admin/users/${user.id}`}
+                    className="rounded px-2 py-1 text-xs text-accent-hover hover:bg-neutral-50"
+                  >
+                    Manage
+                  </Link>
+                ),
+              },
+            ]}
+          />
         </div>
 
         <form onSubmit={create} className="card h-fit space-y-4 p-4">
@@ -200,18 +186,19 @@ export default function AdminUsersPage() {
             />
           </label>
 
-          <label className="block">
+          <div>
             <span className="field-label">Role</span>
-            <select
+            <Select
+              label="Role"
               value={draft.role}
-              onChange={(event) => setDraft({ ...draft, role: event.target.value as BackOfficeRole })}
-              className="field-input"
-            >
-              <option value="STAFF">Staff</option>
-              <option value="TAILOR">Tailor</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-          </label>
+              onChange={(next) => setDraft({ ...draft, role: next as BackOfficeRole })}
+              options={[
+                { value: 'STAFF', label: 'Staff' },
+                { value: 'TAILOR', label: 'Tailor' },
+                { value: 'ADMIN', label: 'Admin' },
+              ]}
+            />
+          </div>
 
           <label className="block">
             <span className="field-label">Password</span>

@@ -93,7 +93,7 @@ export default function CartScreen() {
 
                 {item.exceedsStock ? (
                   <Text style={styles.warning}>
-                    ⚠ {t('product.outOfStock')} ({item.availableStock})
+                    {t('product.outOfStock')} ({item.availableStock})
                   </Text>
                 ) : null}
 

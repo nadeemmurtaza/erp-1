@@ -4,8 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import { EmptyState, Loading, PageHeader } from '@/components/ui';
-import { Badge } from '@/components/ui';
+import { Badge, DataTable, PageHeader } from '@/components/ui';
 import { ROUTES } from '@/constants/routes';
 import type { GarmentWithSizeChart } from '@/utils/garment-drafts';
 
@@ -25,12 +24,16 @@ import type { GarmentWithSizeChart } from '@/utils/garment-drafts';
 export default function AdminGarmentsPage() {
   const [garments, setGarments] = useState<GarmentWithSizeChart[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(true);
 
   const load = useCallback(async () => {
+    setBusy(true);
     try {
       setGarments(await adminFetch<GarmentWithSizeChart[]>('/admin/measurements/garment-types'));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load garment types');
+    } finally {
+      setBusy(false);
     }
   }, []);
 
@@ -49,76 +52,72 @@ export default function AdminGarmentsPage() {
         <p role="alert" className="text-sm text-feedback-negative">
           {error}
         </p>
-      ) : !garments ? (
-        <Loading />
-      ) : garments.length === 0 ? (
-        <EmptyState
-          title="No garment types yet"
-          description="Garment types come from the catalogue seed. Once one exists it appears here."
-        />
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead>
-              <tr>
-                <th scope="col">Garment</th>
-                <th scope="col">Measurements</th>
-                <th scope="col" className="text-end">
-                  Stitching fee
-                </th>
-                <th scope="col">Stitching</th>
-              </tr>
-            </thead>
-            <tbody>
-              {garments.map((garment) => {
-                const active = garment.fields.filter((field) => field.isActive).length;
-                return (
-                  <tr key={garment.id} className="hover:bg-neutral-50">
-                    <td>
-                      {/*
-                       * The link is on the name rather than the row: a whole
-                       * clickable row cannot be reached by keyboard, and
-                       * cannot be opened in a new tab.
-                       */}
-                      <Link
-                        href={ROUTES.admin.garment(garment.id)}
-                        className="font-medium text-neutral-900 hover:text-accent-hover"
-                      >
-                        {garment.labelEn}
-                      </Link>
-                      {/*
-                       * inline-block, not block. `dir="rtl"` is right for the
-                       * text — it shapes the parentheses in "کرتا (مردانہ)"
-                       * correctly — but on a block it also drags the name to
-                       * the far edge of the cell, stranding it half a column
-                       * away from the English one it belongs to. Shrunk to its
-                       * content, it sits where the eye expects.
-                       */}
-                      <span
-                        className="mt-0.5 block w-fit font-urdu text-xs text-neutral-900/60"
-                        dir="rtl"
-                      >
-                        {garment.labelUr}
-                      </span>
-                    </td>
-                    <td className="tabular-nums text-neutral-900/70">
-                      {active} {active === 1 ? 'field' : 'fields'}
-                    </td>
-                    <td className="text-end tabular-nums text-neutral-900">
-                      {formatMoney(garment.stitchingPrice)}
-                    </td>
-                    <td>
-                      <Badge tone={garment.stitchingEnabled ? 'success' : 'neutral'}>
-                        {garment.stitchingEnabled ? 'Offered' : 'Hidden'}
-                      </Badge>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
+      ) : null}
+
+      <DataTable
+        rows={garments}
+        loading={busy && !garments}
+        emptyLabel="No garment types yet. Garment types come from the catalogue seed. Once one exists it appears here."
+        rowKey={(garment) => garment.id}
+        columns={[
+          {
+            header: 'Garment',
+            cell: (garment) => (
+              <>
+                {/*
+                 * The link is on the name rather than the row: a whole
+                 * clickable row cannot be reached by keyboard, and
+                 * cannot be opened in a new tab.
+                 */}
+                <Link
+                  href={ROUTES.admin.garment(garment.id)}
+                  className="font-medium text-neutral-900 hover:text-accent-hover"
+                >
+                  {garment.labelEn}
+                </Link>
+                {/*
+                 * inline-block, not block. `dir="rtl"` is right for the
+                 * text — it shapes the parentheses in "کرتا (مردانہ)"
+                 * correctly — but on a block it also drags the name to
+                 * the far edge of the cell, stranding it half a column
+                 * away from the English one it belongs to. Shrunk to its
+                 * content, it sits where the eye expects.
+                 */}
+                <span className="mt-0.5 block w-fit font-urdu text-xs text-neutral-900/60" dir="rtl">
+                  {garment.labelUr}
+                </span>
+              </>
+            ),
+          },
+          {
+            header: 'Measurements',
+            muted: true,
+            numeric: true,
+            cell: (garment) => {
+              const active = garment.fields.filter((field) => field.isActive).length;
+              return (
+                <>
+                  {active} {active === 1 ? 'field' : 'fields'}
+                </>
+              );
+            },
+          },
+          {
+            header: 'Stitching fee',
+            align: 'end',
+            numeric: true,
+            cell: (garment) => formatMoney(garment.stitchingPrice),
+          },
+          {
+            header: 'Stitching',
+            cell: (garment) => (
+              <Badge tone={garment.stitchingEnabled ? 'success' : 'neutral'}>
+                {garment.stitchingEnabled ? 'Offered' : 'Hidden'}
+              </Badge>
+            ),
+          },
+        ]}
+      />
     </>
   );
 }

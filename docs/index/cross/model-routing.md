@@ -30,6 +30,7 @@ hand.
 | `verify` | `haiku` | `low` | Run the checks and report what failed | running lint, typecheck, tests, the build, or the index freshness check |
 | `implement` | `sonnet` | `medium` | A contained change inside one module | a bug fix, a small endpoint, a component, a test, a copy change |
 | `feature` | `sonnet` | `high` | A whole capability, end to end | a named feature spanning modules, or anything needing a plan first |
+| `ux` | `sonnet` | `high` | Design, audit or review a screen against the design laws | designing a new screen before it is built, auditing a page, or reviewing a diff that adds or changes what a person sees |
 | `debug` | `sonnet` | `high` | Root-cause a failure | a failing test, a red CI run, a bug reproduced but not explained |
 | `schema` | `opus` | `high` | Database schema and migrations | a Prisma model or column change, or writing a migration |
 | `architect` | `opus` | `xhigh` | Architecture and irreversible decisions | module boundaries, the sector/brand/branch axes, a new module or pack, an extension point, anything going in DECISIONS.md |
@@ -60,7 +61,13 @@ The ordinary case. The house rules already constrain the shape of the change, so
 
 **A whole capability, end to end.** Use when a named feature spanning modules, or anything needing a plan first.
 
-CLAUDE.md's five lenses make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
+The five lenses in the `feature-scope` skill make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
+
+### `ux` — sonnet · high
+
+**Design, audit or review a screen against the design laws.** Use when designing a new screen before it is built, auditing a page, or reviewing a diff that adds or changes what a person sees.
+
+Judging a screen is matching it against a catalogue of numbered laws and measuring what can be measured, which is what extra effort buys. Being wrong ships a dead end or a second primary button, not a breach, so this stays at sonnet rather than opus.
 
 ### `debug` — sonnet · high
 
@@ -104,4 +111,4 @@ other agent-instruction files so every tool at least gets the policy.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

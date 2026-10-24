@@ -9,8 +9,8 @@ Every top-level export in `api`, with the line to open.
 Per-module and per-core-subsystem symbols live on their own L2 pages, so they
 are not repeated here — one list, one place to be wrong:
 
-- Modules: [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
-- Core: [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`health`](../core/health.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`replication`](../core/replication.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`storage`](../core/storage.md) · [`time`](../core/time.md)
+- Modules: [`accounting`](..\modules\accounting.md) · [`accounts`](..\modules\accounts.md) · [`addresses`](..\modules\addresses.md) · [`analytics`](..\modules\analytics.md) · [`attendance`](..\modules\attendance.md) · [`auction`](..\modules\auction.md) · [`bankfacilities`](..\modules\bankfacilities.md) · [`bom`](..\modules\bom.md) · [`bpmn-workflows`](..\modules\bpmn-workflows.md) · [`cart`](..\modules\cart.md) · [`catalog`](..\modules\catalog.md) · [`collections`](..\modules\collections.md) · [`content`](..\modules\content.md) · [`crm`](..\modules\crm.md) · [`custom-fields`](..\modules\custom-fields.md) · [`embeds`](..\modules\embeds.md) · [`entity-attributes`](..\modules\entity-attributes.md) · [`example-hello-world-pack`](..\modules\example-hello-world-pack.md) · [`feature-flags`](..\modules\feature-flags.md) · [`finance`](..\modules\finance.md) · [`fragments`](..\modules\fragments.md) · [`fulfilment`](..\modules\fulfilment.md) · [`giftcards`](..\modules\giftcards.md) · [`hr`](..\modules\hr.md) · [`identity-verification`](..\modules\identity-verification.md) · [`inventory`](..\modules\inventory.md) · [`loyalty`](..\modules\loyalty.md) · [`managed-services`](..\modules\managed-services.md) · [`marketing`](..\modules\marketing.md) · [`marketplace`](..\modules\marketplace.md) · [`measurements`](..\modules\measurements.md) · [`metadata-forms`](..\modules\metadata-forms.md) · [`notification-preferences`](..\modules\notification-preferences.md) · [`notify`](..\modules\notify.md) · [`onsitemessages`](..\modules\onsitemessages.md) · [`orders`](..\modules\orders.md) · [`organization`](..\modules\organization.md) · [`orgstructure`](..\modules\orgstructure.md) · [`parties`](..\modules\parties.md) · [`payments`](..\modules\payments.md) · [`payroll`](..\modules\payroll.md) · [`planning`](..\modules\planning.md) · [`pos`](..\modules\pos.md) · [`pricing`](..\modules\pricing.md) · [`production`](..\modules\production.md) · [`promotions`](..\modules\promotions.md) · [`purchasing`](..\modules\purchasing.md) · [`rag`](..\modules\rag.md) · [`receivables`](..\modules\receivables.md) · [`recommendations`](..\modules\recommendations.md) · [`reports`](..\modules\reports.md) · [`resilience`](..\modules\resilience.md) · [`reviews`](..\modules\reviews.md) · [`search`](..\modules\search.md) · [`settings`](..\modules\settings.md) · [`settlements`](..\modules\settlements.md) · [`stitching`](..\modules\stitching.md) · [`support`](..\modules\support.md) · [`tasks`](..\modules\tasks.md) · [`tax`](..\modules\tax.md) · [`tracking`](..\modules\tracking.md) · [`tradingpartners`](..\modules\tradingpartners.md) · [`transfers`](..\modules\transfers.md) · [`users`](..\modules\users.md) · [`wallet`](..\modules\wallet.md) · [`wishlist`](..\modules\wishlist.md)
+- Core: [`action-hub`](..\core\action-hub.md) · [`ai`](..\core\ai.md) · [`anax`](..\core\anax.md) · [`approvals`](..\core\approvals.md) · [`audit`](..\core\audit.md) · [`auth`](..\core\auth.md) · [`cache`](..\core\cache.md) · [`checkout`](..\core\checkout.md) · [`common`](..\core\common.md) · [`config`](..\core\config.md) · [`crm`](..\core\crm.md) · [`crypto`](..\core\crypto.md) · [`ecosystem`](..\core\ecosystem.md) · [`events`](..\core\events.md) · [`extension-points`](..\core\extension-points.md) · [`feature-flags`](..\core\feature-flags.md) · [`feed`](..\core\feed.md) · [`health`](..\core\health.md) · [`idempotency`](..\core\idempotency.md) · [`intent`](..\core\intent.md) · [`launchpad`](..\core\launchpad.md) · [`metrics`](..\core\metrics.md) · [`notifications`](..\core\notifications.md) · [`prisma`](..\core\prisma.md) · [`redis`](..\core\redis.md) · [`replication`](..\core\replication.md) · [`resilience`](..\core\resilience.md) · [`security`](..\core\security.md) · [`settings`](..\core\settings.md) · [`slo`](..\core\slo.md) · [`storage`](..\core\storage.md) · [`throttling`](..\core\throttling.md) · [`time`](..\core\time.md) · [`versioning`](..\core\versioning.md)
 
 Below: everything in `apps/api` that no module or core page owns — the app
 root, Prisma tooling, and the e2e suite.
@@ -20,38 +20,38 @@ root, Prisma tooling, and the e2e suite.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `backfill-parties.ts` | `backfillParties` | function | :15 | One-shot backfill: creates the permanent Party profile (parties.prisma) for every pre-existing Supp… |
-| `backfill-product-options.ts` | `backfillProductOptions` | function | :24 | WO-3.1 (03-variants-sku-seo.md, Blocker B2) — one-shot backfill from the legacy size/color/colorHex… |
 
 ### `apps/api/src`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `app.module.ts` | `AppModule` | class | :29 |  |
+| `app.module.ts` | `AppModule` | class | :54 |  |
 
 ### `apps/api/src/core`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `core.module.ts` | `CoreModule` | class | :38 |  |
+| `core.module.ts` | `CoreModule` | class | :70 |  |
 
 ### `apps/api/src/modules`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `module-packs.ts` | `PackName` | type | :40 | The sector packs. |
-| `module-packs.ts` | `MODULE_PACKS` | const | :50 |  |
-| `modules.registry.ts` | `FeatureModuleEntry` | interface | :30 |  |
-| `modules.registry.ts` | `FEATURE_MODULES` | const | :61 | The registry of feature modules. |
-| `modules.registry.ts` | `FeatureModulesModule` | class | :121 | Composes the enabled modules into one import. |
+| `module-packs.ts` | `MODULE_PACKS` | const | :54 |  |
+| `modules.registry.ts` | `FeatureModuleEntry` | interface | :69 |  |
+| `modules.registry.ts` | `FEATURE_MODULES` | const | :100 | The registry of feature modules. |
+| `modules.registry.ts` | `FeatureModulesModule` | class | :321 | Composes the enabled modules into one import. |
 
 ### `apps/api/test/support`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `outbox.ts` | `drainOutboxSince` | function | :20 | Delivers the outbox until no event created since `since` is still pending or mid-delivery. |
 | `stock.ts` | `setVariantStock` | function | :12 | B6 (17-inventory-locations.md): ProductVariant.stock is now a denormalized aggregate over VariantLo… |
 | `stock.ts` | `incrementVariantStock` | function | :28 |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

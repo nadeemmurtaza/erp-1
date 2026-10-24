@@ -1,4 +1,4 @@
-import { Badge, type BadgeTone } from '@/components/ui';
+import { Badge, SwapText, type BadgeTone } from '@/components/ui';
 
 /**
  * The pill that carries a record's state — an order's status, a product's,
@@ -20,6 +20,9 @@ import { Badge, type BadgeTone } from '@/components/ui';
  * normal step along the way. The label is always present — colour alone is
  * never the signal.
  *
+ * The label hands over in place when the status changes (`SwapText`), so a
+ * record that moves from Pending to Paid is seen to move.
+ *
  * `label` exists because the customer surface shows these in Urdu as well as
  * English: the tone is decided here, the wording comes from the translation
  * files. Admin passes nothing and gets `statusLabel`.
@@ -32,6 +35,14 @@ const TONES: Record<string, BadgeTone> = {
   FAILED: 'danger',
   ARCHIVED: 'danger',
   LOST: 'danger',
+  REJECTED: 'danger',
+  // BidderStatus (launchpad-apps/234-auction-app.md, WO-234.5) — an organiser's "no" to a registration; reversible by approving.
+  DECLINED: 'danger',
+  // doc 14 (managed-services) — a hosting/agency tenant TenantStatus that
+  // ended badly; suspension is reversible (a status flip, not a delete)
+  // but still reads as "attention needed", same tone as PAST_DUE elsewhere.
+  SUSPENDED: 'danger',
+  DEPROVISIONED: 'danger',
   // Ended well
   DELIVERED: 'success',
   ACTIVE: 'success',
@@ -40,15 +51,70 @@ const TONES: Record<string, BadgeTone> = {
   DISPATCHED: 'success',
   COMPLETED: 'success',
   WON: 'success',
+  APPROVED: 'success',
+  POSTED: 'success',
+  SENT: 'success',
+  OPENED: 'success',
+  CLICKED: 'success',
+  // TaskState (tasks-notifications-support/23-tasks-allotment-tracking.md) —
+  // DONE shares COMPLETED's tone; OPEN/BLOCKED below.
+  DONE: 'success',
+  // CreditDebitNoteStatus (145-receivables-credit-limits-dunning.md)
+  ISSUED: 'success',
+  APPLIED: 'success',
+  VOID: 'danger',
   // Waiting on someone
   PENDING: 'warning',
   AWAITING_APPROVAL: 'warning',
   QUOTED: 'warning',
   IN_PROGRESS: 'info',
+  // TaskState — unclaimed/new work; not yet a "waiting on someone" state.
+  OPEN: 'neutral',
+  // TaskState — waiting on something outside the assignee's control.
+  BLOCKED: 'warning',
+  // WO-9.4 — CodRiskAction, shown only when not AUTO_CONFIRM (that case
+  // renders no badge at all; a clean order needs no flag).
+  CONFIRMATION_CALL: 'warning',
+  REQUIRE_ADVANCE_PAYMENT: 'danger',
   // Not live, but not wrong either
   DRAFT: 'neutral',
   RECEIVED: 'neutral',
   NEW: 'neutral',
+  // doc 14 — a hosting tenant not yet live, or a corrected (not failed)
+  // invoice: CREDITED already has a real charge, `PlatformInvoiceCreditNote`
+  // just adjusted it, so this is informational, never a red state.
+  PROVISIONING: 'neutral',
+  TRIAL: 'info',
+  CREDITED: 'info',
+  // A deliberate skip, not a failure — CampaignRecipientStatus (WO-8.4)
+  SKIPPED_OPT_OUT: 'neutral',
+  SKIPPED_NO_CONTACT: 'neutral',
+  // Personal API keys (163-personal-api-keys.md): revoked is final; expired
+  // can still be renewed by rotating it.
+  REVOKED: 'danger',
+  EXPIRED: 'neutral',
+  // 149-b2b-accounts-approvals-sector-packs.md — B2BOrderRequestStatus: an
+  // approved request that successfully placed its real Order.
+  CONVERTED: 'success',
+  // TicketStatus (64-help-desk-support-ticketing.md) — the ordinary,
+  // successful end of a ticket's life; RESOLVED can still be reopened
+  // (the one allowed backward move), CLOSED cannot.
+  RESOLVED: 'success',
+  CLOSED: 'success',
+  // SerializedUnitStatus (158-serialized-unit-tracking.md) — IN_STOCK is the
+  // ordinary, sellable state; SOLD ended well; RETURNED shares the tone
+  // every other reversal already gets above; RMA_TO_SUPPLIER is in transit,
+  // not yet resolved either way.
+  IN_STOCK: 'success',
+  SOLD: 'info',
+  RMA_TO_SUPPLIER: 'warning',
+  WRITTEN_OFF: 'danger',
+  // AuctionStatus / AuctionLotStatus (launchpad-apps/234-auction-app.md) — the
+  // keys no earlier status already names. SCHEDULED and a lot's PENDING fall
+  // through to the default; OPEN and CLOSED keep the tone they already have.
+  WITHDRAWN: 'neutral',
+  CLOSING: 'warning',
+  SETTLED: 'success',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */
@@ -57,5 +123,10 @@ export function statusLabel(status: string): string {
 }
 
 export function StatusBadge({ status, label }: { status: string; label?: string }) {
-  return <Badge tone={TONES[status] ?? 'info'}>{label ?? statusLabel(status)}</Badge>;
+  // A status that changes in place hands over (the old label rises out, the new one rises in); a first render is just the label.
+  return (
+    <Badge tone={TONES[status] ?? 'info'}>
+      <SwapText value={label ?? statusLabel(status)} />
+    </Badge>
+  );
 }

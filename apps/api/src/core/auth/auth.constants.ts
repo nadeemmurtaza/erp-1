@@ -1,5 +1,13 @@
+import type { ApiKeySurface } from '@newax/shared';
+
 export const IS_PUBLIC_KEY = 'auth:isPublic';
 export const PERMISSIONS_KEY = 'auth:permissions';
+/** @see SessionOnly — refused to every API key, whatever it carries. */
+export const SESSION_ONLY_KEY = 'auth:sessionOnly';
+/** @see CustomerScope — which storefront API keys may reach a customer route. */
+export const CUSTOMER_SCOPES_KEY = 'auth:customerScopes';
+/** @see AuditRateLimit — which body field names the identifier a throttled credential route was guessing at. */
+export const RATE_LIMIT_AUDIT_KEY = 'auth:rateLimitAudit';
 
 /**
  * What a verified access token carries. No `role`/`roles` here on purpose —
@@ -18,15 +26,46 @@ export interface JwtPayload {
   exp?: number;
 }
 
+/**
+ * The personal API key a request authenticated with, when it did not come
+ * from a session (163-personal-api-keys.md). @see ApiKeyAuthService
+ */
+export interface ApiKeyPrincipal {
+  /** The `ApiKey` row. */
+  id: string;
+  surface: ApiKeySurface;
+  /**
+   * A STOREFRONT key's scopes, expanded (write ⇒ read) and filtered to the
+   * catalogue. Empty for an ADMIN key, whose effective set is
+   * `AuthenticatedUser.permissions` itself.
+   */
+  customerScopes: readonly string[];
+}
+
 /** The authenticated principal attached to the request. */
 export interface AuthenticatedUser {
   id: string;
-  /** Every `Role` name this user currently holds — plural (custom roles); resolved fresh on every request. */
+  /** Every `Role` name this user currently holds — plural (custom roles); resolved fresh on every request. `[]` for an API key. */
   roles: string[];
-  /** Resolved fresh from every held role's grants, plus overrides, on every request — @see PermissionsResolverService. */
+  /**
+   * Resolved fresh from every held role's grants, plus overrides, on every
+   * request — @see PermissionsResolverService. For an API key it is already
+   * the key's effective set, `(key's permissions) ∩ (owner's live
+   * permissions) − NON_DELEGATABLE_PERMISSIONS`, and `[]` for a STOREFRONT
+   * key — so every existing check that reads it (a route's
+   * `@RequirePermission`, `stripOrderCost()`'s cost columns) caps a key
+   * without knowing keys exist.
+   */
   permissions: string[];
   email: string | null;
   phone: string | null;
+  /**
+   * Present only when the request authenticated with a personal API key.
+   * `id` above is still the owner's: a key acts as its owner, never as a
+   * separate actor, so every audit row and every "is this your own row"
+   * filter treats it as them.
+   */
+  apiKey?: ApiKeyPrincipal;
 }
 
 /*
@@ -47,6 +86,21 @@ export const AUTHENTICATED_ONLY_KEY = 'auth:authenticatedOnly';
 
 export const REFRESH_COOKIE = 'newax_refresh';
 export const CART_COOKIE = 'newax_cart';
+
+/**
+ * Single sign-on (161-sso-identity-federation.md). Both are sealed
+ * (AES-256-GCM under APP_ENCRYPTION_KEY, so they can be neither read nor
+ * forged), httpOnly, scoped to the /auth/sso routes and short-lived — they
+ * carry one sign-in across a redirect, never a session.
+ *
+ * STATE: the state, nonce and PKCE verifier from `/start` to `/callback`.
+ * HANDOFF: the session the callback issued, to the admin app's one
+ * `POST /auth/sso/session` — so no token ever travels in a URL.
+ */
+export const SSO_STATE_COOKIE = 'newax_sso_state';
+export const SSO_HANDOFF_COOKIE = 'newax_sso_handoff';
+export const SSO_STATE_TTL_MS = 10 * 60_000;
+export const SSO_HANDOFF_TTL_MS = 2 * 60_000;
 
 export const LEGACY_REFRESH_COOKIE = 'yaseen_refresh';
 export const LEGACY_CART_COOKIE = 'yaseen_cart';

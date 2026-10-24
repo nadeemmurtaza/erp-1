@@ -7,7 +7,17 @@
       "addresses": "Addresses",
       "measurements": "Measurements",
       "orders": "Orders",
-      "wishlist": "Wishlist"
+      "wishlist": "Wishlist",
+      "overview": "Overview",
+      "returns": "Returns",
+      "support": "Support",
+      "reviews": "Reviews",
+      "credit": "Credit & Gift Cards",
+      "loyalty": "Loyalty",
+      "wallet": "Wallet",
+      "b2b": "B2B account",
+      "notifications": "Notifications",
+      "apiKeys": "API keys"
     },
     "profile": {
       "title": "Profile",
@@ -48,7 +58,198 @@
       "pageOf": "Page {page} of {total}",
       "previous": "Previous",
       "next": "Next",
-      "failed": "Could not load your orders."
+      "failed": "Could not load your orders.",
+      "reorder": "Reorder",
+      "reordering": "Adding to cart…",
+      "reorderPartial": "Some items are no longer available: {names}",
+      "reorderFailed": "Could not reorder.",
+      "downloadInvoice": "Download invoice",
+      "tracking": "Tracking",
+      "trackingCourier": "Courier",
+      "trackingNumber": "Tracking number",
+      "trackNow": "Track shipment"
+    },
+    "overview": {
+      "title": "Overview",
+      "body": "Everything at a glance.",
+      "recentOrder": "Most recent order",
+      "noOrders": "No orders yet.",
+      "viewOrder": "View order",
+      "storeCredit": "Store credit",
+      "loyaltyPoints": "Loyalty points",
+      "viewCredit": "View credit & gift cards",
+      "viewLoyalty": "View loyalty",
+      "stitchingInProgress": "Stitching in progress",
+      "viewStitching": "View stitching job",
+      "actionNeeded": "Needs your attention",
+      "noActionNeeded": "Nothing needs your attention right now.",
+      "pendingReturn": "Return request awaiting your action",
+      "failed": "Could not load your overview."
+    },
+    "reviews": {
+      "title": "Reviews",
+      "body": "What you have said about what you bought.",
+      "empty": "You have not written a review yet.",
+      "statusPending": "Pending moderation",
+      "statusPublished": "Published",
+      "statusRejected": "Not published",
+      "verifiedPurchase": "Verified purchase"
+    },
+    "credit": {
+      "title": "Credit & Gift Cards",
+      "body": "Your store credit balance, and any gift card you hold.",
+      "balance": "Store credit balance",
+      "history": "Transaction history",
+      "empty": "No transactions yet.",
+      "redeemGiftCard": "Redeem a gift card",
+      "giftCardCode": "Gift card code",
+      "redeem": "Redeem",
+      "redeeming": "Redeeming…",
+      "redeemed": "Gift card redeemed — added to your store credit.",
+      "redeemFailed": "Could not redeem that gift card.",
+      "checkBalance": "Check a gift card balance",
+      "check": "Check",
+      "checking": "Checking…"
+    },
+    "wallet": {
+      "title": "Wallet",
+      "body": "Newax-issued store credit — buy it once, spend it with any merchant on the platform.",
+      "balance": "Wallet balance",
+      "history": "Transaction history",
+      "empty": "No wallet transactions yet.",
+      "entryType": {
+        "PURCHASE": "Credit purchased",
+        "RESERVE": "Held for an order",
+        "REDEEM": "Spent",
+        "RELEASE_RESERVATION": "Returned to your balance",
+        "REFUND": "Refunded",
+        "ADJUSTMENT": "Correction"
+      }
+    },
+    "loyalty": {
+      "title": "Loyalty",
+      "body": "Points earned on delivered orders, and your referral code.",
+      "points": "Points balance",
+      "tier": "Current tier",
+      "noTier": "Not yet in a tier",
+      "trailingSpend": "Last 12 months spend",
+      "history": "Points history",
+      "empty": "No points activity yet.",
+      "redeem": "Redeem points",
+      "redeemAmount": "Points to redeem",
+      "redeemSubmit": "Convert to store credit",
+      "redeemed": "Points converted to store credit.",
+      "redeemFailed": "Could not redeem those points.",
+      "referralTitle": "Refer a friend",
+      "referralBody": "Share your code — you both get a reward on their first delivered order.",
+      "yourCode": "Your code",
+      "getCode": "Get my code",
+      "myReferrals": "Customers you referred",
+      "applyCode": "Have a friend's code?",
+      "applyCodePlaceholder": "Enter code",
+      "apply": "Apply",
+      "applied": "Referral code applied.",
+      "applyFailed": "Could not apply that code."
+    },
+    "b2b": {
+      "title": "B2B account",
+      "body": "Your standing account, its approval policy, and any order waiting on your decision.",
+      "myAccount": "My account",
+      "active": "Active",
+      "inactive": "Inactive",
+      "requiresPo": "Requires a purchase-order reference",
+      "thresholdLine": "Orders at or above {amount} need approval",
+      "approversLine": "{count} approver(s)",
+      "noPolicy": "No approval policy configured yet.",
+      "noAccount": "You do not have a B2B account",
+      "noAccountBody": "Ask your account manager to open a standing account if you trade on credit terms.",
+      "pendingApprovals": "Waiting on my approval",
+      "noPending": "Nothing is waiting on your approval.",
+      "requestedBy": "Requested by {name}",
+      "unknown": "someone on your team",
+      "reject": "Reject",
+      "approve": "Approve",
+      "decideFailed": "Could not record your decision.",
+      "myRequests": "My submitted requests",
+      "noRequests": "You have not submitted any orders for approval.",
+      "status": {
+        "PENDING": "Awaiting approval",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected",
+        "CONVERTED": "Placed"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "body": "Choose what we contact you about, and how.",
+      "category_STITCHING_PROGRESS": "Stitching progress",
+      "category_MARKETING": "Marketing & offers",
+      "category_BACK_IN_STOCK": "Back-in-stock alerts",
+      "channel_EMAIL": "Email",
+      "channel_SMS": "SMS",
+      "channel_WHATSAPP": "WhatsApp",
+      "channel_PUSH": "Push",
+      "save": "Save preferences",
+      "saving": "Saving…",
+      "saved": "Preferences saved.",
+      "failed": "Could not load your preferences."
+    },
+    "apiKeys": {
+      "title": "API keys",
+      "body": "Let an app, a script or an AI assistant read or update parts of your account — only the parts you choose, and never your password or sign-in details.",
+      "create": "Create key",
+      "empty": "You have no API keys yet.",
+      "emptyBody": "Create one to connect an app or an AI assistant to your account.",
+      "loadFailed": "Could not load your API keys.",
+      "failed": "That did not work. Please try again.",
+      "name": "Name",
+      "namePlaceholder": "Shopping assistant",
+      "expiresAfter": "Expires after",
+      "days": "{count} days",
+      "access": "What it may do",
+      "accessNone": "No access",
+      "accessRead": "See",
+      "accessWrite": "See and change",
+      "noAccessChosen": "Choose at least one thing it may do.",
+      "resource_profile": "Your name, email and phone",
+      "resource_orders": "Orders",
+      "resource_addresses": "Saved addresses",
+      "resource_measurements": "Measurement profiles",
+      "resource_wishlist": "Wishlist and stock alerts",
+      "resource_reviews": "Your reviews",
+      "resource_returns": "Returns",
+      "resource_loyalty": "Loyalty points",
+      "resource_storeCredit": "Store credit",
+      "resource_b2bAccount": "B2B account",
+      "resource_support": "Support tickets",
+      "status_ACTIVE": "Active",
+      "status_EXPIRED": "Expired",
+      "status_REVOKED": "Revoked",
+      "lastUsed": "Last used {date}",
+      "neverUsed": "Never used",
+      "expires": "Expires {date}",
+      "revokedOn": "Revoked {date}",
+      "edit": "Edit",
+      "rotate": "Rotate",
+      "revoke": "Revoke",
+      "save": "Save",
+      "cancel": "Cancel",
+      "working": "Working…",
+      "createTitle": "Create an API key",
+      "editTitle": "Edit {name}",
+      "secretTitle": "Your new key — {name}",
+      "secretWarning": "Copy it now. This is the only time it is shown — we keep only a fingerprint of it. If you lose it, rotate the key to get a new one.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyFailed": "Your browser blocked copying — the key is selected, copy it by hand.",
+      "secretDone": "I have copied it",
+      "rotateTitle": "Rotate {name}?",
+      "rotateBody": "You get a new secret with the same access. The current one stops working straight away, so update whatever uses it.",
+      "rotateExpires": "New secret expires after",
+      "rotateConfirm": "Rotate key",
+      "revokeTitle": "Revoke {name}?",
+      "revokeBody": "Anything using it is refused straight away. This cannot be undone — you can create a new key if you need one again.",
+      "revokeConfirm": "Revoke key"
     }
   },
   "site": {
@@ -79,7 +280,8 @@
     "bottomNav": "Bottom navigation",
     "language": "Language",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "auctions": "Auctions"
   },
   "home": {
     "heroTitle": "Cloth that fits you",
@@ -88,6 +290,7 @@
     "shopReady": "Shop ready to wear",
     "featured": "Featured",
     "featuredBody": "Picked from this season's arrivals.",
+    "recommendedForYou": "Recommended for you",
     "categories": "Browse by category",
     "howItWorks": "How stitching works",
     "step1Title": "Pick your fabric",
@@ -120,6 +323,10 @@
     "sortPriceDesc": "Price: high to low",
     "empty": "Nothing matches those filters.",
     "emptyBody": "Try removing a filter or widening the price range.",
+    "visualSearch": "Search by photo",
+    "visualSearchError": "Could not search by that photo — try again or search by text instead.",
+    "visualEmpty": "Nothing matched that photo.",
+    "visualEmptyBody": "Try a clearer or closer photo, or search by text instead.",
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {page} of {total}"
@@ -156,6 +363,11 @@
     "fabricNeedRange": "{low}-{high} Gaz (about {lowM}-{highM} metres)",
     "fabricNeedSingle": "About {gaz} Gaz (about {metres} metres)",
     "fabricNeedCheckNote": "This listing may run a little short for a larger size — open “Get it stitched to your measurements” to check the exact figure once you add yours.",
+    "sizeRecommendation": "Based on your measurements, take {size}",
+    "sizeRecommendationUse": "Use this size",
+    "sizeRecommendationShiftedUp": "Other customers said this product runs small, so we suggest sizing up.",
+    "sizeRecommendationShiftedDown": "Other customers said this product runs large, so we suggest sizing down.",
+    "sizeRecommendationUnavailable": "Your best match isn't sold for this product — this is the closest size that is.",
     "noImage": "No photograph yet",
     "backToShop": "Back to shop",
     "quantity": "Quantity",
@@ -168,12 +380,33 @@
     "quickShop": "Quick Shop",
     "addToFavourites": "Add to favourites",
     "removeFromFavourites": "Remove from favourites",
+    "completeTheLook": "Complete the look",
+    "youMayAlsoLike": "You may also like",
+    "frequentlyBoughtTogether": "Frequently bought together",
+    "thisItem": "This item",
+    "bundleTotal": "{count, plural, =0 {Nothing selected} one {# item} other {# items}}",
+    "addBundleToCart": "{count, plural, =0 {Add to cart} one {Add # item to cart} other {Add # items to cart}}",
     "sizeXS": "XS",
     "sizeS": "S",
     "sizeM": "M",
     "sizeL": "L",
     "sizeXL": "XL",
-    "sizeXXL": "XXL"
+    "sizeXXL": "XXL",
+    "reviews": {
+      "title": "Reviews",
+      "empty": "No reviews yet — be the first.",
+      "writeReview": "Write a review",
+      "rating": "Rating",
+      "reviewTitle": "Title (optional)",
+      "reviewBody": "Your review (optional)",
+      "submit": "Submit review",
+      "submitting": "Submitting…",
+      "submitted": "Thank you — your review is pending moderation.",
+      "failed": "Could not submit your review.",
+      "verifiedPurchase": "Verified purchase",
+      "helpful": "Helpful",
+      "signInToReview": "Sign in to write a review."
+    }
   },
   "cart": {
     "title": "Cart",
@@ -202,7 +435,9 @@
     "loading": "Loading your saved items…",
     "empty": "Nothing saved yet.",
     "emptyBody": "Tap the heart on anything you like to save it here.",
-    "browseShop": "Start shopping"
+    "browseShop": "Start shopping",
+    "outOfStock": "Out of stock",
+    "remove": "Remove"
   },
   "footer": {
     "help": "Help",
@@ -210,6 +445,7 @@
     "shipping": "Shipping & delivery",
     "returns": "Returns",
     "sizeGuide": "Measurement guide",
+    "verifyPurchase": "Verify your purchase",
     "about": "About",
     "story": "Our story",
     "stitchingService": "Stitching service",
@@ -222,7 +458,20 @@
     "loading": "Loading…",
     "error": "Something went wrong.",
     "retry": "Try again",
-    "currencyNote": "Prices in Pakistani Rupees"
+    "currencyNote": "Prices in Pakistani Rupees",
+    "journey": {
+      "done": "done",
+      "current": "current step",
+      "next": "still to come"
+    }
+  },
+  "theme": {
+    "group": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match device",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
   },
   "stitching": {
     "getStitched": "Get it stitched to your measurements",
@@ -339,6 +588,7 @@
     "postalCode": "Postal code (optional)",
     "email": "Email (optional)",
     "emailHint": "We'll send the order confirmation here.",
+    "marketingConsent": "Send me offers and order updates on WhatsApp/SMS",
     "payment": "Payment",
     "reviewStep": "Review",
     "note": "Delivery note",
@@ -352,7 +602,23 @@
     "finalTotalNote": "The final total, including delivery, is confirmed on the next page.",
     "placeOrder": "Place order",
     "placing": "Placing your order…",
-    "failed": "We could not place the order. Please try again."
+    "failed": "We could not place the order. Please try again.",
+    "offersTitle": "Promo code, gift card & store credit",
+    "promoCode": "Promo code",
+    "apply": "Apply",
+    "checking": "Checking…",
+    "promoApplied": "\"{name}\" applied.",
+    "promoInvalid": "That code is not valid.",
+    "giftCardCode": "Gift card code",
+    "giftCardHint": "Enter how much of the card's balance to use.",
+    "amountRs": "Amount (Rs)",
+    "storeCredit": "Use store credit (Rs)",
+    "discount": "Discount",
+    "giftCardRedeemTitle": "One more step",
+    "giftCardRedeemBody": "Order {orderNumber} is placed. Enter your gift card code to complete payment.",
+    "giftCardRedeemSubmit": "Redeem and complete order",
+    "giftCardRedeemLater": "I'll do this later — take me to my order",
+    "giftCardRedeemFailed": "We could not redeem that gift card. Please check the code and try again."
   },
   "order": {
     "title": "Order",
@@ -363,6 +629,11 @@
     "paymentFailed": "Payment did not go through.",
     "paymentFailedBody": "Your order is saved but unpaid. Try again, or choose cash on delivery instead.",
     "placedOn": "Placed on {date}",
+    "successPlacedTitle": "Order <number></number> placed",
+    "successPaidTitle": "Payment received for order <number></number>",
+    "successView": "View order",
+    "successViewBank": "See bank details",
+    "successBankDetail": "It is not paid yet: transfer the total to our account and upload your receipt. We dispatch once it is confirmed.",
     "items": "Items",
     "measurements": "Measurements",
     "progress": "Progress",
@@ -377,6 +648,11 @@
     "bankTransfer": "Bank transfer details",
     "bankTransferBody": "Transfer the total to the account below and upload your receipt. We dispatch once it is confirmed.",
     "accountNumber": "Account number",
+    "copyAccountNumber": "Copy account number",
+    "copyIban": "Copy IBAN",
+    "copyTrackingNumber": "Copy tracking number",
+    "copied": "Copied",
+    "copyFailed": "Copy did not work. Select the text and copy it by hand.",
     "deliveringTo": "Delivering to",
     "continueShopping": "Continue shopping",
     "trackTitle": "Track your order",
@@ -393,12 +669,451 @@
       "DELIVERED": "Delivered",
       "CANCELLED": "Cancelled",
       "RETURNED": "Returned"
+    },
+    "reorder": "Reorder",
+    "reordering": "Adding to cart…",
+    "reorderPartial": "Some items are no longer available: {names}",
+    "reorderFailed": "Could not reorder.",
+    "downloadInvoice": "Download invoice",
+    "invoice": {
+      "title": "Invoice — {number}",
+      "print": "Print / Save as PDF",
+      "orderNumber": "Order number",
+      "billTo": "Bill to",
+      "shipTo": "Ship to",
+      "item": "Item",
+      "quantity": "Qty",
+      "unitPrice": "Unit price",
+      "lineTotal": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "codFee": "Cash on delivery fee",
+      "total": "Total",
+      "paymentMethod": "Payment method",
+      "failed": "Could not load this invoice. Please sign in and try again."
     }
   },
   "story": {
     "welcome": "Welcome to {brand}.",
-    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
+    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with personalized custom tailoring.",
     "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
     "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
+  },
+  "returns": {
+    "title": "Returns",
+    "requestAction": "Request a return",
+    "myReturns": "My returns",
+    "noReturns": "You have no return requests yet.",
+    "selectItems": "Select the items you'd like to return",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "note": "Anything else we should know? (optional)",
+    "submit": "Submit return request",
+    "submitted": "Your return request has been submitted.",
+    "backToOrder": "Back to order",
+    "successTitle": "Return request {number} submitted",
+    "successDetail": "{count, plural, one {# item} other {# items}} from order {order} · requested {date}",
+    "successView": "View request",
+    "backToReturns": "Back to my returns",
+    "status": {
+      "REQUESTED": "Requested",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "IN_TRANSIT": "On its way to us",
+      "RECEIVED": "Received",
+      "INSPECTED": "Being reviewed",
+      "REFUNDED": "Refunded",
+      "CLOSED": "Closed"
+    }
+  },
+  "verifyEmail": {
+    "title": "Email verification",
+    "checking": "Confirming your email address…",
+    "successTitle": "Email address confirmed",
+    "successDetail": "We have marked the address on your account as confirmed.",
+    "toAccount": "Go to your account",
+    "backToStore": "Back to the store",
+    "failed": "Could not confirm your email address.",
+    "missingToken": "This verification link is missing its token.",
+    "failedHint": "The link may have expired, or it may already have been used.",
+    "resend": "Send a new link",
+    "resending": "Sending…",
+    "resent": "A new link is on its way to your email.",
+    "resendFailed": "We could not send a new link. Try again in a minute.",
+    "signInToResend": "Sign in to get a new link"
+  },
+  "unsubscribe": {
+    "title": "Email preferences",
+    "checking": "Updating your preferences…",
+    "successTitle": "Unsubscribed from marketing email",
+    "successDetail": "Order and account emails still reach you — those aren’t marketing.",
+    "backToStore": "Back to the store",
+    "failed": "Could not process this request.",
+    "missingDetails": "This unsubscribe link is missing its details.",
+    "failedHint": "If the link is old, you can change this yourself in your account.",
+    "toPreferences": "Open notification settings"
+  },
+  "passwordReset": {
+    "successTitle": "Password changed",
+    "successDetail": "Sign in with your new password.",
+    "signIn": "Sign in",
+    "title": "Choose a new password",
+    "missingToken": "This link is missing its reset token. Request a new one from the <link>password reset page</link>.",
+    "passwordLabel": "New password",
+    "passwordHint": "At least 8 characters.",
+    "submit": "Set new password",
+    "saving": "Saving…",
+    "failed": "Could not reset your password.",
+    "requestNew": "Request a new reset link"
+  },
+  "warrantyVerify": {
+    "title": "Verify your purchase",
+    "description": "Enter the serial number printed on your unit to check its warranty status.",
+    "inputLabel": "Serial number",
+    "submit": "Verify",
+    "notFound": "That serial number is not recorded in this system.",
+    "soldOn": "Sold on",
+    "order": "Order",
+    "warrantyEndsOn": "Warranty ends",
+    "warrantyActive": "Warranty active",
+    "warrantyExpired": "Warranty expired",
+    "noWarranty": "No warranty on record",
+    "backToShop": "Back to shop",
+    "status": {
+      "IN_STOCK": "Not yet sold",
+      "SOLD": "Sold",
+      "RETURNED": "Returned",
+      "RMA_TO_SUPPLIER": "With supplier for repair",
+      "WRITTEN_OFF": "Written off"
+    }
+  },
+  "support": {
+    "title": "Support",
+    "raiseAction": "Raise a ticket",
+    "myTickets": "My tickets",
+    "noTickets": "You have no support tickets yet.",
+    "subject": "Subject",
+    "category": "Category",
+    "categoryPlaceholder": "e.g. Order, Delivery, Payment",
+    "message": "Message",
+    "messagePlaceholder": "Describe what you need help with",
+    "orderNumber": "Order number (optional)",
+    "priority": "Priority",
+    "submit": "Raise ticket",
+    "submitted": "Your ticket has been raised — our team has been notified.",
+    "backToTickets": "Back to tickets",
+    "reply": "Reply",
+    "replyPlaceholder": "Write a reply",
+    "sendReply": "Send reply",
+    "reopen": "Reopen this ticket",
+    "raisedOn": "Raised {date}",
+    "resolvedOn": "Resolved {date}",
+    "priorityLevel": {
+      "LOW": "Low",
+      "NORMAL": "Normal",
+      "HIGH": "High",
+      "URGENT": "Urgent"
+    },
+    "status": {
+      "OPEN": "Open",
+      "AWAITING_CUSTOMER": "Waiting on your reply",
+      "IN_PROGRESS": "In progress",
+      "RESOLVED": "Resolved",
+      "CLOSED": "Closed"
+    }
+  },
+  "onsiteMessages": {
+    "close": "Close",
+    "accept": "Accept",
+    "defaultTitle": "Offer",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing…",
+    "subscribed": "You're subscribed."
+  },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "intro": "Enter your email and we’ll send you a link to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Send reset link",
+    "sending": "Sending…",
+    "sent": "If an account exists for {email}, we’ve sent a link to reset your password. It expires in one hour.",
+    "useDifferent": "Use a different email",
+    "backToSignIn": "Back to sign in",
+    "failed": "Something went wrong. Try again in a minute."
+  },
+  "auction": {
+    "title": "Auctions",
+    "intro": "Bid on lots while they are open. When the time runs out, the highest bid wins.",
+    "stateLabel": "Show",
+    "states": {
+      "live": "Live now",
+      "upcoming": "Coming up",
+      "ended": "Ended"
+    },
+    "searchLabel": "Search lots",
+    "searchPlaceholder": "Search by lot name",
+    "list": {
+      "resultsCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
+      "loadMore": "Show more lots",
+      "empty": {
+        "live": {
+          "title": "No lots are open for bidding",
+          "body": "Lots appear here as soon as their auction opens.",
+          "action": "See what is coming up"
+        },
+        "upcoming": {
+          "title": "Nothing is scheduled yet",
+          "body": "Upcoming lots appear here before their auction opens.",
+          "action": "See live lots"
+        },
+        "ended": {
+          "title": "No lots have ended yet",
+          "body": "Results appear here once bidding closes.",
+          "action": "See live lots"
+        },
+        "search": {
+          "title": "No lots match “{query}”",
+          "body": "Try fewer words, or clear the search.",
+          "action": "Clear search"
+        }
+      },
+      "error": {
+        "title": "We could not load the lots",
+        "body": "Check your connection and try again.",
+        "action": "Try again"
+      },
+      "unavailable": {
+        "title": "Auctions are not available here",
+        "body": "This shop does not run auctions.",
+        "action": "Go to the shop"
+      }
+    },
+    "card": {
+      "lot": "Lot {number}",
+      "startingBid": "Starting bid",
+      "currentBid": "Current bid",
+      "finalBid": "Sold for",
+      "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
+      "endsIn": "Ends in {time}",
+      "closing": "Closing now",
+      "notSold": "Not sold",
+      "ended": "Ended"
+    },
+    "time": {
+      "d": "{value}d",
+      "h": "{value}h",
+      "m": "{value}m",
+      "s": "{value}s"
+    },
+    "lot": {
+      "back": "All lots",
+      "lotOf": "Lot {number} · {auction}",
+      "quantity": "{count, plural, one {# item} other {# items}} in this lot",
+      "currentBid": "Current bid",
+      "startingBid": "Starting bid",
+      "noBidsYet": "No bids yet",
+      "live": "Updating live",
+      "polling": "Refreshing every few seconds",
+      "connecting": "Connecting…",
+      "timeLeft": "Time left",
+      "closingSoon": "Closing soon",
+      "extended": "The end moved because of a late bid.",
+      "endsAt": "Ends {date}",
+      "opensAt": "Opens {date}",
+      "opensIn": "Opens in",
+      "closing": "Bidding time is up. Waiting for the final result.",
+      "ended": "Bidding has ended",
+      "terms": "Auction terms",
+      "photos": {
+        "gallery": "Photos of lot {number}",
+        "photoAlt": "Lot {number}, {title}: photo {n} of {total}",
+        "showPhoto": "Show photo {n} of {total}",
+        "photoMissing": "This photo could not be loaded."
+      }
+    },
+    "standing": {
+      "leading": "You have the highest bid",
+      "outbid": "You have been outbid",
+      "outbidNext": "Bid at least {minimum} to take the lead.",
+      "leadingNext": "You can bid again once someone bids higher."
+    },
+    "bid": {
+      "label": "Your bid",
+      "hint": "The lowest bid you can make is {minimum}.",
+      "submit": "Bid {amount}",
+      "placing": "Placing bid…",
+      "invalid": "Enter an amount, for example {example}.",
+      "belowMinimum": "The lowest bid is {minimum}.",
+      "autoOutbid": "Your bid was placed, then another bidder’s automatic bid went above it.",
+      "offline": "You are offline. A bid is not sent until you reconnect, and nothing is saved to send later."
+    },
+    "proxy": {
+      "label": "Bid automatically up to a maximum",
+      "explain": "We raise your bid for you, one step at a time, and never above your maximum. Nobody else can see it. You can raise it later, but not lower it.",
+      "field": "Your maximum",
+      "hint": "At least {minimum}, or it could never be used.",
+      "current": "Your maximum is {amount}.",
+      "submit": "Set maximum",
+      "setting": "Setting maximum…",
+      "saved": "Your maximum is set to {amount}.",
+      "invalid": "Enter an amount, for example {example}."
+    },
+    "signIn": {
+      "title": "Sign in to bid",
+      "body": "You need an account to bid. It takes a minute to make one.",
+      "action": "Sign in",
+      "register": "Create an account"
+    },
+    "notEligible": {
+      "title": "This account cannot bid here",
+      "body": "It is not approved to bid in this auction. Contact us if you think that is a mistake.",
+      "action": "Contact us"
+    },
+    "outcome": {
+      "soldTo": "Sold to {alias} for {price}.",
+      "youWon": "You won this lot for {price}.",
+      "noBids": "This lot did not sell. It received no bids.",
+      "reserveNotMet": "This lot did not sell. The highest bid did not reach the seller’s minimum.",
+      "action": "See live lots"
+    },
+    "settlement": {
+      "costs": {
+        "withPremium": "The winner pays a {percent}% buyer’s premium on top of the winning bid, and has {hours, plural, one {# hour} other {# hours}} to pay.",
+        "noPremium": "The winner has {hours, plural, one {# hour} other {# hours}} to pay."
+      },
+      "preparing": {
+        "title": "Preparing your invoice",
+        "body": "You won this lot. Your invoice will appear here in a moment."
+      },
+      "delayed": {
+        "title": "Your invoice is taking longer than usual",
+        "body": "You do not need to do anything. It will appear here as soon as it is ready."
+      },
+      "pay": {
+        "title": "You won this lot",
+        "offeredTitle": "This lot is now yours",
+        "offeredBody": "The first buyer did not pay, so the lot was offered to you at your highest bid.",
+        "winningBid": "Your bid",
+        "premium": "Buyer’s premium",
+        "total": "Total to pay",
+        "left": "Left to pay",
+        "dueBy": "Pay by {date}.",
+        "action": "Pay for this order"
+      },
+      "paid": {
+        "title": "Paid. Thank you.",
+        "body": "We received {amount} for this lot.",
+        "action": "View your order"
+      },
+      "lapsed": {
+        "title": "This win has lapsed",
+        "body": "The payment window ended on {date} without payment, so the lot is no longer yours.",
+        "paid": "We received {amount} after the deadline. Please contact us and we will sort it out.",
+        "action": "Contact us"
+      },
+      "cancelled": {
+        "title": "This win was cancelled",
+        "body": "Nothing more is owed for this lot."
+      }
+    },
+    "history": {
+      "title": "Bid history",
+      "empty": "No bids yet. Yours can be the first.",
+      "auto": "Automatic",
+      "you": "You",
+      "latest": "Showing the latest {count} bids."
+    },
+    "missing": {
+      "title": "This lot is not available",
+      "body": "It may have been withdrawn, or the link may be wrong.",
+      "action": "See live lots"
+    },
+    "loadError": {
+      "title": "We could not load this lot",
+      "body": "Check your connection and try again.",
+      "action": "Try again"
+    },
+    "errors": {
+      "bidTooLow": "That bid is too low. The lowest bid is now {minimum}.",
+      "alreadyLeading": "You already have the highest bid. You can bid again once someone bids higher.",
+      "lotChanged": "Other bids arrived while yours was being placed. Check the price and bid again.",
+      "closed": "Bidding on this lot has ended.",
+      "notEligible": "This account cannot bid in this auction. Contact us if you think that is a mistake.",
+      "rateLimited": "You are bidding too fast. Wait {seconds, plural, one {# second} other {# seconds}} and try again.",
+      "rateLimitedNow": "You are bidding too fast. Wait a moment and try again.",
+      "keyReused": "That request was already used for a different amount. Press the button again to bid.",
+      "proxyTooLow": "Your maximum must be at least {minimum}, or it could never be used.",
+      "proxyCannotLower": "A maximum can be raised, but never lowered.",
+      "signedOut": "Your session has ended. Sign in again to bid.",
+      "busy": "The auction is busy and your bid was not placed. Try again.",
+      "network": "We could not confirm your bid. Look at the history, then press the button again. Repeating it is safe: the same bid is never placed twice."
+    },
+    "registration": {
+      "join": {
+        "title": "Join this auction to bid",
+        "body": {
+          "OPEN": "Joining is free and needs no deposit. The organiser will look at your request before you can bid.",
+          "VERIFIED": "Joining is free and needs no deposit. Verified customers bid at once. Everyone else waits for the organiser to approve them.",
+          "APPROVAL": "Joining is free and needs no deposit. The organiser approves everyone before they can bid."
+        },
+        "action": "Join this auction",
+        "joining": "Joining…"
+      },
+      "approved": {
+        "title": "You can bid in this auction",
+        "body": "You will show to other bidders as {alias}."
+      },
+      "pending": {
+        "title": "Waiting for the organiser",
+        "body": "The organiser must approve you before you can bid. This page checks again every {seconds, plural, one {# second} other {# seconds}} and when you return to this tab.",
+        "since": "You joined {date}"
+      },
+      "declined": {
+        "title": "You were not approved for this auction",
+        "reasonLabel": "Reason from the organiser"
+      },
+      "suspended": {
+        "title": "Your bidding is suspended in this auction",
+        "body": "Bids you already placed stand. You cannot place new ones."
+      },
+      "appeal": {
+        "label": "Ask the organiser to look again",
+        "hint": "Required. Say why. Up to {max} characters.",
+        "count": "{count} of {max}",
+        "send": "Send appeal",
+        "sending": "Sending…"
+      },
+      "appealSent": {
+        "title": "Appeal sent",
+        "body": "The organiser will read it and decide. This page checks again every {seconds, plural, one {# second} other {# seconds}}.",
+        "yours": "Your appeal"
+      },
+      "kept": {
+        "title": "The organiser kept this decision",
+        "body": "You can send one appeal for each decision.",
+        "action": "Contact us"
+      },
+      "staff": {
+        "title": "You run this auction",
+        "body": "Staff who run this auction cannot bid on it. Use a separate customer account to bid."
+      },
+      "error": {
+        "network": "We could not reach the server, so nothing was sent. Check your connection and press the button again.",
+        "rateLimited": "You are going too fast. Wait {seconds, plural, one {# second} other {# seconds}} and try again.",
+        "rateLimitedNow": "You are going too fast. Wait a moment and try again.",
+        "ended": "This auction has ended, so it is not taking new bidders.",
+        "unavailable": "This auction is not taking bidders at the moment, so there is nothing to send. See the other lots.",
+        "changed": "Your place in this auction changed while you were on this page. We have updated what you see.",
+        "signedOut": "Your session has ended. Sign in again to continue.",
+        "generic": "We could not save that. Nothing was changed. Try again.",
+        "signedOutAction": "Sign in"
+      },
+      "action": {
+        "others": "See other lots"
+      }
+    }
   }
 }

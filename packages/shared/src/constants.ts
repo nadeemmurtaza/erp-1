@@ -101,6 +101,22 @@ export function formatDateTime(
 }
 
 /**
+ * e.g. 2026-09-06T19:23:45Z -> "7 Sept 2026, 12:23:45 am". For a record where
+ * the order of events within a minute is the point — a bid ledger.
+ */
+export function formatDateTimeSeconds(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone,
+  }).format(new Date(value));
+}
+
+/**
  * A chart axis tick — "7 Sept". No year, because an axis has one.
  *
  * `withWeekday` adds it for a tooltip, where the reader is looking at one
@@ -118,6 +134,28 @@ export function formatDateShort(
     ...(withWeekday ? { weekday: 'short' as const } : {}),
     timeZone,
   }).format(new Date(value));
+}
+
+/**
+ * A month's short name on its own — "Sept". For the label over a run of weeks
+ * in a calendar heatmap, where `formatDateShort`'s "1 Sept" would print a day
+ * nobody is pointing at.
+ */
+export function formatMonthShort(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), { month: 'short', timeZone }).format(new Date(value));
+}
+
+/** A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. */
+export function formatWeekdayShort(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), { weekday: 'short', timeZone }).format(new Date(value));
 }
 
 /**
@@ -143,3 +181,56 @@ export function formatMoney(minorAmount: number, locale: Locale = 'en'): string 
   });
   return formatter.format(toMajor(minorAmount));
 }
+
+/**
+ * Formats a minor-unit amount in an EXPLICITLY given currency, e.g.
+ * `formatMoneyIn(500000, 'usd')` -> "$5,000". Distinct from `formatMoney`
+ * above, which always uses THIS shop's own `BRAND.currency` — this one
+ * exists for the one place in the admin that shows an amount in a
+ * currency that is deliberately NOT the shop's own: the agency's own
+ * hosting invoice to this deployment (doc 14,
+ * `commercial-licensing-agency/14-managed-services-module.md`), billed in
+ * whatever currency the agency's `PLATFORM_BILLING_CURRENCY` resolves to,
+ * which can differ from this shop's own storefront currency. The currency
+ * always comes from the API response (ultimately that config value),
+ * never a literal at the call site (Law 1).
+ */
+export function formatMoneyIn(minorAmount: number, currencyCode: string, locale: Locale = 'en', minorUnitsPerMajor = 100): string {
+  const formatter = new Intl.NumberFormat(intlTag(locale), {
+    style: 'currency',
+    currency: currencyCode.toUpperCase(),
+    minimumFractionDigits: 0,
+    maximumFractionDigits: minorAmount % minorUnitsPerMajor === 0 ? 0 : 2,
+  });
+  return formatter.format(minorAmount / minorUnitsPerMajor);
+}
+
+/**
+ * A byte count as a human-readable size, e.g. 1536 -> "1.5 KB". Accepts a
+ * `bigint` or the numeric string a `BigInt` serializes to over JSON
+ * (`main.ts`'s own `BigInt.prototype.toJSON`) alongside a plain number, so
+ * a call site reading a database-size figure straight off an API response
+ * never has to convert it by hand first.
+ */
+export function formatBytes(value: number | bigint | string, locale: Locale = 'en'): string {
+  const bytes = typeof value === 'bigint' ? Number(value) : typeof value === 'string' ? Number(value) : value;
+  if (!Number.isFinite(bytes) || bytes < 0) return '—';
+  if (bytes === 0) return '0 B';
+
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const scaled = bytes / 1024 ** exponent;
+
+  return `${new Intl.NumberFormat(intlTag(locale), { maximumFractionDigits: exponent === 0 ? 0 : 1 }).format(scaled)} ${units[exponent]}`;
+}
+
+/**
+ * The row cap every CSV importer enforces
+ * (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.3) —
+ * one shared number, never three independently-chosen ones. Matches
+ * `ProductImportService`'s own pre-existing cap; `ContactImportService`
+ * and `ExpenseImportService` (`crm`/`finance`) import this rather than
+ * restating it. A file above the cap is rejected up front, before any row
+ * is processed, never silently truncated.
+ */
+export const IMPORT_ROW_CAP = 5000;

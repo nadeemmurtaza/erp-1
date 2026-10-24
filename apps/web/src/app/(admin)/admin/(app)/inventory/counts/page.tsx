@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { StatusBadge } from '@/components/common/status-badge';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import Link from 'next/link';
 import { formatDateTime } from '@newax/shared';
 
-import { Loading } from '@/components/ui';
+import { DataTable } from '@/components/ui';
 interface StockCount {
   id: string;
   countNumber: string;
@@ -19,7 +20,7 @@ interface StockCount {
 }
 
 export default function CountsListPage() {
-  const user = getStoredUser();
+  const { can } = useAdminSession();
   const [counts, setCounts] = useState<StockCount[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
@@ -31,7 +32,7 @@ export default function CountsListPage() {
       .finally(() => setBusy(false));
   }, []);
 
-  if (!user?.permissions.includes('inventory.count')) {
+  if (!can('inventory.count')) {
     return <p className="p-4 text-red-600">Permission denied: requires inventory.count</p>;
   }
 
@@ -63,57 +64,43 @@ export default function CountsListPage() {
 
       {error && <div className="mb-4 text-sm text-red-600">{error}</div>}
 
-      <div className="card overflow-x-auto">
-        <table className="w-full min-w-[600px] text-left text-sm">
-          <thead>
-            <tr className="border-b border-neutral-100">
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Number</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Status</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Started</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Creator</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-100">
-            {busy && (
-              <tr>
-                <td colSpan={4} className="px-4 py-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-              </tr>
-            )}
-            {!busy && counts?.length === 0 && (
-              <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                  No stock counts found.
-                </td>
-              </tr>
-            )}
-            {counts?.map((c) => (
-              <tr key={c.id} className="hover:bg-neutral-50">
-                <td className="px-4 py-3 font-medium">
-                  <Link href={`/admin/inventory/counts/${c.id}`} className="text-accent-hover hover:underline">
-                    {c.countNumber}
-                  </Link>
-                </td>
-                <td className="px-4 py-3">
-                  {/*
-                    The seventh hand-rolled status pill, and the last place in
-                    the app still on Tailwind's stock `gray` rather than the
-                    neutral ramp. Tone belongs to the badge, which decides it
-                    by meaning rather than by each page picking a colour.
-                  */}
-                  <StatusBadge status={c.status} />
-                </td>
-                <td className="px-4 py-3 text-neutral-900/70">
-                  {c.startedAt ? formatDateTime(c.startedAt) : '-'}
-                </td>
-                <td className="px-4 py-3 text-neutral-900/70">
-                  {c.creator ? `${c.creator.firstName || ''} ${c.creator.lastName || ''}`.trim() : '-'}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="card overflow-hidden">
+        <DataTable
+          rows={counts}
+          loading={busy && !counts}
+          emptyLabel="No stock counts found."
+          rowKey={(c) => c.id}
+          className="min-w-[600px]"
+          columns={[
+            {
+              header: 'Number',
+              cell: (c) => (
+                <Link href={`/admin/inventory/counts/${c.id}`} className="text-accent-hover hover:underline">
+                  {c.countNumber}
+                </Link>
+              ),
+              className: 'font-medium',
+            },
+            {
+              header: 'Status',
+              // The seventh hand-rolled status pill, and the last place in
+              // the app still on Tailwind's stock `gray` rather than the
+              // neutral ramp. Tone belongs to the badge, which decides it
+              // by meaning rather than by each page picking a colour.
+              cell: (c) => <StatusBadge status={c.status} />,
+            },
+            {
+              header: 'Started',
+              cell: (c) => (c.startedAt ? formatDateTime(c.startedAt) : '-'),
+              muted: true,
+            },
+            {
+              header: 'Creator',
+              cell: (c) => (c.creator ? `${c.creator.firstName || ''} ${c.creator.lastName || ''}`.trim() : '-'),
+              muted: true,
+            },
+          ]}
+        />
       </div>
     </>
   );

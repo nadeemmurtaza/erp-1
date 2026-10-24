@@ -1,14 +1,15 @@
 'use client';
 
-import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { cn } from '@/utils/cn';
-import { PageHeader } from '@/components/ui';
+import { DangerZone, HoldToConfirm, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { RecipeEditor } from '@/components/admin/bom/recipe-editor';
 import { CostBreakdown } from '@/components/admin/bom/cost-breakdown';
+import { useAdminSession } from '@/components/admin/session';
 
 interface RecipeSummary {
   id: string;
@@ -26,8 +27,9 @@ interface Availability {
 export default function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
+  const canViewCost = can('inventory.view_cost');
 
   const [recipe, setRecipe] = useState<RecipeSummary | null>(null);
   const [availability, setAvailability] = useState<Availability | null>(null);
@@ -64,7 +66,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function archive() {
-    if (!confirm('Archive this recipe?')) return;
     setStatusChanging(true);
     try {
       await adminFetch(`/admin/bom/recipes/${id}/archive`, { method: 'POST' });
@@ -93,35 +94,11 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title={recipe.sku}
         description={`Version ${recipe.version}`}
-        context={
-          <Link href="/admin/bom" className="hover:text-neutral-900">
-            ← Recipes
-          </Link>
-        }
         action={
           canManage ? (
             <div className="flex items-center gap-3">
@@ -129,11 +106,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
               {recipe.status !== 'ACTIVE' ? (
                 <button type="button" onClick={() => void activate()} disabled={statusChanging} className="btn-secondary">
                   Activate
-                </button>
-              ) : null}
-              {recipe.status !== 'ARCHIVED' ? (
-                <button type="button" onClick={() => void archive()} disabled={statusChanging} className="btn-ghost text-red-700">
-                  Archive
                 </button>
               ) : null}
             </div>
@@ -177,6 +149,25 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
 
       <h2 className="mb-3 text-lg font-medium text-neutral-900">Edit recipe</h2>
       <RecipeEditor recipeId={id} />
+
+      {/* Archiving lives at the foot of the page, closed, and is confirmed by a hold (DNG-1, DNG-3, DNG-5). */}
+      {canManage && recipe.status !== 'ARCHIVED' ? (
+        <DangerZone
+          className="mt-8"
+          actions={[
+            {
+              id: 'archive',
+              title: 'Archive this recipe',
+              description: 'It stops appearing as an option for new production runs. Past runs are unaffected.',
+              control: (
+                <HoldToConfirm onConfirm={archive} loading={statusChanging} loadingLabel="Archiving…">
+                  Archive recipe
+                </HoldToConfirm>
+              ),
+            },
+          ]}
+        />
+      ) : null}
     </>
   );
 }

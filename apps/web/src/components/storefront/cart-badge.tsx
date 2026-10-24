@@ -11,7 +11,7 @@ export function CartBadge() {
   return (
     <Link
       href={ROUTES.storefront.cart}
-      className="group relative inline-flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors duration-200 ease-out hover:bg-neutral-50 hover:text-neutral-900"
+      className="group relative inline-flex h-9 w-9 items-center justify-center rounded text-neutral-500 transition-colors duration-normal ease-decelerate hover:bg-neutral-50 hover:text-neutral-900"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1" />
@@ -20,7 +20,11 @@ export function CartBadge() {
       </svg>
       {/* Hidden while the first load is in flight so it does not flash 0. */}
       {!loading && count > 0 ? (
-        <span className="inline-flex absolute -top-1 -end-1 min-w-[20px] h-5 items-center justify-center rounded-full bg-neutral-900 text-xs font-bold text-white animate-scaleIn shadow-md">
+        // Keyed by the count, so every change of the figure pops the badge once (`pop`: it lands, it does not bounce).
+        <span
+          key={count}
+          className="pop inline-flex absolute -top-1 -end-1 min-w-[20px] h-5 items-center justify-center rounded-full bg-inverse text-xs font-bold text-on-inverse shadow-md"
+        >
           {count > 99 ? '99+' : count}
         </span>
       ) : null}

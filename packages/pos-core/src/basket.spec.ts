@@ -51,4 +51,80 @@ describe('basket', () => {
     expect(totals.taxAmount).toBe(0);
     expect(totals.grandTotal).toBe(250);
   });
+
+  // pos-hardware/31 §2 — modifiers and non-typed quantity sources.
+  describe('modifiers and quantity sources (pos-hardware/31)', () => {
+    it('two same-variant lines with different modifiers never merge', () => {
+      const withModifier = {
+        ...APPLE,
+        lineRef: 'ref-1',
+        modifiers: [{ key: 'extra-shot', label: 'Extra shot', priceDeltaMinor: 50 }],
+      };
+      const basket = addLine(addLine([], APPLE, 1), withModifier, 1);
+      expect(basket).toHaveLength(2);
+    });
+
+    it('two modifier-carrying lines for the same variant never merge with each other', () => {
+      const lineA = { ...APPLE, lineRef: 'ref-a', modifiers: [{ key: 'a', label: 'A', priceDeltaMinor: 10 }] };
+      const lineB = { ...APPLE, lineRef: 'ref-b', modifiers: [{ key: 'b', label: 'B', priceDeltaMinor: 20 }] };
+      const basket = addLine(addLine([], lineA, 1), lineB, 1);
+      expect(basket).toHaveLength(2);
+    });
+
+    it('a non-typed quantity source line never merges into a plain line', () => {
+      const scaleLine = { ...APPLE, lineRef: 'ref-2', quantitySource: { source: 'SCALE_WEIGHT' as const } };
+      const basket = addLine(addLine([], APPLE, 1), scaleLine, 1);
+      expect(basket).toHaveLength(2);
+    });
+
+    it('existing no-modifier callers still merge exactly as before', () => {
+      const basket = addLine(addLine([], APPLE, 1), APPLE, 2);
+      expect(basket).toHaveLength(1);
+      expect(basket[0]!.quantity).toBe(3);
+    });
+
+    it('setQuantity/removeLine with a lineRef only touch the matching line', () => {
+      const plain = APPLE;
+      const modified = { ...APPLE, lineRef: 'ref-3', modifiers: [{ key: 'x', label: 'X', priceDeltaMinor: 10 }] };
+      let basket = addLine(addLine([], plain, 1), modified, 1);
+
+      basket = setQuantity(basket, 'v1', 5, 'ref-3');
+      expect(basket.find((l) => l.lineRef === 'ref-3')?.quantity).toBe(5);
+      expect(basket.find((l) => !l.lineRef)?.quantity).toBe(1);
+
+      basket = removeLine(basket, 'v1', 'ref-3');
+      expect(basket).toHaveLength(1);
+      expect(basket[0]!.lineRef).toBeUndefined();
+    });
+
+    it('lineTotal folds modifier price deltas into the per-unit price', () => {
+      const line = {
+        ...APPLE,
+        quantity: 3,
+        unitPrice: 100,
+        modifiers: [
+          { key: 'extra-shot', label: 'Extra shot', priceDeltaMinor: 50 },
+          { key: 'large', label: 'Large', priceDeltaMinor: 25 },
+        ],
+      };
+      // (100 + 50 + 25) * 3
+      expect(lineTotal(line)).toBe(525);
+    });
+
+    it('basketTotals includes every line\'s modifier deltas', () => {
+      const plain = { ...APPLE, quantity: 1, unitPrice: 100 };
+      const withModifier = {
+        ...APPLE,
+        variantId: 'v2',
+        lineRef: 'ref-4',
+        quantity: 2,
+        unitPrice: 100,
+        modifiers: [{ key: 'extra-shot', label: 'Extra shot', priceDeltaMinor: 50 }],
+      };
+      const totals = basketTotals([plain, withModifier]);
+      // 100*1 + (100+50)*2
+      expect(totals.itemsSubtotal).toBe(400);
+      expect(totals.grandTotal).toBe(400);
+    });
+  });
 });

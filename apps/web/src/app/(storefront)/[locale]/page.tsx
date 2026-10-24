@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import type { Locale } from '@newax/shared';
+import { PersonalizedRecommendations } from '@/components/storefront/personalized-recommendations';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
-import { getCategories, getProducts } from '@/lib/api';
+import { getBanners, getCategories, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
 import { alternateLanguages, canonicalUrl } from '@/config/seo';
 import { ROUTES } from '@/constants/routes';
@@ -39,10 +40,11 @@ export default async function HomePage({
 
   const t = await getTranslations('home');
 
-  // One round trip each; both are cached for five minutes by apiFetch.
-  const [featured, categories] = await Promise.all([
+  // One round trip each; all three are cached for five minutes by apiFetch.
+  const [featured, categories, heroBanners] = await Promise.all([
     getProducts({ locale: locale as Locale, pageSize: 8, sort: 'featured' }),
     getCategories(locale),
+    getBanners('homepage_hero', locale).catch(() => []),
   ]);
 
   const steps = [
@@ -52,8 +54,10 @@ export default async function HomePage({
     { title: t('step4Title'), body: t('step4Body') },
   ];
 
-  // There is no CMS-driven hero banner, so the hero visual borrows the first
-  // featured product's own photograph rather than inventing placeholder art.
+  // WO-8.1 — a merchant-published homepage_hero banner wins. With none set,
+  // the hero visual falls back to the first featured product's own
+  // photograph rather than inventing placeholder art.
+  const heroBanner = heroBanners[0];
   const heroProduct = featured.data[0];
   const heroImage = heroProduct?.images.find((image) => image.isPrimary) ?? heroProduct?.images[0];
 
@@ -66,7 +70,7 @@ export default async function HomePage({
       <section className="border-b border-neutral-100 bg-neutral-50">
         <div className="container-page py-10 sm:py-14 lg:py-24">
           <div
-            className={`grid gap-8 lg:items-center lg:gap-16 ${heroImage ? 'lg:grid-cols-2' : ''}`}
+            className={`grid gap-8 lg:items-center lg:gap-16 ${heroBanner || heroImage ? 'lg:grid-cols-2' : ''}`}
           >
             <AnimatedSection direction="up" className="max-w-xl">
               <h1 className="font-display text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
@@ -91,7 +95,27 @@ export default async function HomePage({
               </div>
             </AnimatedSection>
 
-            {heroImage ? (
+            {heroBanner ? (
+              <AnimatedSection direction="left" delay={0.2} className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/5] lg:rounded-3xl">
+                {heroBanner.linkUrl ? (
+                  <a href={heroBanner.linkUrl} className="absolute inset-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- CMS-uploaded, unconstrained domain */}
+                    <img
+                      src={heroBanner.imageUrl}
+                      alt={heroBanner.translation?.altText ?? ''}
+                      className="h-full w-full object-cover"
+                    />
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- CMS-uploaded, unconstrained domain
+                  <img
+                    src={heroBanner.imageUrl}
+                    alt={heroBanner.translation?.altText ?? ''}
+                    className="h-full w-full object-cover"
+                  />
+                )}
+              </AnimatedSection>
+            ) : heroImage ? (
               // Landscape and compact on mobile so the banner doesn't push the
               // fold; a tall portrait crop once it sits beside the copy in the
               // two-column desktop layout — a real crop change, not a resize.
@@ -126,9 +150,9 @@ export default async function HomePage({
               <li className="shrink-0 snap-start">
                 <Link
                   href={ROUTES.storefront.shop}
-                  className="inline-flex h-11 items-center gap-2 rounded bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
+                  className="inline-flex h-11 items-center gap-2 rounded bg-inverse ps-3 pe-5 text-sm font-medium text-on-inverse transition-colors duration-normal hover:bg-neutral-700"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-on-inverse/15" aria-hidden="true">
                     <AllCategoriesIcon />
                   </span>
                   {t('viewAll')}
@@ -139,7 +163,7 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
+                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-normal hover:border-neutral-900 hover:text-neutral-900"
                   >
                     <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (
@@ -190,6 +214,8 @@ export default async function HomePage({
         </div>
       </section>
 
+      <PersonalizedRecommendations />
+
       <section className="border-y border-neutral-100 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">
           <AnimatedSection direction="up">
@@ -199,7 +225,7 @@ export default async function HomePage({
             {steps.map((step, index) => (
               <AnimatedSection direction="up" delay={index * 0.15} key={step.title}>
                 <li className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-inverse text-sm font-semibold text-on-inverse">
                     {index + 1}
                   </span>
                   <div>

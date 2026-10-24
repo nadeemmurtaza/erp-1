@@ -1,0 +1,104 @@
+import { Logger } from '@nestjs/common';
+import { REDIS_KEYSPACES } from './redis.keyspaces';
+import { REDIS_BOOT_READY_WAIT_MS, REDIS_CLIENT_OPTIONS, RedisService, redisReconnectDelayMs } from './redis.service';
+
+/**
+ * The failure half of the Redis primitive, against an address nothing
+ * listens on — so it needs no Redis. The connected half (real commands, the
+ * token bucket, two replicas sharing counters) is test/auth-throttle.e2e-spec.ts's.
+ */
+describe('RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)', () => {
+  let service: RedisService;
+  let logged: string[];
+
+  beforeEach(() => {
+    logged = [];
+    const capture = (message: unknown) => {
+      logged.push(String(message));
+    };
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(capture);
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation(capture);
+    jest.spyOn(Logger.prototype, 'log').mockImplementation(capture);
+    // Port 1: refused at once, and the URL carries a password that must never be logged.
+    service = new RedisService({ get: () => 'redis://:s3cret-password@127.0.0.1:1' } as any);
+  });
+
+  afterEach(async () => {
+    await service.onApplicationShutdown();
+    jest.restoreAllMocks();
+  });
+
+  it('pins the fail-fast client options, and reconnects forever with a backoff capped at 2 s', () => {
+    expect(REDIS_CLIENT_OPTIONS).toEqual({
+      enableOfflineQueue: false,
+      maxRetriesPerRequest: 0,
+      autoResendUnfulfilledCommands: false,
+      commandTimeout: 500,
+      connectTimeout: 2_000,
+    });
+    expect([1, 10, 40, 41, 1_000].map(redisReconnectDelayMs)).toEqual([50, 500, 2_000, 2_000, 2_000]);
+  });
+
+  it('opens nothing until onModuleInit — a factory may ask for the client first', () => {
+    expect(service.client('rateLimit').status).toBe('wait');
+    expect(service.client('rateLimit')).toBe(service.client('rateLimit'));
+  });
+
+  it('puts the rateLimit keyspace on database 0, whatever the URL', () => {
+    expect(service.client('rateLimit').options.db).toBe(0);
+  });
+
+  it('puts the cache keyspace on database 1 — its own database, so flushing a cache never touches a counter (doc 208, WO-208.4)', () => {
+    expect(service.client('cache').options.db).toBe(1);
+    expect(service.client('cache')).not.toBe(service.client('rateLimit'));
+    const databases = Object.values(REDIS_KEYSPACES).map((keyspace) => keyspace.db);
+    expect(new Set(databases).size).toBe(databases.length);
+  });
+
+  it('puts realtime on its own database, and gives a subscriber its own connection — a subscribed connection can run no other command', () => {
+    expect(service.client('realtime').options.db).toBe(2);
+    const subscriber = service.subscriber('realtime');
+    expect(subscriber).not.toBe(service.client('realtime'));
+    expect(subscriber).toBe(service.subscriber('realtime'));
+    expect(subscriber.options.db).toBe(2);
+    expect(subscriber.status).toBe('wait');
+  });
+
+  it('says, per keyspace, what the API does while it cannot connect', async () => {
+    await service.onModuleInit();
+
+    const notReady = logged.filter((line) => /not ready after 2000 ms/.test(line));
+    expect(notReady.find((line) => line.includes('"rateLimit"'))).toContain('Sign-in and routes with their own rate limit answer 503');
+    expect(notReady.find((line) => line.includes('"cache"'))).toContain('served from Postgres');
+    expect(notReady.find((line) => line.includes('"realtime"'))).toContain('falls back to polling every 5 s');
+  });
+
+  it('boots anyway after the bounded wait — Redis is never a boot dependency', async () => {
+    const started = Date.now();
+    await service.onModuleInit();
+    const waited = Date.now() - started;
+
+    expect(waited).toBeGreaterThanOrEqual(REDIS_BOOT_READY_WAIT_MS - 50);
+    expect(waited).toBeLessThan(REDIS_BOOT_READY_WAIT_MS + 1_500);
+    expect(service.isReady('rateLimit')).toBe(false);
+    expect(logged.some((line) => /not ready after 2000 ms/.test(line))).toBe(true);
+  });
+
+  it('answers a command at once while down, never parks it until the connection returns', async () => {
+    await service.onModuleInit();
+
+    const started = Date.now();
+    await expect(service.client('rateLimit').eval('return 1', 0)).rejects.toThrow(/enableOfflineQueue/);
+    expect(Date.now() - started).toBeLessThan(100);
+    await expect(service.ping('rateLimit')).resolves.toEqual({ ok: false, detail: expect.stringContaining('enableOfflineQueue') });
+  });
+
+  it('reports the outage once per keyspace, by address — never the password in REDIS_URL', async () => {
+    await service.onModuleInit();
+
+    const unreachable = logged.filter((line) => line.includes('unreachable'));
+    expect(unreachable).toHaveLength(Object.keys(REDIS_KEYSPACES).length);
+    for (const line of unreachable) expect(line).toContain('127.0.0.1:1');
+    expect(logged.join('\n')).not.toContain('s3cret-password');
+  });
+});

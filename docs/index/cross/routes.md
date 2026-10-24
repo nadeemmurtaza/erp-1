@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **322** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **924** endpoints across **170** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -22,61 +22,120 @@ never authorization.
 
 ## Attention list
 
-- **Undecorated routes: 0** — none.
+- **Undecorated routes: 10**
 
-- **Public routes: 41** — every one is an intentional decision; changing one changes the product's attack surface.
+| Method | Path | Handler | File |
+|---|---|---|---|
+| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:31` |
+| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:45` |
+| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:38` |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
+| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
+| POST | `/anax/evaluate` | `AnaxController.evaluateScenario` | `apps/api/src/core/anax/anax.controller.ts:74` |
+| GET | `/anax/flight-plan` | `AnaxController.getFlightPlan` | `apps/api/src/core/anax/anax.controller.ts:35` |
+| GET | `/anax/geopolitical-risk` | `AnaxController.getGeopoliticalRisk` | `apps/api/src/core/anax/anax.controller.ts:48` |
+| GET | `/anax/insights` | `AnaxController.getComprehensiveInsights` | `apps/api/src/core/anax/anax.controller.ts:23` |
+| GET | `/anax/valuation` | `AnaxController.getEnterpriseValuation` | `apps/api/src/core/anax/anax.controller.ts:61` |
+
+- **Public routes: 84** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
+| POST | `/attendance/punch` | `AttendanceDevicePunchController.punch` |
+| GET | `/auctions/public/lots` | `AuctionPublicController.list` |
+| GET | `/auctions/public/lots/:lotId` | `AuctionPublicController.lot` |
+| GET | `/auctions/public/lots/:lotId/stream` | `AuctionPublicController.stream` |
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
+| GET | `/auth/nid/callback` | `NidController.handleCallback` |
+| GET | `/auth/nid/start` | `NidController.startLogin` |
 | POST | `/auth/refresh` | `AuthController.refresh` |
 | POST | `/auth/register` | `AuthController.register` |
 | POST | `/auth/reset-password` | `AuthController.resetPassword` |
+| GET | `/auth/sso/:connectionId/start` | `SsoController.start` |
+| GET | `/auth/sso/callback` | `SsoController.callback` |
+| GET | `/auth/sso/connections` | `SsoController.signInOptions` |
+| POST | `/auth/sso/session` | `SsoController.session` |
 | POST | `/auth/verify-email` | `AuthController.verifyEmail` |
+| GET | `/campaigns/r/:recipientId/click` | `CampaignTrackingController.click` |
+| GET | `/campaigns/r/:recipientId/open.gif` | `CampaignTrackingController.open` |
 | DELETE | `/cart` | `CartController.clear` |
 | GET | `/cart` | `CartController.get` |
+| PATCH | `/cart/guest-contact` | `CartController.updateGuestContact` |
 | POST | `/cart/items` | `CartController.addItem` |
 | DELETE | `/cart/items/:itemId` | `CartController.removeItem` |
 | PATCH | `/cart/items/:itemId` | `CartController.updateItem` |
 | POST | `/cart/merge` | `CartController.merge` |
+| POST | `/cart/reorder/:orderNumber` | `CartController.reorderFromOrder` |
 | GET | `/catalog/categories` | `CatalogController.categories` |
 | GET | `/catalog/facets` | `CatalogController.facets` |
 | GET | `/catalog/products` | `CatalogController.products` |
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
+| GET | `/catalog/products/:slug/frequently-bought-together` | `RecommendationsController.frequentlyBoughtTogether` |
+| GET | `/catalog/products/:slug/related` | `RecommendationsController.related` |
+| GET | `/catalog/recommendations/personalized` | `PersonalizedRecommendationsController.personalized` |
+| GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
+| GET | `/collections` | `CollectionsController.list` |
+| GET | `/collections/:slug` | `CollectionsController.get` |
+| GET | `/content/banners` | `ContentController.listBanners` |
+| GET | `/content/menu/:menuKey` | `ContentController.getMenu` |
+| GET | `/content/pages` | `ContentController.listPageSlugs` |
+| GET | `/content/pages/:slug` | `ContentController.getPage` |
+| GET | `/content/posts` | `ContentController.listPosts` |
+| GET | `/content/posts/:slug` | `ContentController.getPost` |
 | POST | `/crm/enquiries` | `CrmPublicController.createEnquiry` |
+| POST | `/ecosystem/events` | `EcosystemController.handleInboundEvent` |
 | POST | `/email/unsubscribe` | `UnsubscribeController.unsubscribe` |
 | GET | `/files/*path` | `FilesController.serve` |
 | GET | `/health` | `HealthController.live` |
 | GET | `/health/ready` | `HealthController.ready` |
 | POST | `/identity-verification/webhook` | `IdentityVerificationController.webhook` |
+| GET | `/loyalty/tiers` | `LoyaltyController.tiers` |
 | GET | `/measurements/garment-types` | `MeasurementsController.listGarmentTypes` |
 | GET | `/measurements/garment-types/:idOrKey` | `MeasurementsController.getGarmentType` |
+| GET | `/measurements/size-recommendation/:productId` | `MeasurementsController.sizeRecommendation` |
 | GET | `/meta` | `MetaController.get` |
+| GET | `/onsite-messages/active` | `OnsiteMessagesController.active` |
+| POST | `/onsite-messages/newsletter` | `OnsiteMessagesController.subscribe` |
 | POST | `/orders` | `OrdersController.place` |
 | POST | `/orders/:number/track` | `OrdersController.track` |
 | POST | `/payments/:paymentId/receipt` | `PaymentsController.uploadReceipt` |
+| POST | `/payments/:paymentId/redeem-gift-card` | `PaymentsController.redeemGiftCard` |
 | POST | `/payments/callback/:provider` | `PaymentsController.callback` |
 | GET | `/payments/methods` | `PaymentsController.methods` |
+| GET | `/products/:productId/reviews` | `ReviewsPublicController.listForProduct` |
+| GET | `/products/:productId/reviews/summary` | `ReviewsPublicController.summary` |
+| POST | `/promotions/preview` | `PromotionsPublicController.preview` |
+| GET | `/public/serials/:serialNumber` | `SerializedUnitsPublicController.verify` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
+| POST | `/reviews/:id/helpful` | `ReviewsPublicController.markHelpful` |
+| GET | `/search` | `SearchController.search` |
+| POST | `/search/by-image` | `SearchController.searchByImage` |
+| GET | `/shipping/quote` | `ShippingController.quote` |
 | POST | `/stitching/bookings` | `StitchingController.book` |
 | POST | `/stitching/bookings/:number/track` | `StitchingController.track` |
 | GET | `/stitching/garments` | `StitchingController.garments` |
 | GET | `/stitching/option-groups` | `StitchingController.optionGroups` |
 | POST | `/track/event` | `TrackingController.track` |
 | POST | `/trading-partners/accept` | `TradingPartnerPortalController.accept` |
+| POST | `/trading-partners/facts` | `TradingPartnerPortalController.submitFact` |
 | GET | `/trading-partners/stock` | `TradingPartnerPortalController.stock` |
+| POST | `/webhooks/marketplace/product-reference-sync` | `MarketplaceWebhookController.productReferenceSync` |
+| POST | `/whatsapp/webhook` | `WhatsAppWebhookController.webhook` |
 
 
 ## By module
 
-### [`accounting`](../modules/accounting.md) (16)
+### [`accounting`](..\modules\accounting.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.getSchedule` | An asset's depreciation schedule and every period posted so far |
+| POST | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.createSchedule` | Put an asset on a monthly depreciation schedule |
+| POST | `/admin/accounting/assets/:assetId/dispose` | `finance.assets.dispose` | `AssetDepreciationController.dispose` | Dispose an asset — posts the remaining book value as a loss and any sale procee… |
 | GET | `/admin/accounting/consolidation/profit-and-loss` | `accounting.view` | `ConsolidationController.groupProfitAndLoss` | Group P&L across every brand, with matched intercompany pairs eliminated |
 | GET | `/admin/accounting/consolidation/unmatched-intercompany` | `accounting.view` | `ConsolidationController.unmatchedIntercompany` | Brand pairs whose intercompany volume did not net to zero — the exception repor… |
 | GET | `/admin/accounting/fiscal-periods` | `accounting.view` | `FiscalPeriodsController.listPeriods` | List fiscal periods, optionally filtered by fiscal year |
@@ -87,14 +146,30 @@ never authorization.
 | GET | `/admin/accounting/fiscal-years` | `accounting.view` | `FiscalPeriodsController.listFiscalYears` | List fiscal years |
 | POST | `/admin/accounting/fiscal-years` | `accounting.manage_periods` | `FiscalPeriodsController.createFiscalYear` | Open a fiscal year |
 | POST | `/admin/accounting/fiscal-years/:id/close` | `accounting.manage_periods` | `FiscalPeriodsController.closeFiscalYear` | Year-end close — zeros INCOME/EXPENSE into Retained Earnings, permanent |
-| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` | `GlReportsController.agedPayables` | Outstanding supplier balances as of a date, FIFO-aged the same way as receivabl… |
+| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` `finance.view` | `GlReportsController.agedPayables` | Outstanding supplier balances as of a date, FIFO-aged the same way as receivabl… |
 | GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+… |
 | GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
-| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` | `GlReportsController.cashFlow` | Net movement on every bank/cash account for a date range |
-| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
+| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` `finance.view` | `GlReportsController.cashFlow` | Net movement on every bank/cash account for a date range |
+| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
 | GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit)… |
 
-### [`addresses`](../modules/addresses.md) (4)
+### [`accounts`](..\modules\accounts.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/accounts/mine` | signed-in | `B2BAccountsController.myAccount` | My standing account and its approval policy, if any |
+| POST | `/accounts/mine/approval-policy` | signed-in | `B2BAccountsController.setMyPolicy` | Edit my own account’s approval threshold and approvers — never this organizatio… |
+| GET | `/accounts/mine/order-requests` | signed-in | `B2BAccountsController.myRequests` | My own submitted purchase-approval requests |
+| POST | `/accounts/mine/order-requests` | signed-in | `B2BAccountsController.submit` | Submit my current cart for approval — at or above my account's threshold |
+| POST | `/accounts/mine/order-requests/:id/decide` | signed-in | `B2BAccountsController.decide` | Approve or reject a pending request I am a listed approver for — never my own |
+| GET | `/accounts/mine/pending-approvals` | signed-in | `B2BAccountsController.pendingApprovals` | Orders waiting on my approval as a listed approver |
+| GET | `/admin/accounts/b2b` | **⚠ undecorated** | `B2BAccountsAdminController.findAll` | List every B2B account |
+| POST | `/admin/accounts/b2b` | **⚠ undecorated** | `B2BAccountsAdminController.create` | Open a standing account for a buyer's own contact |
+| GET | `/admin/accounts/b2b/:id` | **⚠ undecorated** | `B2BAccountsAdminController.findOne` | Get a B2B account and its approval policy |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | **⚠ undecorated** | `B2BAccountsAdminController.setPolicy` | Set the order-value threshold and the buyer contacts who may approve above it |
+| POST | `/admin/accounts/b2b/:id/update` | **⚠ undecorated** | `B2BAccountsAdminController.update` | Activate, deactivate, or change the purchase-order requirement |
+
+### [`addresses`](..\modules\addresses.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -103,21 +178,120 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (6)
+### [`analytics`](..\modules\analytics.md) (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/analytics/cards` | `analytics.view` | `AnalyticsController.cards` | Every dashboard card, batched by provider (D2) — one request per range change |
 | GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` | Sales, purchases and expenses side by side, bucketed by day, week or month |
+| GET | `/admin/analytics/customers/overview` | `analytics.view` | `AnalyticsController.customersOverview` | The customer book — totals, by city, by acquisition source, by lifecycle status |
+| GET | `/admin/analytics/customers/retention` | `analytics.view` | `AnalyticsController.customersRetention` | Signup cohorts and how many of each went on to order again, plus the overall re… |
+| GET | `/admin/analytics/customers/top` | `analytics.view` | `AnalyticsController.customersTop` | The highest-lifetime-value customers |
 | GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` | Everything the dashboard shows, in one request |
 | GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` | Funnel, geography, fulfilment and payment-mix metrics |
+| GET | `/admin/analytics/inventory/movements` | `analytics.view` | `AnalyticsController.inventoryMovements` | Stock movement volume by day and reason, plus the most recent individual moveme… |
+| GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` | What the stock on hand is worth right now, by category, kind and age |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
+| GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
+| GET | `/admin/analytics/orders/lifecycle-breakdown` | `analytics.view` | `AnalyticsController.orderLifecycleBreakdown` | Every order, right now, grouped by status into Pending/Completed/Voided |
+| GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
+| GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` | Revenue, units and product count by category, with a daily trend |
+| GET | `/admin/analytics/products/category-velocity` | `analytics.view` | `AnalyticsController.categoryVelocity` | The top categories' own revenue, broken out day by day |
+| GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` | In-stock, active variants flagged as slow movers, oldest first |
+| GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
+| GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
+| GET | `/admin/analytics/purchasing/suppliers` | `analytics.view` | `AnalyticsController.purchasingSuppliers` | Spend, order count, on-time rate and lead time by supplier |
+| GET | `/admin/analytics/sales/aov` | `analytics.view` | `AnalyticsController.salesAov` | Average order value, its median and basket size, plus the value distribution |
+| GET | `/admin/analytics/sales/funnel` | `analytics.view` | `AnalyticsController.salesFunnel` | View-to-purchase funnel, conversion rate, abandoned carts and traffic sources |
+| GET | `/admin/analytics/sales/profit` | `analytics.view` | `AnalyticsController.salesProfit` | Direct gross profit — revenue less unit cost — overall and by product |
+| GET | `/admin/analytics/sales/revenue` | `analytics.view` | `AnalyticsController.salesRevenue` | Revenue, AOV, channel split and progress against the monthly target |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
 
-### [`bom`](../modules/bom.md) (20)
+### [`attendance`](..\modules\attendance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| POST | `/admin/attendance/adjust` | signed-in | `AttendanceController.adjust` | Correct an event — never mutates the original row |
+| POST | `/admin/attendance/adjust/preview` | signed-in | `AttendanceController.previewAdjust` | Which refusals an adjustment would hit, without writing anything |
+| GET | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.findAll` | List enrolled attendance devices |
+| POST | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.register` | Enrol a device at an org unit |
+| GET | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.findOne` | Get a device |
+| PATCH | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.update` | Update a device |
+| POST | `/admin/attendance/devices/:id/rotate-device-key` | `hr.attendance.record` | `AttendanceDeviceController.rotateDeviceKey` | Issue a fresh device credential — shown once, never retrievable again |
+| POST | `/admin/attendance/devices/:id/suspend` | `hr.attendance.record` | `AttendanceDeviceController.suspend` | Suspend a device — never deletes it, its punch history stays put |
+| GET | `/admin/attendance/events` | signed-in | `AttendanceController.listOwnEvents` | Your own attendance events in a date range |
+| GET | `/admin/attendance/events/:userId` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listEvents` | Someone else's attendance events in a date range |
+| GET | `/admin/attendance/exceptions` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listExceptions` | Attendance exceptions — the reconcile queue |
+| POST | `/admin/attendance/exceptions/:id/resolve` | `hr.attendance.reconcile` | `AttendanceController.resolve` | Clear an exception |
+| POST | `/admin/attendance/punch` | signed-in | `AttendanceController.punch` | Punch yourself in/out — never refused |
+| POST | `/admin/attendance/punch/manager` | `hr.attendance.record` | `AttendanceController.punchManager` | Record a punch on someone else’s behalf — never refused |
+| GET | `/admin/attendance/shifts` | `hr.attendance.view` `hr.attendance.record` `hr.attendance.reconcile` | `AttendanceController.listShifts` | Shifts for one person |
+| POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
+| POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
+
+### [`auction`](..\modules\auction.md) (35)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/auctions` | `auction.view` `auction.manage` `auction.bidders.manage` `auction.settle` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
+| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` | Draft an auction |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` `auction.bidders.manage` `auction.settle` | `AuctionController.get` | One auction with its lots |
+| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` | Edit a draft auction |
+| GET | `/admin/auctions/:id/bidders` | `auction.bidders.manage` | `AuctionBidderController.list` | The auction’s bidders, oldest first, with who they are and their strikes |
+| GET | `/admin/auctions/:id/bidders/:bidderId` | `auction.bidders.manage` | `AuctionBidderController.detail` | One bidder: who they are, whether their identity is verified, their strikes and… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/decision` | `auction.bidders.manage` | `AuctionBidderController.decide` | Approve, decline or suspend a bidder, or keep a decision they appealed. A refus… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes` | `auction.bidders.manage` | `AuctionBidderController.recordStrike` | Record a strike against the person behind a bidder. It flags at the threshold a… |
+| POST | `/admin/auctions/:id/bidders/:bidderId/strikes/:strikeId/void` | `auction.bidders.manage` | `AuctionBidderController.voidStrike` | Void a strike with a reason; it stays on record and stops counting |
+| GET | `/admin/auctions/:id/bidders/summary` | `auction.bidders.manage` | `AuctionBidderController.summary` | How many bidders are waiting, approved, stopped, or waiting on an appeal |
+| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` | Cancel a draft or scheduled auction, with a reason |
+| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` | Add a lot to a draft auction |
+| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` | Edit a lot on a draft auction |
+| GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` | A lot’s accepted bids, newest first, bidders by alias only |
+| GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` | Re-walk a lot’s bid chain and say whether anything was inserted, edited or remo… |
+| POST | `/admin/auctions/:id/lots/:lotId/images` | `auction.manage` | `AuctionController.addPhoto` | Add a photo to a lot of a draft auction (at most 10 a lot) |
+| DELETE | `/admin/auctions/:id/lots/:lotId/images/:imageId` | `auction.manage` | `AuctionController.removePhoto` | Remove a photo from a lot of a draft auction; returns the photos that are left |
+| PATCH | `/admin/auctions/:id/lots/:lotId/images/order` | `auction.manage` | `AuctionController.reorderPhotos` | Put a lot’s photos in order; the first is the cover. List every photo, once |
+| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
+| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
+| GET | `/admin/auctions/:id/settlements` | `auction.settle` | `AuctionSettlementController.list` | The auction’s wins with what each owes, its order and its deadline, newest first |
+| POST | `/admin/auctions/:id/settlements/:settlementId/cancel` | `auction.settle` | `AuctionSettlementController.cancel` | End an unpaid win with no strike, for a reason staff write down; its order is c… |
+| POST | `/admin/auctions/:id/settlements/:settlementId/offer-next` | `auction.settle` | `AuctionSettlementController.offerNext` | Offer the lot to the next highest bidder at their own highest bid, with a new o… |
+| POST | `/admin/auctions/:id/settlements/:settlementId/replay` | `auction.settle` | `AuctionSettlementController.replay` | Try the invoice again for a win whose invoice failed or stalled |
+| GET | `/admin/auctions/:id/settlements/summary` | `auction.settle` | `AuctionSettlementController.summary` | How many wins are awaiting payment, need attention, are paid, or have ended |
+| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
+| POST | `/auctions/:auctionId/appeal` | signed-in | `AuctionBidController.appeal` | Ask the organiser to look again at a declined or suspended place, once for each… |
+| POST | `/auctions/:auctionId/registration` | signed-in | `AuctionBidController.join` | Join an auction to bid in it: approved at once, or waiting for the organiser, a… |
+| POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` | Place a bid on an open lot; a retry with the same idempotency key returns the a… |
+| GET | `/auctions/lots/:lotId/me` | signed-in | `AuctionBidController.me` | Whether you lead this lot and may bid on it |
+| GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` | Your own maximum on a lot. Nobody else’s is readable through any route |
+| PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` | Set or raise your own maximum on a lot; the system bids for you up to it. It ca… |
+| GET | `/auctions/public/lots` | **PUBLIC** | `AuctionPublicController.list` | Lots to browse: live, upcoming or ended |
+| GET | `/auctions/public/lots/:lotId` | **PUBLIC** | `AuctionPublicController.lot` | One lot as a visitor sees it: price, time left, newest bids, and how it ended |
+| GET | `/auctions/public/lots/:lotId/stream` | **PUBLIC** | `AuctionPublicController.stream` | Live price and bids for one lot as server-sent events |
+
+### [`bankfacilities`](..\modules\bankfacilities.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bank-facilities` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listFacilities` | Every bank facility, optionally filtered by status, each with its own computed… |
+| POST | `/admin/bank-facilities` | `finance.facilities.manage` | `BankFacilitiesController.createFacility` | Register a bank facility — its limit, markup rate, tenor and maturity |
+| GET | `/admin/bank-facilities/:id` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.getFacility` | One facility's detail, with every drawdown, repayment and markup accrual |
+| POST | `/admin/bank-facilities/:id/drawdowns` | `finance.facilities.manage` | `BankFacilitiesController.recordDrawdown` | Record a drawdown — refused if it would breach the facility limit; posts immedi… |
+| POST | `/admin/bank-facilities/:id/repayments` | `finance.facilities.manage` | `BankFacilitiesController.recordRepayment` | Record a repayment against principal, accrued markup, or both |
+| GET | `/admin/bank-facilities/banks` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listBanks` | Every registered lending institution |
+| POST | `/admin/bank-facilities/banks` | `finance.facilities.manage` | `BankFacilitiesController.createBank` | Register a lending institution |
+| POST | `/admin/bank-facilities/drawdowns/:drawdownId/approve` | `finance.facilities.approve_drawdown` | `BankFacilitiesController.approveDrawdown` | Approve an above-threshold drawdown — never the requester's own |
+| POST | `/admin/bank-facilities/drawdowns/:drawdownId/post` | `finance.facilities.manage` | `BankFacilitiesController.postDrawdown` | Post an approved drawdown to the general ledger |
+| GET | `/admin/bank-facilities/renewals` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listUpcomingRenewals` | Active facilities maturing within the configured renewal-alert window |
+
+### [`bom`](..\modules\bom.md) (22)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bom/lots/:lotId/trace-forward` | `bom.view` | `BomController.traceInputLotForward` | "Which finished batches did this ingredient reach" — every production run that… |
+| GET | `/admin/bom/lots/:lotId/trace-output` | `bom.view` | `BomController.traceOutputLot` | "What went into this finished batch" — the run that produced this lot and every… |
 | GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
 | GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` | List production runs |
 | POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` | Record a production run — consumes raw stock, credits finished stock, rolls the… |
@@ -139,33 +313,65 @@ never authorization.
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 | POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
-### [`cart`](../modules/cart.md) (6)
+### [`bpmn-workflows`](..\modules\bpmn-workflows.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bpmn-workflows/:subjectType` | signed-in | `BpmnWorkflowsController.get` | The saved BPMN diagram (and its compiled steps) for one approval subject type,… |
+| PUT | `/admin/bpmn-workflows/:subjectType` | `settings.bpmn-workflows.manage` | `BpmnWorkflowsController.save` | Compile and save a BPMN diagram for one approval subject type |
+
+### [`cart`](..\modules\cart.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | DELETE | `/cart` | **PUBLIC** | `CartController.clear` | Empty the cart |
 | GET | `/cart` | **PUBLIC** | `CartController.get` | The current cart, priced fresh from the database |
+| PATCH | `/cart/guest-contact` | **PUBLIC** | `CartController.updateGuestContact` | WO-8.5 — capture a guest phone + marketing consent before checkout completes |
 | POST | `/cart/items` | **PUBLIC** | `CartController.addItem` | Add an item, optionally with stitching |
 | DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` | Remove a line |
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` | Change quantity, or attach measurements |
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
+| POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
-### [`catalog`](../modules/catalog.md) (25)
+### [`catalog`](..\modules\catalog.md) (58)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/catalog/ai-suggestions` | `ai.view` `ai.manage` | `AiSuggestionsController.list` | The AI draft review queue |
+| POST | `/admin/catalog/ai-suggestions/:id/approve` | `ai.manage` | `AiSuggestionsController.approve` | Apply a draft to the live product and mark it approved |
+| POST | `/admin/catalog/ai-suggestions/:id/reject` | `ai.manage` | `AiSuggestionsController.reject` | Discard a draft without applying it |
+| POST | `/admin/catalog/ai-suggestions/approve-bulk` | `ai.manage` | `AiSuggestionsController.approveBulk` | Approve several drafts at once |
+| POST | `/admin/catalog/ai-suggestions/generate-bulk` | `ai.manage` | `AiSuggestionsController.generateBulk` | Draft for every product failing the SEO publish gate (Catalogue -> SEO health) |
+| POST | `/admin/catalog/ai-suggestions/generate/:productId` | `ai.manage` | `AiSuggestionsController.generate` | Draft alt text and SEO copy for one product, for every gap it currently has |
 | GET | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.listBrands` |  |
 | POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` |  |
 | DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` |  |
 | PATCH | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.updateBrand` |  |
+| GET | `/admin/catalog/bundles` | `catalog.manage` | `CatalogAdminController.listBundles` |  |
+| POST | `/admin/catalog/bundles` | `catalog.manage` | `CatalogAdminController.createBundle` | Sell N existing variants together as one purchasable unit — never a new physica… |
+| DELETE | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.removeBundle` |  |
+| GET | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.getBundle` |  |
+| PATCH | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.updateBundle` |  |
 | GET | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.listCategories` |  |
 | POST | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.createCategory` |  |
 | DELETE | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.deleteCategory` |  |
 | PATCH | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.updateCategory` |  |
+| GET | `/admin/catalog/category-presets` | `catalog.manage` | `CatalogAdminController.listCategoryPresets` | Starter category tree templates, one per vertical |
+| POST | `/admin/catalog/category-presets/:key/apply` | `catalog.manage` | `CatalogAdminController.applyCategoryPreset` | Apply a starter category tree — additive only, never renames or overwrites an e… |
+| GET | `/admin/catalog/category-presets/:key/preview` | `catalog.manage` | `CatalogAdminController.previewCategoryPreset` | What applying this preset would create and what it would skip — nothing written |
 | DELETE | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.deleteImage` |  |
 | PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` | Edit an image's alt text |
 | POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` | Bulk create or update products from a CSV file |
+| POST | `/admin/catalog/import/assist` | `catalog.manage` | `CatalogAdminController.assistImport` | WO-9.10 — AI-suggested column mapping, value cleanup, duplicates, categories an… |
 | GET | `/admin/catalog/import/template` | `catalog.manage` | `CatalogAdminController.importTemplate` | Download the CSV template for bulk product upload |
+| DELETE | `/admin/catalog/option-template-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplateValue` | Remove a template value |
+| GET | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.listTemplates` | Store-level reusable option axes (Catalogue -> Options & attributes) |
+| POST | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.createTemplate` | Create a reusable option template |
+| DELETE | `/admin/catalog/option-templates/:templateId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplate` | Delete a template |
+| POST | `/admin/catalog/option-templates/:templateId/values` | `catalog.manage` | `CatalogOptionsAdminController.addTemplateValue` | Add a value to a template |
+| DELETE | `/admin/catalog/option-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOptionValue` | Remove a value — refused while a variant still uses it |
+| DELETE | `/admin/catalog/options/:optionId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOption` | Remove an option axis — refused while any of its values is in use |
+| POST | `/admin/catalog/options/:optionId/values` | `catalog.manage` | `CatalogOptionsAdminController.addProductOptionValue` | Add a value to a product's option |
 | GET | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.listProducts` | All products, including drafts and archived ones |
 | POST | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.createProduct` | Add a product, fabric or stitching service |
 | DELETE | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.archiveProduct` | Archive a product (never hard-deleted — orders cite it) |
@@ -173,47 +379,158 @@ never authorization.
 | PATCH | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.updateProduct` |  |
 | POST | `/admin/catalog/products/:id/images` | `catalog.manage` | `CatalogAdminController.addImage` | Upload a product image |
 | PATCH | `/admin/catalog/products/:id/images/order` | `catalog.manage` | `CatalogAdminController.reorderImages` | Reorder images; the first becomes the thumbnail |
+| GET | `/admin/catalog/products/:id/publish-gate` | `catalog.manage` | `CatalogAdminController.publishGate` | A product's own completeness against the publish gate |
+| GET | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.listProductOptions` | A product's own option axes and values |
+| POST | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.createProductOption` | Add a custom option axis to a product |
+| POST | `/admin/catalog/products/:productId/options/instantiate` | `catalog.manage` | `CatalogOptionsAdminController.instantiate` | Copy a store-level template onto this product |
+| GET | `/admin/catalog/products/seo-health` | `catalog.manage` | `CatalogAdminController.seoHealthList` | Every product failing the SEO publish gate, worst first |
+| GET | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.list` | Every redirect, newest first |
+| POST | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.create` | Add a manual redirect |
+| DELETE | `/admin/catalog/redirects/:id` | `catalog.manage` | `RedirectAdminController.delete` | Remove a redirect |
+| POST | `/admin/catalog/redirects/import` | `catalog.manage` | `RedirectAdminController.importCsv` | Bulk-import redirects from a CSV (from_path,to_path[,status_code]) |
 | PATCH | `/admin/catalog/variants/:variantId/stock` | `catalog.manage` | `CatalogAdminController.updateStock` | Set the stock level of one variant |
 | GET | `/catalog/categories` | **PUBLIC** | `CatalogController.categories` | Category tree in one locale |
 | GET | `/catalog/facets` | **PUBLIC** | `CatalogController.facets` | Available fabrics, seasons, piece counts and price range |
 | GET | `/catalog/products` | **PUBLIC** | `CatalogController.products` | Browse active products with filters and paging |
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` | One product by slug |
+| GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
 
-### [`core/auth`](../core/auth.md) (15)
+### [`collections`](..\modules\collections.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/collections` | `collections.view` `collections.manage` | `CollectionsAdminController.list` |  |
+| POST | `/admin/collections` | `collections.manage` | `CollectionsAdminController.create` |  |
+| DELETE | `/admin/collections/:id` | `collections.manage` | `CollectionsAdminController.remove` |  |
+| GET | `/admin/collections/:id` | `collections.view` `collections.manage` | `CollectionsAdminController.get` |  |
+| PATCH | `/admin/collections/:id` | `collections.manage` | `CollectionsAdminController.update` |  |
+| POST | `/admin/collections/:id/products` | `collections.manage` | `CollectionsAdminController.addProduct` |  |
+| DELETE | `/admin/collections/:id/products/:productId` | `collections.manage` | `CollectionsAdminController.removeProduct` |  |
+| PATCH | `/admin/collections/:id/products/reorder` | `collections.manage` | `CollectionsAdminController.reorder` |  |
+| GET | `/collections` | **PUBLIC** | `CollectionsController.list` |  |
+| GET | `/collections/:slug` | **PUBLIC** | `CollectionsController.get` |  |
+
+### [`content`](..\modules\content.md) (24)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/content/banners` | `content.view` `content.manage` | `ContentAdminController.listBanners` |  |
+| POST | `/admin/content/banners` | `content.manage` | `ContentAdminController.createBanner` |  |
+| DELETE | `/admin/content/banners/:id` | `content.manage` | `ContentAdminController.deleteBanner` |  |
+| PATCH | `/admin/content/banners/:id` | `content.manage` | `ContentAdminController.updateBanner` |  |
+| GET | `/admin/content/menu-items` | `content.view` `content.manage` | `ContentAdminController.listMenuItems` |  |
+| POST | `/admin/content/menu-items` | `content.manage` | `ContentAdminController.createMenuItem` |  |
+| DELETE | `/admin/content/menu-items/:id` | `content.manage` | `ContentAdminController.deleteMenuItem` |  |
+| PATCH | `/admin/content/menu-items/:id` | `content.manage` | `ContentAdminController.updateMenuItem` |  |
+| GET | `/admin/content/pages` | `content.view` `content.manage` | `ContentAdminController.listPages` |  |
+| POST | `/admin/content/pages` | `content.manage` | `ContentAdminController.createPage` |  |
+| DELETE | `/admin/content/pages/:id` | `content.manage` | `ContentAdminController.deletePage` |  |
+| GET | `/admin/content/pages/:id` | `content.view` `content.manage` | `ContentAdminController.getPage` |  |
+| PATCH | `/admin/content/pages/:id` | `content.manage` | `ContentAdminController.updatePage` |  |
+| GET | `/admin/content/posts` | `content.view` `content.manage` | `ContentAdminController.listPosts` |  |
+| POST | `/admin/content/posts` | `content.manage` | `ContentAdminController.createPost` |  |
+| DELETE | `/admin/content/posts/:id` | `content.manage` | `ContentAdminController.deletePost` |  |
+| GET | `/admin/content/posts/:id` | `content.view` `content.manage` | `ContentAdminController.getPost` |  |
+| PATCH | `/admin/content/posts/:id` | `content.manage` | `ContentAdminController.updatePost` |  |
+| GET | `/content/banners` | **PUBLIC** | `ContentController.listBanners` |  |
+| GET | `/content/menu/:menuKey` | **PUBLIC** | `ContentController.getMenu` |  |
+| GET | `/content/pages` | **PUBLIC** | `ContentController.listPageSlugs` | Indexable page slugs — sitemap.ts's own read, not a general listing. |
+| GET | `/content/pages/:slug` | **PUBLIC** | `ContentController.getPage` |  |
+| GET | `/content/posts` | **PUBLIC** | `ContentController.listPosts` |  |
+| GET | `/content/posts/:slug` | **PUBLIC** | `ContentController.getPost` |  |
+
+### [`core/action-hub`](..\core\action-hub.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/action-hub` | `analytics.view` | `ActionHubController.collect` | Every action item pending on the caller, merged from every registered source |
+
+### [`core/anax`](..\core\anax.md) (5)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/anax/evaluate` | **⚠ undecorated** | `AnaxController.evaluateScenario` |  |
+| GET | `/anax/flight-plan` | **⚠ undecorated** | `AnaxController.getFlightPlan` |  |
+| GET | `/anax/geopolitical-risk` | **⚠ undecorated** | `AnaxController.getGeopoliticalRisk` |  |
+| GET | `/anax/insights` | **⚠ undecorated** | `AnaxController.getComprehensiveInsights` |  |
+| GET | `/anax/valuation` | **⚠ undecorated** | `AnaxController.getEnterpriseValuation` |  |
+
+### [`core/auth`](..\core\auth.md) (36)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/api-keys` | `users.manage` | `ApiKeysAdminController.list` | Every API key on this deployment, by staff and customers — metadata only |
+| POST | `/admin/api-keys/:id/revoke` | `users.manage` | `ApiKeysAdminController.revoke` | Revoke anyone's API key — final; its next request is refused |
 | GET | `/admin/roles` | `roles.manage_permissions` | `RolesController.list` | Every custom role, its permissions, and how many users hold it |
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` | Create a role. Duplicate names are refused; a duplicate permission set is only… |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` | Edit a role's name, description, or permission set |
+| GET | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.list` | Every single sign-on connection, and the callback URL to register — never a cli… |
+| POST | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.create` | Register an identity provider for staff sign-in |
+| GET | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.get` | One connection, with the callback URL to register at the provider |
+| PATCH | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.update` | Edit a connection — audited with every old and new value; a sent secret replace… |
+| GET | `/admin/sso/connections/:id/accounts` | `settings.sso.manage` | `SsoAdminController.accounts` | Accounts provisioned or linked through a connection, newest first |
+| POST | `/admin/sso/connections/:id/accounts/:userId/unlink` | `settings.sso.manage` | `SsoAdminController.unlink` | Unlink an account's single sign-on identity and sign it out everywhere |
+| POST | `/admin/sso/connections/:id/suspend` | `settings.sso.manage` | `SsoAdminController.suspend` | Stop new sign-ins through a connection — accounts it created or linked are unto… |
+| GET | `/admin/sso/roles` | `settings.sso.manage` | `SsoAdminController.roles` | Roles a new sign-in could be given, and why any may not be |
+| GET | `/api-keys` | signed-in | `ApiKeysController.list` | Your own API keys for one surface, each with what it can do right now |
+| POST | `/api-keys` | signed-in | `ApiKeysController.create` | Create a key carrying some of your own access — its secret is shown in this res… |
+| PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` | Rename a key, or replace its scopes — re-checked against what you hold now |
+| POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` | Revoke a key — final; its next request is refused |
+| POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` | Issue a new secret and expiry for a key — same scopes; the old secret stops wor… |
 | POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` | Change your password and sign out other devices |
 | POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` | Request a password reset link by email |
 | POST | `/auth/login` | **PUBLIC** | `AuthController.login` | Sign in with an email or phone number |
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` | Revoke the current refresh token |
 | GET | `/auth/me` | signed-in | `AuthController.me` | The signed-in user |
 | PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` | Update your own profile fields |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` | Initiates a Login with nID authorization flow |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` | Resend the email verification link |
 | POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` | Set a new password using a reset link token |
+| GET | `/auth/sso/:connectionId/start` | **PUBLIC** | `SsoController.start` | Begin single sign-on — redirects to the identity provider |
+| GET | `/auth/sso/callback` | **PUBLIC** | `SsoController.callback` | Where the identity provider returns — completes single sign-on and redirects to… |
+| GET | `/auth/sso/connections` | **PUBLIC** | `SsoController.signInOptions` | The single sign-on buttons the admin sign-in screen shows — id and label only |
+| POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` | Exchange a completed single sign-on for a session — the same result a password… |
 | POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` | Confirm an email address using a verification link token |
 
-### [`core/config`](../core/config.md) (1)
+### [`core/config`](..\core\config.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
 
-### [`core/health`](../core/health.md) (2)
+### [`core/ecosystem`](..\core\ecosystem.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/ecosystem/events` | **PUBLIC** | `EcosystemController.handleInboundEvent` | Receives cross-repo events from core-newax Event Bus / Communicator |
+
+### [`core/feed`](..\core\feed.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/feed` | `analytics.view` | `FeedController.collect` | Recent order, purchase-order and payment activity, merged and capped, newest fi… |
+
+### [`core/health`](..\core\health.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
-| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database |
+| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database and the rate-limit Redis |
 
-### [`core/notifications`](../core/notifications.md) (14)
+### [`core/launchpad`](..\core\launchpad.md) (3)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/launchpad` | signed-in | `LaunchpadController.list` | The first-party apps this deployment and organization show on the launchpad |
+| GET | `/launchpad/apps` | `launchpad.manage` | `LaunchpadController.statuses` | Every shipped app with its on/off switch and why it is hidden, if it is |
+| PUT | `/launchpad/apps/:key` | `launchpad.manage` | `LaunchpadController.setEnabled` | Switch one app on or off for the whole organization (hides the tile; deletes no… |
+
+### [`core/notifications`](..\core\notifications.md) (14)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -232,20 +549,20 @@ never authorization.
 | POST | `/me/devices` | signed-in | `DevicesController.register` | Register this installation for push notifications |
 | DELETE | `/me/devices/:token` | signed-in | `DevicesController.unregister` | Stop sending push notifications to this installation |
 
-### [`core/replication`](../core/replication.md) (2)
+### [`core/replication`](..\core\replication.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/replication/pull` | **PUBLIC** | `ReplicationController.pull` | This node's own POLICY records since a cursor, pulled down |
 | POST | `/replication/push` | **PUBLIC** | `ReplicationController.push` | A child's own FACT records, pushed up |
 
-### [`core/storage`](../core/storage.md) (1)
+### [`core/storage`](..\core\storage.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (19)
+### [`crm`](..\modules\crm.md) (33)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -256,6 +573,8 @@ never authorization.
 | POST | `/admin/crm/contacts/:id/tags` | `crm.manage` | `CrmAdminController.tagContact` | Tag a contact — repeat buyer, bridal, wholesale… |
 | DELETE | `/admin/crm/contacts/:id/tags/:tagId` | `crm.manage` | `CrmAdminController.untagContact` |  |
 | GET | `/admin/crm/contacts/export` | `crm.manage` | `CrmAdminController.exportContacts` |  |
+| POST | `/admin/crm/contacts/import` | `crm.manage` | `CrmAdminController.importContacts` | Bulk create or update contacts from a CSV file |
+| GET | `/admin/crm/contacts/import/template` | `crm.manage` | `CrmAdminController.contactImportTemplate` | Download the CSV template for bulk contact upload |
 | POST | `/admin/crm/follow-ups` | `crm.manage` | `CrmAdminController.addFollowUp` | Schedule a follow-up |
 | POST | `/admin/crm/follow-ups/:id/done` | `crm.manage` | `CrmAdminController.completeFollowUp` |  |
 | GET | `/admin/crm/follow-ups/due` | `crm.manage` | `CrmAdminController.dueFollowUps` | Follow-ups due today or overdue |
@@ -266,10 +585,63 @@ never authorization.
 | POST | `/admin/crm/interactions` | `crm.manage` | `CrmAdminController.addInteraction` | Log a call, WhatsApp message, visit or complaint |
 | GET | `/admin/crm/leads` | `crm.manage` | `CrmAdminController.listLeads` |  |
 | PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` |  |
+| GET | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.list` |  |
+| POST | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.create` |  |
+| DELETE | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.remove` |  |
+| GET | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.get` |  |
+| PATCH | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.update` |  |
+| GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` |  |
+| POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
+| GET | `/admin/crm/whatsapp/conversations` | `crm.manage` | `WhatsAppAssistantAdminController.list` | WhatsApp conversations, most recently active first |
+| GET | `/admin/crm/whatsapp/conversations/:id` | `crm.manage` | `WhatsAppAssistantAdminController.get` |  |
+| POST | `/admin/crm/whatsapp/conversations/:id/reopen` | `crm.manage` | `WhatsAppAssistantAdminController.reopen` | Let the assistant resume answering this conversation |
+| POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` | Staff reply — hands the conversation off if it was not already |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
+| POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
-### [`finance`](../modules/finance.md) (12)
+### [`custom-fields`](..\modules\custom-fields.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.definitions` | Every custom-field definition for one entity type |
+| POST | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.define` | Define a new custom field on one entity type |
+| DELETE | `/admin/custom-fields/definitions/:id` | `settings.custom-fields.manage` | `CustomFieldsController.remove` | Remove a custom-field definition |
+| GET | `/admin/custom-fields/entity-types` | `settings.custom-fields.manage` | `CustomFieldsController.entityTypes` | Every entity type this mechanism is wired up for |
+| GET | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.values` | One entity's own custom-field values, gated by that entity's own edit permission |
+| POST | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.setValues` | Set one entity's own custom-field values, gated by that entity's own edit permi… |
+
+### [`embeds`](..\modules\embeds.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/embeds` | `analytics.view` | `EmbedWidgetsController.list` | Every active embedded widget |
+| POST | `/admin/embeds` | `settings.embeds.manage` | `EmbedWidgetsController.create` | Register a new embeddable widget |
+| DELETE | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.remove` | Remove an embedded widget |
+| PATCH | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.update` | Edit or deactivate an embedded widget |
+| POST | `/admin/embeds/:key/token` | `analytics.view` | `EmbedWidgetsController.issueToken` | A short-lived, scoped token for one active widget — never a raw session credent… |
+| GET | `/admin/embeds/all` | `settings.embeds.manage` | `EmbedWidgetsController.listAll` | Every embedded widget, active or not — for the configuration screen |
+
+### [`entity-attributes`](..\modules\entity-attributes.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/entity-attributes` | signed-in | `EntityAttributesController.list` | One entity's own attributes, gated by that entity's own edit permission |
+| POST | `/admin/entity-attributes` | signed-in | `EntityAttributesController.set` | Set one attribute on one entity, gated by that entity's own edit permission |
+
+### [`feature-flags`](..\modules\feature-flags.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/feature-flags` | `platform.flags.manage` | `FeatureFlagsAdminController.list` | Every feature flag |
+| POST | `/admin/feature-flags` | `platform.flags.manage` | `FeatureFlagsAdminController.create` | Create a feature flag |
+| GET | `/admin/feature-flags/:id` | `platform.flags.manage` | `FeatureFlagsAdminController.get` | One flag's detail |
+| PATCH | `/admin/feature-flags/:id` | `platform.flags.manage` | `FeatureFlagsAdminController.update` | Edit a flag — killSwitch=true and any non-100% rollout apply immediately; the r… |
+| POST | `/admin/feature-flags/:id/approve-rollout` | `platform.flags.approve_rollout` | `FeatureFlagsAdminController.approveRollout` | Approve a proposed rollout change — the checker half, never the same person as… |
+| POST | `/admin/feature-flags/:id/propose-rollout` | `platform.flags.manage` | `FeatureFlagsAdminController.proposeRollout` | Propose 100% rollout and/or clearing the kill switch on a money/stock-path flag… |
+| GET | `/admin/feature-flags/audit` | `platform.flags.manage` | `FeatureFlagsAdminController.audit` | WO-37.3 — every flag older than 90 days with no stated removal criteria |
+
+### [`finance`](..\modules\finance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -283,10 +655,108 @@ never authorization.
 | PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` | Edit an expense |
 | POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` | Attach a receipt image or PDF to an expense |
 | GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` | Expense totals by category — share, period-over-period change, and share of rev… |
+| POST | `/admin/finance/expenses/import` | `finance.manage` | `FinanceController.importExpenses` | Bulk record expenses from a CSV file (a paper expense log) |
+| GET | `/admin/finance/expenses/import/template` | `finance.manage` | `FinanceController.expenseImportTemplate` | Download the CSV template for bulk expense upload |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 | GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` | Expense totals over time, bucketed by day or month |
+| GET | `/admin/finance/gross-profit-today` | `inventory.view_cost` | `FinanceController.grossProfitToday` | Per-transaction and day-total gross profit for orders placed today, every chann… |
+| GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
+| GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
-### [`identity-verification`](../modules/identity-verification.md) (4)
+### [`fragments`](..\modules\fragments.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/fragments` | `settings.fragments.manage` | `FragmentsController.list` | Every registered fragment, active or suspended — for the management screen |
+| POST | `/admin/fragments` | `settings.fragments.manage` | `FragmentsController.register` | Register a new micro-frontend fragment, with the required design-law attestation |
+| PATCH | `/admin/fragments/:id` | `settings.fragments.manage` | `FragmentsController.update` | Edit a fragment’s label, remote URL, mount points or status |
+| POST | `/admin/fragments/:id/activate` | `settings.fragments.manage` | `FragmentsController.activate` | Resume serving a previously suspended fragment |
+| POST | `/admin/fragments/:id/suspend` | `settings.fragments.manage` | `FragmentsController.suspend` | The kill switch — stop serving a fragment with no deploy |
+| POST | `/admin/fragments/:key/token` | signed-in | `FragmentsController.issueToken` | A short-lived token scoped to one fragment and one mount point — never a raw se… |
+| GET | `/admin/fragments/for-mount-point` | signed-in | `FragmentsController.listForMountPoint` | Every active fragment registered for one named mount point |
+
+### [`fulfilment`](..\modules\fulfilment.md) (39)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/fulfilment/couriers` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listCouriers` |  |
+| GET | `/admin/fulfilment/manifests` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listManifests` |  |
+| POST | `/admin/fulfilment/manifests` | `fulfilment.manage` | `FulfilmentAdminController.createManifest` |  |
+| POST | `/admin/fulfilment/manifests/:id/dispatch` | `fulfilment.manage` | `FulfilmentAdminController.dispatchManifest` |  |
+| POST | `/admin/fulfilment/manifests/:id/shipments` | `fulfilment.manage` | `FulfilmentAdminController.addToManifest` |  |
+| GET | `/admin/fulfilment/returns` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.list` |  |
+| GET | `/admin/fulfilment/returns/:id` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.get` |  |
+| POST | `/admin/fulfilment/returns/:id/approve` | `fulfilment.manage` | `ReturnsAdminController.approve` |  |
+| POST | `/admin/fulfilment/returns/:id/in-transit` | `fulfilment.manage` | `ReturnsAdminController.markInTransit` |  |
+| POST | `/admin/fulfilment/returns/:id/inspect` | `fulfilment.manage` | `ReturnsAdminController.inspect` |  |
+| POST | `/admin/fulfilment/returns/:id/received` | `fulfilment.manage` | `ReturnsAdminController.markReceived` |  |
+| POST | `/admin/fulfilment/returns/:id/reject` | `fulfilment.manage` | `ReturnsAdminController.reject` |  |
+| POST | `/admin/fulfilment/returns/:id/resolve` | `fulfilment.manage` | `ReturnsAdminController.resolve` |  |
+| GET | `/admin/fulfilment/returns/reasons` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.listReasons` |  |
+| POST | `/admin/fulfilment/returns/reasons` | `fulfilment.manage` | `ReturnsAdminController.createReason` |  |
+| GET | `/admin/fulfilment/rto` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.rtoStats` |  |
+| GET | `/admin/fulfilment/shipments` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listShipments` |  |
+| POST | `/admin/fulfilment/shipments` | `fulfilment.manage` | `FulfilmentAdminController.createShipment` |  |
+| GET | `/admin/fulfilment/shipments/:id` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.getShipment` |  |
+| POST | `/admin/fulfilment/shipments/:id/status` | `fulfilment.manage` | `FulfilmentAdminController.recordStatus` |  |
+| GET | `/admin/settings/shipping/classes` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listClasses` |  |
+| POST | `/admin/settings/shipping/classes` | `fulfilment.manage` | `ShippingAdminController.createClass` |  |
+| PATCH | `/admin/settings/shipping/classes/:id` | `fulfilment.manage` | `ShippingAdminController.updateClass` |  |
+| GET | `/admin/settings/shipping/methods` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listMethods` |  |
+| POST | `/admin/settings/shipping/methods` | `fulfilment.manage` | `ShippingAdminController.createMethod` |  |
+| PATCH | `/admin/settings/shipping/methods/:id` | `fulfilment.manage` | `ShippingAdminController.updateMethod` |  |
+| GET | `/admin/settings/shipping/rates` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listRates` |  |
+| POST | `/admin/settings/shipping/rates` | `fulfilment.manage` | `ShippingAdminController.createRate` |  |
+| DELETE | `/admin/settings/shipping/rates/:id` | `fulfilment.manage` | `ShippingAdminController.deleteRate` |  |
+| PATCH | `/admin/settings/shipping/rates/:id` | `fulfilment.manage` | `ShippingAdminController.updateRate` |  |
+| GET | `/admin/settings/shipping/zones` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listZones` |  |
+| POST | `/admin/settings/shipping/zones` | `fulfilment.manage` | `ShippingAdminController.createZone` |  |
+| PATCH | `/admin/settings/shipping/zones/:id` | `fulfilment.manage` | `ShippingAdminController.updateZone` |  |
+| POST | `/returns` | signed-in | `ReturnsController.create` |  |
+| GET | `/returns/:id` | signed-in | `ReturnsController.get` |  |
+| POST | `/returns/:id/photos` | signed-in | `ReturnsController.uploadPhoto` |  |
+| GET | `/returns/mine` | signed-in | `ReturnsController.mine` | The signed-in customer's own return requests |
+| GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` |  |
+| GET | `/shipping/quote` | **PUBLIC** | `ShippingController.quote` |  |
+
+### [`giftcards`](..\modules\giftcards.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/customers/:userId/store-credit` | `giftcards.view` | `StoreCreditController.ledger` | A customer's store credit balance and ledger |
+| POST | `/admin/customers/:userId/store-credit` | `giftcards.manage` | `StoreCreditController.issue` | Issue goodwill store credit to a customer |
+| GET | `/admin/gift-cards` | `giftcards.view` | `GiftCardsController.list` | List gift cards, paginated |
+| POST | `/admin/gift-cards` | `giftcards.manage` | `GiftCardsController.issue` | Issue a gift card |
+| GET | `/admin/gift-cards/:id` | `giftcards.view` | `GiftCardsController.getById` | One gift card with its full ledger |
+| PATCH | `/admin/gift-cards/:id/cancel` | `giftcards.manage` | `GiftCardsController.cancel` | Cancel a gift card, forfeiting any remaining balance |
+| GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` | Check a gift card balance by code |
+| POST | `/gift-cards/redeem-into-account` | signed-in | `GiftCardsAccountController.redeemIntoAccount` | Redeem a gift card's full balance into my store credit |
+| GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` | My store credit balance |
+| GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` | My store credit history |
+
+### [`hr`](..\modules\hr.md) (17)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/hr/assets` | `hr.assets.manage` | `AssetsController.list` | List assets, optionally filtered by status |
+| POST | `/admin/hr/assets` | `hr.assets.manage` | `AssetsController.create` | Register a new asset |
+| GET | `/admin/hr/assets/:id` | `hr.assets.manage` | `AssetsController.get` | One asset's detail and full assignment history |
+| POST | `/admin/hr/assets/:id/issue` | `hr.assets.manage` | `AssetsController.issue` | Issue an AVAILABLE asset to an employee |
+| POST | `/admin/hr/assets/:id/write-off` | `hr.assets.writeoff` | `AssetsController.writeOff` | Mark an asset RETIRED or LOST |
+| POST | `/admin/hr/assets/assignments/:assignmentId/return` | `hr.assets.manage` | `AssetsController.returnAsset` | Return an issued asset |
+| GET | `/admin/hr/assets/employees/:userId/unreturned` | `hr.assets.manage` | `AssetsController.unreturnedFor` | An employee's unreturned assets — the offboarding gate's own check |
+| GET | `/admin/people` | `hr.people.view` `hr.people.manage` | `PeopleController.list` | Everyone who holds at least one posting |
+| GET | `/admin/people/:userId/postings` | `hr.people.view` `hr.people.manage` | `PeopleController.postings` | One person's postings, open and past |
+| GET | `/admin/people/:userId/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.ranksOf` | Every rank level this person currently holds, across all open postings |
+| GET | `/admin/people/positions` | `hr.people.view` `hr.people.manage` | `PeopleController.listPositions` | Every position |
+| POST | `/admin/people/positions` | `hr.people.manage` | `PeopleController.createPosition` | Create a position |
+| POST | `/admin/people/postings/:id/end` | `hr.people.manage` | `PeopleController.end` | End a posting |
+| POST | `/admin/people/postings/assign` | `hr.people.manage` | `PeopleController.assign` | Assign a posting — refused if it would create a second open primary posting |
+| POST | `/admin/people/postings/assign/preview` | `hr.people.manage` | `PeopleController.previewAssign` | What assigning this posting would do, without writing anything |
+| GET | `/admin/people/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.listRanks` | The rank ladder |
+| POST | `/admin/people/ranks` | `hr.people.manage` | `PeopleController.createRank` | Add a rank |
+
+### [`identity-verification`](..\modules\identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -295,7 +765,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (16)
+### [`inventory`](..\modules\inventory.md) (40)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -311,19 +781,90 @@ never authorization.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/lots` | `inventory.lots.manage` | `LotsController.list` | Every lot registered for a variant, with its remaining stock per location |
+| GET | `/admin/inventory/lots/:id` | `inventory.lots.manage` | `LotsController.getOne` | One lot's own identity and remaining stock per location |
+| GET | `/admin/inventory/lots/:id/recall` | `inventory.recall` | `LotsController.recall` | Every order that drew from this lot — the recall query this ledger exists to an… |
+| GET | `/admin/inventory/lots/expiring` | `inventory.lots.manage` | `LotsController.expiring` | Lots nearing expiry with unsold stock — the same candidates InventoryCron alert… |
+| POST | `/admin/inventory/lots/preview-allocation` | `inventory.lots.manage` | `LotsController.previewAllocation` | Dry run: which lots a deduction of this size would draw from, FEFO order |
+| GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` | The markdown review queue |
+| POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` | Create the suggested discount (product-wide) and close this suggestion |
+| POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` | Reorder suggestions based on reorderPoint |
+| GET | `/admin/inventory/serials` | `inventory.manage` | `SerializedUnitsController.list` | Every serialized unit for a variant |
+| GET | `/admin/inventory/serials/:serialNumber/history` | `inventory.manage` | `SerializedUnitsController.history` | A unit's status, sale and warranty history — staff-side lookup |
+| POST | `/admin/inventory/serials/return` | `inventory.manage` | `SerializedUnitsController.returnUnit` | Return one specific unit — refused unless it was sold on this exact order |
+| POST | `/admin/inventory/serials/sell` | `inventory.manage` | `SerializedUnitsController.sell` | Sell one specific unit against an order |
+| POST | `/admin/inventory/serials/write-off` | `inventory.manage` | `SerializedUnitsController.writeOff` | Theft, damage, lost — writes the unit off and records the stock movement |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` | Variants with zero sales in the slow mover window |
+| GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` |  |
+| POST | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.create` |  |
+| PATCH | `/admin/inventory/spot-check-policies/:id` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.update` |  |
+| GET | `/admin/inventory/spot-checks` | `inventory.count` | `SpotCheckController.findAll` |  |
+| GET | `/admin/inventory/spot-checks/:id` | `inventory.count` | `SpotCheckController.findOne` |  |
+| POST | `/admin/inventory/spot-checks/:id/complete` | `inventory.count` | `SpotCheckController.complete` |  |
+| POST | `/admin/inventory/spot-checks/:id/scan` | `inventory.count` | `SpotCheckController.scan` |  |
+| POST | `/admin/inventory/spot-checks/:id/start` | `inventory.count` | `SpotCheckController.start` |  |
+| GET | `/admin/inventory/suspicious-traffic` | `analytics.view` | `SuspiciousTrafficController.report` |  |
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
+| GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` | Variance history attributed to the shift that had custody — 156-loss-prevention… |
+| GET | `/public/serials/:serialNumber` | **PUBLIC** | `SerializedUnitsPublicController.verify` | Verify a purchase by serial number — status, sale date and warranty only |
 
-### [`marketing`](../modules/marketing.md) (2)
+### [`loyalty`](..\modules\loyalty.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/loyalty/customers/:userId` | `loyalty.view` | `LoyaltyAdminController.customerBalance` | A customer's own loyalty balance and ledger |
+| POST | `/admin/loyalty/customers/:userId/adjust` | `loyalty.manage` | `LoyaltyAdminController.adjust` | Manually adjust a customer's points |
+| POST | `/admin/loyalty/tiers` | `loyalty.manage` | `LoyaltyAdminController.createTier` | Create a loyalty tier |
+| PATCH | `/admin/loyalty/tiers/:id` | `loyalty.manage` | `LoyaltyAdminController.updateTier` | Edit a loyalty tier |
+| GET | `/loyalty` | signed-in | `LoyaltyController.balance` | My points balance, tier and trailing 12-month spend |
+| GET | `/loyalty/ledger` | signed-in | `LoyaltyController.ledger` | My points history |
+| POST | `/loyalty/redeem` | signed-in | `LoyaltyController.redeem` | Convert points to store credit |
+| GET | `/loyalty/referral-code` | signed-in | `LoyaltyController.myReferralCode` | My own referral code (generated on first request) |
+| POST | `/loyalty/referral/apply` | signed-in | `LoyaltyController.applyReferralCode` | Apply a friend's referral code to my account |
+| GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` | Customers I have referred |
+| GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` | Loyalty tiers and their benefits |
+
+### [`managed-services`](..\modules\managed-services.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/managed-services/invoices` | `settings.manage` | `ManagedServicesController.invoices` |  |
+| GET | `/managed-services/usage` | `settings.manage` | `ManagedServicesController.usage` |  |
+
+### [`marketing`](..\modules\marketing.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/campaigns` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.list` |  |
+| POST | `/admin/campaigns` | `campaigns.manage` | `CampaignsAdminController.create` |  |
+| GET | `/admin/campaigns/:id` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.get` |  |
+| PATCH | `/admin/campaigns/:id` | `campaigns.manage` | `CampaignsAdminController.update` |  |
+| POST | `/admin/campaigns/:id/cancel` | `campaigns.manage` | `CampaignsAdminController.cancel` |  |
+| POST | `/admin/campaigns/:id/schedule` | `campaigns.manage` | `CampaignsAdminController.schedule` |  |
+| GET | `/admin/marketing/recovered-revenue` | `marketing.manage` | `MarketingController.recoveredRevenue` |  |
 | GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` | Automation on/off and its timing thresholds |
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` | Turn automation on/off and/or change its timing |
+| GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
+| GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
 
-### [`measurements`](../modules/measurements.md) (12)
+### [`marketplace`](..\modules\marketplace.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/marketplace/listings` | `catalog.manage` | `MarketplaceController.mine` |  |
+| POST | `/admin/marketplace/listings` | `catalog.manage` | `MarketplaceController.publish` |  |
+| PATCH | `/admin/marketplace/listings/:id` | `catalog.manage` | `MarketplaceController.update` |  |
+| POST | `/admin/marketplace/listings/:id/delist` | `catalog.manage` | `MarketplaceController.delist` |  |
+| POST | `/admin/marketplace/listings/:id/pause` | `catalog.manage` | `MarketplaceController.pause` |  |
+| POST | `/admin/marketplace/listings/:id/resume` | `catalog.manage` | `MarketplaceController.resume` |  |
+| POST | `/admin/marketplace/product-references/apply` | `catalog.manage` | `ProductReferencesController.apply` | "Fill from shared listing?" accepted. |
+| GET | `/admin/marketplace/product-references/lookup` | `catalog.manage` | `ProductReferencesController.lookup` | Fires on the barcode field's blur — a REQUEST, refusable by 404: the form falls… |
+| POST | `/admin/marketplace/product-references/register` | `catalog.manage` | `ProductReferencesController.register` | The barcode had no match when looked up — register this tenant's own just-saved… |
+| POST | `/webhooks/marketplace/product-reference-sync` | **PUBLIC** | `MarketplaceWebhookController.productReferenceSync` |  |
+
+### [`measurements`](..\modules\measurements.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -339,21 +880,75 @@ never authorization.
 | DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` |  |
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
+| GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` | Based on the signed-in customer's saved measurements, the size this product's o… |
 
-### [`orders`](../modules/orders.md) (8)
+### [`metadata-forms`](..\modules\metadata-forms.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/metadata-forms/:entityType` | signed-in | `MetadataFormsController.get` | The defined form shape for one entity type, or null if none is defined |
+| PUT | `/admin/metadata-forms/:entityType` | `settings.metadata-forms.manage` | `MetadataFormsController.define` | Define (or replace) the form shape for one entity type |
+
+### [`notification-preferences`](..\modules\notification-preferences.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/notification-preferences` | signed-in | `NotificationPreferencesController.list` | My notification preferences, per channel and category |
+| PUT | `/notification-preferences` | signed-in | `NotificationPreferencesController.update` | Update one or more preference cells |
+
+### [`notify`](..\modules\notify.md) (16)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bulletins` | `hr.bulletins.view` | `BulletinsController.list` | Every active notice the caller's own org-tree membership reaches |
+| POST | `/admin/bulletins` | `hr.bulletins.publish` | `BulletinsController.publish` | Publish a notice, queuing the "new notice" ping through the existing notificati… |
+| GET | `/admin/bulletins/:id` | `hr.bulletins.view` | `BulletinsController.get` | One notice, if the caller is within its audience |
+| POST | `/admin/bulletins/:id/acknowledge` | `hr.bulletins.view` | `BulletinsController.acknowledge` | Record that the caller has read this notice — a second click is a no-op |
+| POST | `/admin/bulletins/:id/retract` | `hr.bulletins.publish` | `BulletinsController.retract` | Retract a notice — removes it from the active list, never deletes the row or it… |
+| POST | `/admin/notify/:id/decide` | `notify.send` | `NotifyController.decide` | Countersign or reject a pending broadcast — only the person it was routed to ma… |
+| GET | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.list` | Every configured escalation rule |
+| POST | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.create` | Watch a Task.sourceType for staleness and escalate up Position.reportsTo |
+| DELETE | `/admin/notify/escalation-rules/:id` | `notify.escalation.manage` | `EscalationRuleController.remove` | Stop watching this source type |
+| PUT | `/admin/notify/escalation-rules/:id` | `notify.escalation.manage` | `EscalationRuleController.update` | Update an escalation rule |
+| POST | `/admin/notify/meetings` | `notify.send` | `MeetingsController.create` | Call a meeting, materialising invitations from the resolved audience |
+| POST | `/admin/notify/meetings/:id/cancel` | `notify.send` | `MeetingsController.cancel` | Cancel a meeting — notifies every invitee, never deletes the record |
+| POST | `/admin/notify/meetings/:id/respond` | signed-in | `MeetingsController.respond` | Answer your own invitation to a meeting |
+| GET | `/admin/notify/meetings/:id/shortfall` | `notify.send` | `MeetingsController.shortfall` | Required invitees who have not yet answered |
+| POST | `/admin/notify/preview` | `notify.send` | `NotifyController.preview` | Resolve an audience and report whether it needs a countersignature, without sen… |
+| POST | `/admin/notify/send` | `notify.send` | `NotifyController.send` | Send an internal message, or submit it for countersignature if it is above the… |
+
+### [`onsitemessages`](..\modules\onsitemessages.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/onsite-messages` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.list` |  |
+| POST | `/admin/onsite-messages` | `onsitemessages.manage` | `OnsiteMessagesAdminController.create` |  |
+| DELETE | `/admin/onsite-messages/:id` | `onsitemessages.manage` | `OnsiteMessagesAdminController.remove` |  |
+| GET | `/admin/onsite-messages/:id` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.get` |  |
+| PATCH | `/admin/onsite-messages/:id` | `onsitemessages.manage` | `OnsiteMessagesAdminController.update` |  |
+| GET | `/admin/onsite-messages/newsletter-subscribers` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.subscribers` |  |
+| PATCH | `/admin/onsite-messages/newsletter-subscribers/:id/opt-out` | `onsitemessages.manage` | `OnsiteMessagesAdminController.optOutSubscriber` |  |
+| GET | `/admin/onsite-messages/newsletter-subscribers/export` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.exportSubscribers` | Every still-subscribed newsletter capture, for an email tool import |
+| GET | `/onsite-messages/active` | **PUBLIC** | `OnsiteMessagesController.active` |  |
+| POST | `/onsite-messages/newsletter` | **PUBLIC** | `OnsiteMessagesController.subscribe` |  |
+
+### [`orders`](..\modules\orders.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` | All orders, filterable by status |
 | GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` |  |
-| POST | `/admin/orders/:id/shipments` | `orders.manage` | `OrdersAdminController.addShipment` | Record a dispatch and its tracking number |
 | POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` | Move the order along; cancelling restores stock |
+| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` | An order's instalment plan, its schedule, and every payment received so far |
+| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` | Cancel an active plan — refunds or forfeits the deposit per the configured poli… |
+| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` | Mark an active plan defaulted — writes off the unpaid balance |
+| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` | Record one instalment payment against the plan |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` | Place the order in the current cart |
 | GET | `/orders/:number` | signed-in | `OrdersController.get` | One order, for its owner |
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (12)
+### [`organization`](..\modules\organization.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -366,11 +961,32 @@ never authorization.
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` | Register a child node — or re-activate and update one that already exists |
+| PATCH | `/organization/nodes/:nodeId/brand` | `organization.manage` | `OrganizationController.setNodeBrand` | Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPo… |
 | POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` | Issue a fresh replication credential for a child node — shown once, never retri… |
+| GET | `/organization/policy-quarantine` | `organization.view` | `OrganizationController.listPolicyQuarantine` | R9's quarantine — facts that applied but violate the BrandPolicy switch meant t… |
+| POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` | Mark a quarantined policy exception reviewed |
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
-### [`parties`](../modules/parties.md) (3)
+### [`orgstructure`](..\modules\orgstructure.md) (13)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/org-structure` | `org.structure.manage` | `OrgUnitController.create` | Create a unit — root if parentId is omitted |
+| GET | `/admin/org-structure/:id` | `org.structure.view` `org.structure.manage` | `OrgUnitController.get` | One unit |
+| POST | `/admin/org-structure/:id/close` | `org.structure.manage` | `OrgUnitController.close` | Close a unit — never deleted |
+| POST | `/admin/org-structure/:id/move` | `org.structure.manage` | `OrgUnitController.move` | Re-parent a unit, rewriting its whole subtree |
+| POST | `/admin/org-structure/:id/move/preview` | `org.structure.manage` | `OrgUnitController.previewMove` | What a move would touch, without writing anything |
+| PATCH | `/admin/org-structure/:id/rename` | `org.structure.manage` | `OrgUnitController.rename` | Rename a unit |
+| GET | `/admin/org-structure/:id/subtree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.subtree` | One unit and everything under it |
+| GET | `/admin/org-structure/:unitId/access` | `org.access.view` `org.access.grant` | `GrantController.accessOverUnit` | Who reaches this unit, by posting or by grant |
+| POST | `/admin/org-structure/:unitId/access` | `org.access.grant` | `GrantController.issue` | Issue a time-boxed access grant over this unit |
+| POST | `/admin/org-structure/:unitId/access/:grantId/revoke` | `org.access.grant` | `GrantController.revoke` | Revoke an active grant |
+| POST | `/admin/org-structure/:unitId/access/preview` | `org.access.grant` | `GrantController.previewIssue` | Which refusals a grant would hit, without writing anything |
+| GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` | The whole org tree |
+| GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` | Every configured unit type |
+
+### [`parties`](..\modules\parties.md) (3)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -378,7 +994,7 @@ never authorization.
 | GET | `/admin/parties/:id` | `parties.manage` | `PartiesController.get` | Get a party |
 | GET | `/admin/parties/search` | `parties.manage` | `PartiesController.search` | Typeahead search for the counterparty picker |
 
-### [`payments`](../modules/payments.md) (6)
+### [`payments`](..\modules\payments.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -386,18 +1002,59 @@ never authorization.
 | POST | `/admin/payments/:paymentId/refund` | `payments.approve` | `PaymentsAdminController.refund` | Mark a paid payment refunded (full or partial) |
 | GET | `/admin/payments/awaiting-approval` | `payments.approve` | `PaymentsAdminController.awaitingApproval` | Payments waiting on a human decision |
 | POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` | Upload a bank-transfer receipt for staff to approve |
+| POST | `/payments/:paymentId/redeem-gift-card` | **PUBLIC** | `PaymentsController.redeemGiftCard` | Redeem a third-party gift card code against a payment awaiting one (Giftkarta e… |
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`pos`](../modules/pos.md) (15)
+### [`payroll`](..\modules\payroll.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/payroll/compensation` | `payroll.view` | `PayrollController.listCompensation` | Every employee's current compensation rate. |
+| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` | One employee's current rate and rate history. |
+| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` | Set a new effective-dated compensation rate, closing the previous one. |
+| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` | Preview the gross salary calculation for a period, no write. |
+| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` | The caller's own current rate and rate history. |
+| GET | `/admin/payroll/leave` | `payroll.view` | `LeaveController.all` | Every leave request across every employee, newest first. |
+| PATCH | `/admin/payroll/leave/:requestId/decide` | `payroll.manage` | `LeaveController.decide` | Approve or reject a pending leave request. |
+| GET | `/admin/payroll/leave/:userId` | `payroll.view` | `LeaveController.forUser` | One employee's leave balances and request history. |
+| GET | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.mine` | The caller's own leave balances and request history. |
+| POST | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.request` | File a leave request for the caller. |
+| POST | `/admin/payroll/leave/me/:requestId/cancel` | `payroll.view_own` | `LeaveController.cancelOwn` | Cancel the caller's own pending leave request. |
+| GET | `/admin/payroll/leave/types` | `payroll.view_own` | `LeaveController.types` | Every active leave type — needed by anyone filing a request. |
+| GET | `/admin/payroll/runs` | `payroll.view` | `PayRunController.list` | Every pay run, most recent period first. |
+| POST | `/admin/payroll/runs` | `payroll.manage` | `PayRunController.build` | Build a new DRAFT pay run for a period. |
+| GET | `/admin/payroll/runs/:id` | `payroll.view` | `PayRunController.get` | One pay run with every line. |
+| POST | `/admin/payroll/runs/:id/adjustments` | `payroll.manage` | `PayRunController.postAdjustment` | Post an overpayment/underpayment/correction adjustment against a POSTED pay run. |
+| PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` | DRAFT → APPROVED. |
+| PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` | APPROVED → POSTED. Fires payroll.run_posted. |
+| PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` | Recompute every line on a still-DRAFT pay run, replacing them. |
+
+### [`planning`](..\modules\planning.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/planning/liquidity-forecast` | `planning.propagation.view` | `PlanningController.liquidityForecast` | Current cash plus the next scheduled AR/AP/payroll events |
+| GET | `/admin/planning/online-stock/:variantId` | `planning.propagation.view` | `PlanningController.onlineStockFor` | Online stock for a variant — the sum of every branch allotment |
+| POST | `/admin/planning/orders/:orderId/assign-branch` | `inventory.manage` | `PlanningController.assignFulfillingBranch` | Reassign which branch fulfils an order — reverses and re-commits stock through… |
+| POST | `/admin/planning/propagate` | `planning.propagation.view` | `PlanningController.propagate` | Run a shock scenario over the dependency graph and rank recovery actions |
+| GET | `/admin/planning/suppliers/:id/lead-time-distribution` | `planning.propagation.view` | `PlanningController.leadTimeDistribution` | A supplier's own lead-time distribution, backfilled from goods-receipt history |
+| GET | `/admin/planning/suppliers/:id/scorecard` | `planning.propagation.view` | `PlanningController.supplierScorecard` | On-time-in-full rate and price variance, computed from purchase-order history |
+
+### [`pos`](..\modules\pos.md) (20)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/pos/dashboard` | `pos.dashboard.view` | `PosDashboardController.summary` | The till's own daily-sales/customers/low-stock snapshot, scoped to one terminal… |
+| GET | `/admin/pos/products/recipes` | `pos.operate` | `PosCatalogController.recipes` | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line |
 | GET | `/admin/pos/products/search` | `pos.operate` | `PosCatalogController.search` | sku/barcode/name lookup, scoped to one terminal’s location stock |
 | GET | `/admin/pos/receipts/:orderId` | `pos.operate` | `PosReceiptsController.get` | The receipt for a POS sale, for on-screen preview or a reprint |
 | POST | `/admin/pos/receipts/:orderId/print` | `pos.operate` | `PosReceiptsController.print` | Marks the receipt printed and returns its data — call right before window.print… |
 | POST | `/admin/pos/shifts/:id/cash-movements` | `pos.operate` | `PosShiftsController.recordCashMovement` | Record cash in/out, a drop, or a paid-out against an open shift |
 | POST | `/admin/pos/shifts/:id/close` | `pos.operate` | `PosShiftsController.closeShift` | Close a shift with the cashier's own physical cash count |
+| GET | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.listOpen` | List this shift's still-open parked sales (tabs/tables) |
+| POST | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.park` | Park a TAB/TABLE sale in progress — a COUNTER sale is refused |
+| POST | `/admin/pos/shifts/:id/parked-sales/:parkedSaleId/retrieve` | `pos.operate` | `PosParkedSalesController.retrieve` | Retrieve a parked sale — refused if it was already retrieved |
 | POST | `/admin/pos/shifts/:id/sales` | `pos.operate` | `PosSalesController.sell` | Ring up a sale against an open shift — posts stock and a paid cash Order |
 | GET | `/admin/pos/shifts/:id/x-report` | `pos.operate` | `PosShiftsController.xReport` | A mid-shift cash snapshot — never closes or mutates the shift |
 | GET | `/admin/pos/shifts/:id/z-report` | `pos.operate` | `PosShiftsController.zReport` | The end-of-shift cash figure — only once the shift is closed |
@@ -409,7 +1066,19 @@ never authorization.
 | POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` | Issue a fresh device credential for this terminal — shown once, never retrievab… |
 | POST | `/admin/pos/terminals/:id/suspend` | `pos.manage` | `PosTerminalsController.suspend` | Suspend a terminal — never deletes it, its history stays put |
 
-### [`production`](../modules/production.md) (9)
+### [`pricing`](..\modules\pricing.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/pricing/price-lists` | `pricing.price-lists.manage` | `PricingController.findAll` | List every price list with its entries and assignments |
+| POST | `/admin/pricing/price-lists` | `pricing.price-lists.manage` | `PricingController.create` | Create a price list — an entry below the variant's base price requires pricing.… |
+| PATCH | `/admin/pricing/price-lists/:id` | `pricing.price-lists.manage` | `PricingController.update` | Update a price list's entries — same margin-decision gate as create |
+| POST | `/admin/pricing/price-lists/:id/assignments` | `pricing.assignments.manage` | `PricingController.assign` | Assign a price list to a customer or a customer tag |
+| DELETE | `/admin/pricing/price-lists/assignments/:assignmentId` | `pricing.assignments.manage` | `PricingController.unassign` | Remove a price-list assignment |
+| POST | `/admin/pricing/price-lists/preview` | `pricing.price-lists.manage` | `PricingController.preview` | Preview one variant's resolved price for a customer at a quantity — a pure read… |
+| POST | `/admin/pricing/price-lists/preview/batch` | `pricing.price-lists.manage` | `PricingController.previewBatch` | Preview several variants at once — the same batched path checkout itself uses |
+
+### [`production`](..\modules\production.md) (9)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -423,7 +1092,24 @@ never authorization.
 | POST | `/admin/production/work-orders/:id/complete` | `production.manage` | `WorkOrdersController.complete` | Complete a work order, crediting finished stock |
 | POST | `/admin/production/work-orders/:id/release` | `production.manage` | `WorkOrdersController.release` | Release a work order, consuming its bill of materials |
 
-### [`purchasing`](../modules/purchasing.md) (17)
+### [`promotions`](..\modules\promotions.md) (12)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/promotions/discounts` | `promotions.view` | `PromotionsController.listDiscounts` | List discounts, paginated |
+| POST | `/admin/promotions/discounts` | `promotions.manage` | `PromotionsController.createDiscount` | Create a discount |
+| DELETE | `/admin/promotions/discounts/:id` | `promotions.manage` | `PromotionsController.deleteDiscount` | Delete a discount |
+| GET | `/admin/promotions/discounts/:id` | `promotions.view` | `PromotionsController.getDiscount` | One discount |
+| PATCH | `/admin/promotions/discounts/:id` | `promotions.manage` | `PromotionsController.updateDiscount` | Edit a discount |
+| POST | `/admin/promotions/discounts/preview` | `promotions.manage` | `PromotionsController.previewDiscount` | What this draft discount would have done to the last 30 days of real orders |
+| GET | `/admin/promotions/promo-codes` | `promotions.view` | `PromotionsController.listPromoCodes` | List promo codes, paginated |
+| POST | `/admin/promotions/promo-codes` | `promotions.manage` | `PromotionsController.createPromoCode` | Create one promo code |
+| DELETE | `/admin/promotions/promo-codes/:id` | `promotions.manage` | `PromotionsController.deletePromoCode` | Delete a promo code |
+| PATCH | `/admin/promotions/promo-codes/:id` | `promotions.manage` | `PromotionsController.updatePromoCode` | Edit, activate or deactivate a promo code |
+| POST | `/admin/promotions/promo-codes/bulk-generate` | `promotions.manage` | `PromotionsController.bulkGeneratePromoCodes` | Generate N codes with a shared prefix for a campaign |
+| POST | `/promotions/preview` | **PUBLIC** | `PromotionsPublicController.preview` | Preview what discounts/a promo code would do to this cart |
+
+### [`purchasing`](..\modules\purchasing.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -432,6 +1118,13 @@ never authorization.
 | GET | `/admin/purchase-orders/:id` | `purchasing.manage` | `PurchaseOrderAdminController.findOne` | Get a purchase order |
 | POST | `/admin/purchase-orders/:id/receive` | `purchasing.manage` | `PurchaseOrderAdminController.receiveGoods` | Receive goods against a purchase order |
 | POST | `/admin/purchase-orders/:id/send` | `purchasing.manage` | `PurchaseOrderAdminController.markSent` | Mark a purchase order as sent |
+| GET | `/admin/requisitions` | `purchasing.requisitions.approve` | `RequisitionController.findAll` | List requisitions — the review queue for whoever can approve them |
+| POST | `/admin/requisitions` | `purchasing.requisitions.create` | `RequisitionController.create` | Request a purchase — any staff member, not necessarily one who can raise a PO |
+| GET | `/admin/requisitions/:id` | `purchasing.requisitions.create` | `RequisitionController.findOne` | Get a requisition |
+| POST | `/admin/requisitions/:id/approve` | `purchasing.requisitions.approve` | `RequisitionController.approve` | Approve a requisition — never its own requester |
+| POST | `/admin/requisitions/:id/convert` | `purchasing.manage` | `RequisitionController.convert` | Convert an approved requisition into a real purchase order — a separate, explic… |
+| POST | `/admin/requisitions/:id/reject` | `purchasing.requisitions.approve` | `RequisitionController.reject` | Reject a requisition — terminal; the requester raises a new one, never reopens… |
+| GET | `/admin/requisitions/mine` | `purchasing.requisitions.create` | `RequisitionController.findMine` | The current user's own requisitions |
 | GET | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.findAll` | List supplier bills, optionally filtered by supplier |
 | POST | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.create` | Raise a bill against a supplier — distinct from the goods receipt it may relate… |
 | GET | `/admin/supplier-bills/:id` | `purchasing.manage` | `SupplierBillAdminController.findOne` | Get a supplier bill |
@@ -445,23 +1138,116 @@ never authorization.
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
 
-### [`reports`](../modules/reports.md) (8)
+### [`rag`](..\modules\rag.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| POST | `/admin/rag/ask` | `rag.query` | `RagAdminController.ask` | Retrieval + a generated, cited answer — an internal staff read, no draft-confir… |
+| POST | `/admin/rag/query` | `rag.query` | `RagAdminController.query` | Dry run: the retrieved chunks for a query, with no generation step (the doc's o… |
+| GET | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.listSources` | The ingestion queue: every DocumentSource and its status — constrained to corpo… |
+| POST | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.uploadSource` | Upload a PDF into a corpus — queued for the next ingestion pass |
+| DELETE | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.deleteSource` | Remove a source and its chunks — never indexed again unless re-uploaded |
+| GET | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.getSource` | One DocumentSource, with its chunk count |
+| GET | `/admin/rag/sources/:id/file` | `rag.ingest.manage` | `RagAdminController.downloadSourceFile` | Download the original stored PDF — the only authenticated path to its bytes (H2… |
+| POST | `/admin/rag/sources/:id/file` | `rag.ingest.manage` | `RagAdminController.replaceSourceFile` | Replace a source's file — corrects a bad upload without a delete-then-recreate… |
+| POST | `/admin/rag/sources/:id/ingest-now` | `rag.ingest.manage` | `RagAdminController.ingestNow` | Queue immediate, in-background ingestion for one QUEUED source, without waiting… |
+| POST | `/admin/rag/sources/:id/retry` | `rag.ingest.manage` | `RagAdminController.retry` | Re-queue a FAILED source, or one stuck in-flight past the staleness threshold |
+| GET | `/admin/rag/status` | `rag.ingest.manage` `rag.query` | `RagAdminController.status` | Whether retrieval/generation are available — the absent-AiProvider case the que… |
+
+### [`receivables`](..\modules\receivables.md) (20)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/credit-notes` | `finance.view` | `CreditNotesController.findAll` | List credit notes |
+| POST | `/admin/credit-notes` | `finance.credit-notes.create` | `CreditNotesController.create` | Draft a credit note against a customer, optionally citing the order it credits |
+| GET | `/admin/credit-notes/:id` | `finance.view` | `CreditNotesController.findOne` | Get a credit note |
+| POST | `/admin/credit-notes/:id/apply` | `finance.credit-notes.create` | `CreditNotesController.apply` | Apply an ISSUED credit note to a different open order than the one it originall… |
+| POST | `/admin/credit-notes/:id/approve` | `finance.credit-notes.approve` | `CreditNotesController.approve` | Approve a credit note above the approval threshold — never its own creator |
+| POST | `/admin/credit-notes/:id/issue` | `finance.credit-notes.create` | `CreditNotesController.issue` | Issue a DRAFT credit note — posts the ledger entry; above the threshold, requir… |
+| POST | `/admin/credit-notes/:id/void` | `finance.credit-notes.approve` | `CreditNotesController.voidNote` | Void a credit note — reverses its posted ledger entry, never deletes the record |
+| GET | `/admin/credit-terms` | `finance.view` | `CreditTermsController.findAll` | List customers with a credit term set — optionally only those on hold |
+| GET | `/admin/credit-terms/:customerId` | `finance.view` | `CreditTermsController.findOne` | A customer's own credit term, or null if none is set |
+| PUT | `/admin/credit-terms/:customerId` | `finance.credit-terms.manage` | `CreditTermsController.set` | Set a customer's credit limit, payment terms, and hold |
+| POST | `/admin/credit-terms/check` | `finance.view` | `CreditTermsController.check` | Preview whether an order of this amount would clear the customer's credit limit… |
+| GET | `/admin/debit-notes` | `finance.view` | `DebitNotesController.findAll` | List debit notes |
+| POST | `/admin/debit-notes` | `finance.debit-notes.manage` | `DebitNotesController.create` | Draft a debit note against a supplier, optionally citing the bill it corrects |
+| GET | `/admin/debit-notes/:id` | `finance.view` | `DebitNotesController.findOne` | Get a debit note |
+| POST | `/admin/debit-notes/:id/issue` | `finance.debit-notes.manage` | `DebitNotesController.issue` | Issue a DRAFT debit note — posts the ledger entry |
+| POST | `/admin/debit-notes/:id/void` | `finance.debit-notes.manage` | `DebitNotesController.voidNote` | Void a debit note — reverses its posted ledger entry |
+| GET | `/admin/dunning/events` | `finance.view` | `DunningController.listEvents` | Dunning steps already sent for one order |
+| GET | `/admin/dunning/policy` | `finance.view` | `DunningController.getPolicy` | The current dunning policy — days-overdue steps and which template fires at each |
+| PUT | `/admin/dunning/policy` | `finance.credit-terms.manage` | `DunningController.setPolicy` | Replace the dunning policy's steps |
+| GET | `/admin/statements/:customerId` | `finance.view` | `StatementsController.statement` | A customer's statement of account over a period — invoices, payments and credit… |
+
+### [`recommendations`](..\modules\recommendations.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.list` | WO-9.6 — every cross-sell for this product, manual and algorithmic alike |
+| POST | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.add` | WO-9.6 — add (or promote to) a manual cross-sell — "a merchandiser's curated pa… |
+| DELETE | `/admin/catalog/products/:id/cross-sells/:relatedProductId` | `catalog.manage` | `CrossSellAdminController.remove` | WO-9.6 — remove a cross-sell (manual or algorithmic) |
+| PATCH | `/admin/catalog/products/:id/cross-sells/order` | `catalog.manage` | `CrossSellAdminController.reorder` | WO-9.6 — reorder this product's manual cross-sells |
+| GET | `/catalog/products/:slug/frequently-bought-together` | **PUBLIC** | `RecommendationsController.frequentlyBoughtTogether` | WO-9.6 — co-occurrence only, for the bundle widget |
+| GET | `/catalog/products/:slug/related` | **PUBLIC** | `RecommendationsController.related` | WO-9.6 — related products / "complete the look" (manual > co-occurrence > embed… |
+| GET | `/catalog/recommendations/personalized` | **PUBLIC** | `PersonalizedRecommendationsController.personalized` | WO-9.6 — "personalised homepage from browse... history", by anonymous session id |
+
+### [`reports`](..\modules\reports.md) (12)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/reports/export/expense-register` | `reports.view` | `ReportsController.exportExpenseRegister` | CSV: every expense in the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/orders` | `reports.view` | `ReportsController.exportOrders` | CSV: one row per order placed in the date range |
+| GET | `/admin/reports/export/payables` | `reports.view` | `ReportsController.exportPayables` | CSV: outstanding supplier balances, aged (WO-4.6, 04-finance.md) |
+| GET | `/admin/reports/export/profit-and-loss` | `reports.view` | `ReportsController.exportProfitAndLoss` | CSV: P&L for the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/purchases-by-supplier` | `reports.view` | `ReportsController.exportPurchasesBySupplier` | CSV: purchases by supplier |
 | GET | `/admin/reports/export/sales-by-day` | `reports.view` | `ReportsController.exportSalesByDay` | CSV: order count and revenue per day in the date range |
+| GET | `/admin/reports/export/sales-register` | `reports.view` | `ReportsController.exportSalesRegister` | CSV: every delivered order with revenue and COGS (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/slow-movers` | `reports.view` | `ReportsController.exportSlowMovers` | CSV: slow movers report |
 | GET | `/admin/reports/export/stitching-bookings` | `reports.view` | `ReportsController.exportStitchingBookings` | CSV: one row per bring-your-own-fabric booking in the date range |
 | GET | `/admin/reports/export/stock` | `reports.view` | `ReportsController.exportStock` | CSV: current stock, one row per product variant |
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
 
-### [`settings`](../modules/settings.md) (6)
+### [`resilience`](..\modules\resilience.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/resilience/circuits` | `platform.resilience.view` | `ResilienceAdminController.list` | Every circuit breaker that has taken a call or been configured, with its live s… |
+| POST | `/admin/resilience/circuits/:key/configure` | `platform.resilience.tune` | `ResilienceAdminController.configure` | Change a circuit's failure threshold and/or cooldown window |
+| POST | `/admin/resilience/circuits/:key/simulate` | `platform.resilience.tune` | `ResilienceAdminController.simulate` |  |
+| GET | `/admin/resilience/dr` | `platform.resilience.view` | `ResilienceAdminController.dr` | RPO/RTO as documented in DEPLOYMENT.md §9 — stated facts, not live data |
+| GET | `/admin/resilience/slo` | `platform.resilience.view` | `ResilienceAdminController.slo` | Trailing-30-day success rate, p95 latency and remaining error budget for checko… |
+| GET | `/admin/resilience/slo-paths` | `platform.resilience.view` | `ResilienceAdminController.paths` | The three named critical paths this dashboard tracks, for the frontend to rende… |
+
+### [`reviews`](..\modules\reviews.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/reviews` | `reviews.moderate` | `ReviewsController.list` | List reviews for moderation |
+| PATCH | `/admin/reviews/:id` | `reviews.moderate` | `ReviewsController.moderate` | Publish, reject, or reply to a review |
+| GET | `/products/:productId/reviews` | **PUBLIC** | `ReviewsPublicController.listForProduct` | A product's published reviews |
+| GET | `/products/:productId/reviews/summary` | **PUBLIC** | `ReviewsPublicController.summary` | WO-9.9 — the cached AI review summary, or null until enough reviews exist |
+| POST | `/reviews` | signed-in | `ReviewsPublicController.create` | Submit a review — goes to PENDING, moderated before it shows |
+| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` | Mark a review helpful |
+| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` | My own reviews, any status |
+
+### [`search`](..\modules\search.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/search/synonyms` | `search.view` `search.manage` | `SearchAdminController.listSynonyms` |  |
+| POST | `/admin/search/synonyms` | `search.manage` | `SearchAdminController.createSynonym` |  |
+| DELETE | `/admin/search/synonyms/:id` | `search.manage` | `SearchAdminController.deleteSynonym` |  |
+| GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` |  |
+| GET | `/search` | **PUBLIC** | `SearchController.search` |  |
+| POST | `/search/by-image` | **PUBLIC** | `SearchController.searchByImage` | WO-9.5 — upload a photo, find the nearest products |
+
+### [`settings`](..\modules\settings.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/settings/ai` | `ai.view` `ai.manage` | `SettingsAdminController.getAi` | Which AI providers/capabilities are on, this month's spend, and the budget cap |
+| PUT | `/admin/settings/ai` | `ai.manage` | `SettingsAdminController.updateAi` | Set the monthly AI budget cap and the USD-to-PKR rate used to estimate cost |
 | GET | `/admin/settings/audit-log` | `audit.view` | `SettingsAdminController.listAuditLog` | The audit trail, newest first, filterable by entity/actor/date |
 | GET | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.getDocuments` | Document branding and number prefixes |
 | PUT | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.updateDocuments` | Set the document logo and number prefixes |
@@ -469,7 +1255,20 @@ never authorization.
 | PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` | Turn WebP conversion on or off for new uploads |
 | GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` | The full permission catalog, grouped by category |
 
-### [`stitching`](../modules/stitching.md) (21)
+### [`settlements`](..\modules\settlements.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/settlements/batches` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listBatches` | Every settlement batch, optionally filtered by status |
+| POST | `/admin/settlements/batches` | `finance.settlement.reconcile` | `SettlementsController.createExpectedBatch` | Record which of our own payments a settlement batch is expected to cover |
+| GET | `/admin/settlements/batches/:id` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.getBatch` | One batch's detail, with every Payment line it covers |
+| POST | `/admin/settlements/batches/:id/approve-writeoff` | `finance.settlement.approve_writeoff` | `SettlementsController.approveWriteoff` | Approve a requested write-off — the checker half, never the same person as the… |
+| POST | `/admin/settlements/batches/:id/reconcile` | `finance.settlement.reconcile` | `SettlementsController.reconcile` | Ask the batch's own connector to confirm what actually settled |
+| POST | `/admin/settlements/batches/:id/request-writeoff` | `finance.settlement.reconcile` | `SettlementsController.requestWriteoff` | Request writing off a SHORT batch — the maker half of the maker-checker pair |
+| POST | `/admin/settlements/batches/:id/write-off` | `finance.settlement.reconcile` | `SettlementsController.writeOff` | Post the write-off — refused above the configured threshold without a prior, di… |
+| GET | `/admin/settlements/providers` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listProviders` | Every registered settlement provider |
+
+### [`stitching`](..\modules\stitching.md) (21)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -495,7 +1294,44 @@ never authorization.
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
 
-### [`tax`](../modules/tax.md) (8)
+### [`support`](..\modules\support.md) (16)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/support/customer-tickets` | signed-in | `CustomerSupportStaffController.list` | Assigned to you, or every customer ticket with support.tickets.view_all |
+| GET | `/admin/support/customer-tickets/:id` | signed-in | `CustomerSupportStaffController.get` | One customer ticket, with its full reply thread |
+| POST | `/admin/support/customer-tickets/:id/assign` | `support.tickets.reassign` | `CustomerSupportStaffController.assign` | Assign or reassign a customer ticket to someone who holds support.tickets.handle |
+| POST | `/admin/support/customer-tickets/:id/messages` | signed-in | `CustomerSupportStaffController.reply` | Reply as staff — notifies the customer through their own contact channel |
+| POST | `/admin/support/customer-tickets/:id/transition` | signed-in | `CustomerSupportStaffController.transition` | Move a customer ticket forward, or reopen a resolved one |
+| GET | `/admin/support/tickets` | signed-in | `SupportTicketsController.list` | Tickets you raised or were assigned — or every ticket, with support.tickets.vie… |
+| POST | `/admin/support/tickets` | `support.tickets.raise` | `SupportTicketsController.create` | Raise a support ticket |
+| GET | `/admin/support/tickets/:id` | signed-in | `SupportTicketsController.get` | One ticket, with its full reply thread |
+| POST | `/admin/support/tickets/:id/assign` | `support.tickets.reassign` | `SupportTicketsController.assign` | Assign or reassign a ticket to someone who holds support.tickets.handle |
+| POST | `/admin/support/tickets/:id/messages` | signed-in | `SupportTicketsController.reply` | Reply on a ticket you can see |
+| POST | `/admin/support/tickets/:id/transition` | signed-in | `SupportTicketsController.transition` | Move a ticket forward, or reopen a resolved one |
+| POST | `/support/tickets` | signed-in | `CustomerSupportController.raise` | Raise a support ticket |
+| GET | `/support/tickets/:id` | signed-in | `CustomerSupportController.get` | One of your own tickets, with its full reply thread |
+| POST | `/support/tickets/:id/messages` | signed-in | `CustomerSupportController.reply` | Reply on your own ticket |
+| POST | `/support/tickets/:id/transition` | signed-in | `CustomerSupportController.transition` | Reopen a resolved ticket — every other status change is staff-side |
+| GET | `/support/tickets/mine` | signed-in | `CustomerSupportController.mine` | Every ticket you raised |
+
+### [`tasks`](..\modules\tasks.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/tasks` | `tasks.assign` | `TasksController.create` | Create a task at a post |
+| GET | `/admin/tasks/:id` | `tasks.view` | `TasksController.get` | One task, with its full transition history |
+| POST | `/admin/tasks/:id/assign` | `tasks.assign` | `TasksController.assign` | Assign a task to a person, or clear it (null) to unclaim |
+| POST | `/admin/tasks/:id/close` | `tasks.close` | `TasksController.close` | Mark a task DONE or CANCELLED |
+| POST | `/admin/tasks/:id/transition` | `tasks.assign` | `TasksController.transition` | Move a task between OPEN/IN_PROGRESS/BLOCKED, or change its stage. Use /close t… |
+| GET | `/admin/tasks/my` | signed-in | `TasksController.myTasks` | Tasks currently assigned to me |
+| GET | `/admin/tasks/post/:positionId` | `tasks.view` | `TasksController.postQueue` | Every task at a post — the post queue |
+| GET | `/admin/tasks/reports/:positionId/unclaimed` | `tasks.view` | `TasksController.unclaimedForReports` | Unclaimed open tasks at every post reporting to this one — the leaver-handling… |
+| GET | `/admin/tasks/stages` | `tasks.view` `tasks.admin` | `TaskStagesController.list` | Every workflow stage, in order |
+| POST | `/admin/tasks/stages` | `tasks.admin` | `TaskStagesController.create` | Add a stage |
+| POST | `/admin/tasks/stages/:id/reorder` | `tasks.admin` | `TaskStagesController.reorder` | Reorder a stage — does not rewrite the history of tasks that already moved thro… |
+
+### [`tax`](..\modules\tax.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -508,19 +1344,20 @@ never authorization.
 | GET | `/admin/tax/settings` | `tax.manage` | `TaxController.getSettings` | tax.enabled, pricing mode and default class |
 | PUT | `/admin/tax/settings` | `tax.manage` | `TaxController.updateSettings` | Update tax.enabled, pricing mode and/or default class |
 
-### [`tracking`](../modules/tracking.md) (1)
+### [`tracking`](..\modules\tracking.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | POST | `/track/event` | **PUBLIC** | `TrackingController.track` | Record one page_view / add_to_cart / checkout_started event |
 
-### [`tradingpartners`](../modules/tradingpartners.md) (18)
+### [`tradingpartners`](..\modules\tradingpartners.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/invoices` | `orders.manage` | `InvoicesController.findAll` | List invoices issued to trading partners |
 | POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` | Issue an invoice — auto-pushed to the trading partner immediately |
 | GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` | Get an invoice |
+| GET | `/admin/invoices/overdue-summary` | `orders.manage` | `InvoicesController.overdueSummary` | Count, total and oldest due date of ISSUED invoices past their due date |
 | GET | `/admin/offers` | `orders.manage` | `OffersController.findAll` | List offers broadcast to trading partners |
 | POST | `/admin/offers` | `orders.manage` | `OffersController.publish` | Publish an offer — broadcast to every connected CUSTOMER/BOTH trading partner |
 | GET | `/admin/quotes` | `orders.manage` | `QuotesController.findAll` | List quotes sent to trading partners |
@@ -535,9 +1372,10 @@ never authorization.
 | POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` | Store the key they gave us, for calling their API |
 | POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` | Issue a fresh key for them to call us with — shown once, never retrievable again |
 | POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` | "They accept" — the second half of the first-connection handshake, starts the r… |
+| POST | `/trading-partners/facts` | **PUBLIC** | `TradingPartnerPortalController.submitFact` | Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, app… |
 | GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` |  |
 
-### [`transfers`](../modules/transfers.md) (5)
+### [`transfers`](..\modules\transfers.md) (5)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -547,7 +1385,7 @@ never authorization.
 | POST | `/admin/transfers/:id/cancel` | `transfers.manage` | `TransfersController.cancel` | Cancel a transfer still in transit — returns its stock to the source |
 | POST | `/admin/transfers/:id/receive` | `transfers.manage` | `TransfersController.receive` | Receive a transfer — moves stock from in-transit into the destination; a short… |
 
-### [`users`](../modules/users.md) (8)
+### [`users`](..\modules\users.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -560,7 +1398,42 @@ never authorization.
 | DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` | Remove a Role from this user |
 | POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` | Assign a custom Role to this user (owner's request — a user may hold several) |
 
+### [`wallet`](..\modules\wallet.md) (17)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/merchant-payables/:id` | `finance.view` | `MerchantPayableController.findOne` | One merchant payable |
+| POST | `/admin/merchant-payables/:id/dispute` | `finance.merchant-payables.dispute` | `MerchantPayableController.dispute` | Pull one payable from the next payout run, with a reason |
+| POST | `/admin/merchant-payables/:id/resolve-dispute` | `finance.merchant-payables.dispute` | `MerchantPayableController.resolveDispute` | Resolve a disputed payable — never its own disputer |
+| GET | `/admin/merchant-payables/organizations/:organizationId` | `finance.view` | `MerchantPayableController.findForMerchant` | A merchant's own payables — every orderId, gross/fee/net, status |
+| GET | `/admin/merchant-payables/organizations/:organizationId/payout-preview` | `finance.view` | `MerchantPayableController.preview` | Dry run — what the next payout run would actually pay, with no write |
+| POST | `/admin/merchant-payables/organizations/:organizationId/process-payout` | `finance.manage` | `MerchantPayableController.processPayout` | Pay every SCHEDULED payable for this merchant — a real bank transfer batch, nev… |
+| POST | `/admin/merchant-payables/organizations/:organizationId/schedule-payout` | `finance.manage` | `MerchantPayableController.schedule` | Schedule OPEN payables into the next payout run — verified merchants immediatel… |
+| POST | `/admin/wallet/accounts/:accountId/adjustments` | `finance.wallets.adjust` | `WalletAdminController.adjust` | Issue a manual wallet correction — auto-committed below threshold, otherwise op… |
+| GET | `/admin/wallet/accounts/:accountId/ledger` | `finance.view` | `WalletAdminController.ledger` | A wallet account's balance and full ledger |
+| POST | `/admin/wallet/accounts/:accountId/status` | `finance.wallets.adjust.approve` | `WalletAdminController.setStatus` | Freeze, close or reactivate a wallet — a higher bar than a routine adjustment |
+| POST | `/admin/wallet/adjustment-requests/:requestId/decide` | `finance.wallets.adjust.approve` | `WalletAdminController.decideAdjustment` | Approve or reject an above-threshold adjustment — never its own requester |
+| GET | `/admin/wallet/customers/:customerId` | `finance.view` | `WalletAdminController.findAccount` | A customer's own wallet account — the id a staff screen starts from |
+| POST | `/admin/wallet/customers/:customerId/refund/purchase` | `finance.wallets.adjust` | `WalletAdminController.refundPurchase` | Refund an unredeemed wallet purchase |
+| POST | `/admin/wallet/orders/:orderId/refund/redeemed` | `finance.wallets.adjust` | `WalletAdminController.refundRedeemedOrder` | Refund an order already redeemed from a customer's wallet — corrects the mercha… |
+| GET | `/wallet` | signed-in | `WalletAccountController.balance` | My wallet balance |
+| GET | `/wallet/ledger` | signed-in | `WalletAccountController.ledger` | My wallet history |
+| POST | `/wallet/purchase` | signed-in | `WalletAccountController.purchase` | Buy wallet credit — settles into an existing Payment, never a new tender of its… |
+
+### [`wishlist`](..\modules\wishlist.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/wishlist/out-of-stock-report` | `analytics.view` | `WishlistAdminController.report` | Wishlisted products that are currently out of stock, most-wanted first |
+| GET | `/back-in-stock` | signed-in | `WishlistController.myAlerts` | My back-in-stock alerts |
+| POST | `/back-in-stock` | signed-in | `WishlistController.requestAlert` | Ask to be notified when a variant is back in stock |
+| DELETE | `/back-in-stock/:variantId` | signed-in | `WishlistController.cancelAlert` | Cancel a back-in-stock alert |
+| GET | `/wishlist` | signed-in | `WishlistController.list` | My saved items |
+| POST | `/wishlist` | signed-in | `WishlistController.add` | Save an item |
+| DELETE | `/wishlist/:id` | signed-in | `WishlistController.remove` | Remove a saved item |
+| POST | `/wishlist/migrate` | signed-in | `WishlistController.migrate` | Migrate a localStorage wishlist on first sign-in |
+
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

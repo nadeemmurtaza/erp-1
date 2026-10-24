@@ -5,7 +5,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { EmailInboxService } from '../src/modules/crm/email-inbox/email-inbox.service';
+import { EmailInboxService } from '../src/modules/customers/crm/email-inbox/email-inbox.service';
 
 /**
  * The Support Inbox: what the mailbox poller writes when it pulls a reply

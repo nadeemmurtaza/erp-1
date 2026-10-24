@@ -383,7 +383,11 @@ describe('Catalog (e2e)', () => {
 
       expect(response.body.alt).toBe('White cotton kurta, front view, on a hanger');
 
-      const stored = await prisma.productImage.findUniqueOrThrow({ where: { id: imageId } });
+      // WO-3.6: alt text is per locale now (ProductImageTranslation), never
+      // the legacy ProductImage.alt column — see the migration's own comment.
+      const stored = await prisma.productImageTranslation.findUniqueOrThrow({
+        where: { imageId_locale: { imageId, locale: 'en' } },
+      });
       expect(stored.alt).toBe('White cotton kurta, front view, on a hanger');
     });
 

@@ -3,12 +3,12 @@
 
 # Files — mobile
 
-All 42 tracked files in `apps/mobile`, by directory.
+All 50 tracked files in `apps/mobile`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `apps/mobile` (6)
+### `apps/mobile` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -17,23 +17,29 @@ All 42 tracked files in `apps/mobile`, by directory.
 | `jest.setup.js` | script | 34 | The native modules the app talks to have no implementation under Jest, and |
 | `metro.config.js` | script | 29 | Metro, taught about the monorepo. |
 | `package.json` | json | 53 |  |
+| `README.md` | doc | 36 |  |
 | `tsconfig.json` | json | 21 |  |
 
-### `apps/mobile/app` (4)
+### `apps/mobile/app` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `_layout.tsx` | react | 83 |  |
+| `_layout.tsx` | react | 90 |  |
 | `checkout.tsx` | react | 332 |  |
+| `credit.tsx` | react | 117 |  |
 | `login.tsx` | react | 74 |  |
+| `loyalty.tsx` | react | 179 |  |
+| `notifications.tsx` | react | 102 |  |
 | `payment.tsx` | react | 103 |  |
+| `reviews.tsx` | react | 67 |  |
+| `wishlist.tsx` | react | 137 |  |
 
 ### `apps/mobile/app/(tabs)` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `_layout.tsx` | react | 64 |  |
-| `account.tsx` | react | 155 |  |
+| `account.tsx` | react | 195 |  |
 | `cart.tsx` | react | 183 |  |
 | `index.tsx` | react | 170 |  |
 | `stitching.tsx` | react | 256 |  |
@@ -49,14 +55,21 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `[number].tsx` | react | 179 |  |
+| `[number].tsx` | react | 223 |  |
 | `index.tsx` | react | 61 |  |
 
 ### `apps/mobile/app/product` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `[slug].tsx` | react | 355 |  |
+| `[slug].tsx` | react | 528 |  |
+
+### `apps/mobile/app/returns` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `index.tsx` | react | 80 |  |
+| `new.tsx` | react | 163 |  |
 
 ### `apps/mobile/app/stitching` (1)
 
@@ -90,9 +103,9 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `client.ts` | module | 197 |  |
-| `resources.ts` | module | 244 |  |
-| `types.ts` | module | 264 |  |
+| `client.ts` | module | 212 |  |
+| `resources.ts` | module | 393 |  |
+| `types.ts` | module | 375 |  |
 
 ### `apps/mobile/src/api/__tests__` (1)
 
@@ -120,7 +133,7 @@ All 42 tracked files in `apps/mobile`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index.tsx` | react | 95 |  |
-| `messages.ts` | module | 343 |  |
+| `messages.ts` | module | 573 |  |
 
 ### `apps/mobile/src/i18n/__tests__` (1)
 
@@ -138,4 +151,4 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/mobile.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\mobile.md) · [← index home](..\README.md)

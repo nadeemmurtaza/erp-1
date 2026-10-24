@@ -10,9 +10,13 @@ import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { JsonLd } from '@/components/storefront/json-ld';
+import { OnsiteMessages } from '@/components/storefront/onsite-messages';
+import { PageEnter } from '@/components/ui/page-enter';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
+import { ThemeInitScript } from '@/components/ui/theme-init-script';
 import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
+import { getMenu } from '@/lib/api';
 import { routing } from '@/i18n/routing';
 import { SITE_URL } from '@/config/site';
 import { BRAND, intlTag } from '@newax/shared';
@@ -87,6 +91,47 @@ function organizationJsonLd() {
   };
 }
 
+/**
+ * `Store` — a `LocalBusiness` subtype, the specific one that actually
+ * describes a retail storefront rather than the generic organization
+ * identity above. WO-3.8, 03-variants-sku-seo.md.
+ */
+function storeJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: businessProfile.name,
+    url: SITE_URL,
+    telephone: businessProfile.phone,
+    email: businessProfile.email,
+    priceRange: businessProfile.currency?.symbol ? `${businessProfile.currency.symbol}${businessProfile.currency.symbol}` : undefined,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: businessProfile.address,
+      addressLocality: businessProfile.city,
+      addressCountry: BRAND.locale.countryCode,
+    },
+  };
+}
+
+/** `WebSite` + a `SearchAction` pointing at the shop's own search, so a search-savvy crawler can offer a sitelinks search box. */
+function websiteJsonLd(locale: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: businessProfile.name,
+    url: SITE_URL,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/${locale}/shop?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
 export default async function LocaleLayout({
   children,
   params,
@@ -109,27 +154,42 @@ export default async function LocaleLayout({
 
   const t = await getTranslations({ locale, namespace: 'site' });
 
+  // WO-8.1 — the two CMS-editable footer columns (content.prisma's MenuItem
+  // doc comment explains why only these two, not the whole nav). Empty by
+  // default (no rows yet), so a fresh store's footer renders exactly as it
+  // did before this existed.
+  const [footerHelpMenu, footerAboutMenu] = await Promise.all([
+    getMenu('footer_help', locale).catch(() => []),
+    getMenu('footer_about', locale).catch(() => []),
+  ]);
+
   return (
-    <html lang={locale} dir={directionFor(locale as Locale)}>
+    <html lang={locale} dir={directionFor(locale as Locale)} suppressHydrationWarning>
+      <head>
+        <ThemeInitScript />
+      </head>
       <body
         className={`flex min-h-screen flex-col pb-24 md:pb-0 ${encodeSans.variable}`}
         suppressHydrationWarning
       >
         <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={storeJsonLd()} />
+        <JsonLd data={websiteJsonLd(locale)} />
         <SmoothScroller>
           <StorefrontProviders locale={locale} messages={messages}>
             <AnalyticsBeacon />
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+              className="sr-only focus:not-sr-only focus:absolute focus:z-toast focus:m-2 focus:rounded focus:bg-overlay focus:px-4 focus:py-2 focus:shadow"
             >
               {t('skipToContent')}
             </a>
+            <OnsiteMessages locale={locale} />
             <Header />
             <main id="main" className="flex-1">
-              {children}
+              <PageEnter>{children}</PageEnter>
             </main>
-            <Footer />
+            <Footer footerHelpMenu={footerHelpMenu} footerAboutMenu={footerAboutMenu} />
           </StorefrontProviders>
         </SmoothScroller>
       </body>

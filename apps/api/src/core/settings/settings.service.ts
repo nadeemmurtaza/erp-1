@@ -1,21 +1,59 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { TieredCache } from '../cache/tiered-cache';
 import { PrismaService } from '../prisma/prisma.service';
 import type { Prisma } from '../prisma/client';
-import { DEFAULT_SETTINGS, SettingKey, type ShippingZone } from './settings.defaults';
-
-const CACHE_TTL_MS = 30_000;
+import { RedisService } from '../redis/redis.service';
+import { DEFAULT_SETTINGS, SettingKey } from './settings.defaults';
 
 /**
- * Runtime business configuration, read from the Setting table and cached
- * briefly so hot paths (every cart total needs the shipping zones) do not hit
- * the database on each request.
+ * L1: how long this process serves a setting it has read. Unchanged from the
+ * hand-rolled cache it replaces (208-l1-l2-l3-caching-architecture.md §1) — it
+ * is also the longest another replica can serve a value after a write, since
+ * nothing pushes the write to a replica that did not make it.
+ */
+export const SETTINGS_L1_TTL_MS = 30_000;
+/**
+ * L1 entries per process. The key set is closed — SettingKey names 79 keys
+ * and no caller builds one — so this never evicts a real key: ~12× headroom
+ * for new settings. It exists so a future caller that did build keys could
+ * not grow the map without limit.
+ */
+export const SETTINGS_L1_MAX_ENTRIES = 1_000;
+/**
+ * L2: how long a setting is shared in Redis (`settings:{key}`, doc 208 §2).
+ * Deleted on every write, so it is never what makes a replica stale — it
+ * bounds only a write that bypassed set(), and saves each replica a Postgres
+ * read every 30 s.
+ */
+export const SETTINGS_L2_TTL_MS = 300_000;
+
+/** Boxed, so a key with no row and no default (undefined) is still a cache hit — as it was before. */
+interface CachedSetting {
+  value: unknown;
+}
+
+/**
+ * Runtime business configuration, read from the Setting table and cached so
+ * hot paths (every cart total needs the shipping zones) do not hit the
+ * database on each request: in this process for 30 s (L1), and in Redis for
+ * every replica for 300 s (L2) — TieredCache, core/cache.
  */
 @Injectable()
 export class SettingsService implements OnModuleInit {
   private readonly logger = new Logger(SettingsService.name);
-  private cache = new Map<string, { value: unknown; expiresAt: number }>();
+  private readonly cache: TieredCache<CachedSetting>;
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    redis: RedisService,
+  ) {
+    this.cache = new TieredCache<CachedSetting>(redis, this.logger, {
+      namespace: 'settings',
+      l1: { maxEntries: SETTINGS_L1_MAX_ENTRIES, ttlMs: SETTINGS_L1_TTL_MS },
+      l2: { ttlMs: SETTINGS_L2_TTL_MS },
+      decode: (json) => (typeof json === 'object' && json !== null ? { value: (json as CachedSetting).value } : undefined),
+    });
+  }
 
   /** Seeds any missing defaults so a fresh database is immediately usable. */
   async onModuleInit(): Promise<void> {
@@ -36,25 +74,26 @@ export class SettingsService implements OnModuleInit {
   }
 
   async get<T>(key: string): Promise<T> {
-    const cached = this.cache.get(key);
-    if (cached && cached.expiresAt > Date.now()) {
-      return cached.value as T;
-    }
-
-    const row = await this.prisma.setting.findUnique({ where: { key } });
-    const value = row ? row.value : DEFAULT_SETTINGS[key as keyof typeof DEFAULT_SETTINGS];
-
-    this.cache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
-    return value as T;
+    const cached = await this.cache.getOrLoad(key, async () => {
+      const row = await this.prisma.setting.findUnique({ where: { key } });
+      return { value: { value: row ? row.value : DEFAULT_SETTINGS[key as keyof typeof DEFAULT_SETTINGS] } };
+    });
+    return cached.value as T;
   }
 
+  /**
+   * Writes, then drops the key from this process's L1 and from the shared L2,
+   * so this replica reads the new value at once and every other replica reads
+   * it from Postgres as soon as its own L1 entry (≤30 s) lapses — never an L2
+   * copy of the old one.
+   */
   async set(key: string, value: unknown, description?: string): Promise<void> {
     await this.prisma.setting.upsert({
       where: { key },
       create: { key, value: value as Prisma.InputJsonValue, description },
       update: { value: value as Prisma.InputJsonValue, description },
     });
-    this.cache.delete(key);
+    await this.cache.invalidate(key);
   }
 
   async getAll(): Promise<Record<string, unknown>> {
@@ -62,41 +101,45 @@ export class SettingsService implements OnModuleInit {
     return Object.fromEntries(rows.map((row) => [row.key, row.value]));
   }
 
-  /** Clears the cache; call after a bulk settings update. */
-  invalidate(): void {
-    this.cache.clear();
+  /** Drops every cached setting, here and in the shared L2; call after a bulk settings update. */
+  async invalidate(): Promise<void> {
+    await this.cache.invalidateAll();
   }
 
   // --- Typed helpers for the settings the checkout path needs ---------------
 
-  async getShippingZones(): Promise<ShippingZone[]> {
-    return this.get<ShippingZone[]>(SettingKey.ShippingZones);
-  }
-
-  /**
-   * Resolves a delivery city to its zone, falling back to the catch-all zone
-   * (the one with no cities listed) and finally to the last zone defined.
-   */
-  async resolveShippingZone(city: string): Promise<ShippingZone> {
-    const zones = await this.getShippingZones();
-    const needle = city.trim().toLowerCase();
-
-    const matched = zones.find((zone) =>
-      zone.cities.some((candidate) => candidate.toLowerCase() === needle),
-    );
-    if (matched) return matched;
-
-    const fallback = zones.find((zone) => zone.cities.length === 0);
-    if (fallback) return fallback;
-
-    const last = zones[zones.length - 1];
-    if (!last) {
-      throw new Error('No shipping zones are configured');
-    }
-    return last;
-  }
-
   async getCodFee(): Promise<number> {
     return this.get<number>(SettingKey.CodFee);
+  }
+
+  async getCatalogSkuTemplate(): Promise<string> {
+    return this.get<string>(SettingKey.CatalogSkuTemplate);
+  }
+
+  /** WO-3.2's cutover switch — see the setting's own doc comment for why this exists instead of a soak timer. */
+  async getUseOptionModelReads(): Promise<boolean> {
+    return this.get<boolean>(SettingKey.CatalogUseOptionModelReads);
+  }
+
+  /** access-control-identity/21-access-over-the-org-tree.md — see the setting's own doc comment for why this lives here rather than on BrandPolicy. */
+  async getOrgAccessMaxGrantDays(): Promise<number> {
+    return this.get<number>(SettingKey.OrgAccessMaxGrantDays);
+  }
+
+  /** attendance-workforce/22-attendance-shifts-leave.md — see attendance-time.ts. */
+  async getAttendanceWorkingDayCutoverHour(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceWorkingDayCutoverHour);
+  }
+
+  async getAttendanceShiftGraceMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceShiftGraceMinutes);
+  }
+
+  async getAttendanceDuplicateWindowMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceDuplicateWindowMinutes);
+  }
+
+  async getAttendanceMaxSelfAdjustMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceMaxSelfAdjustMinutes);
   }
 }

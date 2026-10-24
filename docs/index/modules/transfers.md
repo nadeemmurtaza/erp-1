@@ -9,19 +9,19 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 **Registry note** (`modules.registry.ts`): Off by default — a single-location deployment has nothing to transfer between (RETAIL-ERP.md R14).
 
-Source: `apps/api/src/modules/transfers/`
+Source: `apps/api/src/modules/supply-chain/transfers/`
 
-## Files (5 · 1,345 lines)
+## Files (5 · 1,508 lines)
 
-All paths relative to `apps/api/src/modules/transfers/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/transfers/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `transfer.dto.ts` | dto | 109 | 7 |  |
 | `transfers.controller.ts` | controller | 44 | 1 |  |
 | `transfers.module.ts` | nest module | 22 | 1 |  |
-| `transfers.service.spec.ts` | unit test | 701 | — |  |
-| `transfers.service.ts` | service | 469 | 3 |  |
+| `transfers.service.spec.ts` | unit test | 823 | — |  |
+| `transfers.service.ts` | service | 510 | 3 |  |
 
 
 ## HTTP routes (5)
@@ -41,7 +41,7 @@ All paths relative to `apps/api/src/modules/transfers/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `transfers.service.ts:278` |
+| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `transfers.service.ts:300` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -62,7 +62,7 @@ _none_
 
 Enums: `SettlementMode` (3) · `StockTransferStatus` (3)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -78,13 +78,14 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
-- **module `inventory`** ⚠ direct import
 - core `audit`
 - core `auth`
 - core `config`
 - core `events`
 - core `extension-points`
+- core `intent`
 - core `prisma`
+- core `redis`
 - core `settings`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -96,7 +97,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `transfers.service.spec.ts` | 22 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement modes and InterBranch… |
+| `transfers.service.spec.ts` | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement modes and InterBranch… |
 
 
 ## Every export in this unit
@@ -119,4 +120,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

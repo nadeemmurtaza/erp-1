@@ -1,11 +1,10 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow } from '@/types/api';
-import { Loading, PageHeader, SectionRail } from '@/components/ui';
-import { ROUTES } from '@/constants/routes';
+import { DataTable, Loading, PageHeader, SectionRail } from '@/components/ui';
 import {
   SIZE_TOKENS,
   emptySizeChart,
@@ -17,6 +16,7 @@ import {
   type SizeChartDraft,
   type SizeToken,
 } from '@/utils/garment-drafts';
+import { Select } from '@/components/ui/select';
 
 /**
  * One garment: what it is called, what it costs, and what the tailor measures.
@@ -69,7 +69,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
 
       setLabelEn(found.labelEn);
       setLabelUr(found.labelUr);
-      setStitchingPrice(String(found.stitchingPrice / 100));
+      setStitchingPrice(String(toMajor(found.stitchingPrice)));
       setStitchingEnabled(found.stitchingEnabled);
       setBaseFabricGaz(found.baseFabricGaz === null ? '' : String(found.baseFabricGaz));
       setAliasesEn(found.aliasesEn.join(', '));
@@ -101,7 +101,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
           key: garment.key,
           labelEn: labelEn.trim(),
           labelUr: labelUr.trim(),
-          stitchingPrice: Math.round(Number(stitchingPrice || 0) * 100),
+          stitchingPrice: toMinor(Number(stitchingPrice || 0)),
           stitchingEnabled,
           baseFabricGaz: baseFabricGaz.trim() === '' ? undefined : Number(baseFabricGaz),
           aliasesEn: splitAliases(aliasesEn),
@@ -169,16 +169,10 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
     }));
   }
 
-  const back = (
-    <Link href={ROUTES.admin.garments} className="hover:text-neutral-900">
-      &larr; Garments
-    </Link>
-  );
-
   if (!garment) {
     return (
       <>
-        <PageHeader title="Garment" context={back} />
+        <PageHeader title="Garment" />
         {error ? (
           <p role="alert" className="text-sm text-feedback-negative">
             {error}
@@ -194,7 +188,6 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
     <>
       <PageHeader
         title={garment.labelEn}
-        context={back}
         action={
           <button type="button" onClick={() => void save()} disabled={busy} className="btn-primary">
             {busy ? 'Saving…' : 'Save garment'}
@@ -356,18 +349,19 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                           className="field-input py-1 font-urdu text-sm"
                         />
                       </Small>
-                      <Small label="Unit">
-                        <select
+                      {/* Not `Small`: that is a label, and a label around segmented options sends a click on its text to the first one. */}
+                      <div className="block">
+                        <span className="mb-1 block text-xs text-neutral-900/60">Unit</span>
+                        <Select
+                          label="Unit"
                           value={field.unit}
-                          onChange={(event) =>
-                            patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
-                          }
-                          className="field-input py-1 text-sm"
-                        >
-                          <option value="INCH">inch</option>
-                          <option value="CM">cm</option>
-                        </select>
-                      </Small>
+                          onChange={(next) => patch(setFields, index, { unit: next as 'INCH' | 'CM' })}
+                          options={[
+                            { value: 'INCH', label: 'inch' },
+                            { value: 'CM', label: 'cm' },
+                          ]}
+                        />
+                      </div>
                       <Small label="Min">
                         <input
                           type="number"
@@ -450,41 +444,33 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                   </p>
                 ) : (
                   <>
-                    <div className="overflow-x-auto">
-                      <table className="table-flat">
-                        <thead>
-                          <tr>
-                            <th scope="col">Size</th>
-                            {activeFields.map((field) => (
-                              <th key={field.id} scope="col">
-                                {field.labelEn} ({field.unit === 'INCH' ? 'in' : 'cm'})
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {SIZE_TOKENS.map((sizeToken) => (
-                            <tr key={sizeToken}>
-                              <td className="font-medium text-neutral-900/70">{sizeToken}</td>
-                              {activeFields.map((field) => (
-                                <td key={field.id}>
-                                  <input
-                                    type="number"
-                                    step="0.25"
-                                    aria-label={`${sizeToken} ${field.labelEn}`}
-                                    value={sizeChart[sizeToken][field.key] ?? ''}
-                                    onChange={(event) =>
-                                      patchSizeCell(sizeToken, field.key, event.target.value)
-                                    }
-                                    className="field-input py-1 text-sm"
-                                  />
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                    <DataTable<SizeToken>
+                      rows={[...SIZE_TOKENS]}
+                      rowKey={(sizeToken) => sizeToken}
+                      columns={[
+                        {
+                          header: 'Size',
+                          cell: (sizeToken) => (
+                            <span className="font-medium text-neutral-900/70">{sizeToken}</span>
+                          ),
+                        },
+                        ...activeFields.map((field) => ({
+                          header: `${field.labelEn} (${field.unit === 'INCH' ? 'in' : 'cm'})`,
+                          cell: (sizeToken: SizeToken) => (
+                            <input
+                              type="number"
+                              step="0.25"
+                              aria-label={`${sizeToken} ${field.labelEn}`}
+                              value={sizeChart[sizeToken][field.key] ?? ''}
+                              onChange={(event) =>
+                                patchSizeCell(sizeToken, field.key, event.target.value)
+                              }
+                              className="field-input py-1 text-sm"
+                            />
+                          ),
+                        })),
+                      ]}
+                    />
 
                     <button type="submit" disabled={sizeBusy} className="btn-secondary mt-4">
                       {sizeBusy ? 'Saving…' : 'Save sizes'}

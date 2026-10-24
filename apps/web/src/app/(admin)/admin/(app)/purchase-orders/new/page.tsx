@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@newax/shared';
 import { PartyPicker } from '@/components/admin/party-picker';
-import { Loading } from '@/components/ui';
+import { DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface SupplierProduct {
   id: string;
@@ -32,6 +33,11 @@ export default function NewPurchaseOrderPage() {
   const [lines, setLines] = useState<Array<{ variantId: string; qty: number; cost: number; sku: string; name: string }>>([]);
   const [freightCost, setFreightCost] = useState(0);
   const [dutyCost, setDutyCost] = useState(0);
+  // RETAIL-ERP.md R13 (WO-23.3): defaults to BRAND, same as the API — ORG
+  // names org-central buying (received into an org warehouse and pushed
+  // down as transfers, R13); BRANCH is gated server-side by the brand's own
+  // allowBranchLocalPurchasing switch.
+  const [scopeLevel, setScopeLevel] = useState<'ORG' | 'BRAND' | 'BRANCH'>('BRAND');
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +88,7 @@ export default function NewPurchaseOrderPage() {
           supplierId,
           freightCost,
           dutyCost,
+          scopeLevel,
           items: lines.map(l => ({
             variantId: l.variantId,
             quantityOrdered: l.qty,
@@ -133,6 +140,31 @@ export default function NewPurchaseOrderPage() {
             setLines([]);
           }}
         />
+
+        <label htmlFor="po-scope" className="mb-2 mt-4 block text-sm font-medium text-neutral-900">
+          Scope
+        </label>
+        <Select
+          id="po-scope"
+          label="Scope"
+          className="max-w-md"
+          value={scopeLevel}
+          onChange={(next) => setScopeLevel(next as 'ORG' | 'BRAND' | 'BRANCH')}
+          options={[
+            { value: 'BRAND', label: 'Brand (default)' },
+            { value: 'ORG', label: 'Organization' },
+            { value: 'BRANCH', label: 'Branch' },
+          ]}
+        />
+        <p className="mt-1 text-sm text-neutral-900/70">
+          {
+            {
+              BRAND: 'This brand buys for itself.',
+              ORG: 'Central purchasing for several brands.',
+              BRANCH: 'Local purchasing, if this brand allows it.',
+            }[scopeLevel]
+          }
+        </p>
       </div>
 
       {supplierId && (
@@ -147,53 +179,62 @@ export default function NewPurchaseOrderPage() {
                   Add items from the catalogue.
                 </div>
               ) : (
-                <table className="table-flat">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th className="text-end">Qty</th>
-                      <th className="text-end">Cost (paisa)</th>
-                      <th className="text-end">Line Total</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-100">
-                    {lines.map((line, i) => (
-                      <tr key={line.variantId}>
-                        <td>
+                <DataTable
+                  rows={lines}
+                  rowKey={(line) => line.variantId}
+                  columns={[
+                    {
+                      header: 'Item',
+                      cell: (line) => (
+                        <>
                           <div className="font-medium text-neutral-900">{line.name}</div>
                           <div className="text-xs text-neutral-900/60">{line.sku}</div>
-                        </td>
-                        <td className="text-end">
-                          <input 
-                            type="number" 
-                            min="1" 
-                            className="field-input w-20 text-end"
-                            value={line.qty}
-                            onChange={(e) => updateLine(i, 'qty', parseInt(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td className="text-end">
-                          <input 
-                            type="number" 
-                            min="0" 
-                            className="field-input w-24 text-end"
-                            value={line.cost}
-                            onChange={(e) => updateLine(i, 'cost', parseInt(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td className="text-end font-medium">
-                          {formatMoney(line.qty * line.cost)}
-                        </td>
-                        <td className="text-end">
-                          <button onClick={() => removeLine(i)} className="text-red-600 hover:underline text-xs">
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </>
+                      ),
+                    },
+                    {
+                      header: 'Qty',
+                      align: 'end',
+                      cell: (line, i) => (
+                        <input
+                          type="number"
+                          min="1"
+                          className="field-input w-20 text-end"
+                          value={line.qty}
+                          onChange={(e) => updateLine(i, 'qty', parseInt(e.target.value) || 0)}
+                        />
+                      ),
+                    },
+                    {
+                      header: 'Cost (paisa)',
+                      align: 'end',
+                      cell: (line, i) => (
+                        <input
+                          type="number"
+                          min="0"
+                          className="field-input w-24 text-end"
+                          value={line.cost}
+                          onChange={(e) => updateLine(i, 'cost', parseInt(e.target.value) || 0)}
+                        />
+                      ),
+                    },
+                    {
+                      header: 'Line Total',
+                      align: 'end',
+                      numeric: true,
+                      cell: (line) => <span className="font-medium">{formatMoney(line.qty * line.cost)}</span>,
+                    },
+                    {
+                      header: '',
+                      align: 'end',
+                      cell: (_line, i) => (
+                        <button onClick={() => removeLine(i)} className="text-red-600 hover:underline text-xs">
+                          Remove
+                        </button>
+                      ),
+                    },
+                  ]}
+                />
               )}
             </div>
 

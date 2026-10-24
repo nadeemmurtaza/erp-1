@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-55 files · 4,638 lines
+117 files · 13,772 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -12,18 +12,20 @@ file may hard-code one.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/packages.md](../symbols/packages.md)
-- **Every file here:** [files/packages.md](../files/packages.md)
+- **Every exported symbol here:** [symbols/packages.md](..\symbols\packages.md)
+- **Every file here:** [files/packages.md](..\files\packages.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `packages/config` | 4 | 101 | config |
+| `packages/desktop-runtime` | 4 | 76 | script, json |
+| `packages/desktop-runtime/src` | 17 | 2,815 | unit test, module |
 | `packages/pos-core` | 4 | 69 | script, json |
-| `packages/pos-core/src` | 9 | 412 | unit test, module |
-| `packages/shared` | 4 | 71 | script, json |
-| `packages/shared/src` | 34 | 3,985 | module, unit test |
+| `packages/pos-core/src` | 10 | 613 | unit test, module |
+| `packages/shared` | 4 | 75 | script, json |
+| `packages/shared/src` | 74 | 10,023 | unit test, module |
 
 
 ## Entry points
@@ -31,6 +33,8 @@ file may hard-code one.
 | File | Kind | Purpose |
 |---|---|---|
 | `packages/config/package.json` | config |  |
+| `packages/desktop-runtime/package.json` | json |  |
+| `packages/desktop-runtime/src/index.ts` | module |  |
 | `packages/pos-core/package.json` | json |  |
 | `packages/pos-core/src/index.ts` | module |  |
 | `packages/shared/package.json` | json |  |
@@ -42,23 +46,23 @@ file may hard-code one.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `packages/shared/src/permissions.ts` | 501 | module | The permission catalog for PBAC (Permission-Based Access Control). |
+| `packages/shared/src/permissions.ts` | 1,552 | module | The permission catalog for PBAC (Permission-Based Access Control). |
+| `packages/shared/src/brand.ts` | 664 | module | THE BRAND FILE. |
+| `packages/desktop-runtime/src/postgres-lifecycle.ts` | 481 | module |  |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
-| `packages/shared/src/brand.ts` | 334 | module | THE BRAND FILE. |
+| `packages/desktop-runtime/src/backup-scheduler.ts` | 387 | module |  |
+| `packages/shared/src/launchpad.ts` | 380 | module | The launchpad's first-party app manifest and the pure rules that decide which apps are sh… |
+| `packages/shared/src/theme-tailwind.ts` | 344 | module |  |
+| `packages/shared/src/api-keys.ts` | 334 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
+| `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
+| `packages/desktop-runtime/src/setup-wizard.ts` | 314 | module |  |
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
+| `packages/desktop-runtime/src/postgres-lifecycle.spec.ts` | 303 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
-| `packages/shared/src/http-client.ts` | 200 | module | The one HTTP layer for a signed-in browser client. |
-| `packages/shared/src/measurements/schema.spec.ts` | 166 | unit test |  |
-| `packages/shared/src/constants.ts` | 146 | module |  |
-| `packages/shared/src/entities/product.spec.ts` | 145 | unit test |  |
-| `packages/shared/src/entities/person.spec.ts` | 124 | unit test |  |
-| `packages/shared/src/entities/product.ts` | 119 | module |  |
-| `packages/shared/src/enums.ts` | 100 | module | Enum values mirrored from the Prisma schema. |
-| `packages/shared/src/entities/person.ts` | 99 | module |  |
-| `packages/shared/src/fabric-estimate.ts` | 95 | module | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
-| `packages/pos-core/src/outbox.ts` | 84 | module | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos… |
+| `packages/desktop-runtime/src/setup-wizard.spec.ts` | 244 | unit test |  |
+| `packages/desktop-runtime/src/backup-scheduler.spec.ts` | 240 | unit test |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

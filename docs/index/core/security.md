@@ -3,7 +3,7 @@
 
 # Core: `security`
 
-Shared platform — available to every module, part of no feature · 5 files
+Shared platform — available to every module, part of no feature · 3 files
 
 
 
@@ -12,15 +12,13 @@ Source: `apps/api/src/core/security/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (5 · 168 lines)
+## Files (3 · 76 lines)
 
 All paths relative to `apps/api/src/core/security`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `api-token.ts` | module | 17 | 2 | A bearer credential for machine-to-machine calls (the trading-partner inbound API, 18-trading-partner-network.md WO-18.… |
-| `secret-crypto.spec.ts` | unit test | 36 | — |  |
-| `secret-crypto.ts` | module | 56 | 2 |  |
 | `unsubscribe-token.spec.ts` | unit test | 35 | — |  |
 | `unsubscribe-token.ts` | module | 24 | 2 | A deterministic, unforgeable per-user unsubscribe token: HMAC-SHA256 over the user id, keyed on APP_ENCRYPTION_KEY. |
 
@@ -50,11 +48,10 @@ _none_
 
 
 
-## Tests (2)
+## Tests (1)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `secret-crypto.spec.ts` | 5 | secret-crypto |
 | `unsubscribe-token.spec.ts` | 6 | unsubscribeToken / isValidUnsubscribeToken |
 
 
@@ -64,12 +61,10 @@ _none_
 |---|---|---|---|
 | `generateApiKey` | function | `api-token.ts:10` | A bearer credential for machine-to-machine calls (the trading-partner inbound API, 18-trading-partner-network… |
 | `hashApiKey` | function | `api-token.ts:14` |  |
-| `encryptSecret` | function | `secret-crypto.ts:31` |  |
-| `decryptSecret` | function | `secret-crypto.ts:41` |  |
 | `unsubscribeToken` | function | `unsubscribe-token.ts:13` | A deterministic, unforgeable per-user unsubscribe token: HMAC-SHA256 over the user id, keyed on APP_ENCRYPTIO… |
 | `isValidUnsubscribeToken` | function | `unsubscribe-token.ts:17` |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

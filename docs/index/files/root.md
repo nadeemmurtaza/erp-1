@@ -3,31 +3,34 @@
 
 # Files — root
 
-All 42 tracked files in `repository root files`, by directory.
+All 216 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (16)
+### `.` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.clinerules` | file | — |  |
 | `.gitattributes` | file | — |  |
+| `.pr_agent.toml` | toml | 92 |  |
 | `.prettierignore` | file | — |  |
 | `.windsurfrules` | file | — |  |
-| `AGENTS.md` | doc | 80 |  |
-| `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 915 |  |
-| `CONTRIBUTING.md` | doc | 127 |  |
-| `DEPLOYMENT.md` | doc | 492 |  |
-| `fix-all.js` | script | 15 | Get all files from git grep |
-| `fix-db.js` | script | 15 |  |
-| `fix.js` | script | 9 | Use regex to remove duplicate users block |
-| `GEMINI.md` | doc | 80 |  |
-| `raw_output.txt` | txt | — |  |
-| `README.md` | doc | 349 |  |
-| `yaseen-backup-before-reset.sql` | sql | 5870 |  |
+| `AGENTS.md` | doc | 81 |  |
+| `Architecture.md` | doc | 32 |  |
+| `CLAUDE.md` | doc | 866 |  |
+| `CONTRIBUTING.md` | doc | 130 |  |
+| `DEPLOYMENT.md` | doc | 529 |  |
+| `Design.md` | doc | 41 |  |
+| `ECOSYSTEM.md` | doc | 110 |  |
+| `GEMINI.md` | doc | 81 |  |
+| `Memory.md` | doc | 28 |  |
+| `Phases.md` | doc | 48 |  |
+| `PRD.md` | doc | 185 |  |
+| `README.md` | doc | 221 |  |
+| `Rules.md` | doc | 30 |  |
+| `START-HERE.md` | doc | 107 |  |
 
 ### `.claude` (2)
 
@@ -36,17 +39,18 @@ All 42 tracked files in `repository root files`, by directory.
 | `launch.json` | json | 24 |  |
 | `settings.json` | json | 25 |  |
 
-### `.claude/agents` (8)
+### `.claude/agents` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `architect.md` | doc | 48 |  |
+| `architect.md` | doc | 49 |  |
 | `debug.md` | doc | 38 |  |
-| `feature.md` | doc | 44 |  |
+| `feature.md` | doc | 45 |  |
 | `implement.md` | doc | 37 |  |
 | `locate.md` | doc | 37 |  |
 | `schema.md` | doc | 46 |  |
 | `security.md` | doc | 46 |  |
+| `ux.md` | doc | 47 |  |
 | `verify.md` | doc | 45 |  |
 
 ### `.claude/hooks` (2)
@@ -62,14 +66,44 @@ All 42 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `configuration.md` | doc | 20 |  |
 | `database.md` | doc | 19 |  |
-| `decisions.md` | doc | 26 |  |
+| `decisions.md` | doc | 28 |  |
 | `dependencies.md` | doc | 23 |  |
-| `design.md` | doc | 136 |  |
+| `design.md` | doc | 179 |  |
 | `performance.md` | doc | 42 |  |
-| `security.md` | doc | 20 |  |
-| `services.md` | doc | 31 |  |
+| `security.md` | doc | 49 |  |
+| `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 151 |  |
+| `ui.md` | doc | 217 |  |
+
+### `.claude/skills/feature-scope` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 225 |  |
+
+### `.claude/skills/restyle` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 90 |  |
+
+### `.claude/skills/ux-audit` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 108 |  |
+
+### `.claude/skills/ux-design` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 122 |  |
+
+### `.claude/skills/ux-review` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 123 |  |
 
 ### `.cursor/rules` (1)
 
@@ -88,9 +122,359 @@ All 42 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `guidelines.md` | doc | 80 |  |
+| `guidelines.md` | doc | 81 |  |
+
+### `apps/platform` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `eslint.config.mjs` | script | 22 | Nest resolves constructor parameter types at runtime through decorator |
+| `jest.config.js` | script | 17 | @type {import('jest').Config} |
+| `nest-cli.json` | json | 23 |  |
+| `package.json` | json | 56 |  |
+| `prisma.config.ts` | module | 10 |  |
+| `tsconfig.build.json` | json | 5 |  |
+| `tsconfig.json` | json | 22 |  |
+
+### `apps/platform/prisma/schema` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace.prisma` | prisma schema | 271 | The cross-tenant marketplace/product-reference network — doc 165 |
+| `platform.prisma` | prisma schema | 803 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
+
+### `apps/platform/prisma/schema/migrations` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration_lock.toml` | toml | 4 |  |
+
+### `apps/platform/prisma/schema/migrations/20260924010600_init` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 166 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925090000_wo39_quotas_export_routing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 96 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925090100_wo50_pricing_billing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 107 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925090200_wo51_trials` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 60 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 126 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 56 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 27 |  |
+
+### `apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 127 |  |
+
+### `apps/platform/prisma/schema/migrations/20260926201927_wo165_marketplace_listing_viewer_engagement` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 85 |  |
+
+### `apps/platform/src` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app.module.ts` | nest module | 48 |  |
+| `main.ts` | module | 52 |  |
+
+### `apps/platform/src/core/config` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app-config.service.ts` | service | 25 |  |
+| `config.module.ts` | nest module | 20 |  |
+| `env.validation.ts` | config | 215 |  |
+| `load-env.ts` | config | 13 |  |
+
+### `apps/platform/src/core/notifications` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notifications.module.ts` | nest module | 10 |  |
+| `notifications.service.ts` | service | 60 |  |
+
+### `apps/platform/src/core/prisma` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `client.ts` | module | 6 | Single import point for the generated Prisma client (control-plane database only — see prisma/schema/schema.prisma). |
+| `prisma.module.ts` | nest module | 10 |  |
+| `prisma.service.ts` | service | 23 |  |
+
+### `apps/platform/src/core/security` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `decorators.ts` | module | 24 |  |
+| `ops-auth.guard.spec.ts` | unit test | 86 |  |
+| `ops-auth.guard.ts` | guard | 61 |  |
+| `ops-key.spec.ts` | unit test | 25 |  |
+| `ops-key.ts` | module | 21 |  |
+| `ops-permissions.ts` | module | 55 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+
+### `apps/platform/src/core/tenant-credentials` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tenant-credential-resolver.module.ts` | nest module | 10 |  |
+| `tenant-credential-resolver.service.ts` | service | 30 |  |
+
+### `apps/platform/src/modules/agency` (22)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `agency-api-key.guard.spec.ts` | unit test | 80 |  |
+| `agency-api-key.guard.ts` | guard | 58 |  |
+| `agency-clients.controller.ts` | controller | 45 |  |
+| `agency-clients.service.spec.ts` | unit test | 72 |  |
+| `agency-clients.service.ts` | service | 108 |  |
+| `agency-cross-tenant.integration.spec.ts` | unit test | 155 |  |
+| `agency-key-throttler.guard.ts` | guard | 28 |  |
+| `agency-key.spec.ts` | unit test | 25 |  |
+| `agency-key.ts` | module | 28 |  |
+| `agency-reporting.controller.ts` | controller | 36 |  |
+| `agency-reporting.service.spec.ts` | unit test | 52 |  |
+| `agency-reporting.service.ts` | service | 64 |  |
+| `agency-stripe-charge.cron.ts` | scheduled job | 45 |  |
+| `agency-stripe-webhook.controller.ts` | controller | 30 |  |
+| `agency-stripe.service.spec.ts` | unit test | 146 |  |
+| `agency-stripe.service.ts` | service | 180 |  |
+| `agency-usage.cron.ts` | scheduled job | 38 |  |
+| `agency-usage.service.spec.ts` | unit test | 120 |  |
+| `agency-usage.service.ts` | service | 118 |  |
+| `agency.module.ts` | nest module | 46 |  |
+| `decorators.ts` | module | 12 |  |
+| `stalwart-admin.client.ts` | module | 54 |  |
+
+### `apps/platform/src/modules/agency/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `register-agency-client.dto.ts` | dto | 29 |  |
+
+### `apps/platform/src/modules/billing` (24)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `billing-period.spec.ts` | unit test | 18 |  |
+| `billing-period.ts` | module | 18 | The one place a calendar-month billing period is computed from "now" — shared by `BillingCron` (doc 50 §3) and `UsageMe… |
+| `billing.controller.ts` | controller | 48 |  |
+| `billing.cron.ts` | scheduled job | 25 |  |
+| `billing.module.ts` | nest module | 33 |  |
+| `billing.service.spec.ts` | unit test | 285 |  |
+| `billing.service.ts` | service | 275 |  |
+| `custom-quote.controller.ts` | controller | 39 |  |
+| `custom-quote.service.spec.ts` | unit test | 86 |  |
+| `custom-quote.service.ts` | service | 94 |  |
+| `headline-plan-signup.integration.spec.ts` | unit test | 95 |  |
+| `invoice-dunning.cron.ts` | scheduled job | 52 |  |
+| `plans.controller.ts` | controller | 31 |  |
+| `plans.service.spec.ts` | unit test | 225 |  |
+| `plans.service.ts` | service | 166 |  |
+| `pricing.controller.ts` | controller | 33 |  |
+| `rate-card.controller.ts` | controller | 53 |  |
+| `rate-card.service.spec.ts` | unit test | 127 |  |
+| `rate-card.service.ts` | service | 141 |  |
+| `seat-counter.service.spec.ts` | unit test | 60 |  |
+| `seat-counter.service.ts` | service | 62 |  |
+| `usage-metering.cron.ts` | scheduled job | 60 |  |
+| `usage-metering.service.spec.ts` | unit test | 285 |  |
+| `usage-metering.service.ts` | service | 318 |  |
+
+### `apps/platform/src/modules/billing/dto` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `create-plan.dto.ts` | dto | 64 |  |
+| `credit-note.dto.ts` | dto | 20 |  |
+| `rate-card.dto.ts` | dto | 27 |  |
+| `request-quote.dto.ts` | dto | 26 |  |
+| `update-plan.dto.ts` | dto | 46 |  |
+
+### `apps/platform/src/modules/product-reference` (16)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `decorators.ts` | module | 13 |  |
+| `marketplace-credential.guard.spec.ts` | unit test | 86 |  |
+| `marketplace-credential.guard.ts` | guard | 57 |  |
+| `marketplace-credentials.controller.ts` | controller | 40 |  |
+| `marketplace-credentials.service.spec.ts` | unit test | 87 |  |
+| `marketplace-credentials.service.ts` | service | 89 |  |
+| `marketplace-key-throttler.guard.ts` | guard | 23 |  |
+| `marketplace-listings.controller.ts` | controller | 58 |  |
+| `marketplace-listings.service.spec.ts` | unit test | 98 |  |
+| `marketplace-listings.service.ts` | service | 113 |  |
+| `product-reference-key.spec.ts` | unit test | 27 |  |
+| `product-reference-key.ts` | module | 22 |  |
+| `product-reference.controller.ts` | controller | 89 |  |
+| `product-reference.module.ts` | nest module | 33 |  |
+| `product-reference.service.spec.ts` | unit test | 195 |  |
+| `product-reference.service.ts` | service | 176 |  |
+
+### `apps/platform/src/modules/product-reference/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace-listing.dto.ts` | dto | 106 |  |
+| `product-reference.dto.ts` | dto | 142 |  |
+
+### `apps/platform/src/modules/resource-quotas` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `resource-quota-alert.cron.ts` | scheduled job | 21 |  |
+| `resource-quotas.controller.ts` | controller | 30 |  |
+| `resource-quotas.module.ts` | nest module | 12 |  |
+| `resource-quotas.service.spec.ts` | unit test | 109 |  |
+| `resource-quotas.service.ts` | service | 143 |  |
+
+### `apps/platform/src/modules/resource-quotas/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `upsert-quota.dto.ts` | dto | 22 |  |
+
+### `apps/platform/src/modules/routing` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `hostname-resolver.service.spec.ts` | unit test | 78 |  |
+| `hostname-resolver.service.ts` | service | 103 |  |
+| `routing.controller.ts` | controller | 54 |  |
+| `routing.module.ts` | nest module | 11 |  |
+
+### `apps/platform/src/modules/support-access` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `support-access-expiry.cron.ts` | scheduled job | 20 |  |
+| `support-access.controller.ts` | controller | 54 |  |
+| `support-access.module.ts` | nest module | 12 |  |
+| `support-access.service.spec.ts` | unit test | 202 |  |
+| `support-access.service.ts` | service | 128 |  |
+
+### `apps/platform/src/modules/support-access/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `issue-grant.dto.ts` | dto | 32 |  |
+
+### `apps/platform/src/modules/tenant-data` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `export-runner.token.ts` | module | 2 |  |
+| `export-runner.ts` | module | 31 | WO-39.7's own extension point, the same `DeploymentProvisioner`-shaped seam `modules/tenants/deployment-provisioner.ts`… |
+| `pg-dump-export.runner.ts` | module | 47 |  |
+| `tenant-data.module.ts` | nest module | 31 |  |
+| `tenant-export.controller.ts` | controller | 45 |  |
+| `tenant-export.service.spec.ts` | unit test | 95 |  |
+| `tenant-export.service.ts` | service | 103 |  |
+| `tenant-retention.cron.ts` | scheduled job | 21 |  |
+| `tenant-retention.service.spec.ts` | unit test | 84 |  |
+| `tenant-retention.service.ts` | service | 86 |  |
+
+### `apps/platform/src/modules/tenants` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `deployment-provisioner.token.ts` | module | 3 | DI token for the `DeploymentProvisioner` extension point (see that file). |
+| `deployment-provisioner.ts` | module | 39 | Extension point: how a tenant's isolated deployment actually gets created — doc 39 §"What this tier owes every tenant",… |
+| `postgres-database.provisioner.spec.ts` | unit test | 74 |  |
+| `postgres-database.provisioner.ts` | module | 117 |  |
+| `provisioning.service.spec.ts` | unit test | 178 |  |
+| `provisioning.service.ts` | service | 165 |  |
+| `resource-tier.ts` | module | 2 |  |
+| `tenants.controller.ts` | controller | 56 |  |
+| `tenants.module.ts` | nest module | 25 |  |
+| `tenants.service.spec.ts` | unit test | 58 |  |
+| `tenants.service.ts` | service | 57 |  |
+
+### `apps/platform/src/modules/tenants/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `provision-tenant.dto.ts` | dto | 48 |  |
+| `suspend-tenant.dto.ts` | dto | 8 |  |
+
+### `apps/platform/src/modules/trials` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `signup.controller.ts` | controller | 35 |  |
+| `signup.service.spec.ts` | unit test | 126 |  |
+| `signup.service.ts` | service | 106 |  |
+| `trial-expiry.cron.ts` | scheduled job | 93 |  |
+| `trials.controller.ts` | controller | 43 |  |
+| `trials.module.ts` | nest module | 16 |  |
+| `trials.service.spec.ts` | unit test | 94 |  |
+| `trials.service.ts` | service | 77 |  |
+
+### `apps/platform/src/modules/trials/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `extend-trial.dto.ts` | dto | 12 |  |
+| `signup.dto.ts` | dto | 32 |  |
+
+### `apps/platform/src/modules/ui` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ui.controller.ts` | controller | 53 |  |
+| `ui.module.ts` | nest module | 8 |  |
+
+### `apps/platform/src/modules/ui/pages` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `admin.html` | html | — |  |
+| `pricing.html` | html | — |  |
+| `signup.html` | html | — |  |
+| `verify.html` | html | — |  |
+
+### `apps/platform/test` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `setup-env.ts` | module | 11 |  |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/root.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\root.md) · [← index home](..\README.md)

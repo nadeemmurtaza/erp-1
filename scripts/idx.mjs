@@ -242,7 +242,7 @@ const commands = {
         const routes = db.routes.filter((r) => r.module === m.name);
         const models = db.models.filter((x) => x.file.endsWith(`/${m.name}.prisma`));
         const events = db.events.filter(
-          (e) => [...e.publishers, ...e.subscribers].some((s) => s.includes(`/modules/${m.name}/`)),
+          (e) => [...e.publishers, ...e.subscribers].some((s) => new RegExp(`/modules/[^/]+/${m.name}/`).test(s)),
         );
         return [
           `${bold(m.name)}  ${dim(`pack ${m.pack}${m.alwaysOn ? ', always on' : ''}`)}`,

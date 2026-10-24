@@ -45,38 +45,123 @@ export type PackName =
   | 'media'
   | 'pets'
   | 'home'
-  | 'digital';
+  | 'digital'
+  // Not a real sector — reserved for SDK-CONTRACT.md's own reference
+  // "hello world" pack (37-scalability-future-upgrades.md §3, WO-37.4)
+  // alone. Never assign a real client's module to this pack.
+  | 'example';
 
 export const MODULE_PACKS: Record<string, PackName> = {
   // The universal commerce core — what clothing, grocery, medicine, hardware
   // and electronics all need. None of these may name a sector concept.
   accounting: 'core',
+  // 149-b2b-accounts-approvals-sector-packs.md — a B2B/wholesale capability
+  // module, not a sector pack, per this file's own "Business models... cut
+  // across every sector" rule above (the same reasoning `pricing`'s own
+  // entry below states).
+  accounts: 'core',
+  settlements: 'core',
   addresses: 'core',
   analytics: 'core',
+  // 167-bank-facility-management.md — the mirror concern to receivables:
+  // what the business itself owes a bank, not what it is owed.
+  bankfacilities: 'core',
+  // launchpad-apps/234-auction-app.md — a capability module, not a sector pack:
+  // B2B and B2C auctions cut across every sector (this file's own "business
+  // models... are capability modules in core" rule above). Industry packs feed
+  // it lots through the AuctionLotSource extension point, so core never
+  // imports a pack.
+  auction: 'core',
   bom: 'core',
   cart: 'core',
   catalog: 'core',
+  collections: 'core',
+  content: 'core',
   crm: 'core',
+  'custom-fields': 'core',
+  embeds: 'core',
+  'entity-attributes': 'core',
+  fragments: 'core',
+  'metadata-forms': 'core',
+  'bpmn-workflows': 'core',
   'identity-verification': 'core',
   inventory: 'core',
   marketing: 'core',
+  onsitemessages: 'core',
   orders: 'core',
   organization: 'core',
   parties: 'core',
   payments: 'core',
+  // 146-wholesale-tiered-pricing.md — a B2B/wholesale capability module,
+  // not a sector pack, per this file's own "Business models... cut across
+  // every sector" rule above.
+  pricing: 'core',
+  // 144-supply-chain-resilience-planning-engine.md (R20-R26) — a pure
+  // read/recommendation engine over rows every other module already
+  // writes; always on, the same posture settings/users already take.
+  planning: 'core',
   pos: 'core',
   production: 'core',
   purchasing: 'core',
   tradingpartners: 'core',
+  recommendations: 'core',
+  rag: 'core',
   reports: 'core',
   settings: 'core',
   tax: 'core',
   finance: 'core',
+  receivables: 'core',
+  fulfilment: 'core',
+  payroll: 'core',
+  hr: 'core',
+  orgstructure: 'core',
+  attendance: 'core',
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through core/extension-points/
+  // task-source.registry.ts) and no other module imports it.
+  tasks: 'core',
+  notify: 'core',
+  support: 'core',
+  promotions: 'core',
+  giftcards: 'core',
+  search: 'core',
+  reviews: 'core',
+  wishlist: 'core',
+  loyalty: 'core',
+  'notification-preferences': 'core',
   tracking: 'core',
   transfers: 'core',
   users: 'core',
+  wallet: 'core',
+  // doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+  // reads THIS deployment's own hosting/billing status from the agency's
+  // Master Platform; core infrastructure for the agency's own hosting
+  // arrangement, never a sector concept, and never in a client's default
+  // MODULES allowlist (see modules.registry.ts's own `offByDefault`).
+  'managed-services': 'core',
+  // doc 165 (b2b-wholesale-multientity/165-cross-tenant-marketplace-
+  // directory.md) — a thin server-to-server proxy to the shared platform
+  // app's own cross-tenant directory; a B2B/B2B2C capability, not a sector
+  // concept, and off by a client's default MODULES allowlist until ops
+  // issues this tenant a MarketplacePublisherCredential (modules.registry
+  // .ts's own `offByDefault`).
+  marketplace: 'core',
+  // 37-scalability-future-upgrades.md (WO-37.2) — the FeatureFlag primitive.
+  // Core infrastructure, never a sector concept.
+  'feature-flags': 'core',
+  // 38-resilience-engineering.md (WO-38.1/38.3) — the degradation matrix,
+  // circuit-breaker states and SLO/error-budget/DR dashboard's admin read
+  // surface. Core infrastructure, never a sector concept.
+  resilience: 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.
   measurements: 'apparel',
   stitching: 'apparel',
+
+  // 37-scalability-future-upgrades.md §3 (WO-37.4) — SDK-CONTRACT.md's own
+  // reference pack, registered under its own pack name (never 'core') so
+  // the DIRECTION rule below actually applies to it, the same as a real
+  // third-party sector pack would face. offByDefault in every deployment
+  // (modules.registry.ts) — a demonstration, never production scope.
+  'example-hello-world-pack': 'example',
 };

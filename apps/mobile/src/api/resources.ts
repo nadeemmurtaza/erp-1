@@ -4,12 +4,22 @@ import type {
   Booking,
   Cart,
   GarmentType,
+  LoyaltyBalance,
+  LoyaltyLedgerEntry,
+  LoyaltyTier,
   MeasurementProfile,
+  NotificationPreferenceCell,
   Order,
   Paginated,
   PaymentMethod,
   Product,
+  Referral,
+  Review,
+  ReturnReason,
+  ReturnRequest,
   StitchingOptionGroup,
+  StoreCreditLedgerEntry,
+  WishlistItem,
   WorkshopJob,
 } from './types';
 import type { Locale, StitchingStage } from '@newax/shared';
@@ -223,6 +233,145 @@ export function changeJobStage(
   note?: string,
 ): Promise<WorkshopJob> {
   return api(`/admin/stitching/jobs/${id}/stage`, { method: 'POST', body: { stage, note } });
+}
+
+// --- Push notifications -----------------------------------------------------
+
+// --- Wishlist (WO-7.6) -------------------------------------------------------
+
+export function listWishlist(): Promise<WishlistItem[]> {
+  return api('/wishlist');
+}
+
+export function addToWishlist(productId: string, variantId?: string): Promise<WishlistItem> {
+  return api('/wishlist', { method: 'POST', body: { productId, variantId } });
+}
+
+export function removeFromWishlist(id: string): Promise<{ removed: boolean }> {
+  return api(`/wishlist/${id}`, { method: 'DELETE' });
+}
+
+export function requestBackInStockAlert(variantId: string): Promise<{ requested: boolean }> {
+  return api('/back-in-stock', { method: 'POST', body: { variantId } });
+}
+
+export function cancelBackInStockAlert(variantId: string): Promise<{ cancelled: boolean }> {
+  return api(`/back-in-stock/${variantId}`, { method: 'DELETE' });
+}
+
+// --- Reviews (WO-7.5) ---------------------------------------------------------
+
+export function productReviews(productId: string, page = 1): Promise<Paginated<Review>> {
+  return api(`/products/${productId}/reviews`, { query: { page, pageSize: 20 }, anonymous: true });
+}
+
+export function myReviews(): Promise<Review[]> {
+  return api('/reviews/mine');
+}
+
+export function submitReview(body: {
+  productId: string;
+  rating: number;
+  title?: string;
+  body?: string;
+}): Promise<Review> {
+  return api('/reviews', { method: 'POST', body });
+}
+
+export function markReviewHelpful(id: string): Promise<Review> {
+  return api(`/reviews/${id}/helpful`, { method: 'POST', anonymous: true });
+}
+
+// --- Returns / RMA (WO-6.6) ---------------------------------------------------
+
+export function listReturnReasons(): Promise<ReturnReason[]> {
+  return api('/returns/reasons');
+}
+
+export function myReturns(): Promise<ReturnRequest[]> {
+  return api('/returns/mine');
+}
+
+export function getReturn(id: string): Promise<ReturnRequest> {
+  return api(`/returns/${id}`);
+}
+
+export function createReturn(body: {
+  orderNumber: string;
+  customerNote?: string;
+  items: Array<{ orderItemId: string; reasonId: string; quantity: number }>;
+}): Promise<ReturnRequest> {
+  return api('/returns', { method: 'POST', body });
+}
+
+// --- Loyalty and referrals (WO-7.7) ------------------------------------------
+
+export function loyaltyTiers(): Promise<LoyaltyTier[]> {
+  return api('/loyalty/tiers', { anonymous: true });
+}
+
+export function loyaltyBalance(): Promise<LoyaltyBalance> {
+  return api('/loyalty');
+}
+
+export function loyaltyLedger(page = 1): Promise<Paginated<LoyaltyLedgerEntry>> {
+  return api('/loyalty/ledger', { query: { page, pageSize: 50 } });
+}
+
+export function redeemLoyaltyPoints(points: number): Promise<{ storeCreditAdded: number }> {
+  return api('/loyalty/redeem', { method: 'POST', body: { points } });
+}
+
+export function myReferralCode(): Promise<{ code: string }> {
+  return api('/loyalty/referral-code');
+}
+
+export function myReferrals(): Promise<Referral[]> {
+  return api('/loyalty/referrals');
+}
+
+export function applyReferralCode(code: string): Promise<Referral> {
+  return api('/loyalty/referral/apply', { method: 'POST', body: { code } });
+}
+
+// --- Store credit and gift cards (WO-7.4) -------------------------------------
+
+export function storeCreditBalance(): Promise<{ balance: number }> {
+  return api('/store-credit');
+}
+
+export function storeCreditLedger(page = 1): Promise<Paginated<StoreCreditLedgerEntry>> {
+  return api('/store-credit/ledger', { query: { page, pageSize: 50 } });
+}
+
+export function redeemGiftCardIntoAccount(code: string): Promise<unknown> {
+  return api('/gift-cards/redeem-into-account', { method: 'POST', body: { code } });
+}
+
+// --- Notification preferences (WO-7.8) ---------------------------------------
+
+export function getNotificationPreferences(): Promise<NotificationPreferenceCell[]> {
+  return api('/notification-preferences');
+}
+
+export function updateNotificationPreferences(
+  updates: NotificationPreferenceCell[],
+): Promise<NotificationPreferenceCell[]> {
+  return api('/notification-preferences', { method: 'PUT', body: { updates } });
+}
+
+// --- Reorder (WO-7.2) ----------------------------------------------------------
+
+export interface ReorderResult {
+  cart: Cart;
+  addedCount: number;
+  unavailable: string[];
+}
+
+export async function reorder(orderNumber: string): Promise<ReorderResult> {
+  const result = await api<ReorderResult>(`/cart/reorder/${orderNumber}`, { method: 'POST' });
+  if (result.cart.token) await setCartToken(result.cart.token);
+  return result;
 }
 
 // --- Push notifications -----------------------------------------------------

@@ -1,0 +1,21 @@
+{
+  "extends": "@newax/config/tsconfig.nest.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "paths": {
+      // "moduleResolution": "Node" (tsconfig.nest.json) predates package.json
+      // "exports" maps and never reads them, so @newax/shared's dedicated
+      // "./secret-crypto" subpath (added to keep node:crypto out of apps/web's
+      // browser bundle — see packages/shared/src/index.ts's comment on it)
+      // needs its own path alias here for the type checker. Node's own
+      // module resolution at runtime (nest build's compiled output, ts-jest)
+      // already honours "exports" independently of this setting.
+      "@newax/shared/secret-crypto": ["../../packages/shared/dist/secret-crypto.d.ts"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "prisma/seed.ts"]
+}

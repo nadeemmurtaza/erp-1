@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-55 files · 27,846 lines
+66 files · 33,560 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -12,21 +12,21 @@ on them.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/infra.md](../symbols/infra.md)
-- **Every file here:** [files/infra.md](../files/infra.md)
+- **Every exported symbol here:** [symbols/infra.md](..\symbols\infra.md)
+- **Every file here:** [files/infra.md](..\files\infra.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 18,688 | file, example, json, yaml |
-| `.github` | 1 | 80 | doc |
-| `.github/workflows` | 2 | 255 | yaml |
+| `.` | 20 | 20,984 | file, example, json, yaml |
+| `.github` | 1 | 81 | doc |
+| `.github/workflows` | 3 | 338 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 17 | 6,816 | script, py |
-| `scripts/lib` | 3 | 1,606 | utility |
+| `scripts` | 27 | 10,053 | script, py |
+| `scripts/lib` | 3 | 1,703 | utility |
 
 
 ## Entry points
@@ -40,23 +40,23 @@ on them.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `pnpm-lock.yaml` | 17,512 | yaml |  |
-| `scripts/build-index.mjs` | 2,511 | script |  |
-| `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
+| `pnpm-lock.yaml` | 19,483 | yaml |  |
+| `scripts/build-index.mjs` | 2,638 | script |  |
+| `scripts/lib/index-scan.mjs` | 965 | utility | Scanners for the repository index. |
+| `scripts/sync-client.mjs` | 723 | script | scripts/sync-client.mjs — the Extractor. |
+| `scripts/check-tells.mjs` | 658 | script |  |
+| `scripts/check-module-boundaries.mjs` | 652 | script |  |
+| `scripts/check-contrast.mjs` | 650 | script |  |
 | `scripts/check-overflow.mjs` | 644 | script |  |
-| `scripts/check-module-boundaries.mjs` | 542 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
-| `scripts/check-contrast.mjs` | 425 | script |  |
-| `scripts/check-links.mjs` | 402 | script |  |
+| `scripts/check-links.mjs` | 416 | script |  |
+| `scripts/lib/model-routing.mjs` | 401 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
+| `scripts/load-auction.mjs` | 312 | script |  |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
-| `scripts/sync-client.mjs` | 243 | script | scripts/sync-client.mjs |
-| `.github/workflows/ci.yml` | 164 | yaml |  |
-| `scripts/check.mjs` | 164 | script |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

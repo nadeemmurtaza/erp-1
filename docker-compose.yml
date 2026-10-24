@@ -17,6 +17,25 @@ services:
       timeout: 5s
       retries: 10
 
+  # The API's dedicated Redis (206-rate-limiting-caching-compression-hardening.md
+  # §1.2): rate-limit counters shared across API replicas and the per-account
+  # sign-in bucket. Never the mail server's Redis (docker-compose.mail.yml).
+  # Nothing in it is a fact, so nothing is persisted; noeviction because an
+  # evicted counter is a silently reset limit. Sign-in answers 503 while it
+  # is down — `pnpm services:up` starts it with everything else.
+  redis:
+    image: redis:7-alpine
+    container_name: yaseen-redis
+    restart: unless-stopped
+    command: ['redis-server', '--save', '', '--appendonly', 'no', '--maxmemory', '64mb', '--maxmemory-policy', 'noeviction']
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   minio:
     image: minio/minio:latest
     container_name: yaseen-minio

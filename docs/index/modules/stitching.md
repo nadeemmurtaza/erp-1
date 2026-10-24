@@ -7,11 +7,11 @@ Pack **apparel** · enabled by the `MODULES` allowlist · 8 files
 
 
 
-Source: `apps/api/src/modules/stitching/`
+Source: `apps/api/src/modules/sales/stitching/`
 
 ## Files (8 · 2,160 lines)
 
-All paths relative to `apps/api/src/modules/stitching`.
+All paths relative to `apps/api/src/modules/sales/stitching`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
@@ -87,7 +87,7 @@ All paths relative to `apps/api/src/modules/stitching`.
 
 Enums: `StitchingOrderStatus` (7) · `StitchingSelectionType` (2) · `StitchingStage` (6)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -158,4 +158,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

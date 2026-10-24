@@ -8,7 +8,7 @@ import type { Node } from '../prisma/client';
  * the raw key it presents, hashed and looked up, mirroring
  * `TradingPartnersService.verifyInboundKey()`. Lives in `core/replication/`
  * and queries `Node` directly rather than going through `NodesService`
- * (`modules/organization/`): core platform code stays independent of any
+ * (`modules/people/organization/`): core platform code stays independent of any
  * one feature module the same way `EventsModule`/`ExtensionPointsModule`
  * already do, and this only ever needs a read.
  */

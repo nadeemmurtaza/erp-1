@@ -3,7 +3,7 @@
 
 # Core: `auth`
 
-Shared platform — available to every module, part of no feature · 21 files
+Shared platform — available to every module, part of no feature · 51 files
 
 
 
@@ -12,54 +12,105 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (21 · 2,208 lines)
+## Files (51 · 10,445 lines)
 
-All paths relative to `apps/api/src/core/auth`.
+All paths relative to `apps/api/src/core/auth/api-keys`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `auth.constants.ts` | module | 62 | 10 |  |
-| `auth.controller.ts` | controller | 197 | 1 |  |
-| `auth.module.ts` | nest module | 19 | 1 |  |
-| `auth.service.spec.ts` | unit test | 24 | — |  |
-| `auth.service.ts` | service | 429 | 6 |  |
-| `bearer-token.ts` | module | 16 | 1 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
-| `decorators.ts` | module | 53 | 4 | Marks a route as reachable without a token. |
+| `api-key-access.spec.ts` | unit test | 159 | — |  |
+| `api-key-access.ts` | module | 93 | 4 | What a route declares about who may call it, read off its decorators. |
+| `api-key-auth.service.spec.ts` | unit test | 273 | — |  |
+| `api-key-auth.service.ts` | service | 194 | 5 | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
+| `api-keys-admin.controller.ts` | controller | 41 | 1 | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
+| `api-keys.controller.ts` | controller | 67 | 1 | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
+| `api-keys.service.spec.ts` | unit test | 546 | — |  |
+| `api-keys.service.ts` | service | 712 | 9 |  |
+| `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
+| `auth.constants.ts` | module | 116 | 18 |  |
+| `auth.controller.ts` | controller | 229 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
+| `auth.module.ts` | nest module | 74 | 1 |  |
+| `auth.service.spec.ts` | unit test | 516 | — |  |
+| `auth.service.ts` | service | 712 | 11 | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race — two tabs,… |
+| `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
+| `decorators.ts` | module | 91 | 7 | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hardening.md §… |
 | `auth.dto.ts` | dto | 126 | 8 |  |
 | `role.dto.ts` | dto | 44 | 2 |  |
-| `guards.ts` | module | 102 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
-| `jwt.strategy.ts` | auth strategy | 44 | 1 |  |
+| `sso.dto.ts` | dto | 188 | 8 | Shape and bounds only. |
+| `guards.spec.ts` | unit test | 212 | — |  |
+| `guards.ts` | module | 167 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
+| `identity-provider.ts` | module | 91 | 6 | All a person is ever told when single sign-on fails. |
+| `jwt.strategy.spec.ts` | unit test | 57 | — |  |
+| `jwt.strategy.ts` | auth strategy | 50 | 1 |  |
+| `login-identifier.spec.ts` | unit test | 39 | — |  |
+| `login-identifier.ts` | module | 38 | 3 | A sign-in identifier as the rate limiter and the audit trail see it: the normalised form, hashed (206-rate-limiting-cac… |
+| `login-throttle.service.spec.ts` | unit test | 111 | — |  |
+| `login-throttle.service.ts` | service | 168 | 7 | The per-account sign-in bucket (WO-206.2, 206-rate-limiting-caching-compression-hardening.md §1.2). |
+| `nid.controller.ts` | controller | 73 | 1 | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `ownership.guard.spec.ts` | unit test | 49 | — |  |
 | `ownership.guard.ts` | guard | 24 | 2 |  |
-| `password.util.ts` | module | 9 | 2 |  |
-| `permissions.service.spec.ts` | unit test | 85 | — |  |
-| `permissions.service.ts` | service | 64 | 2 |  |
+| `password.util.spec.ts` | unit test | 80 | — |  |
+| `password.util.ts` | module | 89 | 6 |  |
+| `permissions.service.spec.ts` | unit test | 317 | — |  |
+| `permissions.service.ts` | service | 219 | 5 |  |
+| `nid.provider.spec.ts` | unit test | 226 | — |  |
+| `nid.provider.ts` | module | 332 | 3 |  |
+| `oidc.provider.spec.ts` | unit test | 205 | — |  |
+| `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
+| `rate-limit-audit.service.spec.ts` | unit test | 76 | — |  |
+| `rate-limit-audit.service.ts` | service | 85 | 5 |  |
 | `roles.controller.ts` | controller | 44 | 1 | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `roles.service.spec.ts` | unit test | 236 | — |  |
-| `roles.service.ts` | service | 301 | 4 |  |
-| `scope.guard.spec.ts` | unit test | 151 | — |  |
-| `scope.guard.ts` | guard | 129 | 7 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
+| `roles.service.spec.ts` | unit test | 388 | — |  |
+| `roles.service.ts` | service | 359 | 4 |  |
+| `scope.guard.spec.ts` | unit test | 195 | — |  |
+| `scope.guard.ts` | guard | 170 | 9 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
+| `sso-admin.controller.ts` | controller | 82 | 1 | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.5), and th… |
+| `sso.controller.spec.ts` | unit test | 223 | — |  |
+| `sso.controller.ts` | controller | 230 | 1 | Single sign-on, the browser half (161-sso-identity-federation.md). |
+| `sso.service.spec.ts` | unit test | 656 | — |  |
+| `sso.service.ts` | service | 869 | 9 | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |
 
 
-## HTTP routes (15)
+## HTTP routes (36)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/api-keys` | `users.manage` | `ApiKeysAdminController.list` :24 | Every API key on this deployment, by staff and customers — metadata only |
+| POST | `/admin/api-keys/:id/revoke` | `users.manage` | `ApiKeysAdminController.revoke` :37 | Revoke anyone's API key — final; its next request is refused |
 | GET | `/admin/roles` | `roles.manage_permissions` | `RolesController.list` :21 | Every custom role, its permissions, and how many users hold it |
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` :27 | Create a role. Duplicate names are refused; a duplicate permission set is only flagged. |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` :39 | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` :33 | Edit a role's name, description, or permission set |
-| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :145 | Change your password and sign out other devices |
-| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :157 | Request a password reset link by email |
-| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :71 | Sign in with an email or phone number |
-| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :101 | Revoke the current refresh token |
-| GET | `/auth/me` | signed-in | `AuthController.me` :118 | The signed-in user |
-| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :136 | Update your own profile fields |
-| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :81 | Exchange a refresh token for a new access token |
-| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :57 | Create a customer account |
-| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :183 | Resend the email verification link |
-| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :166 | Set a new password using a reset link token |
-| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :174 | Confirm an email address using a verification link token |
+| GET | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.list` :30 | Every single sign-on connection, and the callback URL to register — never a client secret |
+| POST | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.create` :36 | Register an identity provider for staff sign-in |
+| GET | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.get` :42 | One connection, with the callback URL to register at the provider |
+| PATCH | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.update` :48 | Edit a connection — audited with every old and new value; a sent secret replaces the stor… |
+| GET | `/admin/sso/connections/:id/accounts` | `settings.sso.manage` | `SsoAdminController.accounts` :61 | Accounts provisioned or linked through a connection, newest first |
+| POST | `/admin/sso/connections/:id/accounts/:userId/unlink` | `settings.sso.manage` | `SsoAdminController.unlink` :68 | Unlink an account's single sign-on identity and sign it out everywhere |
+| POST | `/admin/sso/connections/:id/suspend` | `settings.sso.manage` | `SsoAdminController.suspend` :55 | Stop new sign-ins through a connection — accounts it created or linked are untouched |
+| GET | `/admin/sso/roles` | `settings.sso.manage` | `SsoAdminController.roles` :78 | Roles a new sign-in could be given, and why any may not be |
+| GET | `/api-keys` | signed-in | `ApiKeysController.list` :35 | Your own API keys for one surface, each with what it can do right now |
+| POST | `/api-keys` | signed-in | `ApiKeysController.create` :42 | Create a key carrying some of your own access — its secret is shown in this response only |
+| PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` :48 | Rename a key, or replace its scopes — re-checked against what you hold now |
+| POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` :63 | Revoke a key — final; its next request is refused |
+| POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` :56 | Issue a new secret and expiry for a key — same scopes; the old secret stops working at on… |
+| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :183 | Change your password and sign out other devices |
+| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :195 | Request a password reset link by email |
+| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :100 | Sign in with an email or phone number |
+| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :134 | Revoke the current refresh token |
+| GET | `/auth/me` | signed-in | `AuthController.me` :152 | The signed-in user |
+| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :173 | Update your own profile fields |
+| GET | `/auth/nid/callback` | **PUBLIC** | `NidController.handleCallback` :58 | Handles the OAuth authorization callback from nID |
+| GET | `/auth/nid/start` | **PUBLIC** | `NidController.startLogin` :37 | Initiates a Login with nID authorization flow |
+| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :114 | Exchange a refresh token for a new access token |
+| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :78 | Create a customer account |
+| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :221 | Resend the email verification link |
+| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :204 | Set a new password using a reset link token |
+| GET | `/auth/sso/:connectionId/start` | **PUBLIC** | `SsoController.start` :78 | Begin single sign-on — redirects to the identity provider |
+| GET | `/auth/sso/callback` | **PUBLIC** | `SsoController.callback` :92 | Where the identity provider returns — completes single sign-on and redirects to the admin… |
+| GET | `/auth/sso/connections` | **PUBLIC** | `SsoController.signInOptions` :70 | The single sign-on buttons the admin sign-in screen shows — id and label only |
+| POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` :133 | Exchange a completed single sign-on for a session — the same result a password sign-in re… |
+| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :212 | Confirm an email address using a verification link token |
 
 
 ## Domain events
@@ -68,10 +119,13 @@ All paths relative to `apps/api/src/core/auth`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `UserRegistered` | `user.registered` | `auth.service.ts:104` |
-| `PasswordChanged` | `user.password_changed` | `auth.service.ts:203`, `auth.service.ts:258` |
-| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:228` |
-| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:279` |
+| `UserRegistered` | `user.registered` | `auth.service.ts:153` |
+| `PasswordChanged` | `user.password_changed` | `auth.service.ts:329`, `auth.service.ts:384` |
+| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:354` |
+| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:405` |
+| `ApiKeyIssued` | `user.api_key_issued` | `api-keys.service.ts:255`, `api-keys.service.ts:386` |
+| `SsoAccountLinked` | `user.sso_account_linked` | `sso.service.ts:614`, `sso.service.ts:634` |
+| `SsoUserProvisioned` | `user.sso_user_provisioned` | `sso.service.ts:674` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -87,13 +141,14 @@ _none_
 
 **`AuthModule`** (`auth.module.ts`)
 - imports: `PassportModule`, `JwtModule`
-- controllers: `AuthController`, `RolesController`
-- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`
-- exports: `AuthService`, `PermissionsResolverService`, `RolesService`
+- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`, `SsoController`, `SsoAdminController`, `NidController`
+- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`, `NidProvider`, `LoginThrottleService`, `RateLimitAuditService`
+- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `RateLimitAuditService`, `NidProvider`
 
 
 ## Reaches out to
 
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -101,44 +156,101 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (18)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `auth.service.spec.ts` | 2 | parseDuration |
+| `api-key-access.spec.ts` | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements — the handler overrid… |
+| `api-key-auth.service.spec.ts` | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says why · failed attempts… |
+| `api-keys.service.spec.ts` | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
+| `auth.service.spec.ts` | 26 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.2) · AuthService.ref… |
+| `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
+| `jwt.strategy.spec.ts` | 3 | JwtStrategy.validate |
+| `login-identifier.spec.ts` | 3 | login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2) |
+| `login-throttle.service.spec.ts` | 9 | LoginThrottleService (doc 206 §1.2) |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
-| `permissions.service.spec.ts` | 6 | PermissionsResolverService.resolveForUser |
-| `roles.service.spec.ts` | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStillHeldAfterRevoke · c… |
-| `scope.guard.spec.ts` | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
+| `permissions.service.spec.ts` | 24 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · resolveForUserCached — L1 (doc 208 §2… |
+| `nid.provider.spec.ts` | 7 | NidProvider (WO-255.2) · startLogin · handleCallback |
+| `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
+| `rate-limit-audit.service.spec.ts` | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
+| `roles.service.spec.ts` | 32 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
+| `scope.guard.spec.ts` | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
+| `sso.controller.spec.ts` | 8 | SsoController · start · callback · session |
+| `sso.service.spec.ts` | 34 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing connection · startLogin ·… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `IS_PUBLIC_KEY` | const | `auth.constants.ts:1` |  |
-| `PERMISSIONS_KEY` | const | `auth.constants.ts:2` |  |
-| `JwtPayload` | interface | `auth.constants.ts:12` | What a verified access token carries. |
-| `AuthenticatedUser` | interface | `auth.constants.ts:22` | The authenticated principal attached to the request. |
-| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:46` | Marks a route as deliberately open to any signed-in user. |
-| `REFRESH_COOKIE` | const | `auth.constants.ts:48` | Marks a route as deliberately open to any signed-in user. |
-| `CART_COOKIE` | const | `auth.constants.ts:49` |  |
-| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:51` |  |
-| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:52` |  |
-| `readCookie` | function | `auth.constants.ts:55` | The current cookie, or the one written before the rename. |
-| `AuthController` | class | `auth.controller.ts:46` |  |
-| `AuthModule` | class | `auth.module.ts:18` |  |
-| `AuthTokens` | interface | `auth.service.ts:21` |  |
-| `AuthResult` | interface | `auth.service.ts:27` |  |
-| `RegisterInput` | interface | `auth.service.ts:31` |  |
-| `UpdateProfileInput` | interface | `auth.service.ts:39` |  |
-| `AuthService` | class | `auth.service.ts:48` |  |
-| `parseDuration` | function | `auth.service.ts:416` | "30d" -> milliseconds. |
+| `RouteRequirements` | interface | `api-key-access.ts:12` | What a route declares about who may call it, read off its decorators. |
+| `ApiKeyAccessDecision` | type | `api-key-access.ts:22` |  |
+| `decideApiKeyAccess` | function | `api-key-access.ts:44` | May this API key call this route? |
+| `readRouteRequirements` | function | `api-key-access.ts:84` | Reads a route's requirements the way the global guards already read `@Public()`/`@RequirePermission()` — the… |
+| `API_KEY_LAST_USED_RESOLUTION_MS` | const | `api-key-auth.service.ts:9` | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
+| `API_KEY_FAILURE_LIMIT` | const | `api-key-auth.service.ts:22` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
+| `API_KEY_FAILURE_WINDOW_MS` | const | `api-key-auth.service.ts:23` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
+| `ApiKeyAuthContext` | interface | `api-key-auth.service.ts:36` |  |
+| `ApiKeyAuthService` | class | `api-key-auth.service.ts:61` | Turns a raw personal API key into the principal it acts as — or a 401 that says why not (163-personal-api-key… |
+| `ApiKeysAdminController` | class | `api-keys-admin.controller.ts:19` | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
+| `ApiKeysController` | class | `api-keys.controller.ts:30` | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
+| `ApiKeyStatus` | type | `api-keys.service.ts:34` |  |
+| `API_KEY_STATUSES` | const | `api-keys.service.ts:35` |  |
+| `ApiKeyView` | interface | `api-keys.service.ts:38` | One key, as its owner sees it. |
+| `IssuedApiKey` | interface | `api-keys.service.ts:72` | A key together with its raw secret — returned by create and rotate, and by nothing else, ever. |
+| `ApiKeyOversightView` | interface | `api-keys.service.ts:78` | One key, as the `users.manage` oversight list sees it: its owner, its stored scopes, its state — no secret, n… |
+| `CreateApiKeyInput` | interface | `api-keys.service.ts:90` |  |
+| `UpdateApiKeyInput` | interface | `api-keys.service.ts:98` |  |
+| `ApiKeyOversightQuery` | interface | `api-keys.service.ts:104` |  |
+| `ApiKeysService` | class | `api-keys.service.ts:159` | The lifecycle of personal API keys — and the only code that writes `ApiKey` (163-personal-api-keys.md §5). |
+| `CreateApiKeyDto` | class | `api-key.dto.ts:32` | Shape and bounds only. |
+| `UpdateApiKeyDto` | class | `api-key.dto.ts:65` |  |
+| `RotateApiKeyDto` | class | `api-key.dto.ts:88` |  |
+| `ListMyApiKeysQueryDto` | class | `api-key.dto.ts:97` |  |
+| `ListApiKeysQueryDto` | class | `api-key.dto.ts:103` |  |
+| `IS_PUBLIC_KEY` | const | `auth.constants.ts:3` |  |
+| `PERMISSIONS_KEY` | const | `auth.constants.ts:4` |  |
+| `SESSION_ONLY_KEY` | const | `auth.constants.ts:6` | @see SessionOnly — refused to every API key, whatever it carries. |
+| `CUSTOMER_SCOPES_KEY` | const | `auth.constants.ts:8` | @see CustomerScope — which storefront API keys may reach a customer route. |
+| `RATE_LIMIT_AUDIT_KEY` | const | `auth.constants.ts:10` | @see AuditRateLimit — which body field names the identifier a throttled credential route was guessing at. |
+| `JwtPayload` | interface | `auth.constants.ts:20` | What a verified access token carries. |
+| `ApiKeyPrincipal` | interface | `auth.constants.ts:33` | The personal API key a request authenticated with, when it did not come from a session (163-personal-api-keys… |
+| `AuthenticatedUser` | interface | `auth.constants.ts:46` | The authenticated principal attached to the request. |
+| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:85` | Marks a route as deliberately open to any signed-in user. |
+| `REFRESH_COOKIE` | const | `auth.constants.ts:87` | Marks a route as deliberately open to any signed-in user. |
+| `CART_COOKIE` | const | `auth.constants.ts:88` |  |
+| `SSO_STATE_COOKIE` | const | `auth.constants.ts:100` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_COOKIE` | const | `auth.constants.ts:101` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_STATE_TTL_MS` | const | `auth.constants.ts:102` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_TTL_MS` | const | `auth.constants.ts:103` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:105` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:106` |  |
+| `readCookie` | function | `auth.constants.ts:109` | The current cookie, or the one written before the rename. |
+| `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:51` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
+| `setRefreshCookie` | function | `auth.controller.ts:54` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
+| `AuthController` | class | `auth.controller.ts:66` |  |
+| `AuthModule` | class | `auth.module.ts:73` |  |
+| `REFRESH_REUSE_GRACE_MS` | const | `auth.service.ts:29` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
+| `REFRESH_REUSE_DETECTED_AUDIT_ACTION` | const | `auth.service.ts:31` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
+| `REFRESH_FAMILY_LOCK_NAMESPACE` | const | `auth.service.ts:44` | pg_advisory_xact_lock namespace for one refresh-token family (the 8_241_1xx range the numbering locks already… |
+| `SessionRequestContext` | interface | `auth.service.ts:49` | Where a session request came from — for the audit trail only, never for a decision. |
+| `RefreshOptions` | interface | `auth.service.ts:54` |  |
+| `AuthTokens` | interface | `auth.service.ts:68` |  |
+| `AuthResult` | interface | `auth.service.ts:74` |  |
+| `RegisterInput` | interface | `auth.service.ts:78` |  |
+| `UpdateProfileInput` | interface | `auth.service.ts:86` |  |
+| `AuthService` | class | `auth.service.ts:95` |  |
+| `parseDuration` | function | `auth.service.ts:699` | "30d" -> milliseconds. |
 | `bearerToken` | function | `bearer-token.ts:10` | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machi… |
-| `Public` | const | `decorators.ts:16` | Marks a route as reachable without a token. |
-| `RequirePermission` | const | `decorators.ts:25` | Restricts a route to callers holding at least one of the given permissions. |
-| `AuthenticatedOnly` | const | `decorators.ts:41` | Marks a route as deliberately open to any signed-in user. |
-| `CurrentUser` | const | `decorators.ts:45` | Injects the authenticated user, or undefined on a @Public route. |
+| `bearerCredential` | function | `bearer-token.ts:26` | The credential in an `Authorization: Bearer <credential>` header, or undefined — never throws. |
+| `AuditRateLimit` | const | `decorators.ts:20` | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hard… |
+| `Public` | const | `decorators.ts:29` | Marks a route as reachable without a token. |
+| `RequirePermission` | const | `decorators.ts:38` | Restricts a route to callers holding at least one of the given permissions. |
+| `AuthenticatedOnly` | const | `decorators.ts:54` | Marks a route as deliberately open to any signed-in user. |
+| `SessionOnly` | const | `decorators.ts:67` | Refuses the route to every personal API key, whatever permission or scope it carries — only a signed-in sessi… |
+| `CustomerScope` | const | `decorators.ts:79` | Lets a storefront API key reach this customer self-service route when it carries any one of the named scopes… |
+| `CurrentUser` | const | `decorators.ts:83` | Injects the authenticated user, or undefined on a @Public route. |
 | `RegisterDto` | class | `auth.dto.ts:11` |  |
 | `LoginDto` | class | `auth.dto.ts:41` |  |
 | `RefreshDto` | class | `auth.dto.ts:56` |  |
@@ -149,20 +261,62 @@ check there before adding another.
 | `VerifyEmailDto` | class | `auth.dto.ts:120` |  |
 | `CreateRoleDto` | class | `role.dto.ts:5` |  |
 | `UpdateRoleDto` | class | `role.dto.ts:24` |  |
-| `JwtAuthGuard` | class | `guards.ts:25` | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
-| `PermissionsGuard` | class | `guards.ts:80` | Enforces @RequirePermission(...). |
+| `SSO_PROTOCOLS` | const | `sso.dto.ts:22` | Shape and bounds only. |
+| `SSO_CONNECTION_STATUSES` | const | `sso.dto.ts:23` |  |
+| `SSO_LABEL_MAX_LENGTH` | const | `sso.dto.ts:25` |  |
+| `SSO_MAX_ALLOWED_DOMAINS` | const | `sso.dto.ts:26` |  |
+| `CreateSsoConnectionDto` | class | `sso.dto.ts:28` |  |
+| `UpdateSsoConnectionDto` | class | `sso.dto.ts:73` | Every field optional; `credential` replaces the stored secret only when sent. |
+| `SsoCallbackQuery` | type | `sso.dto.ts:140` | What the provider sent back: a code to exchange, or an error (the person cancelled, or the provider refused). |
+| `readSsoCallbackQuery` | function | `sso.dto.ts:155` | Reads the callback's query string. |
+| `JwtAuthGuard` | class | `guards.ts:40` | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
+| `PermissionsGuard` | class | `guards.ts:139` | Enforces @RequirePermission(...). |
+| `SSO_SIGN_IN_FAILED` | const | `identity-provider.ts:5` | All a person is ever told when single sign-on fails. |
+| `SsoSignInRefused` | class | `identity-provider.ts:13` | A refused single sign-on (161-sso-identity-federation.md, "The failure path"). |
+| `SsoCallbackParams` | interface | `identity-provider.ts:25` | What an identity provider sends back to the callback in an authorization-code flow — and only that. |
+| `SsoFlowSecrets` | interface | `identity-provider.ts:38` | Minted by the start step and required again by the callback. |
+| `VerifiedIdentity` | interface | `identity-provider.ts:45` | Who the provider says signed in, after every protocol check has passed. |
+| `IdentityProvider` | interface | `identity-provider.ts:67` | One sign-in protocol (161-sso-identity-federation.md §1, doc 128's own interface). |
 | `JwtStrategy` | class | `jwt.strategy.ts:10` |  |
+| `normalizeLoginIdentifier` | function | `login-identifier.ts:23` | A sign-in identifier as the rate limiter and the audit trail see it: the normalised form, hashed (206-rate-li… |
+| `hashLoginIdentifier` | function | `login-identifier.ts:28` | Hex SHA-256 of an already-normalised identifier. |
+| `loginIdentifierHash` | function | `login-identifier.ts:33` | normalizeLoginIdentifier then hashLoginIdentifier; null for anything that is not a string (an unvalidated bod… |
+| `LOGIN_ATTEMPT_BUCKET` | const | `login-throttle.service.ts:23` | The per-account sign-in bucket (WO-206.2, 206-rate-limiting-caching-compression-hardening.md §1.2). |
+| `LOGIN_UNAVAILABLE_MESSAGE` | const | `login-throttle.service.ts:25` | The per-account sign-in bucket (WO-206.2, 206-rate-limiting-caching-compression-hardening.md §1.2). |
+| `CONSUME_LOGIN_TOKEN_LUA` | const | `login-throttle.service.ts:40` | A continuous-refill token bucket, atomic in one round trip. |
+| `LoginRateLimitedException` | class | `login-throttle.service.ts:74` | doc 206 §1.2's 429: `{ retryAfterSeconds, message }` and, via AllExceptionsFilter, a `Retry-After` header wit… |
+| `LoginAttemptContext` | interface | `login-throttle.service.ts:83` |  |
+| `LoginThrottleService` | class | `login-throttle.service.ts:100` | The second, per-account layer in front of password sign-in — the per-IP CREDENTIAL_THROTTLE stops one address… |
+| `loginBucketKey` | function | `login-throttle.service.ts:165` | The Redis key a bucket lives at — exported for tests that age a bucket instead of waiting minutes. |
+| `NidController` | class | `nid.controller.ts:26` | nID Single Sign-On Controller (ECOSYSTEM.md, WO-255.2). |
 | `OwnedEntity` | interface | `ownership.guard.ts:3` |  |
 | `assertCanManage` | function | `ownership.guard.ts:13` | Throws unless the actor holds "<capability>.manage_all", or holds "<capability>.manage_own" AND entity.ownerI… |
-| `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:3` |  |
-| `hashPassword` | function | `password.util.ts:6` | The one place a plaintext password becomes a stored hash — keeps the round count consistent everywhere a pass… |
-| `ResolvedPermissions` | interface | `permissions.service.ts:4` |  |
-| `PermissionsResolverService` | class | `permissions.service.ts:26` | Resolves a user's currently effective roles and permission keys. |
+| `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:4` |  |
+| `PasswordHasher` | interface | `password.util.ts:19` | One password-hashing algorithm (126-pluggable-cryptography.md, WO-126.1). |
+| `BcryptPasswordHasher` | class | `password.util.ts:29` | The only algorithm in use today, at the cost this codebase has always used. |
+| `PASSWORD_HASHERS` | const | `password.util.ts:54` | Every registered algorithm. |
+| `hashPassword` | function | `password.util.ts:61` | The one place a plaintext password becomes a stored hash — keeps the algorithm and round count consistent eve… |
+| `verifyPassword` | function | `password.util.ts:75` | Checks a plaintext password against a stored hash, whichever registered algorithm wrote it. |
+| `ResolvedPermissions` | interface | `permissions.service.ts:6` |  |
+| `PERMISSIONS_L1_TTL_MS` | const | `permissions.service.ts:19` | L1: how long one process serves a user's resolved set (208-l1-l2-l3-caching-architecture.md §2). |
+| `PERMISSIONS_L1_MAX_ENTRIES` | const | `permissions.service.ts:21` | L1 entries per process, least recently used evicted past it (doc 208 §2). |
+| `PERMISSIONS_L2_TTL_MS` | const | `permissions.service.ts:28` | L2: how long a resolved set is shared in Redis (`permissions:{userId}`, doc 208 §2). |
+| `PermissionsResolverService` | class | `permissions.service.ts:80` | Resolves a user's currently effective roles and permission keys. |
+| `NidAccountClaims` | interface | `nid.provider.ts:17` |  |
+| `NidLoginStartResult` | interface | `nid.provider.ts:24` |  |
+| `NidProvider` | class | `nid.provider.ts:46` | nID Authentication Provider (ECOSYSTEM.md, WO-255.2). |
+| `OidcProvider` | class | `oidc.provider.ts:50` | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnectio… |
+| `identityFromClaims` | function | `oidc.provider.ts:161` | The identity a verified ID token proves. |
+| `RATE_LIMITED_AUDIT_ACTION` | const | `rate-limit-audit.service.ts:5` |  |
+| `AUTH_IDENTIFIER_AUDIT_ENTITY` | const | `rate-limit-audit.service.ts:7` | AuditLog.entity for a row keyed by a hashed sign-in identifier (login-identifier.ts) — there is no model to n… |
+| `RateLimitLayer` | type | `rate-limit-audit.service.ts:10` | Which limit refused the request: ThrottlerGuard's per-IP counter, or LoginThrottleService's per-account bucke… |
+| `RateLimitRefusal` | interface | `rate-limit-audit.service.ts:12` | Which limit refused the request: ThrottlerGuard's per-IP counter, or LoginThrottleService's per-account bucke… |
+| `RateLimitAuditService` | class | `rate-limit-audit.service.ts:49` | Writes `auth.rate_limited` (206-rate-limiting-caching-compression-hardening.md §1.2) — the hashed identifier,… |
 | `RolesController` | class | `roles.controller.ts:16` | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `RoleWithGrants` | interface | `roles.service.ts:5` |  |
-| `RoleWriteResult` | interface | `roles.service.ts:13` |  |
-| `UserRoleConflicts` | interface | `roles.service.ts:19` |  |
-| `RolesService` | class | `roles.service.ts:45` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
+| `RoleWithGrants` | interface | `roles.service.ts:7` |  |
+| `RoleWriteResult` | interface | `roles.service.ts:15` |  |
+| `UserRoleConflicts` | interface | `roles.service.ts:21` |  |
+| `RolesService` | class | `roles.service.ts:52` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
 | `AdminScopeGrant` | interface | `scope.guard.ts:11` | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RET… |
 | `ScopedActor` | interface | `scope.guard.ts:17` |  |
 | `ScopeTarget` | interface | `scope.guard.ts:24` | What a `RetailBrand`- or `Location`-shaped row needs, to be checked or filtered against an actor's scope. |
@@ -170,8 +324,21 @@ check there before adding another.
 | `resolveScope` | function | `scope.guard.ts:47` | Reduces an actor's raw `AdminScope` rows to the three sets the guard and the filter each need. |
 | `assertCanManageAtScope` | function | `scope.guard.ts:84` | Throws unless the actor holds `"<capability>.manage_all"`, or an `AdminScope` grant wide enough to cover `tar… |
 | `scopeFilterFor` | function | `scope.guard.ts:124` | A Prisma `where` fragment scoping a list query to what the actor's `AdminScope` grants make visible — spread… |
+| `OrgUnitReach` | interface | `scope.guard.ts:140` | What `GrantService.reachableUnitIdsFor()` hands to `orgUnitScopeFilterFor` below — access-control-identity/21… |
+| `orgUnitScopeFilterFor` | function | `scope.guard.ts:166` | A Prisma `where` fragment scoping a list query to the OrgUnit subtree(s) a reach descriptor covers — doc 21's… |
+| `SsoAdminController` | class | `sso-admin.controller.ts:25` | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.… |
+| `SsoController` | class | `sso.controller.ts:58` | Single sign-on, the browser half (161-sso-identity-federation.md). |
+| `ssoCookiePath` | function | `sso.service.ts:27` | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |
+| `ssoCallbackUrl` | function | `sso.service.ts:39` | The one callback URL every identity provider is registered with: the API's own public origin (API_PUBLIC_URL… |
+| `SsoConnectionView` | interface | `sso.service.ts:149` | A connection as the admin screen sees it — never the credential. |
+| `SsoConnectionList` | interface | `sso.service.ts:159` | The admin list. |
+| `SsoDefaultRoleOption` | interface | `sso.service.ts:165` | A role, and what disqualifies it as a connection's default — empty when it may be one. |
+| `SsoSignInOption` | interface | `sso.service.ts:171` | What the sign-in screen needs to draw one button. |
+| `SsoAccountView` | interface | `sso.service.ts:177` | One account provisioned or linked through a connection — doc 161, "Click the number". |
+| `SsoLoginStart` | interface | `sso.service.ts:190` |  |
+| `SsoService` | class | `sso.service.ts:210` | Single sign-on (access-control-identity/161-sso-identity-federation.md): the connections an admin registers,… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

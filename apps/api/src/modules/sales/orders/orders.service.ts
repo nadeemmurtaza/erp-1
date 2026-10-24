@@ -1,0 +1,1399 @@
+import { documentPrefix } from '../../../core/settings/document-prefix';
+import { documentNumber } from '../../../core/settings/document-number';
+import { AppConfigService } from '../../../core/config/app-config.service';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  computeLineItem,
+  computeOrderTotals,
+  DEFAULT_LOCALE,
+  getVariantDisplayLabel,
+  normalizePkPhone,
+  pickTranslation,
+  stitchingFeeFor,
+  taxExclusive,
+  taxInclusive,
+  type Locale,
+} from '@newax/shared';
+import { AuditService } from '../../../core/audit/audit.service';
+import { CheckoutValidatorRegistry } from '../../../core/checkout/checkout-validator.registry';
+import { DomainEvent } from '../../../core/events/domain-events';
+import { EventBusService } from '../../../core/events/event-bus.service';
+import { EntityEnrichmentRegistry } from '../../../core/extension-points/entity-enrichment.registry';
+import { PrismaService } from '../../../core/prisma/prisma.service';
+import { SettingsService } from '../../../core/settings/settings.service';
+import { SettingKey } from '../../../core/settings/settings.defaults';
+import { paginated } from '../../../core/common/dto/pagination.dto';
+import { Prisma, type CodRiskAction, type OrderStatus } from '../../../core/prisma/client';
+import { PaymentsService } from '../payments/payments.service';
+import { TaxService } from '../../money/tax/tax.service';
+import { ShippingService } from '../fulfilment/shipping.service';
+import { PromotionsService } from '../promotions/promotions.service';
+import { GiftCardsService } from '../giftcards/giftcards.service';
+import { StoreCreditService } from '../giftcards/store-credit.service';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { PlaceOrderDto } from './dto/order.dto';
+
+export interface PosSaleLineInput {
+  variantId: string;
+  quantity: number;
+  /** pos-hardware/31 §2 — only the number matters here; label/key are
+   *  pos-owned display metadata (`PosLineModifier`), written separately by
+   *  `PosSalesService` after this call returns. Folded into this line's
+   *  `unitPrice` below — "a richer line, no new coupling" (doc 31's own
+   *  words): zero schema change to `orders` itself. */
+  modifiers?: { priceDeltaMinor: number }[];
+}
+
+/**
+ * finance-accounting/151-layby-installment-sales.md — a layby/instalment
+ * plan requested at the point of sale. LAYBY holds the order at PENDING and
+ * leaves stock un-decremented until the plan reaches COMPLETED; INSTALMENT
+ * releases the goods immediately (an ordinary DELIVERED sale) and this
+ * schedule only tracks what remains owed.
+ */
+export interface PlaceFromPosInstalmentInput {
+  type: 'LAYBY' | 'INSTALMENT';
+  depositMinor: number;
+  schedule: { dueDate: Date; amountMinor: number }[];
+}
+
+export interface PlaceFromPosInput {
+  locationId: string;
+  terminalId: string;
+  shiftId: string;
+  cashierUserId: string;
+  lines: PosSaleLineInput[];
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+  instalmentPlan?: PlaceFromPosInstalmentInput;
+}
+
+/**
+ * Which status may follow which. A shop that can jump an order straight from
+ * PENDING to DELIVERED loses the ability to answer "where is my parcel".
+ */
+const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  PENDING: ['CONFIRMED', 'CANCELLED'],
+  CONFIRMED: ['PROCESSING', 'CANCELLED'],
+  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
+  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
+  SHIPPED: ['DELIVERED', 'RETURNED'],
+  DELIVERED: ['RETURNED'],
+  CANCELLED: [],
+  RETURNED: [],
+};
+
+const orderInclude = {
+  // The tailoring progress for a stitched line (the customer order page shows
+  // the same stage rail as a standalone booking) used to be a Prisma relation
+  // include here. It is attached after the query now, via
+  // EntityEnrichmentRegistry — core no longer types a `stitchingJob` field at
+  // all, so this file compiles and this query runs identically whether or
+  // not the `stitching` module (or any pack) is enabled. See
+  // attachStitchingJobs() below.
+  items: {
+    orderBy: { createdAt: 'asc' },
+  },
+  payments: { orderBy: { createdAt: 'desc' } },
+  shipments: { orderBy: { createdAt: 'desc' } },
+  statusEvents: { orderBy: { createdAt: 'asc' } },
+} satisfies Prisma.OrderInclude;
+
+import { InventoryService, InsufficientStockError } from '../../supply-chain/inventory/inventory.service';
+import { LotsService } from '../../supply-chain/inventory/lots.service';
+import { CodRiskService } from './cod-risk.service';
+import { PricingService } from '../pricing/pricing.service';
+import { BundlesService } from '../../merchandising/catalog/bundles.service';
+
+@Injectable()
+export class OrdersService {
+  private readonly logger = new Logger(OrdersService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
+    private readonly events: EventBusService,
+    private readonly audit: AuditService,
+    private readonly payments: PaymentsService,
+    private readonly inventory: InventoryService,
+    private readonly lots: LotsService,
+    private readonly enrichment: EntityEnrichmentRegistry,
+    private readonly checkoutValidators: CheckoutValidatorRegistry,
+    private readonly tax: TaxService,
+    private readonly shipping: ShippingService,
+    private readonly promotions: PromotionsService,
+    private readonly giftCards: GiftCardsService,
+    private readonly storeCredit: StoreCreditService,
+    private readonly codRisk: CodRiskService,
+    private readonly pricing: PricingService,
+    private readonly bundles: BundlesService,
+  ) {}
+
+  /**
+   * Attaches each order item's `stitchingJob` (null when there isn't one),
+   * exactly the shape the old Prisma include produced, so every caller below
+   * — and the web/mobile clients reading their response — sees no difference.
+   */
+  private async attachStitchingJobs<
+    T extends { items: ReadonlyArray<{ id: string }> },
+  >(orderOrOrders: T | T[]): Promise<T | T[]> {
+    const orders = Array.isArray(orderOrOrders) ? orderOrOrders : [orderOrOrders];
+    const itemIds = orders.flatMap((order) => order.items.map((item) => item.id));
+    const jobs = await this.enrichment.enrich('orderItem.stitchingJob', itemIds);
+    for (const order of orders) {
+      for (const item of order.items) {
+        (item as unknown as { stitchingJob: unknown }).stitchingJob = jobs.get(item.id) ?? null;
+      }
+    }
+    return orderOrOrders;
+  }
+
+  /**
+   * Validates a raw, untyped payload against PlaceOrderDto's own decorators
+   * — the identical rules main.ts's global ValidationPipe already applies
+   * to POST /orders — and returns the typed, whitelisted result or throws.
+   *
+   * The one way another module (AccountsService.submitOrderRequest(),
+   * 149-b2b-accounts-approvals-sector-packs.md) can accept an order's own
+   * shape without importing PlaceOrderDto/ShippingAddressDto directly:
+   * `scripts/check-module-boundaries.mjs` only allows a cross-module import
+   * of a `.module` or a top-level `.service`, never a DTO file, so this is
+   * the DTO's own public surface for a caller that needs it validated but
+   * does not place the order itself.
+   */
+  async validatePlaceOrderDto(raw: unknown): Promise<PlaceOrderDto> {
+    const dto = plainToInstance(PlaceOrderDto, raw);
+    const errors = await validate(dto, { whitelist: true, forbidNonWhitelisted: true });
+    if (errors.length > 0) {
+      const messages = errors.flatMap((error) => Object.values(error.constraints ?? {}));
+      throw new BadRequestException(messages.length > 0 ? messages : 'Invalid order payload.');
+    }
+    return dto;
+  }
+
+  /**
+   * Turns a cart into an order.
+   *
+   * Everything happens in ONE transaction: re-price from the database, check
+   * and decrement stock, snapshot each line, write the order and its payment,
+   * empty the cart, and queue `order.placed` in the outbox. Either all of it
+   * lands or none of it does — there is no state where stock was taken but no
+   * order exists, or an order exists that the CRM and tailor queue never hear
+   * about.
+   */
+  async place(
+    cartToken: string | undefined,
+    userId: string | undefined,
+    dto: PlaceOrderDto,
+    locale: Locale = DEFAULT_LOCALE,
+  ) {
+    const cart = await this.loadCart(cartToken, userId);
+
+    if (cart.items.length === 0) {
+      throw new BadRequestException('Your cart is empty.');
+    }
+
+    const phone = normalizePkPhone(dto.shippingAddress.phone).e164;
+    if (!phone) {
+      throw new BadRequestException(
+        'Enter a valid phone number — the courier needs it.',
+      );
+    }
+
+    // Re-price from the database. The client sends no amounts at all.
+    const priced = await this.priceCart(cart, locale);
+
+    const goodsSubtotal = priced.totals.itemsSubtotal + priced.totals.stitchingSubtotal;
+    const quote = await this.shipping.quote(dto.shippingAddress.city, goodsSubtotal);
+    const shippingFeeBeforeDiscount = quote.fee;
+    const paymentFee = await this.payments.feeFor(dto.paymentMethod, goodsSubtotal);
+
+    // Phase 5 (WO-5.3): evaluate discounts/promo code against the SAME
+    // database-resolved lines the order is about to be built from — never
+    // the client's own numbers. Read-only; nothing is redeemed yet (that
+    // happens inside the transaction below, per PromotionsService's own
+    // note on why redemption has to be race-safe with order creation).
+    const categoryIdsByProduct = await this.promotions.categoryIdsByProduct(
+      [...new Set(priced.lines.map((line) => line.productId).filter((id): id is string => id !== null))],
+    );
+    const discountEvaluation = await this.promotions.evaluateForCheckout({
+      lines: priced.lines.map((line, index) => ({
+        id: String(index),
+        productId: line.productId,
+        categoryIds: line.productId ? categoryIdsByProduct.get(line.productId) ?? [] : [],
+        unitPrice: line.unitPrice,
+        quantity: line.quantity,
+      })),
+      shippingFee: shippingFeeBeforeDiscount,
+      userId: userId ?? null,
+      promoCode: dto.promoCode,
+    });
+    const { linePerUnitDiscounts, orderDiscount, shippingDiscount } = discountEvaluation.result;
+    const shippingFee = Math.max(0, shippingFeeBeforeDiscount - shippingDiscount);
+
+    const totals = computeOrderTotals({
+      items: priced.lines.map((line, index) => ({
+        unitPrice: line.unitPrice,
+        quantity: line.quantity,
+        stitchingFeePerUnit: line.stitchingFeeUnit,
+        discountPerUnit: linePerUnitDiscounts[String(index)] ?? 0,
+      })),
+      shippingFee,
+      codFee: paymentFee,
+      orderDiscount,
+      // Already correctly gated to EXCLUSIVE-mode-only inside priceCart()'s
+      // own computeOrderTotals call -- reused here rather than re-derived,
+      // per the rounding-trap discipline (one source of truth, never two).
+      taxAmount: priced.totals.taxAmount,
+    });
+
+    const allowBackorder = await this.settings.get<boolean>(SettingKey.OrdersAllowBackorder);
+
+    const minimum = await this.settings.get<number>(SettingKey.MinOrderValue);
+    if (goodsSubtotal < minimum) {
+      throw new BadRequestException(
+        `Orders start at Rs ${Math.round(minimum / 100)}. Add a little more to your cart.`,
+      );
+    }
+
+    // B3 (MULTI-SECTOR.md): the one hook age gating, prescription
+    // verification, credit limits and approval holds each need. No pack
+    // registers a validator today, so this is always an empty check.
+    const vetoes = await this.checkoutValidators.validateAll({
+      userId: userId ?? null,
+      contactId: null,
+      items: priced.lines.map((line) => ({
+        productId: line.productId,
+        variantId: line.variantId,
+        quantity: line.quantity,
+      })),
+      totalAmount: totals.grandTotal,
+    });
+    if (vetoes.length > 0) {
+      throw new BadRequestException(vetoes.map((veto) => veto.message).join(' '));
+    }
+
+    // Reserved before checkout's own transaction opens — see
+    // nextOrderNumber() for why this has to be a separate atomic step
+    // rather than something computed inside that transaction.
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
+
+    // WO-9.4 (09-ai-layer.md) — computed synchronously here, COD orders only
+    // (a paid order has already cleared; RTO risk does not apply to it).
+    // Read-only, so — like quote/discountEvaluation above — it runs before
+    // the transaction opens rather than inside it.
+    const placedAt = new Date();
+    const codRisk =
+      dto.paymentMethod === 'cod'
+        ? await this.codRisk.score({
+            address: { ...dto.shippingAddress, phone },
+            orderValue: totals.grandTotal,
+            userId: userId ?? null,
+            placedAt,
+          })
+        : null;
+
+    const order = await this.prisma.$transaction(async (tx) => {
+      const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
+      const variants = await tx.productVariant.findMany({
+        where: { id: { in: variantIds } },
+        select: { id: true, costPrice: true, producedInHouse: true, lotTracked: true },
+      });
+      const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
+      const producedInHouseMap = new Map(variants.map(v => [v.id, v.producedInHouse]));
+      // 32-lots-batch-expiry-fefo.md — same batched-lookup discipline as
+      // costMap/producedInHouseMap above: one query per order, never one
+      // per line.
+      const lotTrackedMap = new Map(variants.map(v => [v.id, v.lotTracked]));
+
+      const created = await tx.order.create({
+        data: {
+          number: orderNumber,
+          userId: userId ?? null,
+          status: 'PENDING',
+          guestName: dto.shippingAddress.fullName,
+          guestEmail: dto.email ?? null,
+          guestPhone: phone,
+          // WO-8.5 — recovered-revenue attribution: whether a marketing touch
+          // (firstTouchSentAt/reminderSentAt/incentiveSentAt) fired on this
+          // exact cart before this order existed.
+          sourceCartId: cart.id,
+          shippingAddress: { ...dto.shippingAddress, phone } as Prisma.InputJsonValue,
+          itemsSubtotal: totals.itemsSubtotal,
+          stitchingSubtotal: totals.stitchingSubtotal,
+          itemDiscountTotal: totals.itemDiscountTotal,
+          orderDiscount: totals.orderDiscount,
+          shippingFee: totals.shippingFee,
+          codFee: totals.codFee,
+          taxAmount: totals.taxAmount,
+          grandTotal: totals.grandTotal,
+          shippingZone: quote.zoneKey,
+          customerNote: dto.note ?? null,
+          codRiskScore: codRisk?.score ?? null,
+          codRiskAction: codRisk?.action ?? null,
+          codRiskComputedAt: codRisk ? placedAt : null,
+          codRiskReasonEn: codRisk?.reasonEn ?? null,
+          items: {
+            create: priced.lines.map((line, index) => {
+              const discountUnit = linePerUnitDiscounts[String(index)] ?? 0;
+              return {
+              productId: line.productId,
+              variantId: line.variantId,
+              kind: line.kind,
+              nameEn: line.nameEn,
+              nameUr: line.nameUr,
+              sku: line.sku,
+              imageUrl: line.imageUrl,
+              variantLabel: line.variantLabel,
+              unitPrice: line.unitPrice,
+              unitCost: costMap.get(line.variantId) ?? 0,
+              quantity: line.quantity,
+              stitchingFeeUnit: line.stitchingFeeUnit,
+              discountUnit,
+              lineTotal: line.lineTotal - discountUnit * line.quantity,
+              taxAmount: line.taxAmount,
+              taxRateBps: line.taxRateBps,
+              stitchingServiceId: line.stitchingServiceId,
+              stitchingServiceName: line.stitchingServiceName,
+              garmentTypeKey: line.garmentTypeKey,
+              measurementSnapshot: jsonOrNull(line.measurementSnapshot),
+              optionsSnapshot: jsonOrNull(line.optionsSnapshot),
+              stitchingNotes: line.stitchingNotes,
+              measurementValues: jsonOrNull(line.measurementValues),
+              customDesignText: jsonOrNull(line.customDesignText),
+              sizeToken: line.sizeToken,
+              };
+            }),
+          },
+          statusEvents: {
+            create: { toStatus: 'PENDING', note: 'Order placed' },
+          },
+        },
+        include: orderInclude,
+      });
+
+      const locationId = await this.inventory.defaultLocationId(tx);
+      // Sorted by variantId, same as moveMany()'s own internal ordering —
+      // this is the actual lock order two concurrent checkouts touching the
+      // same variants must agree on to avoid a deadlock (see "survives
+      // opposite-order checkouts" in orders.e2e-spec.ts). item.id as the
+      // tiebreaker only matters when two lines share a variantId (same
+      // product, different stitching options) and doesn't affect lock order.
+      const sortedItems = [...created.items].sort((a, b) => {
+        const byVariant = (a.variantId ?? '').localeCompare(b.variantId ?? '');
+        return byVariant !== 0 ? byVariant : a.id.localeCompare(b.id);
+      });
+      // 150-product-kitting-bundles.md — a bundle's own variantId carries
+      // no stock row of its own; selling one decrements every component
+      // instead (BundlesService.sellBundle()). Batched once, never one
+      // query per line, exactly the discipline costMap/producedInHouseMap
+      // above already establish.
+      const bundlesByVariantId = await this.bundles.bundlesByVariantId(
+        sortedItems.map((item) => item.variantId).filter((id): id is string => id !== null),
+        tx,
+      );
+
+      const backorderedStockIds: string[] = [];
+      const backorderedProductionIds: string[] = [];
+      for (const item of sortedItems) {
+        if (!item.variantId) continue; // a stitching-service line has no stock to move
+        const bundle = bundlesByVariantId.get(item.variantId);
+        try {
+          if (bundle) {
+            await this.bundles.sellBundle(bundle, item.quantity, created.id, locationId, tx);
+          } else {
+            const movement = await this.inventory.move({
+              variantId: item.variantId,
+              locationId,
+              delta: -item.quantity,
+              reason: 'SALE',
+              refType: 'Order',
+              refId: created.id,
+              unitCost: costMap.get(item.variantId) ?? 0,
+            }, tx);
+
+            // 32-lots-batch-expiry-fefo.md WO-32.2. A no-op (returns []) for
+            // any variant with no Lot rows at this location — an ordinary,
+            // non-lot-tracked sale behaves exactly as it did before this
+            // document, proven by inventory.service.spec.ts running
+            // unchanged. Bundle lines are out of scope here: a bundle's own
+            // component fan-out (BundlesService.sellBundle()) would need its
+            // own lot-awareness, real, separately-scoped work — see
+            // DECISIONS.md ADR-068.
+            if (lotTrackedMap.get(item.variantId)) {
+              await this.lots.recordDeduction(
+                { variantId: item.variantId, locationId, quantity: item.quantity, stockMovementId: movement.id },
+                tx,
+              );
+            }
+          }
+        } catch (error) {
+          if (error instanceof InsufficientStockError) {
+            // A bundle is never backorder-eligible, per this document's own
+            // "The failure path" — there is no single variant to allocate a
+            // backorder against when a bundle's shortfall could be any one
+            // of several components, so this refuses outright regardless of
+            // the checkout.allow_backorder setting, rather than guessing
+            // which component to park.
+            if (!allowBackorder || bundle) {
+              throw new BadRequestException(`${item.nameEn} sold out while you were checking out. Please adjust your cart.`);
+            }
+            // Ship-safe default keeps today's behavior (the throw above);
+            // only with checkout.allow_backorder on does a line get parked
+            // instead of failing the whole order. backorder.listener.ts
+            // (@OnDomainEvent(StockReplenished)) allocates the stock and
+            // flips it to READY automatically once it exists.
+            if (producedInHouseMap.get(item.variantId)) {
+              backorderedProductionIds.push(item.id);
+            } else {
+              backorderedStockIds.push(item.id);
+            }
+            continue;
+          }
+          throw error;
+        }
+      }
+
+      if (backorderedStockIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedStockIds } },
+          data: { fulfillmentStatus: 'AWAITING_STOCK', awaitingSince: new Date() },
+        });
+      }
+      if (backorderedProductionIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedProductionIds } },
+          data: { fulfillmentStatus: 'AWAITING_PRODUCTION', awaitingSince: new Date() },
+        });
+      }
+
+      await this.promotions.redeemInTransaction(tx, {
+        orderId: created.id,
+        orderNumber: created.number,
+        evaluation: discountEvaluation,
+      });
+
+      // Gift card / store credit tender (WO-5.4/5.5) — applied AFTER tax and
+      // shipping, against the final total, as real money already in hand
+      // rather than a discount. Each is its own PAID Payment row so the
+      // order's payment history shows exactly what covered it; whatever is
+      // left (which may be everything, or nothing) goes to the customer's
+      // chosen payment method below.
+      let remainingToPay = created.grandTotal;
+      if (dto.giftCardCode) {
+        const requested = Math.min(dto.giftCardAmount ?? 0, remainingToPay);
+        if (requested <= 0) {
+          throw new BadRequestException('Enter a gift card amount to apply.');
+        }
+        const giftCard = await this.giftCards.resolveForCheckout(dto.giftCardCode, requested);
+        await this.giftCards.redeemInTransaction(tx, {
+          giftCardId: giftCard.id,
+          amount: requested,
+          orderId: created.id,
+          actorId: userId ?? null,
+        });
+        await tx.payment.create({
+          data: { orderId: created.id, provider: 'gift_card', status: 'PAID', amount: requested, paidAt: new Date() },
+        });
+        remainingToPay -= requested;
+      }
+      if (dto.storeCreditAmount) {
+        if (!userId) {
+          throw new BadRequestException('Sign in to use store credit.');
+        }
+        const requested = Math.min(dto.storeCreditAmount, remainingToPay);
+        if (requested > 0) {
+          await this.storeCredit.redeemInTransaction(tx, {
+            userId,
+            amount: requested,
+            orderId: created.id,
+            actorId: userId,
+          });
+          await tx.payment.create({
+            data: { orderId: created.id, provider: 'store_credit', status: 'PAID', amount: requested, paidAt: new Date() },
+          });
+          remainingToPay -= requested;
+        }
+      }
+
+      const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {
+        orderId: created.id,
+        orderNumber: created.number,
+        amount: remainingToPay,
+        customerName: dto.shippingAddress.fullName,
+        customerPhone: phone,
+        customerEmail: dto.email ?? null,
+        // 149-b2b-accounts-approvals-sector-packs.md — AccountProvider's own
+        // credit check needs the buyer's Contact.id; every other provider
+        // ignores both fields.
+        contactId: priced.customerId,
+        purchaseOrderReference: dto.purchaseOrderReference ?? null,
+      });
+
+      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+      await this.events.publish(
+        DomainEvent.OrderPlaced,
+        {
+          orderId: created.id,
+          orderNumber: created.number,
+          userId: userId ?? null,
+          customerName: dto.shippingAddress.fullName,
+          customerPhone: phone,
+          customerEmail: dto.email ?? null,
+          grandTotal: created.grandTotal,
+          placedAt: created.placedAt.toISOString(),
+          stitchingItemIds: created.items
+            .filter((item) => item.garmentTypeKey)
+            .map((item) => item.id),
+        },
+        tx,
+      );
+
+      return { ...created, payment };
+    }, {
+      // Headroom over Prisma's 5s default for a slow/loaded runner. This
+      // transaction no longer contends with other checkouts over anything
+      // lock-shaped (order numbering is reserved beforehand, see
+      // nextOrderNumber() above) — 6 concurrent checkouts hitting a shared
+      // CI Postgres container still occasionally lean on plain CPU/IO
+      // contention, not a design flaw, so the budget stays generous.
+      timeout: 20_000,
+    });
+
+    this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);
+    await this.attachStitchingJobs(order);
+    return order;
+  }
+
+  /**
+   * The till's sale path (RETAIL-ERP.md R11): `pos` resolves the shift/
+   * terminal context and validates the shift is open, then hands a flat list
+   * of {variantId, quantity} here — a deliberately separate, minimal method
+   * from place(), not a reuse of it, because place() is wired through a cart,
+   * a shipping address and stitching options none of which a till sale has.
+   *
+   * Three things a web order does that this does not, on purpose, quarantined
+   * to a later work order rather than faked: no stitching line (a till sells
+   * ready stock, WO-21.4+ if a shop wants to take stitching orders at the
+   * counter), no tax lookup (TaxService integration for POS is unscoped
+   * here), no backorder path — postUnconditional() below means there is
+   * never a reason to park a line, only to record how far it oversold.
+   *
+   * Stock posts through postUnconditional(), never move(): R5 — a sale that
+   * already happened at the till must not be rejected by sync. Payment is
+   * created directly as a paid cash tender, bypassing PaymentsService's
+   * provider registry (R11) — a till has no gateway callback to route
+   * through. Status is set straight to DELIVERED at creation (the customer
+   * already has the goods), which ALLOWED_TRANSITIONS never has to know
+   * about since it only governs updateStatus(), not create().
+   */
+  async placeFromPos(input: PlaceFromPosInput) {
+    if (input.lines.length === 0) {
+      throw new BadRequestException('A sale needs at least one line.');
+    }
+
+    const variantIds = [...new Set(input.lines.map((line) => line.variantId))];
+    const variants = await this.prisma.productVariant.findMany({
+      where: { id: { in: variantIds }, isActive: true },
+      include: {
+        product: {
+          include: {
+            translations: { where: { locale: DEFAULT_LOCALE }, take: 1 },
+            images: { orderBy: { isPrimary: 'desc' }, take: 1 },
+          },
+        },
+      },
+    });
+    const variantMap = new Map(variants.map((variant) => [variant.id, variant]));
+
+    const missing = variantIds.filter((id) => !variantMap.has(id));
+    if (missing.length > 0) {
+      throw new BadRequestException(`Unknown or inactive variant(s): ${missing.join(', ')}`);
+    }
+
+    const lines = input.lines.map((line) => {
+      const variant = variantMap.get(line.variantId)!;
+      // pos-hardware/31 §2 — a modifier's price delta applies per unit,
+      // folded into the same unitPrice OrderItem already carries.
+      const modifierDeltaPerUnit = (line.modifiers ?? []).reduce((sum, m) => sum + m.priceDeltaMinor, 0);
+      const unitPrice = (variant.priceOverride ?? variant.product.basePrice) + modifierDeltaPerUnit;
+      const lineTotals = computeLineItem({ unitPrice, quantity: line.quantity });
+      const english = pickTranslation(variant.product.translations, 'en');
+      return {
+        variant,
+        variantId: line.variantId,
+        productId: variant.productId,
+        quantity: line.quantity,
+        unitPrice,
+        lineTotal: lineTotals.lineTotal,
+        nameEn: english?.name ?? variant.product.slug,
+        imageUrl: variant.product.images[0]?.url ?? null,
+        variantLabel: getVariantDisplayLabel(variant),
+      };
+    });
+
+    const totals = computeOrderTotals({
+      items: lines.map((line) => ({ unitPrice: line.unitPrice, quantity: line.quantity })),
+      shippingFee: 0,
+      codFee: 0,
+      taxAmount: 0,
+    });
+
+    const instalmentPlan = input.instalmentPlan;
+    if (instalmentPlan) {
+      if (instalmentPlan.depositMinor < 0 || instalmentPlan.depositMinor > totals.grandTotal) {
+        throw new BadRequestException('depositMinor must be between 0 and the order total.');
+      }
+      if (instalmentPlan.schedule.length === 0) {
+        throw new BadRequestException('An instalment plan needs at least one scheduled payment.');
+      }
+      const scheduledTotal = instalmentPlan.schedule.reduce((sum, line) => sum + line.amountMinor, 0);
+      if (scheduledTotal + instalmentPlan.depositMinor !== totals.grandTotal) {
+        throw new BadRequestException(
+          `The deposit (${instalmentPlan.depositMinor}) plus the schedule (${scheduledTotal}) must equal the order total (${totals.grandTotal}).`,
+        );
+      }
+    }
+    const isLayby = instalmentPlan?.type === 'LAYBY';
+
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
+
+    const order = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.order.create({
+        data: {
+          number: orderNumber,
+          status: isLayby ? 'PENDING' : 'DELIVERED',
+          channel: 'POS',
+          locationId: input.locationId,
+          terminalId: input.terminalId,
+          shiftId: input.shiftId,
+          guestName: input.customerName ?? null,
+          guestEmail: input.customerEmail ?? null,
+          guestPhone: input.customerPhone ?? null,
+          shippingAddress: {},
+          itemsSubtotal: totals.itemsSubtotal,
+          stitchingSubtotal: totals.stitchingSubtotal,
+          itemDiscountTotal: totals.itemDiscountTotal,
+          orderDiscount: totals.orderDiscount,
+          shippingFee: totals.shippingFee,
+          codFee: totals.codFee,
+          taxAmount: totals.taxAmount,
+          grandTotal: totals.grandTotal,
+          deliveredAt: isLayby ? null : new Date(),
+          items: {
+            create: lines.map((line) => ({
+              productId: line.productId,
+              variantId: line.variantId,
+              kind: line.variant.product.kind,
+              nameEn: line.nameEn,
+              sku: line.variant.sku,
+              imageUrl: line.imageUrl,
+              variantLabel: line.variantLabel,
+              unitPrice: line.unitPrice,
+              unitCost: line.variant.costPrice,
+              quantity: line.quantity,
+              lineTotal: line.lineTotal,
+            })),
+          },
+          statusEvents: {
+            create: {
+              toStatus: isLayby ? 'PENDING' : 'DELIVERED',
+              note: isLayby ? 'POS layby sale' : 'POS sale',
+              actorId: input.cashierUserId,
+            },
+          },
+        },
+        include: orderInclude,
+      });
+
+      // A LAYBY sale reserves nothing — stock stays available for another
+      // sale until the plan is paid in full (151-layby-installment-sales.md's
+      // own "movement with no address" lens, a deliberate trade-off, not an
+      // oversight): decremented later, through the checked InventoryService
+      // .move() at InstalmentPlanService.recordInstalmentPayment()'s own
+      // COMPLETED branch, never here and never via postUnconditional().
+      if (!isLayby) {
+        // Sorted the same way moveMany() locks — see place()'s own comment on
+        // sortedItems for why this matters under concurrent tills at the same
+        // location.
+        const sortedItems = [...created.items].sort((a, b) => (a.variantId ?? '').localeCompare(b.variantId ?? ''));
+        for (const item of sortedItems) {
+          if (!item.variantId) continue;
+          const variant = variantMap.get(item.variantId)!;
+          await this.inventory.postUnconditional(
+            {
+              variantId: item.variantId,
+              locationId: input.locationId,
+              delta: -item.quantity,
+              reason: 'POS_SALE',
+              refType: 'Order',
+              refId: created.id,
+              unitCost: variant.costPrice,
+              actorId: input.cashierUserId,
+            },
+            tx,
+          );
+        }
+      }
+
+      // A till's cash tender has no gateway callback to route through
+      // PaymentsService's provider registry — it is paid the instant it is
+      // rung up, so the Payment row is created directly rather than through
+      // createForOrder()'s PENDING-then-webhook flow. PaymentSucceeded is
+      // published by hand for the same reason createForOrder() would have:
+      // posting-rules.subscriber.ts's Dr Cash & Bank / Cr AR only fires off
+      // that event, and a cash sale must not sit in the books as an
+      // uncollected receivable forever.
+      //
+      // For an instalment plan, only the deposit (which may be zero) is
+      // collected now — the rest is recorded later, one Payment row per
+      // instalment, through InstalmentPlanService.recordInstalmentPayment().
+      const amountDueNow = instalmentPlan ? instalmentPlan.depositMinor : created.grandTotal;
+      const payment =
+        amountDueNow > 0
+          ? await tx.payment.create({
+              data: {
+                orderId: created.id,
+                provider: 'cash',
+                amount: amountDueNow,
+                status: 'PAID',
+                paidAt: new Date(),
+              },
+            })
+          : null;
+
+      if (payment) {
+        await this.events.publish(
+          DomainEvent.PaymentSucceeded,
+          {
+            paymentId: payment.id,
+            orderId: created.id,
+            provider: payment.provider,
+            amount: payment.amount,
+            status: payment.status,
+          },
+          tx,
+        );
+      }
+
+      const plan = instalmentPlan
+        ? await tx.instalmentPlan.create({
+            data: {
+              orderId: created.id,
+              type: instalmentPlan.type,
+              totalMinor: created.grandTotal,
+              depositMinor: instalmentPlan.depositMinor,
+              schedule: { create: instalmentPlan.schedule },
+              ...(payment
+                ? { payments: { create: { paymentId: payment.id, isDeposit: true } } }
+                : {}),
+            },
+            include: { schedule: true },
+          })
+        : null;
+
+      await this.events.publish(
+        DomainEvent.OrderPlaced,
+        {
+          orderId: created.id,
+          orderNumber: created.number,
+          userId: null,
+          customerName: input.customerName ?? 'Walk-in customer',
+          customerPhone: input.customerPhone ?? null,
+          customerEmail: input.customerEmail ?? null,
+          grandTotal: created.grandTotal,
+          placedAt: created.placedAt.toISOString(),
+          stitchingItemIds: [],
+        },
+        tx,
+      );
+
+      // 68-realtime-gross-profit.md: a POS sale is created straight at
+      // DELIVERED and, until this line, never published this event at all —
+      // FinanceListener's OrderEconomics, loyalty's earn-on-DELIVERED, and
+      // notification.subscriber.ts's delivery email all silently never fired
+      // for a till sale. fromStatus is null (not a transition — the order
+      // never existed at any other status), which every subscriber already
+      // tolerates since each keys off toStatus alone. A LAYBY order is
+      // created at PENDING, not DELIVERED — this never fires for one; it
+      // fires later, from an ordinary changeStatus() call, once the plan
+      // completes and the order actually moves.
+      if (!isLayby) {
+        await this.events.publish(
+          DomainEvent.OrderStatusChanged,
+          {
+            orderId: created.id,
+            orderNumber: created.number,
+            fromStatus: null,
+            toStatus: 'DELIVERED',
+            actorId: input.cashierUserId,
+          },
+          tx,
+        );
+      }
+
+      return { ...created, payment, instalmentPlan: plan };
+    });
+
+    this.logger.log(`POS sale ${order.number} placed for ${order.grandTotal} paisa at terminal ${input.terminalId}`);
+    return order;
+  }
+
+  async findByNumber(number: string, userId?: string, phone?: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { number },
+      include: orderInclude,
+    });
+
+    if (!order) throw new NotFoundException('No order with that number.');
+    await this.attachStitchingJobs(order);
+
+    // A signed-in customer sees their own orders; a guest must know the phone
+    // number the order was placed with. Staff use the admin endpoints.
+    const isOwner = userId && order.userId === userId;
+    const matchesPhone =
+      phone && order.guestPhone === normalizePkPhone(phone).e164;
+
+    if (!isOwner && !matchesPhone) {
+      throw new ForbiddenException(
+        'Sign in, or supply the phone number this order was placed with.',
+      );
+    }
+
+    return order;
+  }
+
+  async listForUser(userId: string, page = 1, pageSize = 20) {
+    const where: Prisma.OrderWhereInput = { userId };
+
+    const [rows, total] = await this.prisma.$transaction([
+      this.prisma.order.findMany({
+        where,
+        include: orderInclude,
+        orderBy: { placedAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.order.count({ where }),
+    ]);
+
+    await this.attachStitchingJobs(rows);
+    return paginated(rows, total, { page, pageSize });
+  }
+
+  // --- Admin ---------------------------------------------------------------
+
+  async adminList(query: {
+    page: number;
+    pageSize: number;
+    skip: number;
+    take: number;
+    q?: string;
+    status?: OrderStatus[];
+    codRiskAction?: CodRiskAction;
+  }) {
+    const where: Prisma.OrderWhereInput = {};
+    // WO-69.2 — a single-status link stays an exact match; a multi-status
+    // one (the "Voided" tile's CANCELLED+RETURNED) becomes an `in`, never a
+    // second query path for the plural case.
+    if (query.status?.length === 1) where.status = query.status[0];
+    else if (query.status && query.status.length > 1) where.status = { in: query.status };
+    if (query.codRiskAction) where.codRiskAction = query.codRiskAction;
+
+    if (query.q?.trim()) {
+      const term = query.q.trim();
+      where.OR = [
+        { number: { contains: term, mode: 'insensitive' } },
+        { guestName: { contains: term, mode: 'insensitive' } },
+        { guestPhone: { contains: term } },
+        { guestEmail: { contains: term, mode: 'insensitive' } },
+      ];
+    }
+
+    const [rows, total] = await this.prisma.$transaction([
+      this.prisma.order.findMany({
+        where,
+        include: orderInclude,
+        orderBy: { placedAt: 'desc' },
+        skip: query.skip,
+        take: query.take,
+      }),
+      this.prisma.order.count({ where }),
+    ]);
+
+    await this.attachStitchingJobs(rows);
+    return paginated(rows, total, query);
+  }
+
+  async adminGet(id: string) {
+    const order = await this.prisma.order.findUnique({
+      where: { id },
+      include: orderInclude,
+    });
+    if (!order) throw new NotFoundException('That order no longer exists.');
+    await this.attachStitchingJobs(order);
+    return order;
+  }
+
+  /**
+   * Moves an order along, refusing transitions that make no sense and putting
+   * cancelled stock back.
+   */
+  async changeStatus(
+    actorId: string | null,
+    orderId: string,
+    toStatus: OrderStatus,
+    note?: string,
+    /**
+     * skipStockRelease: the caller already moved stock itself (WO-6.6's
+     * returns.service.ts#inspect(), which restocks a saleable item or writes
+     * off a damaged one item-by-item, in contrast to this method's own
+     * blanket "restock everything with reason RETURN"). Every existing
+     * caller omits this — behaviour is byte-identical to before WO-6.
+     */
+    options?: { skipStockRelease?: boolean },
+  ) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    });
+    if (!order) throw new NotFoundException('That order no longer exists.');
+
+    if (order.status === toStatus) return this.adminGet(orderId);
+
+    if (!ALLOWED_TRANSITIONS[order.status].includes(toStatus)) {
+      throw new BadRequestException(
+        `An order that is ${order.status.toLowerCase()} cannot become ${toStatus.toLowerCase()}.`,
+      );
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.order.update({
+        where: { id: orderId },
+        data: {
+          status: toStatus,
+          ...(toStatus === 'CONFIRMED' ? { confirmedAt: new Date() } : {}),
+          ...(toStatus === 'DELIVERED' ? { deliveredAt: new Date() } : {}),
+          ...(toStatus === 'CANCELLED' ? { cancelledAt: new Date(), cancelReason: note ?? null } : {}),
+        },
+      });
+
+      await tx.orderStatusEvent.create({
+        data: { orderId, fromStatus: order.status, toStatus, note: note ?? null, actorId },
+      });
+
+      // Cancelling or returning releases the stock back to the shelf — at the
+      // location it was actually sold from (order.locationId, set for a POS
+      // sale by placeFromPos(), WO-21.3) rather than always the default one.
+      // A web order has no locationId, so it still falls back to the default
+      // — exactly today's behavior, unchanged for every order this doesn't apply to.
+      if ((toStatus === 'CANCELLED' || toStatus === 'RETURNED') && !options?.skipStockRelease) {
+        const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
+        const locationId = order.locationId ?? (await this.inventory.defaultLocationId(tx));
+        await this.inventory.moveMany(
+          order.items.filter(i => i.variantId).map(item => ({
+            variantId: item.variantId!,
+            locationId,
+            delta: item.quantity,
+            reason: moveReason,
+            refType: 'Order',
+            refId: order.id,
+            actorId,
+          })),
+          tx
+        );
+      }
+
+      await this.events.publish(
+        toStatus === 'CANCELLED' ? DomainEvent.OrderCancelled : DomainEvent.OrderStatusChanged,
+        {
+          orderId,
+          orderNumber: order.number,
+          fromStatus: order.status,
+          toStatus,
+          actorId,
+        },
+        tx,
+      );
+    });
+
+    await this.audit.record({
+      actorId,
+      action: 'order.status_changed',
+      entity: 'Order',
+      entityId: orderId,
+      data: { from: order.status, to: toStatus, note },
+    });
+
+    return this.adminGet(orderId);
+  }
+
+  // --- internals -----------------------------------------------------------
+
+  private async loadCart(token: string | undefined, userId: string | undefined) {
+    const cart = userId
+      ? await this.prisma.cart.findFirst({
+          where: { userId },
+          orderBy: { updatedAt: 'desc' },
+          include: cartInclude,
+        })
+      : token
+        ? await this.prisma.cart.findUnique({ where: { token }, include: cartInclude })
+        : null;
+
+    if (!cart) {
+      throw new BadRequestException('Your cart is empty.');
+    }
+    return cart;
+  }
+
+  /**
+   * Prices the cart and builds the line snapshots.
+   *
+   * Every field an order line keeps — name, price, measurements, options — is
+   * captured here, so the order is readable years later even if the product is
+   * renamed, repriced or archived.
+   */
+  private async priceCart(cart: CartWithRelations, locale: Locale) {
+    const designAreas = await this.customTextAreas(cart);
+
+    // MeasurementProfile is apparel-owned; CartItem (core) keeps only the
+    // scalar measurementProfileId, no Prisma relation (B7, MULTI-SECTOR.md).
+    // Batch-fetch the profiles referenced by this cart up front rather than
+    // per line.
+    const profileIds = [
+      ...new Set(
+        cart.items
+          .map((item) => item.measurementProfileId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const profiles =
+      profileIds.length === 0
+        ? []
+        : await this.prisma.measurementProfile.findMany({
+            where: { id: { in: profileIds } },
+            include: { garmentType: { select: { key: true } } },
+          });
+    const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+
+    // Same story for GarmentType — CartItem.garmentTypeId is a scalar, no
+    // relation. Needed to resolve OrderItem.garmentTypeKey even when the
+    // customer typed measurements in rather than picking a saved profile.
+    const garmentTypeIds = [
+      ...new Set(
+        cart.items
+          .map((item) => item.garmentTypeId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const garmentTypes =
+      garmentTypeIds.length === 0
+        ? []
+        : await this.prisma.garmentType.findMany({
+            where: { id: { in: garmentTypeIds } },
+            select: { id: true, key: true, labelEn: true, stitchingPrice: true },
+          });
+    const garmentTypeById = new Map(garmentTypes.map((garmentType) => [garmentType.id, garmentType]));
+
+    // Tax (15-tax-module.md). tax.enabled defaults false, in which case every
+    // line's taxAmount stays 0 and grandTotal is byte-identical to a build
+    // with no tax module at all -- resolving rates only when it is actually on.
+    const taxEnabled = await this.settings.get<boolean>(SettingKey.TaxEnabled);
+    const taxPricingMode = taxEnabled
+      ? await this.settings.get<'INCLUSIVE' | 'EXCLUSIVE'>(SettingKey.TaxPricingMode)
+      : 'EXCLUSIVE';
+    const [taxRatesByClassId, defaultTaxClassId] = taxEnabled
+      ? await Promise.all([this.tax.activeRatesByClassId(), this.tax.defaultClassId()])
+      : [new Map<string, number>(), null];
+
+    // 146-wholesale-tiered-pricing.md — identical batched resolution
+    // cart.service.ts's own toView() already uses, so a cart's own price
+    // preview and its eventual order snapshot never disagree.
+    const customerId = cart.userId
+      ? (await this.prisma.contact.findUnique({ where: { userId: cart.userId }, select: { id: true } }))?.id ?? null
+      : null;
+    const resolvedPrices = await this.pricing.resolvePrices(
+      cart.items.map((item) => ({ variantId: item.variantId, quantity: item.quantity })),
+      customerId,
+    );
+
+    const lines = cart.items.map((item) => {
+      const unitPrice = resolvedPrices.get(item.variantId) ?? item.variant.priceOverride ?? item.product.basePrice;
+
+      const options = item.stitchingOptions.map((selection) => ({
+        groupKey: selection.option.group.key,
+        groupLabelEn: selection.option.group.labelEn,
+        groupLabelUr: selection.option.group.labelUr,
+        key: selection.option.key,
+        labelEn: selection.option.labelEn,
+        labelUr: selection.option.labelUr,
+        priceDelta: selection.option.priceDelta,
+        custom: false,
+      }));
+
+      // A described area is a style choice like any other, so it joins the same
+      // list — the tailor's worksheet and the customer's order page both read
+      // it without either screen learning a second shape.
+      const described = Object.entries(
+        (item.customDesignText as Record<string, string> | null) ?? {},
+      ).map(([groupKey, text]) => {
+        const area = designAreas.get(groupKey);
+        return {
+          groupKey,
+          groupLabelEn: area?.labelEn ?? groupKey,
+          groupLabelUr: area?.labelUr ?? groupKey,
+          key: 'custom',
+          labelEn: text,
+          labelUr: text,
+          priceDelta: 0,
+          custom: true,
+        };
+      });
+
+      const garmentType = item.garmentTypeId ? garmentTypeById.get(item.garmentTypeId) : undefined;
+
+      const stitchingFeeUnit = stitchingFeeFor(
+        {
+          garmentType: garmentType ? { stitchingPrice: garmentType.stitchingPrice } : null,
+          stitchingService: item.stitchingService,
+        },
+        options.map((option) => option.priceDelta),
+      );
+
+      // measurementProfileId has no DB-level onDelete: SetNull any more — it
+      // is a bare scalar (B7, MULTI-SECTOR.md), not a Prisma relation to
+      // MeasurementProfile — so a profile deleted after the line was added
+      // leaves a dangling id rather than nulling it out. Check the id
+      // actually still resolves, not just that it is set.
+      const hasProfile = item.measurementProfileId
+        ? profileById.has(item.measurementProfileId)
+        : false;
+      if (item.garmentTypeId && !hasProfile && !item.measurementValues) {
+        throw new BadRequestException(
+          `Add measurements for the stitched ${garmentType?.labelEn ?? 'garment'} before checking out.`,
+        );
+      }
+
+      const english = pickTranslation(item.product.translations, 'en');
+      const urdu = item.product.translations.find((row) => row.locale === 'ur');
+      const image =
+        item.product.images.find((candidate) => candidate.isPrimary) ??
+        item.product.images[0];
+
+      const lineTotal = (unitPrice + stitchingFeeUnit) * item.quantity;
+
+      // Tax on this line, snapshotted below onto the OrderItem. taxRateBps
+      // stays 0 (not looked up) when tax is off, per the tax.enabled=false
+      // ship-safe default in 15-tax-module.md.
+      let taxAmount = 0;
+      let taxRateBps = 0;
+      if (taxEnabled) {
+        const effectiveClassId = item.variant.taxClassId ?? defaultTaxClassId;
+        const rateBps = effectiveClassId ? taxRatesByClassId.get(effectiveClassId) : undefined;
+        if (rateBps !== undefined) {
+          const result =
+            taxPricingMode === 'INCLUSIVE'
+              ? taxInclusive(lineTotal, rateBps)
+              : taxExclusive(lineTotal, rateBps);
+          taxAmount = result.taxAmount;
+          taxRateBps = rateBps;
+        }
+      }
+
+      return {
+        productId: item.productId,
+        variantId: item.variantId,
+        kind: item.product.kind,
+        nameEn: english?.name ?? item.product.slug,
+        nameUr: urdu?.name ?? null,
+        sku: item.variant.sku,
+        imageUrl: image?.url ?? null,
+        variantLabel: getVariantDisplayLabel(item.variant),
+        unitPrice,
+        quantity: item.quantity,
+        stitchingFeeUnit,
+        lineTotal,
+        taxAmount,
+        taxRateBps,
+        stitchingServiceId: item.stitchingServiceId,
+        stitchingServiceName: item.stitchingService
+          ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
+            item.stitchingService.slug)
+          : null,
+        garmentTypeKey: garmentType?.key ?? null,
+        measurementSnapshot: measurementSnapshotFor(item, profileById, garmentType?.key ?? null),
+        optionsSnapshot:
+          options.length + described.length > 0 ? [...options, ...described] : null,
+        stitchingNotes: item.stitchingNotes,
+        measurementValues: item.measurementValues,
+        customDesignText: item.customDesignText,
+        sizeToken: item.sizeToken,
+      };
+    });
+
+    // EXCLUSIVE mode adds tax on top of grandTotal; INCLUSIVE mode's tax is
+    // already inside unitPrice/lineTotal above, so it must NOT be added again
+    // here (that would double-count it) -- it is only ever extracted for
+    // display. See the rounding-trap note on OrderTotalsInput.taxAmount:
+    // this sum of already-rounded per-line amounts is the only correct
+    // source, never a separate order-level recomputation.
+    const taxAmountForTotals =
+      taxEnabled && taxPricingMode === 'EXCLUSIVE'
+        ? lines.reduce((sum, line) => sum + line.taxAmount, 0)
+        : 0;
+
+    const totals = computeOrderTotals({
+      taxAmount: taxAmountForTotals,
+      items: lines.map((line) => ({
+        unitPrice: line.unitPrice,
+        quantity: line.quantity,
+        stitchingFeePerUnit: line.stitchingFeeUnit,
+      })),
+    });
+
+    return { lines, totals, customerId };
+  }
+
+  /**
+   * Labels for the design areas the customer described in their own words.
+   *
+   * Read once for the whole cart, so the snapshot can name the area rather than
+   * leave the workshop holding a bare key.
+   */
+  private async customTextAreas(cart: CartWithRelations) {
+    const keys = cart.items.flatMap((item) =>
+      Object.keys((item.customDesignText as Record<string, string> | null) ?? {}),
+    );
+
+    const groups =
+      keys.length > 0
+        ? await this.prisma.stitchingOptionGroup.findMany({
+            where: { key: { in: keys } },
+            select: { key: true, labelEn: true, labelUr: true },
+          })
+        : [];
+
+    return new Map(groups.map((group) => [group.key, group]));
+  }
+}
+
+const cartInclude = {
+  items: {
+    orderBy: { createdAt: 'asc' },
+    include: {
+      product: { include: { translations: true, images: true } },
+      variant: true,
+      
+      stitchingService: { include: { translations: true } },
+      stitchingOptions: { include: { option: { include: { group: true } } } },
+    },
+  },
+} satisfies Prisma.CartInclude;
+
+type CartWithRelations = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
+
+type MeasurementProfileForSnapshot = Prisma.MeasurementProfileGetPayload<{
+  include: { garmentType: { select: { key: true } } };
+}>;
+
+/**
+ * The measurements the workshop will cut to.
+ *
+ * A saved profile and an inline entry are the same thing to a tailor, so both
+ * collapse into one shape here and the job sheet never has to know which door
+ * the numbers came in through. MeasurementProfile is apparel-owned, so the
+ * caller batch-fetches it and passes the lookup map in — CartItem itself
+ * only ever carries the scalar measurementProfileId (B7, MULTI-SECTOR.md).
+ */
+function measurementSnapshotFor(
+  item: CartWithRelations['items'][number],
+  profileById: Map<string, MeasurementProfileForSnapshot>,
+  garmentTypeKey: string | null,
+) {
+  const profile = item.measurementProfileId ? profileById.get(item.measurementProfileId) : undefined;
+  if (profile) {
+    return {
+      label: profile.label,
+      garmentTypeKey: profile.garmentType.key,
+      values: profile.values,
+    };
+  }
+
+  if (item.measurementValues) {
+    return {
+      label: null,
+      garmentTypeKey,
+      values: item.measurementValues,
+    };
+  }
+
+  return null;
+}
+
+/** Prisma wants an explicit marker rather than `null` for an empty Json column. */
+function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNull {
+  return value === null || value === undefined
+    ? Prisma.DbNull
+    : (value as Prisma.InputJsonValue);
+}
+
+/**
+ * Sequential order numbers per year: YSN-2026-0001, the prefix from BRAND —
+ * or, once this deployment is part of a chain (WO-18.1's NODE_ROLE),
+ * YSN-lhr-01-2026-0001, so two branches' locally-allocated numbers can
+ * never collide once their facts merge upward (RETAIL-ERP.md R2, R6). See
+ * core/settings/document-number.ts.
+ *
+ * Two earlier designs both got this wrong. Reading MAX(Order.number) and
+ * adding one is a read-then-write, and READ COMMITTED (Postgres' default,
+ * and Prisma's) takes no lock on that read — concurrent checkouts could
+ * compute the same next number and all but one died on Order.number's
+ * unique index, surfacing to the customer as a 409 at the moment of
+ * payment. Wrapping that read in a transaction-scoped advisory lock fixed
+ * the race only if the lock also covered the eventual Order insert — taking
+ * it around the whole checkout transaction serialised every concurrent
+ * checkout behind whichever one held it (slow, and only correct because it
+ * was slow); taking it in its own short transaction, separate from the
+ * insert, was faster but wrong: every short transaction reads MAX() before
+ * any checkout has inserted its Order row, so they all still compute the
+ * same number — the lock protected a read that had nothing left to race
+ * against once the insert moved elsewhere.
+ *
+ * A counter row sidesteps the problem instead of re-serialising it: this
+ * single `INSERT ... ON CONFLICT DO UPDATE ... RETURNING` both reads and
+ * reserves the next number in one atomic step, which Postgres already
+ * serialises at the row level — no application lock or transaction of our
+ * own required. If place()'s transaction later fails, the number it
+ * reserved is simply skipped, the same way a gap appears after any failed
+ * insert on an auto-increment key.
+ */
+export async function nextOrderNumber(
+  prisma: PrismaService,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
+  const year = new Date().getFullYear();
+  // A Setting, defaulting to the brand's own initials. The number a
+  // customer quotes back to you is the one place a shop is most likely to
+  // already have a convention.
+  const prefix = await documentPrefix(settings, 'order');
+
+  const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
+    INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
+    ON CONFLICT ("year") DO UPDATE SET "counter" = "OrderNumberCounter"."counter" + 1
+    RETURNING "counter"
+  `;
+
+  return documentNumber(config, prefix, year, counter);
+}

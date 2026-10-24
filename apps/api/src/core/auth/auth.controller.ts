@@ -22,7 +22,15 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from './auth.constants';
-import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from './decorators';
+import {
+  AuditRateLimit,
+  AuthenticatedOnly,
+  CurrentUser,
+  CustomerScope,
+  Public,
+  RequirePermission,
+  SessionOnly,
+} from './decorators';
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -38,8 +46,20 @@ import {
  * Credential endpoints are rate limited far tighter than the global 300/min,
  * which on a login form is 18,000 password guesses an hour from one address.
  * These are the only routes where an attacker gets to guess a secret.
+ * Exported for sso.controller.ts, whose sign-in routes take the same limit.
  */
-const CREDENTIAL_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
+export const CREDENTIAL_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
+
+/** The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. */
+export function setRefreshCookie(response: Response, token: string, config: AppConfigService): void {
+  response.cookie(REFRESH_COOKIE, token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: config.isProduction,
+    path: '/',
+    maxAge: parseDuration(config.get('JWT_REFRESH_TTL')),
+  });
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -51,6 +71,7 @@ export class AuthController {
   ) {}
 
   @Throttle(CREDENTIAL_THROTTLE)
+  @AuditRateLimit('email')
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Create a customer account' })
@@ -63,13 +84,25 @@ export class AuthController {
     return result;
   }
 
+  /**
+   * Two limits stand in front of a password guess (206-rate-limiting-caching-compression-hardening.md
+   * §1): CREDENTIAL_THROTTLE per client IP, then — inside AuthService.login()
+   * — a 5-attempt, one-per-5-minutes bucket per identifier, which a guesser
+   * spreading attempts over many addresses cannot step around. Either answers
+   * 429 with a Retry-After; either one's refusals are audited.
+   */
   @Throttle(CREDENTIAL_THROTTLE)
+  @AuditRateLimit('identifier')
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign in with an email or phone number' })
-  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
-    const result = await this.auth.login(dto.identifier, dto.password);
+  async login(
+    @Body() dto: LoginDto,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const result = await this.auth.login(dto.identifier, dto.password, { ip: request.ip });
     this.setRefreshCookie(response, result.refreshToken);
     return result;
   }
@@ -89,7 +122,7 @@ export class AuthController {
       throw new UnauthorizedException('No refresh token was supplied.');
     }
 
-    const result = await this.auth.refresh(token);
+    const result = await this.auth.refresh(token, { ip: request.ip });
     this.setRefreshCookie(response, result.refreshToken);
     return result;
   }
@@ -113,6 +146,7 @@ export class AuthController {
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('profile:read')
   @Get('me')
   @ApiOperation({ summary: 'The signed-in user' })
   async me(@CurrentUser() user: AuthenticatedUser) {
@@ -130,7 +164,10 @@ export class AuthController {
     });
   }
 
+  // The email and phone are the sign-in and password-reset identity:
+  // changing either through a key would be account takeover.
   @AuthenticatedOnly()
+  @SessionOnly()
   @Patch('me')
   @ApiOperation({ summary: 'Update your own profile fields' })
   updateProfile(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateProfileDto) {
@@ -141,6 +178,7 @@ export class AuthController {
   @Post('change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @RequirePermission('account.change_own_password')
+  @SessionOnly()
   @ApiOperation({ summary: 'Change your password and sign out other devices' })
   async changePassword(
     @CurrentUser() user: AuthenticatedUser,
@@ -185,12 +223,6 @@ export class AuthController {
   }
 
   private setRefreshCookie(response: Response, token: string): void {
-    response.cookie(REFRESH_COOKIE, token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: this.config.isProduction,
-      path: '/',
-      maxAge: parseDuration(this.config.get('JWT_REFRESH_TTL')),
-    });
+    setRefreshCookie(response, token, this.config);
   }
 }

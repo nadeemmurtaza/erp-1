@@ -8,22 +8,94 @@ Every top-level export in `packages`, with the line to open.
 
 
 
+### `packages/desktop-runtime/src`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `backup-scheduler.ts` | `BackupArchiver` | interface | :52 | 48-native-desktop-deployment.md WO-48.5 — local backup, adapting `deploy/backup.sh`'s own restore-t… |
+| `backup-scheduler.ts` | `TarBackupArchiver` | class | :67 | The real implementation, backed by the `tar` npm package (the same library npm itself uses) — chose… |
+| `backup-scheduler.ts` | `BackupResult` | interface | :82 |  |
+| `backup-scheduler.ts` | `LocalBackupOptions` | interface | :94 |  |
+| `backup-scheduler.ts` | `LocalBackupScheduler` | class | :136 | Mirrors `OutboxDispatcher`'s / `ReplicationSyncAgent`'s own re-entrancy guard shape: a `running` fl… |
+| `index.ts` | `*` | re-export |  | from `./logger` |
+| `index.ts` | `*` | re-export |  | from `./postgres-lifecycle` |
+| `index.ts` | `*` | re-export |  | from `./setup-wizard` |
+| `index.ts` | `*` | re-export |  | from `./backup-scheduler` |
+| `index.ts` | `*` | re-export |  | from `./hardware/escpos` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-port-io` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-receipt-printer` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-cash-drawer` |
+| `logger.ts` | `DesktopLogger` | interface | :15 | 48-native-desktop-deployment.md — a minimal structured-logging seam. |
+| `logger.ts` | `consoleDesktopLogger` | const | :26 | `console.warn`/`console.error` only — both allowed by this repo's own eslint base (`no-console: ['w… |
+| `postgres-lifecycle.ts` | `PostgresRunner` | interface | :41 | The seam `EmbeddedPostgresRunner` implements. |
+| `postgres-lifecycle.ts` | `PostgresConnectionInfo` | interface | :47 |  |
+| `postgres-lifecycle.ts` | `PostgresLifecycleErrorCode` | type | :55 |  |
+| `postgres-lifecycle.ts` | `RepairAction` | type | :71 | What a future desktop shell's "repair/restore" screen (doc 48's own failure-path scope lens, and it… |
+| `postgres-lifecycle.ts` | `PostgresLifecycleError` | class | :86 |  |
+| `postgres-lifecycle.ts` | `PostgresLifecycleOptions` | interface | :98 |  |
+| `postgres-lifecycle.ts` | `PostgresCredentialStore` | class | :133 | Random local superuser credentials, generated once per install and persisted to a file only this OS… |
+| `postgres-lifecycle.ts` | `PostgresLifecycleManager` | class | :169 | The orchestration itself. |
+| `postgres-lifecycle.ts` | `EmbeddedPostgresRunner` | class | :433 | Postgres server binary (via its per-platform `@embedded-postgres ` optional dependency) and drives… |
+| `setup-wizard.ts` | `NodeRole` | type | :20 | 48-native-desktop-deployment.md WO-48.3 — the first-run setup wizard, as real, testable orchestrati… |
+| `setup-wizard.ts` | `NodeConfig` | interface | :22 |  |
+| `setup-wizard.ts` | `validateNodeConfig` | function | :53 | Mirrors `apps/api/src/core/config/env.validation.ts`'s NODE_ROLE / PARENT_URL / PARENT_API_KEY rule… |
+| `setup-wizard.ts` | `WizardStepName` | type | :83 |  |
+| `setup-wizard.ts` | `WizardStepResult` | interface | :89 |  |
+| `setup-wizard.ts` | `SetupWizardError` | class | :95 |  |
+| `setup-wizard.ts` | `WizardResult` | interface | :106 |  |
+| `setup-wizard.ts` | `MigrationRunner` | interface | :116 | The seam over `prisma migrate deploy` / `db:seed` — real by default (`DefaultMigrationRunner`, shel… |
+| `setup-wizard.ts` | `DefaultMigrationRunner` | class | :126 | Shells out inside `apps/api`'s own package directory, using the exact scripts `apps/api/package.jso… |
+| `setup-wizard.ts` | `FirstRunSetupWizardOptions` | interface | :153 |  |
+| `setup-wizard.ts` | `FirstRunSetupWizard` | class | :177 | "Reaches a working till within the setup wizard's own steps" (doc 48's own acceptance criterion) me… |
+
+### `packages/desktop-runtime/src/hardware`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `escpos.ts` | `ESC` | const | :22 | 48-native-desktop-deployment.md WO-48.4 — the ESC/POS byte-command set, as pure functions. |
+| `escpos.ts` | `GS` | const | :23 |  |
+| `escpos.ts` | `LF` | const | :24 |  |
+| `escpos.ts` | `initCommand` | function | :30 | `ESC @` — resets the printer to its power-on defaults. |
+| `escpos.ts` | `textLineCommand` | function | :43 | Plain text, terminated with a line feed. |
+| `escpos.ts` | `CutMode` | type | :47 |  |
+| `escpos.ts` | `cutCommand` | function | :54 | `GS V m` — the simple (no feed-amount) form of the paper cut command: `m = 0` full cut, `m = 1` par… |
+| `escpos.ts` | `DrawerPin` | type | :58 |  |
+| `escpos.ts` | `drawerKickCommand` | function | :68 | `ESC p m t1 t2` — the standard "kick out cash drawer" pulse. |
+| `serial-cash-drawer.ts` | `SerialCashDrawerOptions` | interface | :32 | 48-native-desktop-deployment.md WO-48.4 — a native `CashDrawer` (`packages/pos-core/src/hardware.ts… |
+| `serial-cash-drawer.ts` | `SerialPortCashDrawer` | class | :42 |  |
+| `serial-port-io.ts` | `SerialWritable` | interface | :17 | `serialport` package) and fully fake in tests (`hardware .spec.ts` inject their own in-memory `Seri… |
+| `serial-port-io.ts` | `SerialPortFactoryOptions` | interface | :24 |  |
+| `serial-port-io.ts` | `SerialPortFactory` | type | :29 |  |
+| `serial-port-io.ts` | `defaultSerialPortFactory` | const | :31 |  |
+| `serial-port-io.ts` | `waitForOpen` | function | :46 | Resolves once the port fires `open`, rejects on `error` or timeout — a port that never opens (unplu… |
+| `serial-port-io.ts` | `writeAndDrain` | function | :63 | Writes and waits for the OS to actually flush the bytes (`drain()`) — resolving as soon as `write()… |
+| `serial-port-io.ts` | `closePort` | function | :78 |  |
+| `serial-receipt-printer.ts` | `SerialReceiptPrinterOptions` | interface | :30 | 48-native-desktop-deployment.md WO-48.4 — a native (non-WebUSB) `ReceiptPrinter` (`packages/pos-cor… |
+| `serial-receipt-printer.ts` | `SerialPortReceiptPrinter` | class | :45 |  |
+| `serial-receipt-printer.ts` | `buildReceiptBytes` | function | :78 | Pure — the actual byte layout is exhaustively tested in `serial-receipt-printer.spec.ts` with no se… |
+
 ### `packages/pos-core/src`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `basket.ts` | `BasketLine` | interface | :12 | The till's own basket — pure functions, no I/O (RETAIL-ERP.md's own `packages/pos-core` description… |
-| `basket.ts` | `Basket` | type | :22 |  |
-| `basket.ts` | `addLine` | function | :25 | Adds a line, or increments an existing one for the same variant. |
-| `basket.ts` | `setQuantity` | function | :37 | Sets a line's quantity outright; a quantity of 0 or less removes it. |
-| `basket.ts` | `removeLine` | function | :42 |  |
-| `basket.ts` | `clearBasket` | function | :46 |  |
-| `basket.ts` | `basketTotals` | function | :57 | The basket's totals — zero shipping/COD/tax, the same simplification `OrdersService.placeFromPos()`… |
-| `basket.ts` | `lineTotal` | function | :63 |  |
+| `basket.ts` | `BasketLineModifier` | interface | :14 | pos-hardware/31 §2 — a modifier changes the till total, e.g. |
+| `basket.ts` | `BasketQuantitySource` | type | :23 | pos-hardware/31 §2 — where a line's quantity came from, when it is not a typed integer: a scale rea… |
+| `basket.ts` | `BasketLine` | interface | :28 |  |
+| `basket.ts` | `Basket` | type | :47 |  |
+| `basket.ts` | `addLine` | function | :63 | Adds a line, or increments an existing one for the same variant — but only when BOTH the new line a… |
+| `basket.ts` | `setQuantity` | function | :84 | Sets a line's quantity outright; a quantity of 0 or less removes it. |
+| `basket.ts` | `removeLine` | function | :91 |  |
+| `basket.ts` | `clearBasket` | function | :95 |  |
+| `basket.ts` | `basketTotals` | function | :113 | The basket's totals — zero shipping/COD/tax, the same simplification `OrdersService.placeFromPos()`… |
+| `basket.ts` | `lineTotal` | function | :119 |  |
+| `hardware.ts` | `BarcodeScanner` | interface | :19 | pos-hardware/31-sector-pos-hardware-integration.md WO-31.1 — the till hardware layer, as extension… |
+| `hardware.ts` | `ReceiptPrinter` | interface | :25 |  |
+| `hardware.ts` | `CashDrawer` | interface | :29 |  |
 | `index.ts` | `*` | re-export |  | from `./basket` |
 | `index.ts` | `*` | re-export |  | from `./tender` |
 | `index.ts` | `*` | re-export |  | from `./receipt` |
 | `index.ts` | `*` | re-export |  | from `./outbox` |
+| `index.ts` | `*` | re-export |  | from `./hardware` |
 | `outbox.ts` | `OutboxStatus` | type | :16 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` des… |
 | `outbox.ts` | `OutboxEntry` | interface | :18 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` des… |
 | `outbox.ts` | `InvalidOutboxTransitionError` | class | :29 |  |
@@ -36,7 +108,8 @@ Every top-level export in `packages`, with the line to open.
 | `receipt.ts` | `ReceiptLine` | interface | :8 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
 | `receipt.ts` | `ReceiptData` | interface | :16 |  |
 | `receipt.ts` | `PlacedPosSale` | interface | :29 | The minimal shape of a placeFromPos() response this file needs — not the full Order type. |
-| `receipt.ts` | `toReceipt` | function | :38 |  |
+| `receipt.ts` | `toKitchenTicket` | function | :45 | pos-hardware/31 WO-31.5 — a kitchen-facing ticket for a `TAB`/`TABLE` sale with modifiers: the same… |
+| `receipt.ts` | `toReceipt` | function | :56 |  |
 | `tender.ts` | `TenderResult` | interface | :7 | Cash tender and change — pure, in paisa. |
 | `tender.ts` | `computeTender` | function | :15 |  |
 
@@ -44,8 +117,44 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :333 |  |
+| `api-keys.ts` | `API_KEY_SURFACES` | const | :30 | Which request surface a key acts on. |
+| `api-keys.ts` | `ApiKeySurface` | type | :31 | Which request surface a key acts on. |
+| `api-keys.ts` | `API_KEY_PREFIXES` | const | :41 | The first characters of every raw key, by surface — so a leaked key says which surface it opens, an… |
+| `api-keys.ts` | `apiKeySurfaceOf` | function | :51 | Which surface a raw bearer credential claims to be, read off its prefix — or null for anything else… |
+| `api-keys.ts` | `API_KEY_LIFETIME_OPTIONS_DAYS` | const | :64 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_DEFAULT_LIFETIME_DAYS` | const | :65 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_MAX_LIFETIME_DAYS` | const | :66 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_MAX_ACTIVE_PER_SURFACE` | const | :74 | Live keys one person may hold on one surface. |
+| `api-keys.ts` | `API_KEY_NAME_MAX_LENGTH` | const | :76 | Live keys one person may hold on one surface. |
+| `api-keys.ts` | `NonDelegatablePermission` | interface | :80 | ─── The admin surface: what can never be delegated ──────────────────────── |
+| `api-keys.ts` | `NON_DELEGATABLE_PERMISSIONS` | const | :109 | Permissions that can never be put in an API key, by anyone, whatever else they hold. |
+| `api-keys.ts` | `isDelegatablePermission` | function | :148 |  |
+| `api-keys.ts` | `nonDelegatableReason` | function | :153 | The recorded reason `key` can never be in an API key, or null when it can. |
+| `api-keys.ts` | `effectiveApiKeyPermissions` | function | :168 | What an ADMIN key may actually do on this request: its stored permission keys, kept only where its… |
+| `api-keys.ts` | `ApiKeyPermissionRefusal` | type | :182 |  |
+| `api-keys.ts` | `refuseApiKeyPermissions` | function | :189 | Why each requested permission may not go into a key right now — empty when every one may. |
+| `api-keys.ts` | `delegatablePermissionsOf` | function | :207 | What this person could put in an admin key right now — the picker's options, in catalogue order. |
+| `api-keys.ts` | `CUSTOMER_SCOPE_RESOURCES` | const | :222 | The resources a storefront key can reach — each one a customer's own rows behind a self-service rou… |
+| `api-keys.ts` | `CustomerScopeResource` | type | :235 |  |
+| `api-keys.ts` | `CustomerScopeAccess` | type | :236 |  |
+| `api-keys.ts` | `CustomerScopeDefinition` | interface | :238 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :262 | The storefront's scope vocabulary. |
+| `api-keys.ts` | `CustomerScopeKey` | type | :304 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
+| `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
+| `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
+| `auction.ts` | `MAX_LOT_PHOTOS` | const | :14 | Photographs one lot may have (WO-234.12, doc 234 §12). |
+| `brand.ts` | `BRAND` | const | :649 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :663 |  |
+| `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
+| `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
+| `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
+| `cod-risk.ts` | `CodRiskThresholds` | interface | :23 |  |
+| `cod-risk.ts` | `CodRiskInput` | interface | :30 |  |
+| `cod-risk.ts` | `CodRiskResult` | interface | :44 |  |
+| `cod-risk.ts` | `computeCodRiskScore` | function | :70 | WO-9.4 (09-ai-layer.md) — "start with a transparent rule-based score... |
+| `collection-rules.ts` | `CollectionRuleCondition` | interface | :7 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rat… |
+| `collection-rules.ts` | `CollectionRule` | interface | :13 |  |
 | `constants.ts` | `LOCALES` | const | :3 | Locales the storefront ships in. |
 | `constants.ts` | `Locale` | type | :4 | Locales the storefront ships in. |
 | `constants.ts` | `DEFAULT_LOCALE` | const | :6 | Locales the storefront ships in. |
@@ -61,9 +170,38 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `SHOP_TIME_ZONE` | const | :76 | The shop's wall clock. |
 | `constants.ts` | `formatDate` | function | :79 | e.g. |
 | `constants.ts` | `formatDateTime` | function | :91 | e.g. |
-| `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
-| `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
-| `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
+| `constants.ts` | `formatDateTimeSeconds` | function | :107 | e.g. |
+| `constants.ts` | `formatDateShort` | function | :125 | A chart axis tick — "7 Sept". |
+| `constants.ts` | `formatMonthShort` | function | :144 | A month's short name on its own — "Sept". |
+| `constants.ts` | `formatWeekdayShort` | function | :153 | A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. |
+| `constants.ts` | `formatNumber` | function | :170 | A plain count, grouped for the locale — 6017 -> "6,017". |
+| `constants.ts` | `formatMoney` | function | :175 | Formats integer paisa as a display string, e.g. |
+| `constants.ts` | `formatMoneyIn` | function | :198 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
+| `constants.ts` | `formatBytes` | function | :215 | A byte count as a human-readable size, e.g. |
+| `constants.ts` | `IMPORT_ROW_CAP` | const | :236 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
+| `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
+| `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
+| `content-blocks.ts` | `ContentBlockType` | type | :27 |  |
+| `content-blocks.ts` | `BANNER_PLACEMENTS` | const | :36 | Fixed, code-known banner slots. |
+| `content-blocks.ts` | `BannerPlacementKey` | type | :38 | Fixed, code-known banner slots. |
+| `content-blocks.ts` | `MENU_KEYS` | const | :45 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
+| `content-blocks.ts` | `MenuKey` | type | :47 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
+| `demand-forecast.ts` | `DemandForecastSale` | interface | :7 |  |
+| `demand-forecast.ts` | `DemandForecastInput` | interface | :12 |  |
+| `demand-forecast.ts` | `DemandForecast` | interface | :23 |  |
+| `demand-forecast.ts` | `computeDemandForecast` | function | :39 | WO-9.3 (09-ai-layer.md) — "start with a simple seasonal model — trailing average with a same-period… |
+| `demand-forecast.ts` | `suggestReorderQuantity` | function | :87 | ceil(days of lead time + safety buffer, at the forecasted daily rate) — the quantity a forecast-dri… |
+| `demand-forecast.ts` | `resolveLeadTimeDays` | function | :99 | A SupplierProduct.leadTimeDays override for this exact (supplier, variant) pair, falling back to th… |
+| `discounts.ts` | `DiscountType` | type | :11 | The discount rules engine. |
+| `discounts.ts` | `DiscountScope` | type | :12 |  |
+| `discounts.ts` | `DiscountRule` | interface | :21 | A `Discount` row's shape, as `evaluateDiscounts` needs it — no id-only fields (createdAt, usageCoun… |
+| `discounts.ts` | `CartLineSnapshot` | interface | :57 |  |
+| `discounts.ts` | `CartSnapshot` | interface | :68 |  |
+| `discounts.ts` | `DiscountContext` | interface | :74 |  |
+| `discounts.ts` | `AppliedDiscount` | interface | :79 | One line actually recorded in `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`… |
+| `discounts.ts` | `DiscountResult` | interface | :87 |  |
+| `discounts.ts` | `isDiscountEligible` | function | :121 | Whether the cart, as a whole, satisfies this discount's conditions. |
+| `discounts.ts` | `evaluateDiscounts` | function | :241 | Evaluates every ELIGIBLE discount against a cart and returns the combined result, per the stacking… |
 | `enums.ts` | `USER_ROLES` | const | :10 | Any change here must be made in apps/api/prisma/schema .prisma too; the `enums.spec.ts` test in app… |
 | `enums.ts` | `UserRole` | type | :11 |  |
 | `enums.ts` | `BACK_OFFICE_ROLES` | const | :14 | Roles allowed into /admin. |
@@ -71,20 +209,28 @@ Every top-level export in `packages`, with the line to open.
 | `enums.ts` | `ProductKind` | type | :31 |  |
 | `enums.ts` | `PRODUCT_STATUSES` | const | :33 |  |
 | `enums.ts` | `ProductStatus` | type | :34 |  |
-| `enums.ts` | `ORDER_STATUSES` | const | :36 |  |
-| `enums.ts` | `OrderStatus` | type | :46 |  |
-| `enums.ts` | `PAYMENT_STATUSES` | const | :48 |  |
-| `enums.ts` | `PaymentStatus` | type | :56 |  |
-| `enums.ts` | `STITCHING_STAGES` | const | :58 |  |
-| `enums.ts` | `StitchingStage` | type | :66 |  |
-| `enums.ts` | `LEAD_STATUSES` | const | :68 |  |
-| `enums.ts` | `LeadStatus` | type | :69 |  |
-| `enums.ts` | `INTERACTION_KINDS` | const | :71 |  |
-| `enums.ts` | `InteractionKind` | type | :80 |  |
-| `enums.ts` | `MEASUREMENT_UNITS` | const | :82 |  |
-| `enums.ts` | `MeasurementUnit` | type | :83 |  |
-| `enums.ts` | `nextStage` | function | :89 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
-| `enums.ts` | `previousStage` | function | :96 |  |
+| `enums.ts` | `OPTION_DISPLAYS` | const | :37 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `OptionDisplay` | type | :38 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `ORDER_STATUSES` | const | :40 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `OrderStatus` | type | :50 |  |
+| `enums.ts` | `PAYMENT_STATUSES` | const | :52 |  |
+| `enums.ts` | `PaymentStatus` | type | :60 |  |
+| `enums.ts` | `COD_RISK_ACTIONS` | const | :63 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `CodRiskAction` | type | :64 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `STITCHING_STAGES` | const | :66 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `StitchingStage` | type | :74 |  |
+| `enums.ts` | `LEAD_STATUSES` | const | :76 |  |
+| `enums.ts` | `LeadStatus` | type | :77 |  |
+| `enums.ts` | `INTERACTION_KINDS` | const | :79 |  |
+| `enums.ts` | `InteractionKind` | type | :88 |  |
+| `enums.ts` | `MEASUREMENT_UNITS` | const | :90 |  |
+| `enums.ts` | `MeasurementUnit` | type | :91 |  |
+| `enums.ts` | `nextStage` | function | :97 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
+| `enums.ts` | `previousStage` | function | :104 |  |
+| `enums.ts` | `CUSTOM_FIELD_ENTITY_TYPES` | const | :116 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
+| `enums.ts` | `CustomFieldEntityType` | type | :117 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
+| `enums.ts` | `CUSTOM_FIELD_VALUE_TYPES` | const | :119 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
+| `enums.ts` | `CustomFieldValueType` | type | :120 |  |
 | `fabric-estimate.ts` | `FabricEstimateInput` | interface | :10 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `fabric-estimate.ts` | `FabricEstimateResult` | interface | :25 |  |
 | `fabric-estimate.ts` | `computeFabricEstimate` | function | :42 |  |
@@ -93,36 +239,82 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `RequestOptions` | interface | :53 |  |
 | `http-client.ts` | `messageOf` | function | :84 | Pulls a human message out of whatever the API returned. |
 | `http-client.ts` | `request` | function | :116 | One request. |
-| `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
+| `http-client.ts` | `singleFlight` | function | :164 | At most one run of `task` in flight at a time: a call made while a run is pending gets that run's o… |
+| `http-client.ts` | `requestWithRefresh` | function | :185 | Wraps `request` with a 401 retry. |
+| `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
+| `index.ts` | `*` | re-export |  | from `./api-keys` |
+| `index.ts` | `*` | re-export |  | from `./cod-risk` |
+| `index.ts` | `*` | re-export |  | from `./collection-rules` |
 | `index.ts` | `*` | re-export |  | from `./constants` |
+| `index.ts` | `*` | re-export |  | from `./content-blocks` |
+| `index.ts` | `*` | re-export |  | from `./demand-forecast` |
+| `index.ts` | `*` | re-export |  | from `./discounts` |
 | `index.ts` | `*` | re-export |  | from `./enums` |
 | `index.ts` | `*` | re-export |  | from `./entities` |
+| `index.ts` | `*` | re-export |  | from `./human-code` |
 | `index.ts` | `*` | re-export |  | from `./fabric-estimate` |
+| `index.ts` | `*` | re-export |  | from `./markdown-suggestion` |
+| `index.ts` | `*` | re-export |  | from `./onsite-messaging` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
+| `index.ts` | `*` | re-export |  | from `./auction` |
+| `index.ts` | `*` | re-export |  | from `./launchpad` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
+| `index.ts` | `*` | re-export |  | from `./segment-filter` |
 | `index.ts` | `*` | re-export |  | from `./slug` |
+| `index.ts` | `*` | re-export |  | from `./sku` |
+| `index.ts` | `*` | re-export |  | from `./variant-matrix` |
 | `index.ts` | `*` | re-export |  | from `./brand` |
 | `index.ts` | `*` | re-export |  | from `./http-client` |
 | `index.ts` | `*` | re-export |  | from `./theme-colors` |
+| `index.ts` | `*` | re-export |  | from `./theme-contrast` |
+| `index.ts` | `*` | re-export |  | from `./theme-elevation` |
+| `index.ts` | `*` | re-export |  | from `./theme-layers` |
+| `index.ts` | `*` | re-export |  | from `./theme-motion` |
 | `index.ts` | `*` | re-export |  | from `./theme-radii` |
+| `index.ts` | `*` | re-export |  | from `./theme-runtime` |
+| `index.ts` | `*` | re-export |  | from `./theme-size` |
+| `index.ts` | `*` | re-export |  | from `./theme-space` |
+| `index.ts` | `*` | re-export |  | from `./theme-tailwind` |
 | `index.ts` | `*` | re-export |  | from `./theme-type` |
 | `index.ts` | `*` | re-export |  | from `./units` |
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
+| `index.ts` | `*` | re-export |  | from `./measurements/size-recommendation` |
+| `launchpad.ts` | `LaunchpadTier` | type | :24 | Core apps ship to everyone; industry apps follow the `MODULES` allowlist. |
+| `launchpad.ts` | `LaunchpadAudience` | type | :32 | Who the app serves. |
+| `launchpad.ts` | `LaunchpadStage` | type | :35 | `RESERVED` is declared for a later release and is never shown. |
+| `launchpad.ts` | `LaunchpadIconKey` | type | :38 | The glyphs a tile can use; the web app maps each to a lucide icon. |
+| `launchpad.ts` | `LaunchpadAppModule` | interface | :52 |  |
+| `launchpad.ts` | `LaunchpadApp` | interface | :59 |  |
+| `launchpad.ts` | `LaunchpadContext` | interface | :81 | What the server needs to know about this deployment and tenant. |
+| `launchpad.ts` | `LaunchpadHiddenReason` | type | :91 | Why an app is not shown. |
+| `launchpad.ts` | `launchpadHiddenReason` | function | :98 |  |
+| `launchpad.ts` | `ResolvedLaunchpadApp` | interface | :115 | Modules an app lists that are off — the web app drops entries owned by these. |
+| `launchpad.ts` | `resolveLaunchpad` | function | :125 | The apps this deployment and tenant may show, in order. |
+| `launchpad.ts` | `LAUNCHPAD_APPS` | const | :145 | The first-party apps that exist today, each a grouping of nav entries the admin sidebar already has. |
+| `markdown-suggestion.ts` | `MarkdownSuggestionInput` | interface | :22 |  |
+| `markdown-suggestion.ts` | `MarkdownSuggestionResult` | interface | :36 |  |
+| `markdown-suggestion.ts` | `computeMarkdownSuggestion` | function | :51 | Null when there is no honest basis for a suggestion at all: no stock to clear, or no real cost (cos… |
+| `onsite-messaging.ts` | `ONSITE_MESSAGE_KINDS` | const | :9 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrig… |
+| `onsite-messaging.ts` | `OnsiteMessageKind` | type | :16 |  |
+| `onsite-messaging.ts` | `ONSITE_POPUP_TRIGGERS` | const | :18 |  |
+| `onsite-messaging.ts` | `OnsitePopupTrigger` | type | :20 |  |
+| `onsite-messaging.ts` | `ActiveOnsiteMessage` | interface | :23 | What the public `/onsite-messages/active` endpoint hands the storefront runtime. |
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :266 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :268 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :278 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :285 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :402 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :488 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :493 |  |
-| `permissions.ts` | `PermissionEffect` | type | :494 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :497 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :969 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :971 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :981 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :988 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :1250 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1511 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1530 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1544 |  |
+| `permissions.ts` | `PermissionEffect` | type | :1545 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :1548 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |
@@ -148,13 +340,62 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `allocateLandedCost` | function | :205 |  |
 | `pricing.ts` | `convertToBase` | function | :260 | Converts a minor-unit amount in a foreign currency to the deployment's own base currency, given a s… |
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
+| `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
+| `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
+| `segment-filter.ts` | `SegmentFilterCondition` | interface | :13 | The filter shape `Segment.filter` (crm.prisma) holds. |
+| `segment-filter.ts` | `SegmentFilter` | interface | :28 |  |
+| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
+| `sku.ts` | `generateSku` | function | :59 | Renders a SKU from the template, appending a zero-padded `{SEQ}` only when the un-numbered version… |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |
 | `slug.ts` | `slugifyWithFallback` | function | :28 | Slugifies, falling back to `<fallbackPrefix>-<random>` when nothing survives. |
 | `slug.ts` | `uniqueSlug` | function | :34 | Appends a numeric suffix until the slug is not in `taken`. |
 | `theme-colors.ts` | `THEME_COLORS` | const | :16 | The palette — a view onto BRAND.theme.colors. |
 | `theme-colors.ts` | `ThemeColors` | type | :17 | The palette — a view onto BRAND.theme.colors. |
+| `theme-colors.ts` | `THEME_COLORS_DARK` | const | :25 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-colors.ts` | `ThemeColorsDark` | type | :26 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-colors.ts` | `THEME_PALETTES` | const | :28 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-contrast.ts` | `relativeLuminance` | function | :13 | Relative luminance of an sRGB colour, 0 (black) to 1 (white). |
+| `theme-contrast.ts` | `contrastRatio` | function | :22 | Contrast ratio between two colours, order-independent, 1:1 to 21:1. |
+| `theme-contrast.ts` | `compositeRgb` | function | :28 | `fg` at `alpha` over an opaque `bg` — a translucent colour has no contrast of its own until it is c… |
+| `theme-contrast.ts` | `contrastRatioHex` | function | :37 | Same as `contrastRatio`, from hex strings. |
+| `theme-contrast.ts` | `wcagLevel` | function | :42 | WCAG conformance label for a ratio at a text size. |
+| `theme-elevation.ts` | `THEME_ELEVATION` | const | :10 | The four elevation steps — a view onto BRAND.theme.elevation. |
+| `theme-elevation.ts` | `ElevationStep` | type | :11 | The four elevation steps — a view onto BRAND.theme.elevation. |
+| `theme-layers.ts` | `THEME_LAYERS` | const | :7 | Stacking layers — a view onto BRAND.theme.layers. |
+| `theme-layers.ts` | `Layer` | type | :8 | Stacking layers — a view onto BRAND.theme.layers. |
+| `theme-motion.ts` | `THEME_MOTION` | const | :11 | The motion tokens — a view onto BRAND.theme.motion. |
+| `theme-motion.ts` | `cubicBezier` | function | :14 | `[0.2, 0, 0, 1]` -> `'cubic-bezier(0.2, 0, 0, 1)'`, for CSS. |
+| `theme-motion.ts` | `ms` | function | :19 | `220` -> `'220ms'`, for CSS. |
 | `theme-radii.ts` | `THEME_RADII` | const | :11 | The radius scale — a view onto BRAND.theme.radii. |
 | `theme-radii.ts` | `radiusPx` | function | :14 | `2` -> `'2px'`, for the CSS side. |
+| `theme-radii.ts` | `concentricRadius` | function | :26 | The corner of something set inside a rounded container (CRD-5): the outer corner minus the gap betw… |
+| `theme-runtime.ts` | `THEME_PREFERENCES` | const | :14 | How a surface decides which theme it is in — plain functions, no framework. |
+| `theme-runtime.ts` | `ThemePreference` | type | :15 |  |
+| `theme-runtime.ts` | `ResolvedTheme` | type | :16 |  |
+| `theme-runtime.ts` | `THEME_ATTRIBUTE` | const | :19 | The attribute on `<html>` that the CSS keys off (`[data-theme='dark']`). |
+| `theme-runtime.ts` | `DEFAULT_THEME_PREFERENCE` | const | :22 | Where no choice has been made: follow the device. |
+| `theme-runtime.ts` | `isThemePreference` | function | :24 | Where no choice has been made: follow the device. |
+| `theme-runtime.ts` | `resolveTheme` | function | :29 | The one rule: an explicit choice wins, `system` defers to the device. |
+| `theme-runtime.ts` | `themeInitScript` | function | :52 | The script a root layout inlines in `<head>`, so `data-theme` is on `<html>` before the first paint. |
+| `theme-size.ts` | `THEME_SIZE` | const | :11 | Control heights, icon sizes and touch-target floors — a view onto BRAND.theme.size. |
+| `theme-size.ts` | `SIZE_SPACING_PX` | const | :18 | The spacing keys the size tokens generate, with their pixel size: one list for Tailwind (`h-control… |
+| `theme-space.ts` | `THEME_SPACE` | const | :10 | The spacing scale — a view onto BRAND.theme.space. |
+| `theme-space.ts` | `SpaceStep` | type | :11 | The spacing scale — a view onto BRAND.theme.space. |
+| `theme-space.ts` | `spaceRem` | function | :14 | `8` -> `'0.5rem'`, for the CSS side. |
+| `theme-space.ts` | `tailwindSpacingKey` | function | :19 | Tailwind's spacing key for a px value on its 4px grid: `8` -> `'2'`, `2` -> `'0.5'`. |
+| `theme-tailwind.ts` | `CssRules` | interface | :41 | The shape Tailwind's `addBase` takes, restated so shared needs no Tailwind types. |
+| `theme-tailwind.ts` | `StockHues` | interface | :46 | The stock Tailwind scales this product uses, passed in by the app. |
+| `theme-tailwind.ts` | `STOCK_HUE_NAMES` | const | :53 |  |
+| `theme-tailwind.ts` | `StockHueName` | type | :54 |  |
+| `theme-tailwind.ts` | `hexToRgb` | function | :80 | ── colour maths ──────────────────────────────────────────────────────── |
+| `theme-tailwind.ts` | `rgbToHex` | function | :86 |  |
+| `theme-tailwind.ts` | `mixHex` | function | :91 | `fg` over `bg` at `alpha`, as an opaque hex. |
+| `theme-tailwind.ts` | `channels` | function | :98 | `#0e8294` -> `'14 130 148'`, the form `rgb(var(--x) / <alpha-value>)` needs. |
+| `theme-tailwind.ts` | `darkHueScale` | function | :117 | A stock hue scale, re-derived for a dark surface. |
+| `theme-tailwind.ts` | `themeColorVar` | function | :142 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
+| `theme-tailwind.ts` | `themeVars` | function | :166 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
+| `theme-tailwind.ts` | `staticVars` | function | :198 | Custom properties that do not change between themes: motion. |
+| `theme-tailwind.ts` | `createThemeTailwind` | function | :226 |  |
 | `theme-type.ts` | `TypeStep` | interface | :14 | The type scale — a view onto BRAND.theme.type. |
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |
@@ -164,6 +405,12 @@ Every top-level export in `packages`, with the line to open.
 | `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
 | `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
 | `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
+| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03… |
+| `variant-matrix.ts` | `VariantCombination` | interface | :13 |  |
+| `variant-matrix.ts` | `GenerateCombinationsResult` | interface | :18 |  |
+| `variant-matrix.ts` | `generateVariantCombinations` | function | :33 | The full cross-product of every axis's values. |
+| `variant-matrix.ts` | `newCombinationsOnly` | function | :73 | Combinations in `all` that are not already in `existing` — so adding one new value to an option gen… |
+| `variant-matrix.ts` | `removedCombinations` | function | :82 | Combinations in `existing` that no longer appear in `all` — candidates to deactivate, never delete. |
 
 ### `packages/shared/src/entities`
 
@@ -222,11 +469,18 @@ Every top-level export in `packages`, with the line to open.
 | `schema.ts` | `MeasurementValidationResult` | interface | :40 |  |
 | `schema.ts` | `validateMeasurements` | function | :47 | Validates raw input against a garment's fields, returning readable errors. |
 | `schema.ts` | `convertMeasurement` | function | :69 | Converts a value between inches and centimetres, rounded to 0.25 steps. |
+| `size-recommendation.ts` | `SizeChartRow` | interface | :13 | WO-9.2 (09-ai-layer.md) — "start without a model." Pure arithmetic: nearest size by measurement dis… |
+| `size-recommendation.ts` | `SizeConfidence` | type | :19 |  |
+| `size-recommendation.ts` | `SizeRecommendation` | interface | :21 |  |
+| `size-recommendation.ts` | `RecommendSizeInput` | interface | :37 |  |
+| `size-recommendation.ts` | `recommendSize` | function | :90 |  |
 | `types.ts` | `MeasurementFieldDef` | interface | :10 | A single measurement a tailor needs, e.g. |
 | `types.ts` | `GarmentTypeDef` | interface | :31 |  |
 | `types.ts` | `MeasurementValues` | type | :41 | A filled-in set of measurements: field key -> value in that field's unit. |
+| `types.ts` | `GARMENT_SIZE_TOKENS` | const | :44 | The RTW size tokens a garment's size chart offers, XS through XXL. |
+| `types.ts` | `GarmentSizeToken` | type | :45 | The RTW size tokens a garment's size chart offers, XS through XXL. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

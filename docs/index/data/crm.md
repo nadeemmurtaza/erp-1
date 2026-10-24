@@ -3,7 +3,7 @@
 
 # Schema: `crm.prisma`
 
-9 models · 3 enums. Owned by module [`crm`](../modules/crm.md).
+9 models · 3 enums. Owned by module [`crm`](..\modules\crm.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -38,10 +38,16 @@ against a real database.
 | `userId` | `String?` | unique, optional | @unique |
 | `notes` | `String?` | optional |  |
 | `orderCount` | `Int` |  | @default(0) |
-| `lifetimeValue` | `Int` |  | paisa |
-| `avgOrderValue` | `Int` |  | paisa |
+| `lifetimeValue` | `Int` |  | @default(0) |
+| `avgOrderValue` | `Int` |  | @default(0) |
 | `lastOrderAt` | `DateTime?` | optional |  |
 | `firstOrderAt` | `DateTime?` | optional |  |
+| `rtoCount` | `Int` |  | @default(0) |
+| `marketingOptOut` | `Boolean` |  | @default(false) |
+| `rfmRecencyScore` | `Int?` | optional |  |
+| `rfmFrequencyScore` | `Int?` | optional |  |
+| `rfmMonetaryScore` | `Int?` | optional |  |
+| `rfmComputedAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `owner` | `User?` | relation, optional | @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull) |
@@ -52,10 +58,12 @@ against a real database.
 | `followUps` | `FollowUpTask[]` |  |  |
 | `tags` | `ContactTag[]` |  |  |
 | `inboundEmails` | `InboundEmail[]` |  |  |
+| `campaignReceipts` | `CampaignRecipient[]` |  |  |
+| `whatsAppConversations` | `WhatsAppConversation[]` |  |  |
 
-Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])` · `@@index([lifetimeValue])`
+Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])` · `@@index([lifetimeValue])` · `@@index([rfmRecencyScore, rfmFrequencyScore, rfmMonetaryScore])`
 
-### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:216`</sub>
+### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:242`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -66,7 +74,7 @@ Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])`
 
 Indexes: `@@id([contactId, tagId])`
 
-### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:187`</sub>
+### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:213`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -86,9 +94,9 @@ Indexes: `@@id([contactId, tagId])`
 
 Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
-### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:142`</sub>
+### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:168`</sub>
 
-> A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.
+> A message pulled from a connected mailbox's IMAP inbox by the poller (modules/customers/crm/email-inbox) — a customer's reply to an order or support email.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -112,7 +120,7 @@ Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
 Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@@index([receivedAt])`
 
-### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:174`</sub>
+### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:200`</sub>
 
 > A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…
 
@@ -128,7 +136,7 @@ Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@
 
 Indexes: `@@index([inboundEmailId, sentAt])`
 
-### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:116`</sub>
+### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:142`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -146,7 +154,7 @@ Indexes: `@@index([inboundEmailId, sentAt])`
 
 Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
-### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:75`</sub>
+### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:101`</sub>
 
 > An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.
 
@@ -176,7 +184,7 @@ Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
 Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([contactId])`
 
-### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:228`</sub>
+### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:254`</sub>
 
 > A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
 
@@ -190,8 +198,10 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `createdBy` | `User?` | relation, optional | @relation(fields: [createdById], references: [id], onDelete: SetNull) |
+| `campaigns` | `Campaign[]` |  |  |
+| `onsiteMessages` | `OnsiteMessage[]` |  |  |
 
-### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:207`</sub>
+### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:233`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -216,7 +226,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `DORMANT` |  |
 | `BLOCKED` |  |
 
-### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:106`</sub>
+### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:132`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -228,7 +238,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `NOTE` |  |
 | `COMPLAINT` |  |
 
-### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:65`</sub>
+### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:91`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -241,4 +251,4 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

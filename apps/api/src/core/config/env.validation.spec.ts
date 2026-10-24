@@ -150,4 +150,40 @@ describe('validateEnv', () => {
   it('refuses an unknown NODE_ROLE', () => {
     expect(() => validateEnv({ ...base, NODE_ROLE: 'REGIONAL_HUB' })).toThrow();
   });
+
+  describe('REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2)', () => {
+    const production = {
+      ...base,
+      NODE_ENV: 'production',
+      JWT_ACCESS_SECRET: 'p'.repeat(48),
+      JWT_REFRESH_SECRET: 'q'.repeat(48),
+      APP_ENCRYPTION_KEY: 'r'.repeat(32),
+    };
+
+    it('defaults to the local development instance outside production', () => {
+      expect(validateEnv({ ...base }).REDIS_URL).toBe('redis://localhost:6379');
+    });
+
+    it('refuses to start in production without an explicit REDIS_URL, and says what to do', () => {
+      expect(() => validateEnv(production)).toThrow(/REDIS_URL is required in production[\s\S]*never the mail server/);
+    });
+
+    it('starts in production once REDIS_URL names the dedicated instance', () => {
+      const env = validateEnv({ ...production, REDIS_URL: 'redis://:secret@redis:6379' });
+      expect(env.REDIS_URL).toBe('redis://:secret@redis:6379');
+    });
+
+    it('accepts a TLS URL', () => {
+      expect(validateEnv({ ...base, REDIS_URL: 'rediss://cache.example:6380' }).REDIS_URL).toBe('rediss://cache.example:6380');
+    });
+
+    it.each([
+      ['a database path — it would override every keyspace\'s own database', 'redis://localhost:6379/1'],
+      ['a db query parameter, for the same reason', 'redis://localhost:6379?db=2'],
+      ['a non-Redis scheme', 'http://localhost:6379'],
+      ['something that is not a URL', 'localhost:6379'],
+    ])('refuses %s', (_reason, value) => {
+      expect(() => validateEnv({ ...base, REDIS_URL: value })).toThrow(/REDIS_URL must be redis:\/\//);
+    });
+  });
 });

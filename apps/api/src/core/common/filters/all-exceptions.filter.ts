@@ -15,6 +15,40 @@ interface ErrorBody {
   error: string;
   path: string;
   timestamp: string;
+  /**
+   * Whole seconds until the refused request may be retried — present only
+   * when the exception knows (LoginRateLimitedException, doc 206 §1.2), and
+   * mirrored into a `Retry-After` header so a client need not parse the body.
+   */
+  retryAfterSeconds?: number;
+  /**
+   * A stable, machine-readable reason a client can branch on while `message`
+   * stays the sentence a person reads — "BID_TOO_LOW" and "AUCTION_ENDED" are
+   * both a 409, and a bid box must say different things for each. Present only
+   * when the exception names one in the SCREAMING_SNAKE_CASE form below.
+   */
+  code?: string;
+  /** What the client needs to act on the refusal (the minimum next bid), as plain JSON values. */
+  details?: Record<string, string | number | boolean | null>;
+}
+
+const REFUSAL_CODE = /^[A-Z][A-Z0-9_]{1,63}$/;
+const MAX_DETAIL_KEYS = 10;
+
+/** Only a well-formed code and flat, primitive details are passed on; anything else an exception carries stays server-side. */
+function clientSafeReason(payload: unknown): Pick<ErrorBody, 'code' | 'details'> {
+  if (payload === null || typeof payload !== 'object') return {};
+  const { code, details } = payload as { code?: unknown; details?: unknown };
+  const reason: Pick<ErrorBody, 'code' | 'details'> = {};
+  if (typeof code === 'string' && REFUSAL_CODE.test(code)) reason.code = code;
+  if (reason.code && details !== null && typeof details === 'object' && !Array.isArray(details)) {
+    const entries = Object.entries(details as Record<string, unknown>).filter(
+      (entry): entry is [string, string | number | boolean | null] =>
+        entry[1] === null || ['string', 'number', 'boolean'].includes(typeof entry[1]),
+    );
+    if (entries.length > 0 && entries.length <= MAX_DETAIL_KEYS) reason.details = Object.fromEntries(entries);
+  }
+  return reason;
 }
 
 /**
@@ -46,6 +80,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       );
     }
 
+    if (body.retryAfterSeconds !== undefined) {
+      response.setHeader('Retry-After', String(body.retryAfterSeconds));
+    }
     response.status(body.statusCode).json(body);
   }
 
@@ -59,6 +96,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         typeof payload === 'string'
           ? payload
           : ((payload as { message?: string | string[] }).message ?? exception.message);
+      const retryAfterSeconds =
+        payload !== null && typeof payload === 'object'
+          ? (payload as { retryAfterSeconds?: unknown }).retryAfterSeconds
+          : undefined;
 
       return {
         statusCode: status,
@@ -66,11 +107,32 @@ export class AllExceptionsFilter implements ExceptionFilter {
         error: HttpStatus[status] ?? 'Error',
         path,
         timestamp,
+        ...(typeof retryAfterSeconds === 'number' && Number.isInteger(retryAfterSeconds) && retryAfterSeconds >= 0
+          ? { retryAfterSeconds }
+          : {}),
+        ...clientSafeReason(payload),
       };
     }
 
     if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       return { ...this.fromPrisma(exception), path, timestamp };
+    }
+
+    // The body parser rejects an over-limit JSON body (Express's default is
+    // 100 KiB) with a plain `http-errors` error, not an HttpException. That is
+    // the caller's mistake, so it is a 413 they can act on (a partner's sender
+    // splits the fact), never a 500 that reads as "we are failing, retry".
+    if (
+      exception instanceof Error &&
+      (exception as { type?: unknown }).type === 'entity.too.large'
+    ) {
+      return {
+        statusCode: HttpStatus.PAYLOAD_TOO_LARGE,
+        message: 'The request body is too large.',
+        error: 'PAYLOAD_TOO_LARGE',
+        path,
+        timestamp,
+      };
     }
 
     if (exception instanceof Prisma.PrismaClientValidationError) {

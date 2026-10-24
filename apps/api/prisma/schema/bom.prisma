@@ -41,11 +41,11 @@ model RawMaterial {
   /// "fabric" | "trim" | "packaging" | "consumable". Groups the raw-usage report.
   kind String @default("fabric")
 
-  unit RawMaterialUnit
+  unit      RawMaterialUnit
   /// Base units per display unit. 1000 for continuous goods, 1 for countable.
   /// Effectively immutable once stock or a StockMovement exists for the
   /// variant — see raw-material.service.ts's own note on why.
-  unitScale Int @default(1)
+  unitScale Int             @default(1)
 
   notes    String?
   isActive Boolean @default(true)
@@ -53,11 +53,11 @@ model RawMaterial {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  variant         ProductVariant      @relation(fields: [variantId], references: [id], onDelete: Cascade)
   /// Recipes that consume this material. Restrict delete (BomComponent's own
   /// FK): a raw material a live recipe depends on cannot vanish out from
   /// under it.
-  components BomComponent[]
+  components      BomComponent[]
   /// Every production-run line that ever consumed this material — ledger
   /// history, kept even after the material is deactivated.
   productionLines BomProductionLine[]
@@ -163,9 +163,9 @@ model BomProductionRun {
 
   /// SNAPSHOTS. A later recipe edit or raw-material cost change must not
   /// rewrite what this batch cost to make.
-  materialCost Int
-  labourCost   Int
-  overheadCost Int
+  materialCost     Int
+  labourCost       Int
+  overheadCost     Int
   /// round((materialCost + labourCost + overheadCost) / quantityProduced).
   producedUnitCost Int
 
@@ -176,7 +176,7 @@ model BomProductionRun {
 
   /// WO-23.3 (RETAIL-ERP.md R13/R8, ADR-021). Which tier this run belongs
   /// to. Defaults to BRAND, same reasoning as PurchaseOrder.scopeLevel.
-  scopeLevel ScopeLevel @default(BRAND)
+  scopeLevel   ScopeLevel @default(BRAND)
   /// This node's own identifier (AppConfigService.nodeId) at run time — a
   /// bare string, never a Node row FK. Null for a run recorded before this
   /// column existed.
@@ -186,18 +186,27 @@ model BomProductionRun {
   /// own decoupling reasoning. Resolves to
   /// InventoryService.defaultLocationId() when the caller does not name
   /// one, matching every run before this column existed.
-  locationId String
+  locationId   String
 
-  recipe   BomRecipe           @relation(fields: [recipeId], references: [id])
-  variant  ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
-  operator User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
-  lines    BomProductionLine[]
+  /// 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. The lot the
+  /// FINISHED output of this run belongs to — created at the moment of
+  /// production, a production run being the other legitimate origin of a
+  /// new lot besides a purchase (doc 32's own `Lot.sourceReceiptId`). Null
+  /// when the output variant isn't lot-tracked (`ProductVariant.lotTracked`).
+  outputLotId String?
+
+  recipe    BomRecipe           @relation(fields: [recipeId], references: [id])
+  variant   ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
+  operator  User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
+  lines     BomProductionLine[]
+  outputLot Lot?                @relation("BomOutputLot", fields: [outputLotId], references: [id])
 
   @@index([producedAt])
   @@index([scopeLevel])
   @@index([locationId])
   @@index([recipeId])
   @@index([variantId])
+  @@index([outputLotId])
 }
 
 /// One raw-material line consumed by a production run — the same SNAPSHOT
@@ -219,9 +228,30 @@ model BomProductionLine {
   unitCost     Int
   lineCost     Int
 
-  run         BomProductionRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  rawMaterial RawMaterial      @relation(fields: [rawMaterialId], references: [id])
+  run            BomProductionRun       @relation(fields: [runId], references: [id], onDelete: Cascade)
+  rawMaterial    RawMaterial            @relation(fields: [rawMaterialId], references: [id])
+  lotAllocations BomProductionLineLot[]
 
   @@index([runId])
   @@index([rawMaterialId])
+}
+
+/// 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. One row per input
+/// lot actually drawn on by one production line — the same "join a recall
+/// query walks" role doc 32's own LotAllocation already plays for an
+/// ordinary stock movement, extended to a production consumption. Nullable
+/// on the BomProductionLine side: a raw material with no Lot rows at all
+/// (never received through a lot-tracked goods receipt) legitimately has
+/// none.
+model BomProductionLineLot {
+  id               String @id @default(cuid())
+  productionLineId String
+  lotId            String
+  quantityBase     Int
+
+  productionLine BomProductionLine @relation(fields: [productionLineId], references: [id], onDelete: Cascade)
+  lot            Lot               @relation(fields: [lotId], references: [id])
+
+  @@index([productionLineId])
+  @@index([lotId])
 }

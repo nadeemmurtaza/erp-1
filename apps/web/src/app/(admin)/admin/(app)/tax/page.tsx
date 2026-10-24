@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
-import { Loading } from '@/components/ui';
+import { ToastStack } from '@/components/admin/toast-stack';
+import { ConfirmDialog, DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface TaxRate {
   id: string;
@@ -48,6 +49,8 @@ export default function TaxAdminPage() {
 
   const [rateDraftByClassId, setRateDraftByClassId] = useState<Record<string, string>>({});
   const [savingRateFor, setSavingRateFor] = useState<string | null>(null);
+  const [deletingClassId, setDeletingClassId] = useState<string | null>(null);
+  const [deletingClass, setDeletingClass] = useState(false);
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -139,45 +142,27 @@ export default function TaxAdminPage() {
   }
 
   async function deleteClass(id: string) {
-    if (!confirm('Delete this tax class? This only works if no product variant uses it.')) return;
+    setDeletingClass(true);
     try {
       await adminFetch(`/admin/tax/classes/${id}`, { method: 'DELETE' });
       addToast('Tax class deleted', 'success');
       await load();
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not delete this tax class', 'error');
+    } finally {
+      setDeletingClass(false);
+      setDeletingClassId(null);
     }
   }
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : t.type === 'success'
-                    ? 'border-green-200 bg-green-50 text-green-800'
-                    : 'border-blue-200 bg-blue-50 text-blue-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tax</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Off by default. Turning it on charges GST at checkout using the classes and rates below —
-        see docs/implementation/15-tax-module.md for the design.
+        see docs/implementation/tax-compliance/15-tax-module.md for the design.
       </p>
 
       {busy && !settings ? (
@@ -198,22 +183,24 @@ export default function TaxAdminPage() {
               </label>
 
               <div className="flex flex-wrap items-center gap-4">
-                <label className="flex items-center gap-2 text-sm text-neutral-900/80">
-                  Pricing mode
-                  <select
-                    className="field-input"
+                <div className="flex flex-wrap items-center gap-2 text-sm text-neutral-900/80">
+                  <span>Pricing mode</span>
+                  <Select
+                    label="Pricing mode"
                     value={settings?.pricingMode ?? 'EXCLUSIVE'}
                     disabled={savingSettings}
-                    onChange={(e) =>
-                      saveSettings({ pricingMode: e.target.value as 'INCLUSIVE' | 'EXCLUSIVE' })
-                    }
-                  >
-                    <option value="EXCLUSIVE">Exclusive — tax is added at checkout</option>
-                    <option value="INCLUSIVE">
-                      Inclusive — prices already include tax; nothing the customer pays changes
-                    </option>
-                  </select>
-                </label>
+                    onChange={(next) => saveSettings({ pricingMode: next as 'INCLUSIVE' | 'EXCLUSIVE' })}
+                    options={[
+                      { value: 'EXCLUSIVE', label: 'Exclusive' },
+                      { value: 'INCLUSIVE', label: 'Inclusive' },
+                    ]}
+                  />
+                  <span>
+                    {(settings?.pricingMode ?? 'EXCLUSIVE') === 'EXCLUSIVE'
+                      ? 'Tax is added at checkout.'
+                      : 'Prices already include tax; nothing the customer pays changes.'}
+                  </span>
+                </div>
 
                 <label className="flex items-center gap-2 text-sm text-neutral-900/80">
                   Default class
@@ -242,83 +229,76 @@ export default function TaxAdminPage() {
               </p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="table-flat">
-                <thead className="whitespace-nowrap">
-                  <tr>
-                    <th>Name</th>
-                    <th>Key</th>
-                    <th>Current rate</th>
-                    <th>New rate</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-100">
-                  {classes?.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="p-8 text-center text-neutral-900/60">
-                        No tax classes yet — add one below.
-                      </td>
-                    </tr>
-                  ) : (
-                    classes?.map((taxClass) => {
-                      const activeRate = taxClass.rates[0] ?? null;
-                      return (
-                        <tr key={taxClass.id} className="hover:bg-neutral-50/50">
-                          <td className="font-medium">
-                            {taxClass.name}
-                            {taxClass.isDefault && (
-                              <span className="ms-2 rounded bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
-                                default
-                              </span>
-                            )}
-                          </td>
-                          <td className="text-neutral-900/60">{taxClass.key}</td>
-                          <td className="text-neutral-900/80">
-                            {activeRate ? formatRateBps(activeRate.rateBps) : '—'}
-                          </td>
-                          <td>
-                            <div className="flex items-center gap-2">
-                              <input
-                                type="number"
-                                min={0}
-                                step="0.01"
-                                placeholder="e.g. 17"
-                                className="field-input w-24"
-                                value={rateDraftByClassId[taxClass.id] ?? ''}
-                                onChange={(e) =>
-                                  setRateDraftByClassId((prev) => ({
-                                    ...prev,
-                                    [taxClass.id]: e.target.value,
-                                  }))
-                                }
-                              />
-                              <button
-                                type="button"
-                                className="btn-primary px-3 py-1.5 text-xs"
-                                disabled={savingRateFor === taxClass.id}
-                                onClick={() => addRate(taxClass.id)}
-                              >
-                                Set
-                              </button>
-                            </div>
-                          </td>
-                          <td className="text-end">
-                            <button
-                              type="button"
-                              className="text-xs text-red-600 hover:underline"
-                              onClick={() => deleteClass(taxClass.id)}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
+            <DataTable
+              rows={classes}
+              rowKey={(taxClass) => taxClass.id}
+              emptyLabel="No tax classes yet — add one below."
+              columns={[
+                {
+                  header: 'Name',
+                  cell: (taxClass) => (
+                    <span className="font-medium">
+                      {taxClass.name}
+                      {taxClass.isDefault && (
+                        <span className="ms-2 rounded bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
+                          default
+                        </span>
+                      )}
+                    </span>
+                  ),
+                },
+                { header: 'Key', cell: (taxClass) => taxClass.key, muted: true },
+                {
+                  header: 'Current rate',
+                  cell: (taxClass) => {
+                    const activeRate = taxClass.rates[0] ?? null;
+                    return activeRate ? formatRateBps(activeRate.rateBps) : '—';
+                  },
+                },
+                {
+                  header: 'New rate',
+                  cell: (taxClass) => (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        placeholder="e.g. 17"
+                        className="field-input w-24"
+                        value={rateDraftByClassId[taxClass.id] ?? ''}
+                        onChange={(e) =>
+                          setRateDraftByClassId((prev) => ({
+                            ...prev,
+                            [taxClass.id]: e.target.value,
+                          }))
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="btn-primary px-3 py-1.5 text-xs"
+                        disabled={savingRateFor === taxClass.id}
+                        onClick={() => addRate(taxClass.id)}
+                      >
+                        Set
+                      </button>
+                    </div>
+                  ),
+                },
+                {
+                  header: '',
+                  align: 'end',
+                  cell: (taxClass) => (
+                    <button
+                      type="button"
+                      className="text-xs text-red-600 hover:underline"
+                      onClick={() => setDeletingClassId(taxClass.id)}
+                    >
+                      Delete
+                    </button>
+                  ),
+                },
+              ]}
+            />
 
             <div className="flex flex-wrap items-end gap-3 border-t border-neutral-100 p-4">
               <label className="flex flex-col gap-1 text-xs text-neutral-900/60">
@@ -363,6 +343,18 @@ export default function TaxAdminPage() {
           </section>
         </>
       )}
+
+      <ConfirmDialog
+        open={deletingClassId !== null}
+        onClose={() => setDeletingClassId(null)}
+        onConfirm={() => {
+          if (deletingClassId) return deleteClass(deletingClassId);
+        }}
+        title="Delete this tax class?"
+        description="This only works if no product variant uses it — otherwise the delete is refused."
+        confirmLabel="Delete tax class"
+        busy={deletingClass}
+      />
     </>
   );
 }

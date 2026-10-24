@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { BRAND, formatMoney, type Locale } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
@@ -9,7 +9,7 @@ import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
 import { request } from '@/lib/api-client';
-import { getCustomerToken } from '@/lib/cart-client';
+import { getCustomerToken, updateGuestContact } from '@/lib/cart-client';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
 
@@ -20,15 +20,26 @@ interface PaymentMethod {
   descriptionEn: string;
   descriptionUr: string;
   fee: number;
+  /** True for a third-party gift-card network (Giftkarta) — the code is collected AFTER the order exists, not here. */
+  requiresCode: boolean;
 }
 
 /** What POST /orders hands back. Only the parts this page acts on. */
 interface CheckoutResponse {
   number: string;
   payment?: {
+    paymentId?: string;
     redirectUrl?: string;
     meta?: { fields?: Record<string, string> };
   };
+}
+
+/** What POST /promotions/preview hands back — see promotions-public.controller.ts. */
+interface DiscountPreview {
+  linePerUnitDiscounts: Record<string, number>;
+  orderDiscount: number;
+  shippingDiscount: number;
+  applied: Array<{ discountId: string; name: string; type: string; amount: number }>;
 }
 
 /**
@@ -61,9 +72,100 @@ export default function CheckoutPage() {
     province: BRAND.locale.regions[0] as string,
     postalCode: '',
     note: '',
+    // WO-8.5 — a guest who opts in gets abandoned-cart recovery on
+    // WhatsApp/SMS, not just email; a signed-in customer's account already
+    // covers this and never sees the checkbox.
+    marketingConsent: false,
   });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // architecture-patterns/157 — one key for the whole lifetime of this
+  // "place an order" attempt: generated once, resent unchanged on every
+  // retry (a declined-then-retried payment, a flaky network), so a resend
+  // collapses to the SAME order instead of a second one. A fresh checkout
+  // attempt only exists once this page remounts (new cart, new mount).
+  const idempotencyKey = useRef<string | null>(null);
+  if (idempotencyKey.current === null) idempotencyKey.current = crypto.randomUUID();
+
+  // Phase 5 (WO-5.3/5.4/5.5): promo code, gift card and store credit — all
+  // validated authoritatively at order placement; the promo preview here is
+  // purely a live estimate using the SAME evaluator the real checkout uses
+  // (House Rule 11), so it can never show a number the order disagrees with.
+  const [promoCode, setPromoCode] = useState('');
+  const [promoPreview, setPromoPreview] = useState<DiscountPreview | null>(null);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [checkingPromo, setCheckingPromo] = useState(false);
+  const [giftCardCode, setGiftCardCode] = useState('');
+  const [giftCardAmount, setGiftCardAmount] = useState('');
+  const [storeCreditAmount, setStoreCreditAmount] = useState('');
+  const isSignedIn = Boolean(getCustomerToken());
+
+  /**
+   * WO-8.5 — stamps the guest's phone + consent onto the cart as soon as it
+   * looks real, well before the order exists, so an abandoned cart is still
+   * recoverable. Best-effort: a failure here must never block checkout, so
+   * it's silently swallowed rather than surfaced as a form error.
+   */
+  function syncGuestContact(phone: string, marketingConsent: boolean): void {
+    if (isSignedIn) return;
+    if (phone.replace(/\D/g, '').length < 10) return;
+    updateGuestContact(phone, marketingConsent, locale).catch(() => {});
+  }
+
+  // A third-party gift card network (Giftkarta et al. — PaymentProvider's own
+  // `requiresCode`): the order already exists once we get here, PENDING on
+  // this one payment, and this is the follow-up screen that redeems it —
+  // never collected earlier, since the redemption itself is a real external
+  // debit that must never run inside the order-creation transaction.
+  const [pendingGiftCardPayment, setPendingGiftCardPayment] = useState<{ paymentId: string; orderNumber: string } | null>(null);
+  const [networkGiftCardCode, setNetworkGiftCardCode] = useState('');
+  const [redeemingNetworkCard, setRedeemingNetworkCard] = useState(false);
+  const [networkGiftCardError, setNetworkGiftCardError] = useState<string | null>(null);
+
+  async function redeemNetworkGiftCard() {
+    if (!pendingGiftCardPayment || !networkGiftCardCode.trim()) return;
+    setRedeemingNetworkCard(true);
+    setNetworkGiftCardError(null);
+    try {
+      await request(`/payments/${pendingGiftCardPayment.paymentId}/redeem-gift-card`, {
+        method: 'POST',
+        body: { code: networkGiftCardCode.trim() },
+        fallbackMessage: t('giftCardRedeemFailed'),
+      });
+      window.location.href = `/${locale}${ROUTES.storefront.order(pendingGiftCardPayment.orderNumber)}?placed=1`;
+    } catch (cause) {
+      setNetworkGiftCardError(cause instanceof Error ? cause.message : t('giftCardRedeemFailed'));
+    } finally {
+      setRedeemingNetworkCard(false);
+    }
+  }
+
+  async function checkPromoCode() {
+    if (!cart || !promoCode.trim()) return;
+    setCheckingPromo(true);
+    setPromoError(null);
+    try {
+      const preview = await request<DiscountPreview>('/promotions/preview', {
+        method: 'POST',
+        credentials: 'include',
+        body: {
+          lines: cart.items.map((line) => ({ id: line.id, productId: line.productId, unitPrice: line.unitPrice, quantity: line.quantity })),
+          // Shipping is priced by delivery city at placement (see the
+          // "shippingByCity" summary row below) — never estimated here, so a
+          // FREE_SHIPPING code's rupee value only shows at the real total.
+          shippingFee: 0,
+          promoCode: promoCode.trim(),
+        },
+      });
+      setPromoPreview(preview);
+    } catch (cause) {
+      setPromoPreview(null);
+      setPromoError(cause instanceof Error ? cause.message : t('promoInvalid'));
+    } finally {
+      setCheckingPromo(false);
+    }
+  }
 
   useEffect(() => {
     void request<PaymentMethod[]>('/payments/methods')
@@ -96,7 +198,10 @@ export default function CheckoutPage() {
         method: 'POST',
         credentials: 'include',
         query: { locale },
-        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+        headers: {
+          'Idempotency-Key': idempotencyKey.current!,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         fallbackMessage: t('failed'),
         body: {
           shippingAddress: {
@@ -111,6 +216,10 @@ export default function CheckoutPage() {
           paymentMethod: method,
           email: form.email || undefined,
           note: form.note || undefined,
+          promoCode: promoPreview ? promoCode.trim() : undefined,
+          giftCardCode: giftCardCode.trim() || undefined,
+          giftCardAmount: giftCardCode.trim() && giftCardAmount ? Math.round(Number(giftCardAmount) * 100) : undefined,
+          storeCreditAmount: isSignedIn && storeCreditAmount ? Math.round(Number(storeCreditAmount) * 100) : undefined,
         },
       });
 
@@ -131,6 +240,16 @@ export default function CheckoutPage() {
         return;
       }
 
+      const chosenMethod = methods.find((candidate) => candidate.key === method);
+      if (chosenMethod?.requiresCode && payload.payment?.paymentId) {
+        // Giftkarta et al.: the order exists, but this one payment stays
+        // PENDING until the code below redeems it — no full navigation yet,
+        // so a mistyped code can be corrected without losing the order.
+        setPendingGiftCardPayment({ paymentId: payload.payment.paymentId, orderNumber: payload.number });
+        setBusy(false);
+        return;
+      }
+
       // Cash on delivery / bank transfer: nothing more to collect now. A
       // full navigation, so the cart provider reloads and shows it emptied.
       window.location.href = `/${locale}${ROUTES.storefront.order(payload.number)}?placed=1`;
@@ -138,6 +257,49 @@ export default function CheckoutPage() {
       setError(cause instanceof Error ? cause.message : t('failed'));
       setBusy(false);
     }
+  }
+
+  if (pendingGiftCardPayment) {
+    return (
+      <div className="container-page pt-16 font-display md:pb-16">
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('giftCardRedeemTitle')}</h1>
+        <p className="mt-2 max-w-md text-sm text-neutral-500">
+          {t('giftCardRedeemBody', { orderNumber: pendingGiftCardPayment.orderNumber })}
+        </p>
+
+        <section className="card mt-6 max-w-md p-4 sm:p-6">
+          <Field label={t('giftCardCode')}>
+            <input
+              value={networkGiftCardCode}
+              onChange={(event) => setNetworkGiftCardCode(event.target.value)}
+              placeholder="XXXX-XXXX-XXXX"
+              className="field-input"
+            />
+          </Field>
+          {networkGiftCardError ? (
+            <p role="alert" className="notice notice-error mt-3 whitespace-pre-line">
+              {networkGiftCardError}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            onClick={() => void redeemNetworkGiftCard()}
+            disabled={redeemingNetworkCard || !networkGiftCardCode.trim()}
+            className="btn-primary mt-4 w-full"
+          >
+            {redeemingNetworkCard ? t('checking') : t('giftCardRedeemSubmit')}
+          </button>
+        </section>
+
+        <button
+          type="button"
+          onClick={() => router.push(ROUTES.storefront.order(pendingGiftCardPayment.orderNumber))}
+          className="btn-text mt-4 text-sm"
+        >
+          {t('giftCardRedeemLater')}
+        </button>
+      </div>
+    );
   }
 
   if (loading) {
@@ -205,6 +367,7 @@ export default function CheckoutPage() {
               <input
                 value={form.phone}
                 onChange={(event) => setForm({ ...form, phone: event.target.value })}
+                onBlur={(event) => syncGuestContact(event.target.value, form.marketingConsent)}
                 required
                 inputMode="tel"
                 autoComplete="tel"
@@ -212,6 +375,24 @@ export default function CheckoutPage() {
                 className="field-input"
               />
             </Field>
+
+            {!isSignedIn && (
+              <div className="sm:col-span-2">
+                <label className="flex items-start gap-2 text-sm text-neutral-900/70">
+                  <input
+                    type="checkbox"
+                    checked={form.marketingConsent}
+                    onChange={(event) => {
+                      const marketingConsent = event.target.checked;
+                      setForm({ ...form, marketingConsent });
+                      syncGuestContact(form.phone, marketingConsent);
+                    }}
+                    className="field-check mt-0.5"
+                  />
+                  {t('marketingConsent')}
+                </label>
+              </div>
+            )}
 
             <div className="sm:col-span-2">
               <Field label={t('address')} required>
@@ -301,7 +482,7 @@ export default function CheckoutPage() {
               <label
                 key={option.key}
                 className={cn(
-                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-normal focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
                   option.key === method
                     ? 'border-neutral-900 bg-neutral-900/[0.03]'
                     : 'border-neutral-100 hover:border-neutral-300',
@@ -364,6 +545,71 @@ export default function CheckoutPage() {
             </Field>
           </section>
 
+          <section className="card space-y-4 p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-neutral-900">{t('offersTitle')}</h2>
+
+            <Field label={t('promoCode')}>
+              <div className="flex gap-2">
+                <input
+                  value={promoCode}
+                  onChange={(event) => {
+                    setPromoCode(event.target.value);
+                    setPromoPreview(null);
+                    setPromoError(null);
+                  }}
+                  className="field-input flex-1"
+                  placeholder="EID2026"
+                />
+                <button
+                  type="button"
+                  onClick={() => void checkPromoCode()}
+                  disabled={checkingPromo || !promoCode.trim()}
+                  className="btn-secondary shrink-0"
+                >
+                  {checkingPromo ? t('checking') : t('apply')}
+                </button>
+              </div>
+              {promoError ? <p className="mt-1.5 text-xs text-red-600">{promoError}</p> : null}
+              {promoPreview && promoPreview.applied.length > 0 ? (
+                <p className="mt-1.5 text-xs text-feedback-positive">
+                  {t('promoApplied', { name: promoPreview.applied[0]!.name })}
+                </p>
+              ) : null}
+            </Field>
+
+            <Field label={t('giftCardCode')} hint={t('giftCardHint')}>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  value={giftCardCode}
+                  onChange={(event) => setGiftCardCode(event.target.value)}
+                  className="field-input"
+                  placeholder="XXXX-XXXX-XXXX"
+                />
+                <input
+                  type="number"
+                  min={1}
+                  value={giftCardAmount}
+                  onChange={(event) => setGiftCardAmount(event.target.value)}
+                  className="field-input"
+                  placeholder={t('amountRs')}
+                />
+              </div>
+            </Field>
+
+            {isSignedIn ? (
+              <Field label={t('storeCredit')}>
+                <input
+                  type="number"
+                  min={1}
+                  value={storeCreditAmount}
+                  onChange={(event) => setStoreCreditAmount(event.target.value)}
+                  className="field-input"
+                  placeholder={t('amountRs')}
+                />
+              </Field>
+            ) : null}
+          </section>
+
           <section className="card p-4 sm:p-6">
             <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
@@ -391,6 +637,21 @@ export default function CheckoutPage() {
                 <dt className="text-neutral-500">{t('goods')}</dt>
                 <dd className="text-neutral-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
               </div>
+              {promoPreview && promoPreview.applied.length > 0 ? (
+                <div className="flex justify-between">
+                  <dt className="text-neutral-500">{t('discount')}</dt>
+                  <dd className="text-feedback-positive">
+                    -{formatMoney(
+                      promoPreview.orderDiscount +
+                        Object.entries(promoPreview.linePerUnitDiscounts).reduce((sum, [lineId, perUnit]) => {
+                          const line = cart.items.find((candidate) => candidate.id === lineId);
+                          return sum + perUnit * (line?.quantity ?? 0);
+                        }, 0),
+                      locale,
+                    )}
+                  </dd>
+                </div>
+              ) : null}
               <div className="flex justify-between">
                 <dt className="text-neutral-500">{t('shipping')}</dt>
                 <dd className="text-neutral-400">{t('shippingByCity')}</dd>
@@ -425,7 +686,7 @@ export default function CheckoutPage() {
           submitLabel={busy ? t('placing') : t('placeOrder')}
           submitBusy={busy}
           submitDisabled={busy || !method}
-          accentClassName="bg-neutral-900 text-white"
+          accentClassName="bg-inverse text-on-inverse"
           backLabel={t('back')}
           nextLabel={t('next')}
           error={

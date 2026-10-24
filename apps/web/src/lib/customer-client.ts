@@ -1,8 +1,17 @@
 'use client';
 
+import { singleFlight } from '@newax/shared';
 import { API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser, CustomerOrder } from '@/types/api';
+import type {
+  AuthResult,
+  AuthUser,
+  CustomerOrder,
+  CustomerReturnReason,
+  CustomerReturnRequest,
+  CustomerSupportTicket,
+  CustomerSupportTicketDetail,
+} from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.customer.access;
@@ -96,12 +105,33 @@ export async function verifyEmail(token: string): Promise<void> {
   });
 }
 
+/** The signed-in customer's own address: sends a new verification link (the old one expired or was used). */
+export async function resendEmailVerification(): Promise<void> {
+  await customerFetch('/auth/resend-verification', { method: 'POST' });
+}
+
 export async function unsubscribeFromMarketing(userId: string, token: string): Promise<void> {
   await request('/email/unsubscribe', {
     method: 'POST',
     body: { userId, token },
     expect: 'none',
     fallbackMessage: 'Could not process this request',
+  });
+}
+
+export interface SerialVerifyResult {
+  serialNumber: string;
+  status: 'IN_STOCK' | 'SOLD' | 'RETURNED' | 'RMA_TO_SUPPLIER' | 'WRITTEN_OFF';
+  soldOn: string | null;
+  orderId: string | null;
+  orderNumber: string | null;
+  warrantyEndsOn: string | null;
+}
+
+/** 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. */
+export async function verifySerial(serialNumber: string): Promise<SerialVerifyResult> {
+  return request(`/public/serials/${encodeURIComponent(serialNumber)}`, {
+    fallbackMessage: 'That serial number is not recorded in this system.',
   });
 }
 
@@ -138,6 +168,54 @@ export async function trackOrder(number: string, phone: string): Promise<Custome
   });
 }
 
+/** WO-6.6 — the customer's own side of returns/RMA. */
+export async function listReturnReasons(): Promise<CustomerReturnReason[]> {
+  return customerFetch<CustomerReturnReason[]>('/returns/reasons');
+}
+
+export async function listMyReturns(): Promise<CustomerReturnRequest[]> {
+  return customerFetch<CustomerReturnRequest[]>('/returns/mine');
+}
+
+export async function getMyReturn(id: string): Promise<CustomerReturnRequest> {
+  return customerFetch<CustomerReturnRequest>(`/returns/${id}`);
+}
+
+export async function createReturnRequest(input: {
+  orderNumber: string;
+  customerNote?: string;
+  items: Array<{ orderItemId: string; reasonId: string; quantity: number }>;
+}): Promise<CustomerReturnRequest> {
+  return customerFetch<CustomerReturnRequest>('/returns', { method: 'POST', body: input });
+}
+
+/** 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. */
+export async function listMySupportTickets(): Promise<CustomerSupportTicket[]> {
+  return customerFetch<CustomerSupportTicket[]>('/support/tickets/mine');
+}
+
+export async function getMySupportTicket(id: string): Promise<CustomerSupportTicketDetail> {
+  return customerFetch<CustomerSupportTicketDetail>(`/support/tickets/${id}`);
+}
+
+export async function raiseSupportTicket(input: {
+  subject: string;
+  category: string;
+  body: string;
+  orderId?: string;
+  priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+}): Promise<CustomerSupportTicket> {
+  return customerFetch<CustomerSupportTicket>('/support/tickets', { method: 'POST', body: input });
+}
+
+export async function replySupportTicket(id: string, body: string): Promise<void> {
+  await customerFetch(`/support/tickets/${id}/messages`, { method: 'POST', body: { body } });
+}
+
+export async function reopenSupportTicket(id: string): Promise<void> {
+  await customerFetch(`/support/tickets/${id}/transition`, { method: 'POST', body: { status: 'IN_PROGRESS' } });
+}
+
 /**
  * The two calls below stay on raw `fetch` deliberately.
  *
@@ -145,8 +223,12 @@ export async function trackOrder(number: string, phone: string): Promise<Custome
  * request must not surface as an error. Refresh cannot go through the client
  * that calls it without recursing, and it answers a boolean rather than
  * throwing, which is the opposite of what `request` is for.
+ *
+ * Refresh is also single-flight: however many requests hit a 401 together,
+ * one refresh is sent and they all await it
+ * (206-rate-limiting-caching-compression-hardening.md §2.2).
  */
-async function refreshCustomerSession(): Promise<boolean> {
+const refreshCustomerSession = singleFlight(async (): Promise<boolean> => {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -161,7 +243,7 @@ async function refreshCustomerSession(): Promise<boolean> {
 
   storeSession((await response.json()) as AuthResult);
   return true;
-}
+});
 
 interface CustomerRequestOptions {
   method?: string;

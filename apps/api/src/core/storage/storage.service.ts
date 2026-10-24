@@ -7,7 +7,7 @@ import { LocalStorageDriver } from './local-storage.driver';
 import { S3StorageDriver } from './s3-storage.driver';
 import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
 
-const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+export const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set([
   'image/jpeg',
   'image/png',
@@ -128,5 +128,15 @@ export class StorageService {
 
   urlFor(key: string): string {
     return this.driver.urlFor(key);
+  }
+
+  /** Reads an object's bytes back into this process — for a stored file that is never meant to be publicly fetchable. */
+  get(key: string): Promise<Buffer> {
+    return this.driver.get(key);
+  }
+
+  /** A time-limited URL an external service (e.g. a vision API) may fetch — see `StorageDriver.signedUrlFor()`. */
+  signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
+    return this.driver.signedUrlFor(key, expiresInSeconds);
   }
 }

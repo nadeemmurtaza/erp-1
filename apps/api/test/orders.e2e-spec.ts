@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { toMinor } from '@newax/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
@@ -214,6 +215,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod', email: 'ayesha@example.com' })
         .expect(201);
 
@@ -234,6 +236,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
 
@@ -246,6 +249,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({
           shippingAddress: { ...KARACHI, city: 'Lahore', province: 'Punjab' },
           paymentMethod: 'cod',
@@ -262,6 +266,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({
           shippingAddress: { ...KARACHI, city: 'Chitral', province: 'KPK' },
           paymentMethod: 'cod',
@@ -280,6 +285,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(2);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -294,6 +300,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -306,6 +313,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -321,6 +329,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -335,6 +344,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({
           shippingAddress: { ...KARACHI, phone: '0300 123 4567' },
           paymentMethod: 'cod',
@@ -349,6 +359,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: { ...KARACHI, phone: '12345' }, paymentMethod: 'cod' })
         .expect(400);
 
@@ -358,6 +369,7 @@ describe('Orders (e2e)', () => {
     it('rejects an empty cart', async () => {
       await api()
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(400);
     });
@@ -366,6 +378,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'jazzcash' })
         .expect(400);
 
@@ -380,6 +393,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: { ...KARACHI, phone: 'nonsense' }, paymentMethod: 'cod' })
         .expect(400);
 
@@ -413,7 +427,7 @@ describe('Orders (e2e)', () => {
 
       const responses = await Promise.all(
         agents.map((agent) =>
-          agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+          agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
         ),
       );
 
@@ -452,8 +466,8 @@ describe('Orders (e2e)', () => {
       await agent2.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 }).expect(201);
 
       const responses = await Promise.all([
-        agent1.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
-        agent2.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        agent1.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        agent2.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
       ]);
 
       for (const res of responses) {
@@ -492,8 +506,8 @@ describe('Orders (e2e)', () => {
       await agent2.post('/api/v1/cart/items').send({ variantId: variants[0].id, quantity: 1 }).expect(201);
 
       const responses = await Promise.all([
-        agent1.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
-        agent2.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        agent1.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        agent2.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
       ]);
 
       for (const res of responses) {
@@ -502,6 +516,89 @@ describe('Orders (e2e)', () => {
 
       const statuses = responses.map(r => r.status);
       expect(statuses).toEqual([201, 201]);
+    });
+  });
+
+  describe('idempotency (Idempotency-Key)', () => {
+    it('a header is required — a missing one is refused before the handler ever runs', async () => {
+      const agent = await cartWithReadyItem(1);
+
+      await agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }).expect(400);
+    });
+
+    it('two concurrent requests with the identical key and body produce exactly one Order', async () => {
+      const agent = await cartWithReadyItem(1);
+      const key = randomUUID();
+      const body = { shippingAddress: KARACHI, paymentMethod: 'cod' };
+
+      const responses = await Promise.all([
+        agent.post('/api/v1/orders').set('Idempotency-Key', key).send(body),
+        agent.post('/api/v1/orders').set('Idempotency-Key', key).send(body),
+      ]);
+
+      const succeeded = responses.filter((r) => r.status === 201);
+      const conflicted = responses.filter((r) => r.status === 409);
+      expect(succeeded).toHaveLength(1);
+      expect(conflicted).toHaveLength(1);
+      createdOrderIds.push(succeeded[0]!.body.id);
+
+      const order = await prisma.order.findUniqueOrThrow({ where: { id: succeeded[0]!.body.id } });
+      expect(order.id).toBe(succeeded[0]!.body.id);
+    });
+
+    it('the same key resent sequentially with the SAME body replays the cached order, never creating a second one', async () => {
+      const agent = await cartWithReadyItem(1);
+      const key = randomUUID();
+      const body = { shippingAddress: KARACHI, paymentMethod: 'cod' };
+
+      const first = await agent.post('/api/v1/orders').set('Idempotency-Key', key).send(body).expect(201);
+      createdOrderIds.push(first.body.id);
+
+      const replay = await agent.post('/api/v1/orders').set('Idempotency-Key', key).send(body).expect(201);
+      expect(replay.body.id).toBe(first.body.id);
+      expect(replay.body.number).toBe(first.body.number);
+
+      const orders = await prisma.order.count({ where: { id: first.body.id } });
+      expect(orders).toBe(1);
+    });
+
+    it('the same key resent with a DIFFERENT body is refused with 409, the original order untouched', async () => {
+      const agent = await cartWithReadyItem(1);
+      const key = randomUUID();
+
+      const first = await agent
+        .post('/api/v1/orders')
+        .set('Idempotency-Key', key)
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+      createdOrderIds.push(first.body.id);
+
+      await agent
+        .post('/api/v1/orders')
+        .set('Idempotency-Key', key)
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod', note: 'a different note' })
+        .expect(409);
+
+      const order = await prisma.order.findUniqueOrThrow({ where: { id: first.body.id } });
+      expect(order.customerNote).not.toBe('a different note');
+    });
+
+    it('a request that fails validation can be retried under the same key and succeed once fixed', async () => {
+      const agent = await cartWithReadyItem(1);
+      const key = randomUUID();
+
+      await agent
+        .post('/api/v1/orders')
+        .set('Idempotency-Key', key)
+        .send({ shippingAddress: KARACHI, paymentMethod: 'not-a-real-method' })
+        .expect(400);
+
+      const retried = await agent
+        .post('/api/v1/orders')
+        .set('Idempotency-Key', key)
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+      createdOrderIds.push(retried.body.id);
     });
   });
 
@@ -530,6 +627,7 @@ describe('Orders (e2e)', () => {
 
       const response = await api()
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .set('Authorization', `Bearer ${customer}`)
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
@@ -574,6 +672,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
 
@@ -659,6 +758,7 @@ describe('Orders (e2e)', () => {
 
       const response = await api()
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .set('Authorization', `Bearer ${customer}`)
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(400);
@@ -674,6 +774,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'bank_transfer' })
         .expect(201);
       createdOrderIds.push(order.body.id);
@@ -710,6 +811,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'bank_transfer' })
         .expect(201);
       createdOrderIds.push(order.body.id);
@@ -725,6 +827,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       orderId = order.body.id;
@@ -765,6 +868,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(2);
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(order.body.id);
@@ -793,6 +897,7 @@ describe('Orders (e2e)', () => {
       const agent = await cartWithReadyItem(1);
       const order = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       number = order.body.number;
@@ -845,6 +950,38 @@ describe('Orders (e2e)', () => {
 
       expect(response.body.data.length).toBeGreaterThan(0);
       expect(response.body.meta.total).toBeGreaterThan(0);
+    });
+
+    it('WO-69.2 — a comma-separated status list filters to exactly that set, the "Voided" tile\'s own link shape', async () => {
+      const agent = await cartWithReadyItem(1);
+      const order = await agent
+        .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+      createdOrderIds.push(order.body.id);
+
+      await api()
+        .post(`/api/v1/admin/orders/${order.body.id}/status`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'CANCELLED', note: 'wo-69.2 spec' })
+        .expect(201);
+
+      const single = await api()
+        .get('/api/v1/admin/orders?status=CANCELLED&pageSize=100')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+      expect(single.body.data.every((row: { status: string }) => row.status === 'CANCELLED')).toBe(true);
+      expect(single.body.data.some((row: { id: string }) => row.id === order.body.id)).toBe(true);
+
+      const multi = await api()
+        .get('/api/v1/admin/orders?status=CANCELLED,RETURNED&pageSize=100')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+      expect(
+        multi.body.data.every((row: { status: string }) => row.status === 'CANCELLED' || row.status === 'RETURNED'),
+      ).toBe(true);
+      expect(multi.body.data.length).toBeGreaterThanOrEqual(single.body.data.length);
     });
   });
 
@@ -903,6 +1040,7 @@ describe('Orders (e2e)', () => {
 
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);

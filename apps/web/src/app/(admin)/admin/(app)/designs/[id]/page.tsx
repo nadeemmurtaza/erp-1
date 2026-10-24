@@ -1,10 +1,8 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { Disclosure, Loading, PageHeader, SectionRail } from '@/components/ui';
-import { ROUTES } from '@/constants/routes';
 import {
   ANYWHERE,
   AREAS,
@@ -16,6 +14,7 @@ import {
   type OptionDraft,
 } from '@/utils/design-drafts';
 import type { AdminStitchingOptionGroup, GarmentType } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 /**
  * One style question, and the answers a customer can give it.
@@ -137,16 +136,10 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  const back = (
-    <Link href={ROUTES.admin.designs} className="hover:text-neutral-900">
-      &larr; Stitching designs
-    </Link>
-  );
-
   if (!group || !draft) {
     return (
       <>
-        <PageHeader title="Design group" context={back} />
+        <PageHeader title="Design group" />
         {error ? (
           <p role="alert" className="text-sm text-feedback-negative">
             {error}
@@ -162,7 +155,6 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
     <>
       <PageHeader
         title={group.labelEn}
-        context={back}
         action={
           <button type="button" onClick={() => void save()} disabled={busy} className="btn-primary">
             {busy ? 'Saving…' : 'Save design group'}
@@ -252,22 +244,23 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
                     </select>
                   </label>
 
-                  <label className="block">
+                  <div>
                     <span className="field-label">Answers allowed</span>
-                    <select
+                    <Select
+                      label="Answers allowed"
                       value={draft.selectionType}
-                      onChange={(event) =>
+                      onChange={(next) =>
                         setDraft({
                           ...draft,
-                          selectionType: event.target.value as 'SINGLE' | 'MULTI',
+                          selectionType: next as 'SINGLE' | 'MULTI',
                         })
                       }
-                      className="field-input"
-                    >
-                      <option value="SINGLE">One choice</option>
-                      <option value="MULTI">Several choices</option>
-                    </select>
-                  </label>
+                      options={[
+                        { value: 'SINGLE', label: 'One choice' },
+                        { value: 'MULTI', label: 'Several choices' },
+                      ]}
+                    />
+                  </div>
 
                   <div className="flex flex-wrap items-center gap-4 pt-6">
                     <label className="flex items-center gap-2 text-sm text-neutral-900/70">

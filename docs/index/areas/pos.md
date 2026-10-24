@@ -3,7 +3,7 @@
 
 # apps/pos — Next.js offline-first point of sale
 
-31 files · 1,874 lines
+33 files · 2,671 lines
 
 
 Next.js PWA for a physical till. **Offline-first**: a sale that already happened
@@ -13,10 +13,10 @@ outbox and replay when the network returns. The register maths itself lives in
 
 ## Go deeper
 
-- **Every screen:** [cross/ui-routes.md](../cross/ui-routes.md)
-- **Every component:** [cross/components.md](../cross/components.md)
-- **Every exported symbol here:** [symbols/pos.md](../symbols/pos.md)
-- **Every file here:** [files/pos.md](../files/pos.md)
+- **Every screen:** [cross/ui-routes.md](..\cross\ui-routes.md)
+- **Every component:** [cross/components.md](..\cross\components.md)
+- **Every exported symbol here:** [symbols/pos.md](..\symbols\pos.md)
+- **Every file here:** [files/pos.md](..\files\pos.md)
 
 ## Directory breakdown
 
@@ -24,7 +24,7 @@ outbox and replay when the network returns. The register maths itself lives in
 |---|---|---|---|
 | `apps/pos` | 6 | 165 | script, json, module |
 | `apps/pos/public` | 2 | 46 | asset, script |
-| `apps/pos/src` | 23 | 1,663 | error, global-error, stylesheet, layout |
+| `apps/pos/src` | 25 | 2,460 | page, error, global-error, stylesheet |
 
 
 ## Entry points
@@ -40,23 +40,23 @@ outbox and replay when the network returns. The register maths itself lives in
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/pos/src/app/till/page.tsx` | 288 | page |  |
-| `apps/pos/src/lib/pos-client.ts` | 195 | utility |  |
+| `apps/pos/src/app/till/page.tsx` | 789 | page |  |
+| `apps/pos/src/lib/pos-client.ts` | 295 | utility |  |
 | `apps/pos/src/app/returns/page.tsx` | 184 | page |  |
 | `apps/pos/src/app/shift/close/page.tsx` | 106 | page |  |
+| `apps/pos/src/app/dashboard/page.tsx` | 102 | page |  |
+| `apps/pos/src/lib/hardware.ts` | 83 | utility |  |
 | `apps/pos/src/lib/auth-client.ts` | 80 | utility |  |
 | `apps/pos/src/app/global-error.tsx` | 76 | global-error |  |
+| `apps/pos/src/app/globals.css` | 76 | stylesheet |  |
 | `apps/pos/src/app/receipt/[orderId]/page.tsx` | 74 | page |  |
-| `apps/pos/src/app/globals.css` | 73 | stylesheet |  |
 | `apps/pos/src/app/shift/open/page.tsx` | 71 | page |  |
+| `apps/pos/src/lib/api-client.ts` | 68 | utility |  |
 | `apps/pos/src/app/terminal/page.tsx` | 67 | page |  |
-| `apps/pos/src/lib/api-client.ts` | 67 | utility |  |
 | `apps/pos/src/app/login/page.tsx` | 63 | page |  |
 | `apps/pos/src/lib/outbox-db.ts` | 55 | utility |  |
-| `apps/pos/tailwind.config.ts` | 51 | module |  |
-| `apps/pos/public/sw.js` | 46 | script | App-shell cache: static assets only, never an API call. A sale that fails |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

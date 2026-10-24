@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { toMinor } from '@newax/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
@@ -10,7 +11,7 @@ import { PrismaService } from '../src/core/prisma/prisma.service';
 import { SettingKey } from '../src/core/settings/settings.defaults';
 import { SettingsService } from '../src/core/settings/settings.service';
 import { shopDayKey } from '../src/core/time/shop-time';
-import { CrmService } from '../src/modules/crm/crm.service';
+import { CrmService } from '../src/modules/customers/crm/crm.service';
 import { setVariantStock } from './support/stock';
 
 /**
@@ -110,6 +111,7 @@ describe('CRM (e2e)', () => {
 
     const order = await agent
       .post('/api/v1/orders')
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: { ...ADDRESS, ...overrides }, paymentMethod: 'cod' })
       .expect(201);
 

@@ -3,7 +3,7 @@
 
 # Schema: `finance.prisma`
 
-3 models · 1 enums. Owned by module [`finance`](../modules/finance.md).
+3 models · 1 enums. Owned by module [`finance`](..\modules\finance.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -34,7 +34,7 @@ against a real database.
 | `payee` | `String?` | optional |  |
 | `supplierId` | `String?` | optional |  |
 | `reference` | `String?` | optional |  |
-| `receiptUrl` | `String?` | optional | via the existing StorageDriver (WO-B.2) |
+| `receiptUrl` | `String?` | optional |  |
 | `recurrence` | `ExpenseRecurrence` |  | @default(NONE) |
 | `recurringFromId` | `String?` | optional |  |
 | `recurringPeriod` | `String?` | optional |  |
@@ -58,7 +58,7 @@ Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt]
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "rent", "salaries", "marketing", "packaging" |
+| `key` | `String` | unique | @unique |
 | `name` | `String` |  |  |
 | `isDirect` | `Boolean` |  | @default(false) |
 | `isActive` | `Boolean` |  | @default(true) |
@@ -104,4 +104,4 @@ Indexes: `@@index([isActive, order])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

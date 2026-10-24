@@ -126,3 +126,44 @@ export function scopeFilterFor(actor: ScopedActor): { retailBrandId?: { in: stri
   if (scope.isOrgWide) return {};
   return { retailBrandId: { in: scope.visibleBrandIds } };
 }
+
+/**
+ * What `GrantService.reachableUnitIdsFor()` hands to `orgUnitScopeFilterFor`
+ * below — access-control-identity/21-access-over-the-org-tree.md's fourth
+ * scope answer, alongside ORG/BRAND/BRANCH above. `isUnrestricted` is this
+ * axis's equivalent of `isOrgWide`: a caller holding NO open `Posting` at
+ * all is not narrowed by this mechanism — see `GrantService`'s own doc
+ * comment for why (nothing in this codebase's docs 19/20/21 build retrofits
+ * an existing list endpoint's default visibility, and the only account that
+ * exists on a fresh deployment holds no posting).
+ */
+export interface OrgUnitReach {
+  isUnrestricted: boolean;
+  /** Reach-root OrgUnit ids — a row is reachable when its own `path` contains ANY of these. */
+  unitIds: string[];
+}
+
+/**
+ * A Prisma `where` fragment scoping a list query to the OrgUnit subtree(s) a
+ * reach descriptor covers — doc 21's WO-21.2. Spread into a query against an
+ * `OrgUnit`-shaped model (a `path: String[]` column, root-first, including
+ * the row's own id):
+ *
+ *   this.prisma.orgUnit.findMany({ where: orgUnitScopeFilterFor(reach) });
+ *
+ * `path: { hasSome: unitIds }` is `path && ARRAY[...]` in Postgres — array
+ * overlap, index-supported by the GIN index on `path`
+ * (org-structure.prisma) — exactly "one indexed containment check" the doc
+ * promises, with no raw SQL needed: a row is reachable when ANY of the
+ * caller's reach-root ids appears anywhere in that row's own ancestor chain,
+ * which is true exactly when the row equals or descends from a reach root.
+ *
+ * Unrestricted returns `{}` (no restriction), mirroring `scopeFilterFor`'s
+ * own `isOrgWide` case. A restricted reach with zero unit ids narrows to
+ * nothing (`hasSome: []` matches no row) rather than falling open — the same
+ * fail-closed convention `scopeFilterFor` already documents above.
+ */
+export function orgUnitScopeFilterFor(reach: OrgUnitReach): { path?: { hasSome: string[] } } {
+  if (reach.isUnrestricted) return {};
+  return { path: { hasSome: reach.unitIds } };
+}

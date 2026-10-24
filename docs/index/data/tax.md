@@ -3,7 +3,7 @@
 
 # Schema: `tax.prisma`
 
-2 models · 0 enums. Owned by module [`tax`](../modules/tax.md).
+2 models · 0 enums. Owned by module [`tax`](..\modules\tax.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -27,7 +27,7 @@ against a real database.
 | Field | Type | Flags | Notes |
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
-| `key` | `String` | unique | "standard", "zero_rated", "exempt" |
+| `key` | `String` | unique | @unique |
 | `name` | `String` |  |  |
 | `isDefault` | `Boolean` |  | @default(false) |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -58,4 +58,4 @@ Indexes: `@@index([taxClassId, effectiveAt])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

@@ -1,8 +1,9 @@
 'use client';
 
+import { singleFlight } from '@newax/shared';
 import { ApiError, API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser } from '@/types/api';
+import type { AuthResult, AuthUser, SsoSignInOption } from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.admin.access;
@@ -75,6 +76,49 @@ export async function login(identifier: string, password: string): Promise<AuthU
   return result.user;
 }
 
+/*
+ * Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md).
+ *
+ * The browser leaves for the identity provider and comes back through the
+ * API, which never puts a token in a URL: it leaves the session it issued in
+ * a sealed, two-minute, httpOnly cookie that only `completeSsoSignIn()` can
+ * redeem — once — for the same AuthResult a password sign-in returns. From
+ * there the session is stored and refreshed exactly as `login()`'s is.
+ */
+
+/** The single sign-on buttons the sign-in screen offers. Empty when none is configured — or when the list cannot be read, since the password form works regardless. */
+export async function listSsoSignInOptions(): Promise<SsoSignInOption[]> {
+  try {
+    return await request<SsoSignInOption[]>('/auth/sso/connections', { fallbackMessage: 'Could not load sign-in options' });
+  } catch {
+    return [];
+  }
+}
+
+/** Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provider. */
+export function ssoStartUrl(connectionId: string): string {
+  return `${API_URL}/auth/sso/${encodeURIComponent(connectionId)}/start`;
+}
+
+/** Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. */
+export async function completeSsoSignIn(): Promise<AuthUser> {
+  const result = await request<AuthResult>('/auth/sso/session', {
+    method: 'POST',
+    credentials: 'include',
+    fallbackMessage: 'Single sign-on did not complete. Try again, or sign in with your password.',
+  });
+
+  if (!hasBackOfficeAccess(result.user.permissions)) {
+    throw new ApiError(
+      403,
+      'You are signed in, but this account has no back-office access yet. Ask an administrator to give it a role in Team & Access.',
+    );
+  }
+
+  storeSession(result);
+  return result.user;
+}
+
 export async function logout(): Promise<void> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   clearSession();
@@ -87,7 +131,11 @@ export async function logout(): Promise<void> {
   }).catch(() => undefined);
 }
 
-async function refreshSession(): Promise<boolean> {
+/**
+ * One refresh in flight per tab, however many requests hit a 401 together —
+ * they all await it (206-rate-limiting-caching-compression-hardening.md §2.2).
+ */
+const refreshSession = singleFlight(async (): Promise<boolean> => {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -102,7 +150,7 @@ async function refreshSession(): Promise<boolean> {
 
   storeSession((await response.json()) as AuthResult);
   return true;
-}
+});
 
 interface AdminRequestOptions {
   method?: string;
@@ -110,9 +158,28 @@ interface AdminRequestOptions {
   /** Sent as multipart/form-data; `body` is ignored when this is set. */
   formData?: FormData;
   query?: Record<string, unknown>;
-  /** Set for endpoints that return CSV rather than JSON. */
-  expect?: 'json' | 'text';
+  /** Set for endpoints that return CSV, or a downloadable file, rather than JSON. */
+  expect?: 'json' | 'text' | 'blob';
+  /** Extra headers — e.g. `Idempotency-Key` for a route guarded by `@IdempotentWrite`. */
+  headers?: Record<string, string>;
 }
+
+/**
+ * How the back office authenticates a request and recovers from a 401: the
+ * bearer token, the single-flight refresh, and what to do when the session is
+ * beyond saving. `adminFetch` passes it to `requestWithRefresh`; the upload
+ * transport (`upload-client.ts`) reads the same object, because `fetch` cannot
+ * report upload progress and a second copy of this would drift.
+ */
+export const adminAuth = {
+  token: getAccessToken,
+  refresh: refreshSession,
+  onExpired: () => {
+    clearSession();
+    if (typeof window !== 'undefined') window.location.href = '/admin/login';
+  },
+  expiredMessage: 'Your session has expired. Please sign in again.',
+};
 
 export async function adminFetch<T>(
   path: string,
@@ -127,16 +194,11 @@ export async function adminFetch<T>(
       query: options.query,
       expect: options.expect ?? 'json',
       credentials: 'include',
-      headers: { Accept: options.expect === 'text' ? 'text/csv' : 'application/json' },
-    },
-    {
-      token: getAccessToken,
-      refresh: refreshSession,
-      onExpired: () => {
-        clearSession();
-        if (typeof window !== 'undefined') window.location.href = '/admin/login';
+      headers: {
+        Accept: options.expect === 'text' ? 'text/csv' : options.expect === 'blob' ? '*/*' : 'application/json',
+        ...options.headers,
       },
-      expiredMessage: 'Your session has expired. Please sign in again.',
     },
+    adminAuth,
   );
 }

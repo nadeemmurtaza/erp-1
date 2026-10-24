@@ -1,6 +1,7 @@
 ---
 paths:
   - "docs/implementation/DECISIONS.md"
+  - "docs/implementation/decisions/*.md"
   - "docs/implementation/*.md"
 ---
 
@@ -10,7 +11,8 @@ paths:
 
 ## Architectural decision records
 
-Record significant technical decisions in `docs/implementation/DECISIONS.md`:
+Record significant technical decisions as one file each, `docs/implementation/decisions/ADR-NNN-short-title.md`
+(next free number), plus one row in the index table in `docs/implementation/DECISIONS.md`:
 
 ```markdown
 ## Decision

@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { cn } from '@/utils/cn';
 import { PageHeader } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface RecipeOption {
   id: string;
@@ -33,6 +35,7 @@ export default function NewProductionRunPage() {
   const [recipeId, setRecipeId] = useState('');
   const [runs, setRuns] = useState('1');
   const [notes, setNotes] = useState('');
+  const [outputLotCode, setOutputLotCode] = useState('');
   const [availability, setAvailability] = useState<Availability | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -62,7 +65,12 @@ export default function NewProductionRunPage() {
     try {
       const created = await adminFetch<{ id: string }>('/admin/bom/production-runs', {
         method: 'POST',
-        body: { recipeId, runs: Math.max(1, Math.round(Number(runs) || 1)), notes: notes.trim() || undefined },
+        body: {
+          recipeId,
+          runs: Math.max(1, Math.round(Number(runs) || 1)),
+          notes: notes.trim() || undefined,
+          outputLotCode: outputLotCode.trim() || undefined,
+        },
       });
       addToast('Production run recorded.', 'success');
       router.push(`/admin/bom/production/${created.id}`);
@@ -85,26 +93,7 @@ export default function NewProductionRunPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader title="Record a production run" description="Consumes raw stock and credits finished stock." />
 
@@ -115,17 +104,20 @@ export default function NewProductionRunPage() {
       ) : null}
 
       <form onSubmit={submit} className="card grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
-        <label className="block lg:col-span-2">
-          <span className="field-label">Recipe</span>
-          <select value={recipeId} onChange={(event) => setRecipeId(event.target.value)} className="field-input" required>
-            <option value="">Choose…</option>
-            {recipes.map((recipe) => (
-              <option key={recipe.id} value={recipe.id}>
-                {recipe.sku}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="lg:col-span-2">
+          <label htmlFor="production-recipe" className="field-label">
+            Recipe
+          </label>
+          <Select
+            id="production-recipe"
+            label="Recipe"
+            required
+            placeholder="Choose…"
+            value={recipeId}
+            onChange={setRecipeId}
+            options={recipes.map((recipe) => ({ value: recipe.id, label: recipe.sku }))}
+          />
+        </div>
         <label className="block">
           <span className="field-label">Runs</span>
           <input
@@ -135,6 +127,15 @@ export default function NewProductionRunPage() {
             value={runs}
             onChange={(event) => setRuns(event.target.value)}
             className="field-input"
+          />
+        </label>
+        <label className="block lg:col-span-2">
+          <span className="field-label">Output batch/lot code (optional)</span>
+          <input
+            value={outputLotCode}
+            onChange={(event) => setOutputLotCode(event.target.value)}
+            className="field-input"
+            placeholder="Defaults to this run's own number"
           />
         </label>
         <label className="block lg:col-span-4">

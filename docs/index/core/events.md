@@ -3,24 +3,26 @@
 
 # Core: `events`
 
-Shared platform — available to every module, part of no feature · 5 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
-> The catalogue of domain events.
+> The static analysis behind `event-contracts.spec.ts` (WO-38.5).
 
 Source: `apps/api/src/core/events/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (5 · 566 lines)
+## Files (7 · 1,708 lines)
 
 All paths relative to `apps/api/src/core/events`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `domain-events.ts` | module | 358 | 31 | The catalogue of domain events. |
+| `contract-analyzer.ts` | module | 399 | 12 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
+| `domain-events.ts` | module | 833 | 67 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 | 2 | Anything that can run a query: the PrismaService or an open transaction. |
+| `event-contracts.spec.ts` | unit test | 268 | 4 |  |
 | `events.module.ts` | nest module | 19 | 1 |  |
 | `on-domain-event.decorator.ts` | module | 16 | 1 | Subscribes a method to a domain event. |
 | `outbox.dispatcher.ts` | dispatcher | 120 | 1 | Drains the outbox: claims pending events, hands them to subscribers, and retries failures with exponential backoff up t… |
@@ -60,48 +62,102 @@ _none_
 
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `event-contracts.spec.ts` | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `DomainEvent` | const | `domain-events.ts:11` | The catalogue of domain events. |
-| `DomainEventName` | type | `domain-events.ts:70` |  |
-| `OrderPlacedPayload` | interface | `domain-events.ts:72` |  |
-| `OrderStatusChangedPayload` | interface | `domain-events.ts:85` |  |
-| `PaymentPayload` | interface | `domain-events.ts:93` |  |
-| `StitchingJobPayload` | interface | `domain-events.ts:101` |  |
-| `ContactUpsertedPayload` | interface | `domain-events.ts:121` |  |
-| `LeadCreatedPayload` | interface | `domain-events.ts:127` |  |
-| `UserRegisteredPayload` | interface | `domain-events.ts:134` |  |
-| `PasswordChangedPayload` | interface | `domain-events.ts:141` |  |
-| `PasswordResetRequestedPayload` | interface | `domain-events.ts:145` |  |
-| `EmailVerificationRequestedPayload` | interface | `domain-events.ts:151` |  |
-| `PaymentRefundedPayload` | interface | `domain-events.ts:157` |  |
-| `ProductLowStockPayload` | interface | `domain-events.ts:164` |  |
-| `ProductReorderPointReachedPayload` | interface | `domain-events.ts:172` |  |
-| `StockReplenishedPayload` | interface | `domain-events.ts:183` |  |
-| `StockVarianceRecordedPayload` | interface | `domain-events.ts:190` |  |
-| `ProductPublishedPayload` | interface | `domain-events.ts:199` | Never a cost price or margin — this leaves the platform to whoever is listening. |
-| `ProductPriceChangedPayload` | interface | `domain-events.ts:207` | Never a cost price or margin — this leaves the platform to whoever is listening. |
-| `SupplierDigestReadyPayload` | interface | `domain-events.ts:215` |  |
-| `GoodsReceivedPayload` | interface | `domain-events.ts:220` |  |
-| `BomProductionCompletedPayload` | interface | `domain-events.ts:227` |  |
-| `WorkOrderPayload` | interface | `domain-events.ts:237` |  |
-| `SupplierBillRaisedPayload` | interface | `domain-events.ts:245` |  |
-| `InterBranchTransferInvoicedPayload` | interface | `domain-events.ts:259` |  |
-| `SupplierBillPaidPayload` | interface | `domain-events.ts:272` |  |
-| `ExpenseRecordedPayload` | interface | `domain-events.ts:285` |  |
-| `OrderEconomicsComputedPayload` | interface | `domain-events.ts:298` |  |
-| `EmailReplyReceivedPayload` | interface | `domain-events.ts:306` |  |
-| `IdentityVerificationPayload` | interface | `domain-events.ts:313` |  |
-| `DomainEventPayloads` | interface | `domain-events.ts:319` |  |
+| `PayloadShape` | interface | `contract-analyzer.ts:24` | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
+| `PayloadParseResult` | interface | `contract-analyzer.ts:29` |  |
+| `HandlerInfo` | interface | `contract-analyzer.ts:36` |  |
+| `maskSource` | function | `contract-analyzer.ts:55` | Replaces every comment and every plain string's contents with spaces, keeping length and newlines identical t… |
+| `parseDomainEventKeys` | function | `contract-analyzer.ts:172` | Parses `export const DomainEvent = { ... |
+| `findNamedInterfaceFields` | function | `contract-analyzer.ts:191` | Finds `export interface <name> { ... |
+| `parsePayloadShapes` | function | `contract-analyzer.ts:207` | Parses `export interface DomainEventPayloads { [DomainEvent.X]: Type; ... |
+| `extractAccessedFields` | function | `contract-analyzer.ts:241` | Every field a handler body reads off its own payload parameter: `payload.x` (anywhere, including inside a tem… |
+| `parseHandlers` | function | `contract-analyzer.ts:272` | Finds every `@OnDomainEvent(DomainEvent.X)`-decorated method in `rawSource` and extracts its event key, its d… |
+| `ContractViolation` | interface | `contract-analyzer.ts:316` |  |
+| `ContractCheckResult` | interface | `contract-analyzer.ts:323` |  |
+| `checkContracts` | function | `contract-analyzer.ts:335` | The check itself: every handler's declared inline fields, and every field its body actually reads off `payloa… |
+| `DomainEvent` | const | `domain-events.ts:23` | The catalogue of domain events. |
+| `DomainEventName` | type | `domain-events.ts:196` |  |
+| `OrderPlacedPayload` | interface | `domain-events.ts:198` |  |
+| `OrderStatusChangedPayload` | interface | `domain-events.ts:211` |  |
+| `PaymentPayload` | interface | `domain-events.ts:219` |  |
+| `StitchingJobPayload` | interface | `domain-events.ts:227` |  |
+| `ContactUpsertedPayload` | interface | `domain-events.ts:247` |  |
+| `LeadCreatedPayload` | interface | `domain-events.ts:253` |  |
+| `UserRegisteredPayload` | interface | `domain-events.ts:260` |  |
+| `PasswordChangedPayload` | interface | `domain-events.ts:267` |  |
+| `PasswordResetRequestedPayload` | interface | `domain-events.ts:271` |  |
+| `EmailVerificationRequestedPayload` | interface | `domain-events.ts:277` |  |
+| `ApiKeyIssuedPayload` | interface | `domain-events.ts:288` | Deliberately carries no secret, no hash and no key name — the name is text whoever minted the key chose, and… |
+| `SsoAccountLinkedPayload` | interface | `domain-events.ts:301` | Ids only — the subscriber looks the account up fresh, and nothing about the identity provider's credential or… |
+| `SsoUserProvisionedPayload` | interface | `domain-events.ts:306` |  |
+| `PaymentRefundedPayload` | interface | `domain-events.ts:311` |  |
+| `ShipmentStatusChangedPayload` | interface | `domain-events.ts:318` |  |
+| `ShipmentReturnedToOriginPayload` | interface | `domain-events.ts:328` |  |
+| `ReturnRequestStatusChangedPayload` | interface | `domain-events.ts:337` |  |
+| `ReturnRequestFullyRefundedPayload` | interface | `domain-events.ts:346` |  |
+| `ProductLowStockPayload` | interface | `domain-events.ts:354` |  |
+| `ProductReorderPointReachedPayload` | interface | `domain-events.ts:362` |  |
+| `StockReplenishedPayload` | interface | `domain-events.ts:373` |  |
+| `StockVarianceRecordedPayload` | interface | `domain-events.ts:380` |  |
+| `ProductPublishedPayload` | interface | `domain-events.ts:389` | Never a cost price or margin — this leaves the platform to whoever is listening. |
+| `ProductChangedPayload` | interface | `domain-events.ts:397` | WO-8.3 — deliberately just the id: the listener re-reads the current row rather than trusting a payload snaps… |
+| `ProductPriceChangedPayload` | interface | `domain-events.ts:402` | Never a cost price or margin — this leaves the platform to whoever is listening. |
+| `PartnerFactReceivedPayload` | interface | `domain-events.ts:417` | Identifies one stored fact. |
+| `PartnerFactAppliedPayload` | interface | `domain-events.ts:424` |  |
+| `PartnerFactNeedsReviewPayload` | interface | `domain-events.ts:433` |  |
+| `SupplierDigestReadyPayload` | interface | `domain-events.ts:442` |  |
+| `RequisitionCreatedPayload` | interface | `domain-events.ts:447` |  |
+| `RequisitionConvertedPayload` | interface | `domain-events.ts:453` |  |
+| `GoodsReceivedPayload` | interface | `domain-events.ts:459` |  |
+| `SupplierDeletedPayload` | interface | `domain-events.ts:471` |  |
+| `BomProductionCompletedPayload` | interface | `domain-events.ts:475` |  |
+| `WorkOrderPayload` | interface | `domain-events.ts:490` |  |
+| `SupplierBillRaisedPayload` | interface | `domain-events.ts:498` |  |
+| `InterBranchTransferInvoicedPayload` | interface | `domain-events.ts:512` |  |
+| `SupplierBillPaidPayload` | interface | `domain-events.ts:525` |  |
+| `ExpenseRecordedPayload` | interface | `domain-events.ts:538` |  |
+| `OrderEconomicsComputedPayload` | interface | `domain-events.ts:554` |  |
+| `PayrollRunPostedPayload` | interface | `domain-events.ts:562` |  |
+| `PayrollAdjustmentPostedPayload` | interface | `domain-events.ts:574` |  |
+| `DiscountRedeemedPayload` | interface | `domain-events.ts:585` |  |
+| `EmailReplyReceivedPayload` | interface | `domain-events.ts:596` |  |
+| `ReviewModeratedPayload` | interface | `domain-events.ts:603` |  |
+| `WalletCreditPurchasedPayload` | interface | `domain-events.ts:609` |  |
+| `WalletCreditRedeemedPayload` | interface | `domain-events.ts:617` |  |
+| `WalletCreditRefundedPayload` | interface | `domain-events.ts:626` |  |
+| `MerchantPayableCreatedPayload` | interface | `domain-events.ts:637` |  |
+| `MerchantPayablePaidPayload` | interface | `domain-events.ts:644` |  |
+| `IdentityVerificationPayload` | interface | `domain-events.ts:651` |  |
+| `PostingEndedPayload` | interface | `domain-events.ts:658` | PostingService.end() — the exact shape tasks/task-leaver.listener.ts needs to unclaim a post's open tasks and… |
+| `DomainEventPayloads` | interface | `domain-events.ts:666` |  |
+| `CreditNoteIssuedPayload` | interface | `domain-events.ts:742` |  |
+| `CreditNoteVoidedPayload` | interface | `domain-events.ts:751` |  |
+| `DebitNoteIssuedPayload` | interface | `domain-events.ts:755` |  |
+| `DebitNoteVoidedPayload` | interface | `domain-events.ts:763` |  |
+| `CreditHoldAppliedPayload` | interface | `domain-events.ts:767` |  |
+| `NotificationSentPayload` | interface | `domain-events.ts:772` |  |
+| `SettlementShortfallWrittenOffPayload` | interface | `domain-events.ts:783` |  |
+| `BankFacilityDrawdownPostedPayload` | interface | `domain-events.ts:790` |  |
+| `BankFacilityRepaymentRecordedPayload` | interface | `domain-events.ts:798` |  |
+| `BankFacilityMarkupAccruedPayload` | interface | `domain-events.ts:807` |  |
+| `BulletinPublishedPayload` | interface | `domain-events.ts:814` |  |
+| `AuctionLotClosedPayload` | interface | `domain-events.ts:820` |  |
 | `PrismaLike` | type | `event-bus.service.ts:8` | Anything that can run a query: the PrismaService or an open transaction. |
 | `EventBusService` | class | `event-bus.service.ts:22` | Publishes domain events through a transactional outbox. |
+| `DomainEvent` | const | `event-contracts.spec.ts:116` |  |
+| `DomainEventName` | type | `event-contracts.spec.ts:120` |  |
+| `WidgetPayload` | interface | `event-contracts.spec.ts:122` |  |
+| `DomainEventPayloads` | interface | `event-contracts.spec.ts:127` |  |
 | `EventsModule` | class | `events.module.ts:18` |  |
 | `OnDomainEvent` | const | `on-domain-event.decorator.ts:14` | Subscribes a method to a domain event. |
 | `OutboxDispatcher` | class | `outbox.dispatcher.ts:19` | Drains the outbox: claims pending events, hands them to subscribers, and retries failures with exponential ba… |
@@ -109,4 +165,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

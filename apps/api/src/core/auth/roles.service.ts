@@ -1,6 +1,8 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ADMIN_LOCKED_PERMISSIONS, type PermissionKey } from '@newax/shared';
+import { ADMIN_LOCKED_PERMISSIONS, TOXIC_PERMISSION_PAIRS, type PermissionKey } from '@newax/shared';
+import type { PrismaLike } from '../events/event-bus.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsResolverService } from './permissions.service';
 
 export interface RoleWithGrants {
   id: string;
@@ -40,10 +42,18 @@ export interface UserRoleConflicts {
  *    held by *nobody at all* is refused — the generalisation of the old
  *    single-ADMIN-role lockout guard to a world where that role can be
  *    renamed or deleted.
+ *
+ * Every write here that changes what `PermissionsResolverService` resolves
+ * drops the cached answer once it has committed (208-l1-l2-l3-caching-
+ * architecture.md §2): one user's for an assignment, everyone's for a role's
+ * grants, name or existence.
  */
 @Injectable()
 export class RolesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly permissions: PermissionsResolverService,
+  ) {}
 
   async list(): Promise<RoleWithGrants[]> {
     const roles = await this.prisma.role.findMany({
@@ -67,6 +77,8 @@ export class RolesService {
 
     const clash = await this.prisma.role.findUnique({ where: { name } });
     if (clash) throw new ConflictException(`A role named "${name}" already exists.`);
+
+    this.assertNoToxicPair(input.permissions);
 
     const duplicateOfRoleName = await this.findRoleWithIdenticalPermissions(input.permissions);
     const permissionRows = await this.prisma.permission.findMany({
@@ -104,32 +116,44 @@ export class RolesService {
     }
 
     let duplicateOfRoleName: string | null = null;
+    let permissionRows: { id: string }[] | undefined;
 
     if (input.permissions !== undefined) {
+      this.assertNoToxicPair(input.permissions);
       await this.assertLockedPermissionsStillHeldSomewhere(roleId, input.permissions);
       duplicateOfRoleName = await this.findRoleWithIdenticalPermissions(input.permissions, roleId);
 
-      const permissionRows = await this.prisma.permission.findMany({
+      permissionRows = await this.prisma.permission.findMany({
         where: { key: { in: input.permissions } },
       });
-      await this.prisma.roleGrant.deleteMany({ where: { roleId } });
-      if (permissionRows.length > 0) {
-        await this.prisma.roleGrant.createMany({
-          data: permissionRows.map((permission) => ({ roleId, permissionId: permission.id })),
-        });
-      }
     }
 
-    const updated = await this.prisma.role.update({
-      where: { id: roleId },
-      data: { name, description: input.description !== undefined ? input.description.trim() || null : undefined },
-      include: {
-        grants: { include: { permission: { select: { key: true } } } },
-        _count: { select: { assignments: true } },
-      },
-    });
+    try {
+      if (permissionRows !== undefined) {
+        await this.prisma.roleGrant.deleteMany({ where: { roleId } });
+        if (permissionRows.length > 0) {
+          await this.prisma.roleGrant.createMany({
+            data: permissionRows.map((permission) => ({ roleId, permissionId: permission.id })),
+          });
+        }
+      }
 
-    return { role: this.toRoleWithGrants(updated), duplicateOfRoleName };
+      const updated = await this.prisma.role.update({
+        where: { id: roleId },
+        data: { name, description: input.description !== undefined ? input.description.trim() || null : undefined },
+        include: {
+          grants: { include: { permission: { select: { key: true } } } },
+          _count: { select: { assignments: true } },
+        },
+      });
+
+      return { role: this.toRoleWithGrants(updated), duplicateOfRoleName };
+    } finally {
+      // Grants and name are what a holder's resolved set is made of. In a
+      // `finally`: the grants are rewritten in separate statements, and one
+      // failing part-way has still changed what every holder holds.
+      if (permissionRows !== undefined || name !== undefined) await this.permissions.invalidateAll();
+    }
   }
 
   async delete(roleId: string): Promise<void> {
@@ -138,22 +162,34 @@ export class RolesService {
 
     await this.assertLockedPermissionsStillHeldSomewhere(roleId, []);
     await this.prisma.role.delete({ where: { id: roleId } });
+    // Its assignments went with it (cascade): every holder lost the role.
+    await this.permissions.invalidateAll();
   }
 
   /** Idempotent — assigning a role a user already holds is a no-op, not an error. */
-  async assign(userId: string, roleId: string): Promise<void> {
-    const role = await this.prisma.role.findUnique({ where: { id: roleId } });
+  /**
+   * Pass the transaction client to assign inside the caller's own
+   * transaction — SsoService's provisioning does, so an account it creates
+   * never exists without the role it was provisioned into. Such a caller
+   * owns the cache invalidation too, after its commit: nothing is committed
+   * here yet. (SsoService.provision() has none to do — the account it assigns
+   * to is created in the same transaction, so nothing can have cached it.)
+   */
+  async assign(userId: string, roleId: string, tx: PrismaLike = this.prisma): Promise<void> {
+    const role = await tx.role.findUnique({ where: { id: roleId } });
     if (!role) throw new NotFoundException('Role not found.');
 
-    await this.prisma.userRoleAssignment.upsert({
+    await tx.userRoleAssignment.upsert({
       where: { userId_roleId: { userId, roleId } },
       create: { userId, roleId },
       update: {},
     });
+    if (tx === this.prisma) await this.permissions.invalidate(userId);
   }
 
   async unassign(userId: string, roleId: string): Promise<void> {
     await this.prisma.userRoleAssignment.deleteMany({ where: { userId, roleId } });
+    await this.permissions.invalidate(userId);
   }
 
   /** Used at signup and by the seed backfill — silently does nothing if the named role has been renamed or removed. */
@@ -250,6 +286,28 @@ export class RolesService {
         }
         return null;
       });
+  }
+
+  /**
+   * Refuses a role whose own permission set contains BOTH keys of a
+   * `TOXIC_PERMISSION_PAIRS` entry — access-control-identity/
+   * 21-access-over-the-org-tree.md's own defence against "invent the thing,
+   * then authorise yourself over the thing" (a unit and org.access.grant, or
+   * a post and org.access.grant). This checks the role's OWN grants only,
+   * not what a user might separately accumulate by holding two different
+   * roles at once — the same scope this document's own text names
+   * ("Both refused in RolesService.create/.update").
+   */
+  private assertNoToxicPair(permissions: readonly string[]): void {
+    const held = new Set(permissions);
+    for (const [a, b] of TOXIC_PERMISSION_PAIRS) {
+      if (held.has(a) && held.has(b)) {
+        throw new BadRequestException(
+          `A role may not hold both "${a}" and "${b}" — that combination lets its holder invent the thing ` +
+            `the first key creates and then authorise themselves over it with the second.`,
+        );
+      }
+    }
   }
 
   /**

@@ -3,7 +3,7 @@
 
 # Schema: `replication.prisma`
 
-4 models · 4 enums. Owned by the core platform.
+5 models · 4 enums. Owned by the core platform.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -19,6 +19,29 @@ Migrations are **hand-written and forward-only** — never `prisma migrate diff`
 against a real database.
 
 ## Models
+
+### `PolicyQuarantine`  <sub>`apps/api/prisma/schema/replication.prisma:149`</sub>
+
+> R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for review — never silently dropped, never silently honoured." Deliberately a SEPARATE table from `ReplicationQuarant…
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `originNodeId` | `String` |  |  |
+| `entity` | `String` |  |  |
+| `entityId` | `String` |  |  |
+| `policyKey` | `String` |  |  |
+| `retailBrandId` | `String?` | optional |  |
+| `payload` | `Json` |  |  |
+| `reason` | `String` |  |  |
+| `status` | `ReplicationQuarantineStatus` |  | @default(OPEN) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `resolvedAt` | `DateTime?` | optional |  |
+| `resolvedById` | `String?` | optional |  |
+| `resolvedNote` | `String?` | optional |  |
+| `resolvedBy` | `User?` | relation, optional | @relation("PolicyQuarantineResolver", fields: [resolvedById], references: [id], onDelete:… |
+
+Indexes: `@@index([status])` · `@@index([entity, entityId])` · `@@index([retailBrandId])`
 
 ### `ReplicationCursor`  <sub>`apps/api/prisma/schema/replication.prisma:97`</sub>
 
@@ -120,4 +143,4 @@ Indexes: `@@unique([originNodeId, sequence])` · `@@index([entity, entityId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

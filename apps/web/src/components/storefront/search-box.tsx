@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { BRAND } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
+import { VisualSearchButton } from './visual-search-button';
 
 /**
  * An order number, as this shop stamps them: YSN-2026-0001.
@@ -100,11 +101,13 @@ export function SearchBox() {
         />
       </form>
 
+      <VisualSearchButton />
+
       <button
         type="button"
         onClick={openFilters}
         aria-label={tShop('filters')}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-white transition-[background-color,transform] duration-200 ease-out hover:bg-neutral-800 motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-inverse text-on-inverse transition-[background-color,transform] duration-normal ease-decelerate hover:bg-neutral-800 motion-safe:hover:-translate-y-0.5 lg:hidden"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

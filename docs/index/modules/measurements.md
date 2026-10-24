@@ -3,42 +3,49 @@
 
 # Module: `measurements`
 
-Pack **apparel** · enabled by the `MODULES` allowlist · 6 files
+Pack **apparel** · enabled by the `MODULES` allowlist · 12 files
 
 
 
-Source: `apps/api/src/modules/measurements/`
+Source: `apps/api/src/modules/sales/measurements/`
 
-## Files (6 · 940 lines)
+## Files (12 · 1,646 lines)
 
-All paths relative to `apps/api/src/modules/measurements/dto`.
+All paths relative to `apps/api/src/modules/sales/measurements/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `measurements.dto.ts` | dto | 236 | 7 |  |
+| `measurements.dto.ts` | dto | 233 | 5 |  |
 | `garment-fields-seed.spec.ts` | unit test | 64 | — |  |
 | `measurements-admin.service.ts` | service | 283 | 1 | Dashboard management of garment types and their measurement fields. |
-| `measurements.controller.ts` | controller | 137 | 2 |  |
-| `measurements.module.ts` | nest module | 16 | 1 |  |
+| `measurements.controller.ts` | controller | 166 | 2 |  |
+| `measurements.module.ts` | nest module | 19 | 1 |  |
 | `measurements.service.ts` | service | 204 | 2 | Garment types, their measurement fields, and customers' saved profiles. |
+| `size-bias.listener.spec.ts` | unit test | 96 | — |  |
+| `size-bias.listener.ts` | event subscriber | 55 | 1 | Reacts to signals ProductSizeBias is built from — lives in `measurements` (the reacting module), subscribing to events… |
+| `size-bias.service.spec.ts` | unit test | 172 | — |  |
+| `size-bias.service.ts` | service | 115 | 1 | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corroborated by… |
+| `size-recommendation.service.spec.ts` | unit test | 143 | — |  |
+| `size-recommendation.service.ts` | service | 96 | 2 |  |
 
 
-## HTTP routes (12)
+## HTTP routes (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.list` :98 | All garment types, including deactivated ones |
-| POST | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.create` :104 | Add a garment type and its measurement fields |
-| DELETE | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.deactivate` :120 | Deactivate a garment type (never hard-deleted) |
-| PATCH | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.update` :110 | Edit a garment type; removed fields are deactivated |
-| PUT | `/admin/measurements/garment-types/:id/size-chart` | `measurements.manage_blueprints` | `MeasurementsAdminController.replaceSizeChart` :128 |  |
-| GET | `/measurements/garment-types` | **PUBLIC** | `MeasurementsController.listGarmentTypes` :35 | Garment types with their measurement fields |
-| GET | `/measurements/garment-types/:idOrKey` | **PUBLIC** | `MeasurementsController.getGarmentType` :42 | One garment type and its fields |
-| GET | `/measurements/profiles` | signed-in | `MeasurementsController.listProfiles` :49 | The signed-in customer's saved measurement profiles |
-| POST | `/measurements/profiles` | signed-in | `MeasurementsController.createProfile` :62 | Save a measurement profile |
-| DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` :82 |  |
-| GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` :55 |  |
-| PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` :71 |  |
+| GET | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.list` :127 | All garment types, including deactivated ones |
+| POST | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.create` :133 | Add a garment type and its measurement fields |
+| DELETE | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.deactivate` :149 | Deactivate a garment type (never hard-deleted) |
+| PATCH | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.update` :139 | Edit a garment type; removed fields are deactivated |
+| PUT | `/admin/measurements/garment-types/:id/size-chart` | `measurements.manage_blueprints` | `MeasurementsAdminController.replaceSizeChart` :157 |  |
+| GET | `/measurements/garment-types` | **PUBLIC** | `MeasurementsController.listGarmentTypes` :40 | Garment types with their measurement fields |
+| GET | `/measurements/garment-types/:idOrKey` | **PUBLIC** | `MeasurementsController.getGarmentType` :47 | One garment type and its fields |
+| GET | `/measurements/profiles` | signed-in | `MeasurementsController.listProfiles` :55 | The signed-in customer's saved measurement profiles |
+| POST | `/measurements/profiles` | signed-in | `MeasurementsController.createProfile` :70 | Save a measurement profile |
+| DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` :92 |  |
+| GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` :62 |  |
+| PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` :80 |  |
+| GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` :106 | Based on the signed-in customer's saved measurements, the size this product's own chart s… |
 
 
 ## Domain events
@@ -50,7 +57,10 @@ _none_
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
-_none_
+| Event | Name | Handler |
+|---|---|---|
+| `ReturnRequestStatusChanged` | `fulfilment.return_status_changed` | `size-bias.listener.ts:33` → `onReturnRequestStatusChanged()` |
+| `ReviewModerated` | `reviews.review_moderated` | `size-bias.listener.ts:21` → `onReviewModerated()` |
 
 
 ## Tables it owns (`measurements.prisma`)
@@ -65,7 +75,7 @@ _none_
 
 Enums: `MeasurementUnit` (2)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 
@@ -75,7 +85,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`MeasurementsModule`** (`measurements.module.ts`)
 - imports: —
 - controllers: `MeasurementsController`, `MeasurementsAdminController`
-- providers: `MeasurementsService`, `MeasurementsAdminService`
+- providers: `MeasurementsService`, `MeasurementsAdminService`, `SizeBiasService`, `SizeBiasListener`, `SizeRecommendationService`
 - exports: `MeasurementsService`
 
 
@@ -83,8 +93,10 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `audit`
 - core `auth`
+- core `events`
 - core `extension-points`
 - core `prisma`
+- core `settings`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -92,32 +104,37 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `garment-fields-seed.spec.ts` | 1 | seeded measurement fields satisfy MeasurementFieldDto |
+| `size-bias.listener.spec.ts` | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
+| `size-bias.service.spec.ts` | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
+| `size-recommendation.service.spec.ts` | 8 | SizeRecommendationService |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `CreateMeasurementProfileDto` | class | `measurements.dto.ts:19` |  |
-| `UpdateMeasurementProfileDto` | class | `measurements.dto.ts:50` |  |
-| `MeasurementFieldDto` | class | `measurements.dto.ts:74` |  |
-| `UpsertGarmentTypeDto` | class | `measurements.dto.ts:136` |  |
-| `GARMENT_SIZE_TOKENS` | const | `measurements.dto.ts:220` | The RTW size tokens the size chart offers, XS through XXL. |
-| `GarmentSizeToken` | type | `measurements.dto.ts:221` | The RTW size tokens the size chart offers, XS through XXL. |
-| `GarmentSizeChartRowDto` | class | `measurements.dto.ts:223` | The RTW size tokens the size chart offers, XS through XXL. |
+| `CreateMeasurementProfileDto` | class | `measurements.dto.ts:20` |  |
+| `UpdateMeasurementProfileDto` | class | `measurements.dto.ts:51` |  |
+| `MeasurementFieldDto` | class | `measurements.dto.ts:75` |  |
+| `UpsertGarmentTypeDto` | class | `measurements.dto.ts:137` |  |
+| `GarmentSizeChartRowDto` | class | `measurements.dto.ts:220` |  |
 | `MeasurementsAdminService` | class | `measurements-admin.service.ts:16` | Dashboard management of garment types and their measurement fields. |
-| `MeasurementsController` | class | `measurements.controller.ts:29` |  |
-| `MeasurementsAdminController` | class | `measurements.controller.ts:90` |  |
-| `MeasurementsModule` | class | `measurements.module.ts:15` |  |
+| `MeasurementsController` | class | `measurements.controller.ts:31` |  |
+| `MeasurementsAdminController` | class | `measurements.controller.ts:119` |  |
+| `MeasurementsModule` | class | `measurements.module.ts:18` |  |
 | `MeasurementsService` | class | `measurements.service.ts:25` | Garment types, their measurement fields, and customers' saved profiles. |
 | `toFieldDefs` | function | `measurements.service.ts:188` | Prisma rows -> the plain definitions @newax/shared validates against. |
+| `SizeBiasListener` | class | `size-bias.listener.ts:13` | Reacts to signals ProductSizeBias is built from — lives in `measurements` (the reacting module), subscribing… |
+| `SizeBiasService` | class | `size-bias.service.ts:23` | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corrob… |
+| `SizeRecommendationResponse` | interface | `size-recommendation.service.ts:6` |  |
+| `SizeRecommendationService` | class | `size-recommendation.service.ts:26` | WO-9.2 (09-ai-layer.md) — "Based on your measurements, take M." Reads Product/ProductVariant/ProductGarmentTy… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

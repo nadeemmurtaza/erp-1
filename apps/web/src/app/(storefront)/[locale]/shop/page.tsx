@@ -68,6 +68,7 @@ export default async function ShopPage({
   const t = await getTranslations('shop');
 
   const page = integer(search, 'page') ?? 1;
+  const visualSlugs = csv(search, 'visualSlugs');
   const query: ProductListQuery = {
     locale: locale as Locale,
     page,
@@ -81,6 +82,7 @@ export default async function ShopPage({
     minPrice: integer(search, 'minPrice'),
     maxPrice: integer(search, 'maxPrice'),
     sort: (first(search, 'sort') as ProductListQuery['sort']) ?? 'featured',
+    visualSlugs,
   };
 
   const [products, facets] = await Promise.all([getProducts(query), getFacets()]);
@@ -120,8 +122,12 @@ export default async function ShopPage({
                   </div>
                 </div>
                 <div className="card p-10 text-center">
-                  <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
-                  <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
+                  <p className="text-sm font-medium text-neutral-900">
+                    {visualSlugs?.length ? t('visualEmpty') : t('empty')}
+                  </p>
+                  <p className="mt-1 text-sm text-neutral-500">
+                    {visualSlugs?.length ? t('visualEmptyBody') : t('emptyBody')}
+                  </p>
                 </div>
               </>
             ) : (

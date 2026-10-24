@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fromBaseUnits, toBaseUnits, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
+import { fromBaseUnits, toBaseUnits, toMajor, toMinor, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
+import { Select } from '@/components/ui/select';
 
 interface RawMaterialOption {
   id: string;
@@ -91,8 +93,8 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
         setSku(recipe.sku);
         setOutputQuantity(String(recipe.outputQuantity));
         setWastagePercent(String(recipe.wastageBps / 100));
-        setLabourCostRupees((recipe.labourCost / 100).toString());
-        setOverheadCostRupees((recipe.overheadCost / 100).toString());
+        setLabourCostRupees(toMajor(recipe.labourCost).toString());
+        setOverheadCostRupees(toMajor(recipe.overheadCost).toString());
         setNotes(recipe.notes ?? '');
         setRows(
           recipe.components.length > 0
@@ -148,8 +150,8 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
       variantId: variantId || undefined,
       outputQuantity: Math.max(1, Math.round(Number(outputQuantity) || 1)),
       wastageBps: Math.round((Number(wastagePercent) || 0) * 100),
-      labourCost: Math.round((Number(labourCostRupees) || 0) * 100),
-      overheadCost: Math.round((Number(overheadCostRupees) || 0) * 100),
+      labourCost: toMinor(Number(labourCostRupees) || 0),
+      overheadCost: toMinor(Number(overheadCostRupees) || 0),
       notes: notes.trim() || undefined,
       components,
     };
@@ -178,25 +180,7 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={
-                t.type === 'error'
-                  ? 'w-full cursor-pointer rounded-md border border-red-200 bg-red-50 p-4 text-start text-sm text-red-800 shadow-md'
-                  : 'w-full cursor-pointer rounded-md border border-green-200 bg-green-50 p-4 text-start text-sm text-green-800 shadow-md'
-              }
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">
@@ -281,22 +265,20 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
               const material = materialById(row.rawMaterialId);
               return (
                 <div key={index} className="grid gap-2 border-t border-neutral-100 pt-3 first:border-t-0 first:pt-0 sm:grid-cols-2 lg:grid-cols-6">
-                  <label className="block lg:col-span-2">
-                    <span className="field-label">Raw material</span>
-                    <select
-                      value={row.rawMaterialId}
-                      onChange={(event) => updateRow(index, { rawMaterialId: event.target.value })}
-                      className="field-input"
+                  <div className="lg:col-span-2">
+                    <label htmlFor={`recipe-material-${index}`} className="field-label">
+                      Raw material
+                    </label>
+                    <Select
+                      id={`recipe-material-${index}`}
+                      label="Raw material"
                       required
-                    >
-                      <option value="">Choose…</option>
-                      {materials.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name} ({option.sku})
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                      placeholder="Choose…"
+                      value={row.rawMaterialId}
+                      onChange={(next) => updateRow(index, { rawMaterialId: next })}
+                      options={materials.map((option) => ({ value: option.id, label: `${option.name} (${option.sku})` }))}
+                    />
+                  </div>
                   <label className="block">
                     <span className="field-label">Quantity {material ? `(${UNIT_LABELS[material.unit]})` : ''}</span>
                     <input

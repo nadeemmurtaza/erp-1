@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,208** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,956** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 493 | 66,893 | [files/api.md](../files/api.md) |
-| apps/web | 243 | 37,096 | [files/web.md](../files/web.md) |
-| apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
-| apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 55 | 4,638 | [files/packages.md](../files/packages.md) |
-| docs/* | 247 | 35,981 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 55 | 27,846 | [files/infra.md](../files/infra.md) |
-| repository root files | 42 | 9,049 | [files/root.md](../files/root.md) |
+| apps/api | 1,306 | 180,861 | [files/api.md](..\files\api.md) |
+| apps/web | 588 | 105,220 | [files/web.md](..\files\web.md) |
+| apps/pos | 33 | 2,671 | [files/pos.md](..\files\pos.md) |
+| apps/mobile | 50 | 6,942 | [files/mobile.md](..\files\mobile.md) |
+| packages/* | 117 | 13,772 | [files/packages.md](..\files\packages.md) |
+| docs/* | 580 | 109,320 | [files/docs.md](..\files\docs.md) |
+| scripts, CI, deployment and container configuration | 66 | 33,560 | [files/infra.md](..\files\infra.md) |
+| repository root files | 216 | 16,397 | [files/root.md](..\files\root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,55 +28,56 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 266 |
-| unit test | 100 |
-| page | 99 |
-| module | 88 |
-| service | 74 |
-| component | 73 |
-| migration | 58 |
-| dto | 54 |
-| controller | 51 |
-| nest module | 40 |
-| script | 35 |
+| doc | 615 |
+| unit test | 404 |
+| page | 234 |
+| service | 229 |
+| module | 215 |
+| component | 210 |
+| controller | 160 |
+| dto | 138 |
+| migration | 132 |
+| nest module | 110 |
+| prisma schema | 66 |
+| utility | 47 |
+| script | 46 |
+| event subscriber | 39 |
+| scheduled job | 36 |
+| e2e test | 32 |
+| json | 31 |
+| react | 29 |
 | asset | 26 |
-| json | 25 |
-| prisma schema | 24 |
-| react | 22 |
-| utility | 21 |
-| event subscriber | 18 |
-| e2e test | 15 |
+| hook | 17 |
+| loading | 14 |
 | file | 13 |
-| yaml | 12 |
-| config | 9 |
-| registry | 7 |
-| constants | 7 |
-| loading | 7 |
-| scheduled job | 6 |
+| yaml | 13 |
+| registry | 13 |
+| config | 13 |
+| guard | 9 |
+| constants | 8 |
 | layout | 6 |
-| hook | 5 |
+| toml | 5 |
+| channel | 5 |
 | types | 5 |
+| html | 4 |
 | not-found | 4 |
 | example | 3 |
-| toml | 3 |
-| channel | 3 |
 | driver | 3 |
 | error | 3 |
 | sh | 3 |
 | timer | 3 |
-| guard | 2 |
 | global-error | 2 |
 | stylesheet | 2 |
 | route handler | 2 |
-| txt | 2 |
-| sql | 2 |
 | mdc | 1 |
 | auth strategy | 1 |
 | dispatcher | 1 |
 | agent | 1 |
+| mts | 1 |
+| sql | 1 |
 | py | 1 |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

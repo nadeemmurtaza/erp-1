@@ -1,31 +1,70 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
-import { AccountingModule } from './accounting/accounting.module';
-import { AddressesModule } from './addresses/addresses.module';
-import { AnalyticsModule } from './analytics/analytics.module';
-import { BomModule } from './bom/bom.module';
-import { CartModule } from './cart/cart.module';
-import { CatalogModule } from './catalog/catalog.module';
-import { CrmModule } from './crm/crm.module';
-import { FinanceModule } from './finance/finance.module';
-import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
-import { InventoryModule } from './inventory/inventory.module';
-import { MarketingModule } from './marketing/marketing.module';
-import { MeasurementsModule } from './measurements/measurements.module';
-import { OrdersModule } from './orders/orders.module';
-import { OrganizationModule } from './organization/organization.module';
-import { PartiesModule } from './parties/parties.module';
-import { PaymentsModule } from './payments/payments.module';
-import { PosModule } from './pos/pos.module';
-import { ProductionModule } from './production/production.module';
-import { PurchasingModule } from './purchasing/purchasing.module';
-import { ReportsModule } from './reports/reports.module';
-import { SettingsAdminModule } from './settings/settings-admin.module';
-import { StitchingModule } from './stitching/stitching.module';
-import { TaxModule } from './tax/tax.module';
-import { TrackingModule } from './tracking/tracking.module';
-import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
-import { TransfersModule } from './transfers/transfers.module';
-import { UsersAdminModule } from './users/users-admin.module';
+import { AccountingModule } from './money/accounting/accounting.module';
+import { AccountsModule } from './sales/accounts/accounts.module';
+import { AddressesModule } from './sales/addresses/addresses.module';
+import { AnalyticsModule } from './money/analytics/analytics.module';
+import { BankFacilitiesModule } from './money/bankfacilities/bankfacilities.module';
+import { BomModule } from './supply-chain/bom/bom.module';
+import { CartModule } from './sales/cart/cart.module';
+import { CatalogModule } from './merchandising/catalog/catalog.module';
+import { CollectionsModule } from './merchandising/collections/collections.module';
+import { ContentModule } from './merchandising/content/content.module';
+import { AttendanceModule } from './people/attendance/attendance.module';
+import { AuctionModule } from './sales/auction/auction.module';
+import { CrmModule } from './customers/crm/crm.module';
+import { CustomFieldsModule } from './merchandising/custom-fields/custom-fields.module';
+import { EmbedsModule } from './merchandising/embeds/embeds.module';
+import { EntityAttributesModule } from './merchandising/entity-attributes/entity-attributes.module';
+import { ExampleHelloWorldPackModule } from './system/example-hello-world-pack/example-hello-world-pack.module';
+import { FeatureFlagsAdminModule } from './system/feature-flags/feature-flags-admin.module';
+import { FragmentsModule } from './merchandising/fragments/fragments.module';
+import { MetadataFormsModule } from './merchandising/metadata-forms/metadata-forms.module';
+import { BpmnWorkflowsModule } from './system/bpmn-workflows/bpmn-workflows.module';
+import { FinanceModule } from './money/finance/finance.module';
+import { FulfilmentModule } from './sales/fulfilment/fulfilment.module';
+import { GiftCardsModule } from './sales/giftcards/giftcards.module';
+import { HrModule } from './people/hr/hr.module';
+import { OrgStructureModule } from './people/orgstructure/orgstructure.module';
+import { TasksModule } from './people/tasks/tasks.module';
+import { NotifyModule } from './customers/notify/notify.module';
+import { SupportModule } from './customers/support/support.module';
+import { IdentityVerificationModule } from './system/identity-verification/identity-verification.module';
+import { InventoryModule } from './supply-chain/inventory/inventory.module';
+import { LoyaltyModule } from './sales/loyalty/loyalty.module';
+import { ManagedServicesModule } from './system/managed-services/managed-services.module';
+import { MarketplaceModule } from './supply-chain/marketplace/marketplace.module';
+import { MarketingModule } from './merchandising/marketing/marketing.module';
+import { MeasurementsModule } from './sales/measurements/measurements.module';
+import { NotificationPreferencesModule } from './customers/notification-preferences/notification-preferences.module';
+import { OnsiteMessagesModule } from './customers/onsitemessages/onsite-messages.module';
+import { OrdersModule } from './sales/orders/orders.module';
+import { OrganizationModule } from './people/organization/organization.module';
+import { PartiesModule } from './customers/parties/parties.module';
+import { PaymentsModule } from './sales/payments/payments.module';
+import { PayrollModule } from './people/payroll/payroll.module';
+import { PricingModule } from './sales/pricing/pricing.module';
+import { PlanningModule } from './supply-chain/planning/planning.module';
+import { PosModule } from './sales/pos/pos.module';
+import { ProductionModule } from './supply-chain/production/production.module';
+import { PromotionsModule } from './sales/promotions/promotions.module';
+import { PurchasingModule } from './supply-chain/purchasing/purchasing.module';
+import { RagModule } from './system/rag/rag.module';
+import { ReceivablesModule } from './money/receivables/receivables.module';
+import { ResilienceAdminModule } from './supply-chain/resilience/resilience-admin.module';
+import { SettlementsModule } from './money/settlements/settlements.module';
+import { RecommendationsModule } from './merchandising/recommendations/recommendations.module';
+import { ReportsModule } from './money/reports/reports.module';
+import { ReviewsModule } from './sales/reviews/reviews.module';
+import { SearchModule } from './merchandising/search/search.module';
+import { SettingsAdminModule } from './system/settings/settings-admin.module';
+import { StitchingModule } from './sales/stitching/stitching.module';
+import { TaxModule } from './money/tax/tax.module';
+import { TrackingModule } from './sales/tracking/tracking.module';
+import { TradingPartnersModule } from './supply-chain/tradingpartners/trading-partners.module';
+import { TransfersModule } from './supply-chain/transfers/transfers.module';
+import { UsersAdminModule } from './system/users/users-admin.module';
+import { WalletModule } from './sales/wallet/wallet.module';
+import { WishlistModule } from './sales/wishlist/wishlist.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -60,6 +99,10 @@ export interface FeatureModuleEntry {
  */
 export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'catalog', module: CatalogModule },
+  { name: 'content', module: ContentModule },
+  { name: 'collections', module: CollectionsModule },
+  { name: 'search', module: SearchModule },
+  { name: 'onsitemessages', module: OnsiteMessagesModule },
   { name: 'measurements', module: MeasurementsModule },
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },
@@ -77,7 +120,94 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
+  // 145-receivables-credit-limits-dunning.md — CreditNote/DebitNote, customer
+  // credit limits/holds and dunning. Posts through domain events only
+  // (CreditNoteIssued/DebitNoteIssued -> posting-rules.subscriber.ts), so it
+  // never imports AccountingModule directly; with `accounting` off, notes and
+  // credit terms still work as records, they just post nothing (same "absent
+  // collaborator" shape as every other event-only coupling in this file).
+  { name: 'receivables', module: ReceivablesModule },
+  // 146-wholesale-tiered-pricing.md — the pricing module MULTI-SECTOR.md
+  // already named as not built. Hard-imported by cart/orders directly (same
+  // shape as tax below) so checkout can always resolve PricingService; this
+  // allowlist entry only gates the admin nav/UI, per pricing.module.ts's
+  // own doc comment.
+  { name: 'pricing', module: PricingModule },
+  // 49-financial-institution-settlement-partnerships.md — off by default,
+  // same tier as accounting: no real FinancialInstitutionConnector exists
+  // yet, so a deployment gains nothing by enabling this until one does.
+  { name: 'settlements', module: SettlementsModule, offByDefault: true },
+  // 167-bank-facility-management.md — off by default: a Solo shop with no
+  // bank borrowing must not see this concept at all. Posts through domain
+  // events only (BankFacilityDrawdownPosted/RepaymentRecorded/
+  // MarkupAccrued -> posting-rules.subscriber.ts), so it never imports
+  // AccountingModule directly — the identical shape `settlements` above
+  // already establishes.
+  { name: 'bankfacilities', module: BankFacilitiesModule, offByDefault: true },
+  // launchpad-apps/234-auction-app.md — off by default: a shop that never sells
+  // by competitive bidding must not see the concept at all. Imports no other
+  // module; settlement into a core order (WO-234.6) will go through the
+  // AuctionOrderSink extension point, never an import.
+  { name: 'auction', module: AuctionModule, offByDefault: true },
+  // Hard-imported by orders.module.ts directly (same reasoning as tax
+  // above — checkout always needs ShippingService.quote()), but still
+  // listed here so its own admin routes/nav follow the allowlist like
+  // every other module's.
+  { name: 'fulfilment', module: FulfilmentModule },
+  { name: 'payroll', module: PayrollModule },
+  // hr-people-org/79-employee-asset-management.md — standalone, no
+  // dependency on any other optional module.
+  { name: 'hr', module: HrModule },
+  { name: 'orgstructure', module: OrgStructureModule },
+  // attendance-workforce/22-attendance-shifts-leave.md — reads hr's
+  // Posting/Rank/Position and payroll's LeaveRequest directly by Prisma
+  // query, no dependency on either module being on (see AttendanceService's
+  // own header comment).
+  { name: 'attendance', module: AttendanceModule },
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through TaskSourceRegistry, WO-23.3);
+  // reads hr's/orgstructure's Position table directly by Prisma query, same
+  // no-dependency-on-either-being-on shape as `attendance` just above.
+  { name: 'tasks', module: TasksModule },
+  // tasks-notifications-support/24-internal-notifications-meetings-escalation.md
+  // — imports no other module (reads hr's/orgstructure's/tasks's own
+  // tables directly by Prisma query), same no-dependency-on-either-being-on
+  // shape as `attendance`/`tasks` just above.
+  { name: 'notify', module: NotifyModule },
+  // tasks-notifications-support/64-help-desk-support-ticketing.md — a
+  // fully standalone module (doc's own "The absent collaborator" lens):
+  // imports nothing, nothing imports it, reads only its own tables.
+  { name: 'support', module: SupportModule },
+  // Same allowlist tier as payments/finance (not offByDefault): checkout
+  // couples to both directly, in the same transaction as order creation
+  // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)
+  // — see DECISIONS.md. "A shop may want one without the other" (WO-5's own
+  // words) is a DATA decision (no active Discount rows, no issued
+  // GiftCards), not a Nest-boot-time module toggle.
+  { name: 'promotions', module: PromotionsModule },
+  { name: 'giftcards', module: GiftCardsModule },
+  // Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md)
+  // — same allowlist tier as the rest of the customer-facing core: nothing
+  // else imports these directly except `loyalty -> giftcards`
+  // (KNOWN_MODULE_COUPLINGS, the points-redemption same-transaction write).
+  { name: 'reviews', module: ReviewsModule },
+  { name: 'wishlist', module: WishlistModule },
+  { name: 'loyalty', module: LoyaltyModule },
+  // WO-9.6 (09-ai-layer.md) — reads ProductTranslation.embedding (WO-9.5)
+  // and OrderItem directly via Prisma, never a service import, same
+  // INDEPENDENCE pattern as every other cross-module read in this codebase.
+  { name: 'recommendations', module: RecommendationsModule },
+  { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },
+  // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md)
+  // — reads AiService/StorageService directly (both core, global), never
+  // another feature module. Same allowlist tier as recommendations/search:
+  // not offByDefault, since the "absent collaborator" behavior (no
+  // ingestion, no query UI) already comes for free from `AiService
+  // .isAvailable()`, exactly like WO-9.5/9.6 — a second, module-level
+  // toggle on top of that would just be a second way to express the same
+  // "no provider configured" state.
+  { name: 'rag', module: RagModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to
   // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
@@ -89,7 +219,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // posting rules (WO-19.2/19.3) reach `orders`/`payments`/`purchasing` only
   // through domain events, never a service import.
   { name: 'accounting', module: AccountingModule, offByDefault: true },
-  // Off by default — see docs/implementation/18-identity-verification.md.
+  // Off by default — see docs/implementation/access-control-identity/18-identity-verification.md.
   // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
   // NID_WEBHOOK_SECRET are set.
   { name: 'identity-verification', module: IdentityVerificationModule, offByDefault: true },
@@ -104,10 +234,80 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // (R4's own note), settlement modes and InterBranchInvoice (R12) are
   // WO-22.2/22.3's, not this module's.
   { name: 'transfers', module: TransfersModule, offByDefault: true },
+  // Off by default — WO-155.0 (docs/implementation/commercial-licensing-agency/
+  // 155-wallet-stored-value-merchant-escrow.md) has not yet had its own
+  // legal confirmation recorded (DECISIONS.md). Built in full — schema,
+  // both services, tests, UI — and not wired into the live checkout path;
+  // see wallet.module.ts's own header comment for exactly what "off"
+  // means here.
+  { name: 'wallet', module: WalletModule, offByDefault: true },
+  // Off by default — 149-b2b-accounts-approvals-sector-packs.md. A Solo/
+  // simple deployment has no B2B buyer to open a standing account for
+  // (RETAIL-ERP.md R14's own "invisible until then"); with it off, checkout
+  // is byte-identical to today. Its own AccountsModule doc comment explains
+  // why AccountProvider (payments) needs neither this module nor this
+  // allowlist entry to keep working.
+  { name: 'accounts', module: AccountsModule, offByDefault: true },
+  // Off by default for EVERY deployment, always — doc 14
+  // (commercial-licensing-agency/14-managed-services-module.md). Requested
+  // only for an agency-managed delivery via `scripts/sync-client.mjs
+  // --modules=...,managed-services`; never present in a self-hosted
+  // client's own `.env.example`/MODULES allowlist (that structural
+  // absence is doc 14's own "impossible for self-hosted clients" point).
+  { name: 'managed-services', module: ManagedServicesModule, offByDefault: true },
+  // 165-cross-tenant-marketplace-directory.md (WO-165.2) — off by default:
+  // a deployment turns it on once ops has issued it a
+  // MarketplacePublisherCredential and handed over MARKETPLACE_API_URL/
+  // MARKETPLACE_API_KEY; with neither set, MarketplaceModule's own
+  // "absent collaborator" note applies unchanged.
+  { name: 'marketplace', module: MarketplaceModule, offByDefault: true },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },
   { name: 'addresses', module: AddressesModule, alwaysOn: true },
+  // 104-jsonb-eav-extensibility.md — a bounded custom-field overlay, not a
+  // sector-specific pack.
+  { name: 'custom-fields', module: CustomFieldsModule, alwaysOn: true },
+  // 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
+  { name: 'embeds', module: EmbedsModule, alwaysOn: true },
+  // 144-supply-chain-resilience-planning-engine.md — a pure read/
+  // recommendation engine over rows every other module already writes; a
+  // deployment gains nothing by running without it.
+  { name: 'planning', module: PlanningModule, alwaysOn: true },
+  // 140-general-eav-extensibility-model.md — a general EAV model, built by
+  // explicit owner override (ADR-026).
+  { name: 'entity-attributes', module: EntityAttributesModule, alwaysOn: true },
+  // 143-micro-frontend-architecture.md — micro-frontend fragments, built by
+  // explicit owner override (ADR-026); the mount mechanism is doc 113's own
+  // iframe + embed-token pattern (see DECISIONS.md ADR-049), not literal
+  // module federation.
+  { name: 'fragments', module: FragmentsModule, alwaysOn: true },
+  // 141-general-metadata-driven-ui-engine.md — a general metadata-driven UI
+  // engine, built by explicit owner override (ADR-026).
+  { name: 'metadata-forms', module: MetadataFormsModule, alwaysOn: true },
+  // 142-bpmn-visual-workflow-engine.md — a BPMN visual workflow engine over
+  // doc 63's own ApprovalChain, built by explicit owner override (ADR-026).
+  { name: 'bpmn-workflows', module: BpmnWorkflowsModule, alwaysOn: true },
+  // 37-scalability-future-upgrades.md (WO-37.2/37.5) — the admin CRUD
+  // surface over FeatureFlag. FeatureFlagsService.isEnabled() itself lives
+  // in core/feature-flags (always available, like SettingsService); this
+  // entry only gates the admin controller/nav, the same "settings" shape
+  // above. A deployment gains nothing by running without it — a flag with
+  // no rows behaves exactly as if this were off (doc 37's own "absent
+  // collaborator" lens).
+  { name: 'feature-flags', module: FeatureFlagsAdminModule, alwaysOn: true },
+  // 38-resilience-engineering.md — the admin read/tune surface over
+  // CircuitBreakerService (core/resilience) and SloRecorderService
+  // (core/slo), both already global and always available regardless of
+  // this entry — the same "this only gates the admin controller/nav"
+  // shape `feature-flags` establishes just above.
+  { name: 'resilience', module: ResilienceAdminModule, alwaysOn: true },
+  // 37-scalability-future-upgrades.md §3 (WO-37.4) — a reference "hello
+  // world" pack proving SDK-CONTRACT.md's published extension-point/
+  // domain-event seam works for a pack built outside this repository.
+  // Deliberately off by default in every deployment: it is a demonstration,
+  // never production scope. See module-packs.ts's own 'example' PackName.
+  { name: 'example-hello-world-pack', module: ExampleHelloWorldPackModule, offByDefault: true },
 ];
 
 /**

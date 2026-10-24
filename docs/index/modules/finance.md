@@ -3,48 +3,61 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 12 files
+Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
-Source: `apps/api/src/modules/finance/`
+Source: `apps/api/src/modules/money/finance/`
 
-## Files (12 · 1,880 lines)
+## Files (20 · 3,027 lines)
 
-All paths relative to `apps/api/src/modules/finance/dto`.
+All paths relative to `apps/api/src/modules/money/finance/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 | 2 |  |
-| `expense.dto.ts` | dto | 107 | 4 |  |
-| `finance.controller.ts` | controller | 112 | 1 |  |
+| `expense.dto.ts` | dto | 130 | 6 |  |
+| `expense-import.service.spec.ts` | unit test | 75 | — |  |
+| `expense-import.service.ts` | service | 179 | 3 |  |
+| `expense-replication.listener.spec.ts` | unit test | 61 | — |  |
+| `expense-replication.listener.ts` | event subscriber | 50 | 1 | WO-23.3c/e (RETAIL-ERP.md R2/R13, ADR-021) — `Expense` is R2's own other named FACT example ("expense"), registered UP… |
+| `finance-margins.spec.ts` | unit test | 161 | — |  |
+| `finance.controller.ts` | controller | 187 | 1 |  |
 | `finance.cron.spec.ts` | unit test | 69 | — |  |
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `finance.module.ts` | nest module | 13 | 1 |  |
-| `finance.service.ts` | service | 558 | 6 |  |
+| `finance.metrics.spec.ts` | unit test | 63 | — |  |
+| `finance.metrics.ts` | module | 125 | 1 | The Expenses group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4/D — wiring WO-B.4's already-built ex… |
+| `finance.module.ts` | nest module | 26 | 1 |  |
+| `finance.service.ts` | service | 675 | 6 |  |
 | `finance.spec.ts` | unit test | 522 | — |  |
-| `order-economics.service.spec.ts` | unit test | 216 | — |  |
-| `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
+| `order-economics.service.spec.ts` | unit test | 306 | — |  |
+| `order-economics.service.ts` | service | 205 | 3 |  |
+| `rto-expense.listener.ts` | event subscriber | 47 | 1 | WO-6.7 — "Record the RTO cost (both legs of courier charge) as a direct cost." Posted as an Expense against the existin… |
 
 
-## HTTP routes (12)
+## HTTP routes (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` :25 | List expense categories with their expense count |
-| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` :32 | Create an expense category |
-| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` :46 | Delete an unused expense category |
-| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` :39 | Rename, redirect or (de)activate an expense category |
-| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` :54 | List expenses, paginated and filtered |
-| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :82 | Record an expense |
-| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :96 | Delete an expense |
-| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :89 | Edit an expense |
-| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` :107 | Attach a receipt image or PDF to an expense |
-| GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` :68 | Expense totals by category — share, period-over-period change, and share of revenue |
-| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` :61 | Totals, per-category breakdown and a daily series |
-| GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` :75 | Expense totals over time, bucketed by day or month |
+| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` :60 | List expense categories with their expense count |
+| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` :67 | Create an expense category |
+| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` :81 | Delete an unused expense category |
+| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` :74 | Rename, redirect or (de)activate an expense category |
+| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` :89 | List expenses, paginated and filtered |
+| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :131 | Record an expense |
+| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :145 | Delete an expense |
+| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :138 | Edit an expense |
+| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` :156 | Attach a receipt image or PDF to an expense |
+| GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` :103 | Expense totals by category — share, period-over-period change, and share of revenue |
+| POST | `/admin/finance/expenses/import` | `finance.manage` | `FinanceController.importExpenses` :178 | Bulk record expenses from a CSV file (a paper expense log) |
+| GET | `/admin/finance/expenses/import/template` | `finance.manage` | `FinanceController.expenseImportTemplate` :168 | Download the CSV template for bulk expense upload |
+| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` :96 | Totals, per-category breakdown and a daily series |
+| GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` :110 | Expense totals over time, bucketed by day or month |
+| GET | `/admin/finance/gross-profit-today` | `inventory.view_cost` | `FinanceController.grossProfitToday` :53 | Per-transaction and day-total gross profit for orders placed today, every channel |
+| GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` :117 | Margin by product, category or variant (WO-4.3, 04-finance.md) |
+| GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` :124 | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
 
 ## Domain events
@@ -54,8 +67,8 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `OrderCancelled` | `order.cancelled` | `finance.listener.ts:9` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:252`, `finance.service.ts:530` |
-| `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:127` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:252`, `finance.service.ts:645` |
+| `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:143` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -63,6 +76,8 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Handler |
 |---|---|---|
 | `OrderStatusChanged` | `order.status_changed` | `finance.listener.ts:18` → `onOrderStatusChanged()` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `expense-replication.listener.ts:38` → `onExpenseRecorded()` |
+| `ShipmentReturnedToOrigin` | `fulfilment.shipment_rto` | `rto-expense.listener.ts:25` → `onShipmentReturnedToOrigin()` |
 
 
 ## Tables it owns (`finance.prisma`)
@@ -76,7 +91,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 
 Enums: `ExpenseRecurrence` (5)
 
-Full field lists: [cross/data-model.md](../cross/data-model.md).
+Full field lists: [cross/data-model.md](..\cross\data-model.md).
 
 
 ## Scheduled work
@@ -92,7 +107,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`
+- providers: `FinanceService`, `ExpenseImportService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`, `RtoExpenseListener`, `FinanceMetricsProvider`
 - exports: —
 
 
@@ -102,23 +117,32 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `common`
 - core `config`
 - core `events`
+- core `metrics`
 - core `prisma`
+- core `redis`
+- core `replication`
 - core `settings`
 - core `storage`
+- core `time`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (4)
+## Tests (8)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `expense-import.service.spec.ts` | 5 | ExpenseImportService |
+| `expense-replication.listener.spec.ts` | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
+| `finance-margins.spec.ts` | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `finance.cron.spec.ts` | 3 | FinanceCron |
 | `finance.listener.spec.ts` | 2 | FinanceListener |
+| `finance.metrics.spec.ts` | 2 | FinanceMetricsProvider |
 | `finance.spec.ts` | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
-| `order-economics.service.spec.ts` | 8 | OrderEconomicsService |
+| `order-economics.service.spec.ts` | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
 
 
 ## Every export in this unit
@@ -131,19 +155,29 @@ check there before adding another.
 | `UpdateExpenseDto` | class | `expense.dto.ts:66` |  |
 | `ExpenseQueryDto` | class | `expense.dto.ts:68` |  |
 | `ExpenseSummaryQueryDto` | class | `expense.dto.ts:96` |  |
-| `FinanceController` | class | `finance.controller.ts:19` |  |
+| `MarginQueryDto` | class | `expense.dto.ts:108` |  |
+| `UnitEconomicsQueryDto` | class | `expense.dto.ts:115` |  |
+| `ImportRowResult` | interface | `expense-import.service.ts:8` |  |
+| `ImportSummary` | interface | `expense-import.service.ts:15` |  |
+| `ExpenseImportService` | class | `expense-import.service.ts:57` | CSV onboarding for a paper expense log (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.2) —… |
+| `ExpenseReplicationListener` | class | `expense-replication.listener.ts:20` | WO-23.3c/e (RETAIL-ERP.md R2/R13, ADR-021) — `Expense` is R2's own other named FACT example ("expense"), regi… |
+| `FinanceController` | class | `finance.controller.ts:41` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `FinanceModule` | class | `finance.module.ts:12` |  |
+| `FinanceMetricsProvider` | class | `finance.metrics.ts:17` | The Expenses group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4/D — wiring WO-B.4's alread… |
+| `FinanceModule` | class | `finance.module.ts:25` |  |
 | `ExpenseSummary` | interface | `finance.service.ts:55` |  |
 | `ExpenseByCategoryRow` | interface | `finance.service.ts:69` |  |
 | `ExpenseByCategoryResult` | interface | `finance.service.ts:87` |  |
 | `ExpenseTrendPoint` | interface | `finance.service.ts:99` |  |
 | `ExpenseTrendResult` | interface | `finance.service.ts:108` |  |
 | `FinanceService` | class | `finance.service.ts:125` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
-| `OrderEconomicsService` | class | `order-economics.service.ts:40` | WO-23.1's WO-B.3: contribution per order. |
+| `GrossProfitTransaction` | interface | `order-economics.service.ts:11` |  |
+| `GrossProfitToday` | interface | `order-economics.service.ts:20` |  |
+| `OrderEconomicsService` | class | `order-economics.service.ts:56` | WO-23.1's WO-B.3: contribution per order. |
+| `RtoExpenseListener` | class | `rto-expense.listener.ts:17` | WO-6.7 — "Record the RTO cost (both legs of courier charge) as a direct cost." Posted as an Expense against t… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

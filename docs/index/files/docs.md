@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 247 tracked files in `docs/*`, by directory.
+All 580 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,29 +31,69 @@ All 247 tracked files in `docs/*`, by directory.
 | `yaseen-wordmark.svg` | asset | — |  |
 | `yaseen-y.svg` | asset | — |  |
 
-### `docs/design` (17)
+### `docs/design` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `README.md` | doc | 120 |  |
+
+### `docs/design/accessibility` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `07-accessibility.md` | doc | 166 |  |
+
+### `docs/design/components-states` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `03-components.md` | doc | 481 |  |
+| `04-states.md` | doc | 235 |  |
+
+### `docs/design/content` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `06-content.md` | doc | 130 |  |
+
+### `docs/design/foundations` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `01-foundations.md` | doc | 324 |  |
+
+### `docs/design/layout-composition` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `02-layout.md` | doc | 182 |  |
+| `13-composition.md` | doc | 197 |  |
+| `14-navigation.md` | doc | 207 |  |
+
+### `docs/design/motion` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `05-motion.md` | doc | 340 |  |
+
+### `docs/design/principles-laws` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-principles.md` | doc | 83 |  |
-| `01-foundations.md` | doc | 175 |  |
-| `02-layout.md` | doc | 121 |  |
-| `03-components.md` | doc | 113 |  |
-| `04-states.md` | doc | 141 |  |
-| `05-motion.md` | doc | 193 |  |
-| `06-content.md` | doc | 121 |  |
-| `07-accessibility.md` | doc | 157 |  |
-| `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 176 |  |
-| `10-laws.md` | doc | 850 |  |
-| `11-workflow.md` | doc | 260 |  |
-| `12-permissions.md` | doc | 214 |  |
-| `13-composition.md` | doc | 197 |  |
-| `14-navigation.md` | doc | 198 |  |
-| `15-integrity.md` | doc | 257 |  |
-| `README.md` | doc | 109 |  |
+| `10-laws.md` | doc | 942 |  |
 
-### `docs/erp-lenses` (195)
+### `docs/design/process-governance` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `08-governance.md` | doc | 147 |  |
+| `09-quality.md` | doc | 189 |  |
+| `11-workflow.md` | doc | 260 |  |
+| `12-permissions.md` | doc | 220 |  |
+| `15-integrity.md` | doc | 260 |  |
+
+### `docs/erp-lenses/_meta` (32)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -84,11 +124,240 @@ All 247 tracked files in `docs/*`, by directory.
 | `_gap-innovation.md` | doc | 216 |  |
 | `_gap-repo-blindspots.md` | doc | 108 |  |
 | `_gap-roles-ranks.md` | doc | 237 |  |
-| `_index.md` | doc | 548 |  |
+| `_index.md` | doc | 550 |  |
 | `_integrate.md` | doc | 272 |  |
 | `_judge-auditor.md` | doc | 256 |  |
 | `_judge-engineer.md` | doc | 264 |  |
 | `_judge-owner.md` | doc | 261 |  |
+
+### `docs/erp-lenses/approval-delegation` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `04-approval-delegation.md` | doc | 128 |  |
+| `04g-generate-approval-delegation.md` | doc | 42 |  |
+| `04h-harden-approval-delegation.md` | doc | 40 |  |
+
+### `docs/erp-lenses/assets-facilities-maintenance` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `37-assets-facilities-maintenance.md` | doc | 153 |  |
+| `37g-generate-assets-facilities-maintenance.md` | doc | 41 |  |
+| `37h-harden-assets-facilities-maintenance.md` | doc | 43 |  |
+
+### `docs/erp-lenses/audit-evidence-hold` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `05-audit-evidence-hold.md` | doc | 159 |  |
+| `05g-generate-audit-evidence-hold.md` | doc | 41 |  |
+| `05h-harden-audit-evidence-hold.md` | doc | 35 |  |
+
+### `docs/erp-lenses/automation-and-ai-surface` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `32-automation-and-ai-surface.md` | doc | 190 |  |
+| `32g-generate-automation-and-ai-surface.md` | doc | 41 |  |
+| `32h-harden-automation-and-ai-surface.md` | doc | 37 |  |
+
+### `docs/erp-lenses/channels-franchise-wholesale` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `19-channels-franchise-wholesale.md` | doc | 240 |  |
+| `19g-generate-channels-franchise-wholesale.md` | doc | 49 |  |
+| `19h-harden-channels-franchise-wholesale.md` | doc | 43 |  |
+
+### `docs/erp-lenses/cost-to-serve` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `29-cost-to-serve.md` | doc | 185 |  |
+| `29g-generate-cost-to-serve.md` | doc | 40 |  |
+| `29h-harden-cost-to-serve.md` | doc | 40 |  |
+
+### `docs/erp-lenses/costing-transfer-pricing` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `10-costing-transfer-pricing.md` | doc | 218 |  |
+| `10g-generate-costing-transfer-pricing.md` | doc | 42 |  |
+| `10h-harden-costing-transfer-pricing.md` | doc | 36 |  |
+
+### `docs/erp-lenses/credit-receivables` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `12-credit-receivables.md` | doc | 157 |  |
+| `12g-generate-credit-receivables.md` | doc | 44 |  |
+| `12h-harden-credit-receivables.md` | doc | 45 |  |
+
+### `docs/erp-lenses/day-two-operations` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `26-day-two-operations.md` | doc | 78 |  |
+| `26g-generate-day-two-operations.md` | doc | 41 |  |
+| `26h-harden-day-two-operations.md` | doc | 43 |  |
+
+### `docs/erp-lenses/enablement-onboarding` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `31-enablement-onboarding.md` | doc | 188 |  |
+| `31g-generate-enablement-onboarding.md` | doc | 47 |  |
+| `31h-harden-enablement-onboarding.md` | doc | 41 |  |
+
+### `docs/erp-lenses/extensibility-without-fork` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `28-extensibility-without-fork.md` | doc | 233 |  |
+| `28g-generate-extensibility-without-fork.md` | doc | 40 |  |
+| `28h-harden-extensibility-without-fork.md` | doc | 41 |  |
+
+### `docs/erp-lenses/findability-at-scale` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `22-findability-at-scale.md` | doc | 227 |  |
+| `22g-generate-findability-at-scale.md` | doc | 46 |  |
+| `22h-harden-findability-at-scale.md` | doc | 42 |  |
+
+### `docs/erp-lenses/fraud-insider-risk` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `24-fraud-insider-risk.md` | doc | 187 |  |
+| `24g-generate-fraud-insider-risk.md` | doc | 41 |  |
+| `24h-harden-fraud-insider-risk.md` | doc | 36 |  |
+
+### `docs/erp-lenses/gap-38` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `38-gap-hr-payroll-no-posting-artifact-for-compe.md` | doc | 205 |  |
+| `38g-generate-gap.md` | doc | 42 |  |
+| `38h-harden-gap.md` | doc | 50 |  |
+
+### `docs/erp-lenses/gap-39` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `39-gap-facilities-asset-maintenance-file-37-has.md` | doc | 159 |  |
+| `39g-generate-gap.md` | doc | 40 |  |
+| `39h-harden-gap.md` | doc | 48 |  |
+
+### `docs/erp-lenses/gap-40` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `40-gap-esg-the-file-s-title-promises-it-the-con.md` | doc | 177 |  |
+| `40g-generate-gap.md` | doc | 40 |  |
+| `40h-harden-gap.md` | doc | 49 |  |
+
+### `docs/erp-lenses/gap-41` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `41-gap-legal-no-table-for-the-agreement-itself-.md` | doc | 134 |  |
+| `41g-generate-gap.md` | doc | 40 |  |
+| `41h-harden-gap.md` | doc | 42 |  |
+
+### `docs/erp-lenses/gap-42` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `42-gap-the-grant-with-no-ceiling-on-the-granter.md` | doc | 155 |  |
+| `42g-generate-gap.md` | doc | 40 |  |
+| `42h-harden-gap.md` | doc | 46 |  |
+
+### `docs/erp-lenses/gap-43` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `43-gap-rank-has-no-ladder-of-its-own-escalation.md` | doc | 208 |  |
+| `43g-generate-gap.md` | doc | 40 |  |
+| `43h-harden-gap.md` | doc | 46 |  |
+
+### `docs/erp-lenses/gap-44` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `44-gap-no-composition-rule-for-a-person-holding.md` | doc | 187 |  |
+| `44g-generate-gap.md` | doc | 34 |  |
+| `44h-harden-gap.md` | doc | 46 |  |
+
+### `docs/erp-lenses/gap-45` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `45-gap-the-catalogue-s-only-rank-lens-contradic.md` | doc | 220 |  |
+| `45g-generate-gap.md` | doc | 41 |  |
+| `45h-harden-gap.md` | doc | 50 |  |
+
+### `docs/erp-lenses/gap-46` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `46-gap-no-lens-asks-what-a-quorum-dual-custody-.md` | doc | 207 |  |
+| `46g-generate-gap.md` | doc | 41 |  |
+| `46h-harden-gap.md` | doc | 54 |  |
+
+### `docs/erp-lenses/gap-47` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `47-gap-the-per-brand-currency-field-forces-the-.md` | doc | 179 |  |
+| `47g-generate-gap.md` | doc | 41 |  |
+| `47h-harden-gap.md` | doc | 46 |  |
+
+### `docs/erp-lenses/gap-48` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `48-gap-group-currency-translation-for-consolida.md` | doc | 169 |  |
+| `48g-generate-gap.md` | doc | 40 |  |
+| `48h-harden-gap.md` | doc | 48 |  |
+
+### `docs/erp-lenses/gap-49` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `49-gap-financial-close-as-a-managed-process-not.md` | doc | 175 |  |
+| `49g-generate-gap.md` | doc | 41 |  |
+| `49h-harden-gap.md` | doc | 53 |  |
+
+### `docs/erp-lenses/gap-50` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `50-gap-landed-cost-apportionment-and-its-timing.md` | doc | 206 |  |
+| `50g-generate-gap.md` | doc | 41 |  |
+| `50h-harden-gap.md` | doc | 48 |  |
+
+### `docs/erp-lenses/gap-51` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `51-gap-the-approval-that-stalls-without-a-leave.md` | doc | 195 |  |
+| `51g-generate-gap.md` | doc | 41 |  |
+| `51h-harden-gap.md` | doc | 46 |  |
+
+### `docs/erp-lenses/gap-52` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `52-gap-no-lens-classifies-a-new-table-s-replica.md` | doc | 46 |  |
+| `52g-generate-gap.md` | doc | 26 |  |
+| `52h-harden-gap.md` | doc | 40 |  |
+
+### `docs/erp-lenses/ground` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
 | `00-uagent.md` | doc | 299 |  |
 | `00a-ground-topology.md` | doc | 57 |  |
 | `00b-ground-identity.md` | doc | 83 |  |
@@ -96,196 +365,715 @@ All 247 tracked files in `docs/*`, by directory.
 | `00d-ground-operations.md` | doc | 68 |  |
 | `00e-ground-platform.md` | doc | 44 |  |
 | `00f-ground-surfaces.md` | doc | 62 |  |
+
+### `docs/erp-lenses/identity-actor-types` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
 | `01-identity-actor-types.md` | doc | 169 |  |
 | `01g-generate-identity-actor-types.md` | doc | 41 |  |
 | `01h-harden-identity-actor-types.md` | doc | 36 |  |
-| `02-roles-ranks-orgchart.md` | doc | 216 |  |
-| `02g-generate-roles-ranks-orgchart.md` | doc | 49 |  |
-| `02h-harden-roles-ranks-orgchart.md` | doc | 41 |  |
-| `03-segregation-of-duties.md` | doc | 171 |  |
-| `03g-generate-segregation-of-duties.md` | doc | 41 |  |
-| `03h-harden-segregation-of-duties.md` | doc | 36 |  |
-| `04-approval-delegation.md` | doc | 128 |  |
-| `04g-generate-approval-delegation.md` | doc | 42 |  |
-| `04h-harden-approval-delegation.md` | doc | 40 |  |
-| `05-audit-evidence-hold.md` | doc | 159 |  |
-| `05g-generate-audit-evidence-hold.md` | doc | 41 |  |
-| `05h-harden-audit-evidence-hold.md` | doc | 35 |  |
-| `06-workforce-shifts-jml.md` | doc | 169 |  |
-| `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
-| `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
-| `07-money-integrity-gl.md` | doc | 190 |  |
-| `07g-generate-money-integrity-gl.md` | doc | 43 |  |
-| `07h-harden-money-integrity-gl.md` | doc | 35 |  |
-| `08-tax-jurisdiction-invoice.md` | doc | 214 |  |
-| `08g-generate-tax-jurisdiction-invoice.md` | doc | 47 |  |
-| `08h-harden-tax-jurisdiction-invoice.md` | doc | 41 |  |
-| `09-treasury-cash-reconciliation.md` | doc | 157 |  |
-| `09g-generate-treasury-cash-reconciliation.md` | doc | 41 |  |
-| `09h-harden-treasury-cash-reconciliation.md` | doc | 39 |  |
-| `10-costing-transfer-pricing.md` | doc | 218 |  |
-| `10g-generate-costing-transfer-pricing.md` | doc | 42 |  |
-| `10h-harden-costing-transfer-pricing.md` | doc | 36 |  |
-| `11-pricing-discount-governance.md` | doc | 66 |  |
-| `11g-generate-pricing-discount-governance.md` | doc | 42 |  |
-| `11h-harden-pricing-discount-governance.md` | doc | 35 |  |
-| `12-credit-receivables.md` | doc | 157 |  |
-| `12g-generate-credit-receivables.md` | doc | 44 |  |
-| `12h-harden-credit-receivables.md` | doc | 45 |  |
-| `13-procurement-supplier-lifecycle.md` | doc | 162 |  |
-| `13g-generate-procurement-supplier-lifecycle.md` | doc | 40 |  |
-| `13h-harden-procurement-supplier-lifecycle.md` | doc | 37 |  |
-| `14-planning-replenishment.md` | doc | 208 |  |
-| `14g-generate-planning-replenishment.md` | doc | 42 |  |
-| `14h-harden-planning-replenishment.md` | doc | 36 |  |
-| `15-warehouse-logistics-fleet.md` | doc | 170 |  |
-| `15g-generate-warehouse-logistics-fleet.md` | doc | 42 |  |
-| `15h-harden-warehouse-logistics-fleet.md` | doc | 36 |  |
-| `16-production-bom-subcontract.md` | doc | 149 |  |
-| `16g-generate-production-bom-subcontract.md` | doc | 41 |  |
-| `16h-harden-production-bom-subcontract.md` | doc | 32 |  |
-| `17-merchandising-assortment.md` | doc | 172 |  |
-| `17g-generate-merchandising-assortment.md` | doc | 42 |  |
-| `17h-harden-merchandising-assortment.md` | doc | 39 |  |
-| `18-master-data-taxonomy.md` | doc | 185 |  |
-| `18g-generate-master-data-taxonomy.md` | doc | 42 |  |
-| `18h-harden-master-data-taxonomy.md` | doc | 37 |  |
-| `19-channels-franchise-wholesale.md` | doc | 240 |  |
-| `19g-generate-channels-franchise-wholesale.md` | doc | 49 |  |
-| `19h-harden-channels-franchise-wholesale.md` | doc | 43 |  |
-| `20-service-cases-sla.md` | doc | 186 |  |
-| `20g-generate-service-cases-sla.md` | doc | 42 |  |
-| `20h-harden-service-cases-sla.md` | doc | 36 |  |
-| `21-omnichannel-parity.md` | doc | 172 |  |
-| `21g-generate-omnichannel-parity.md` | doc | 41 |  |
-| `21h-harden-omnichannel-parity.md` | doc | 39 |  |
-| `22-findability-at-scale.md` | doc | 227 |  |
-| `22g-generate-findability-at-scale.md` | doc | 46 |  |
-| `22h-harden-findability-at-scale.md` | doc | 42 |  |
-| `23-loyalty-consent-data-rights.md` | doc | 67 |  |
-| `23g-generate-loyalty-consent-data-rights.md` | doc | 40 |  |
-| `23h-harden-loyalty-consent-data-rights.md` | doc | 36 |  |
-| `24-fraud-insider-risk.md` | doc | 187 |  |
-| `24g-generate-fraud-insider-risk.md` | doc | 41 |  |
-| `24h-harden-fraud-insider-risk.md` | doc | 36 |  |
-| `25-privacy-retention-residency.md` | doc | 155 |  |
-| `25g-generate-privacy-retention-residency.md` | doc | 41 |  |
-| `25h-harden-privacy-retention-residency.md` | doc | 36 |  |
-| `26-day-two-operations.md` | doc | 78 |  |
-| `26g-generate-day-two-operations.md` | doc | 41 |  |
-| `26h-harden-day-two-operations.md` | doc | 43 |  |
-| `27-migration-cutover-restatement.md` | doc | 72 |  |
-| `27g-generate-migration-cutover-restatement.md` | doc | 40 |  |
-| `27h-harden-migration-cutover-restatement.md` | doc | 35 |  |
-| `28-extensibility-without-fork.md` | doc | 233 |  |
-| `28g-generate-extensibility-without-fork.md` | doc | 40 |  |
-| `28h-harden-extensibility-without-fork.md` | doc | 41 |  |
-| `29-cost-to-serve.md` | doc | 185 |  |
-| `29g-generate-cost-to-serve.md` | doc | 40 |  |
-| `29h-harden-cost-to-serve.md` | doc | 40 |  |
-| `30-time-periods-backdating.md` | doc | 193 |  |
-| `30g-generate-time-periods-backdating.md` | doc | 41 |  |
-| `30h-harden-time-periods-backdating.md` | doc | 35 |  |
-| `31-enablement-onboarding.md` | doc | 188 |  |
-| `31g-generate-enablement-onboarding.md` | doc | 47 |  |
-| `31h-harden-enablement-onboarding.md` | doc | 41 |  |
-| `32-automation-and-ai-surface.md` | doc | 190 |  |
-| `32g-generate-automation-and-ai-surface.md` | doc | 41 |  |
-| `32h-harden-automation-and-ai-surface.md` | doc | 37 |  |
-| `33-operator-hands.md` | doc | 187 |  |
-| `33g-generate-operator-hands.md` | doc | 40 |  |
-| `33h-harden-operator-hands.md` | doc | 36 |  |
-| `34-provenance-esg-statutory.md` | doc | 170 |  |
-| `34g-generate-provenance-esg-statutory.md` | doc | 40 |  |
-| `34h-harden-provenance-esg-statutory.md` | doc | 35 |  |
-| `35-risk-insurance-continuity.md` | doc | 215 |  |
-| `35g-generate-risk-insurance-continuity.md` | doc | 48 |  |
-| `35h-harden-risk-insurance-continuity.md` | doc | 48 |  |
+
+### `docs/erp-lenses/internal-audit-controls-testing` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
 | `36-internal-audit-controls-testing.md` | doc | 188 |  |
 | `36g-generate-internal-audit-controls-testing.md` | doc | 42 |  |
 | `36h-harden-internal-audit-controls-testing.md` | doc | 35 |  |
-| `37-assets-facilities-maintenance.md` | doc | 153 |  |
-| `37g-generate-assets-facilities-maintenance.md` | doc | 41 |  |
-| `37h-harden-assets-facilities-maintenance.md` | doc | 43 |  |
-| `38-gap-hr-payroll-no-posting-artifact-for-compe.md` | doc | 205 |  |
-| `38g-generate-gap.md` | doc | 42 |  |
-| `38h-harden-gap.md` | doc | 50 |  |
-| `39-gap-facilities-asset-maintenance-file-37-has.md` | doc | 159 |  |
-| `39g-generate-gap.md` | doc | 40 |  |
-| `39h-harden-gap.md` | doc | 48 |  |
-| `40-gap-esg-the-file-s-title-promises-it-the-con.md` | doc | 177 |  |
-| `40g-generate-gap.md` | doc | 40 |  |
-| `40h-harden-gap.md` | doc | 49 |  |
-| `41-gap-legal-no-table-for-the-agreement-itself-.md` | doc | 134 |  |
-| `41g-generate-gap.md` | doc | 40 |  |
-| `41h-harden-gap.md` | doc | 42 |  |
-| `42-gap-the-grant-with-no-ceiling-on-the-granter.md` | doc | 155 |  |
-| `42g-generate-gap.md` | doc | 40 |  |
-| `42h-harden-gap.md` | doc | 46 |  |
-| `43-gap-rank-has-no-ladder-of-its-own-escalation.md` | doc | 208 |  |
-| `43g-generate-gap.md` | doc | 40 |  |
-| `43h-harden-gap.md` | doc | 46 |  |
-| `44-gap-no-composition-rule-for-a-person-holding.md` | doc | 187 |  |
-| `44g-generate-gap.md` | doc | 34 |  |
-| `44h-harden-gap.md` | doc | 46 |  |
-| `45-gap-the-catalogue-s-only-rank-lens-contradic.md` | doc | 220 |  |
-| `45g-generate-gap.md` | doc | 41 |  |
-| `45h-harden-gap.md` | doc | 50 |  |
-| `46-gap-no-lens-asks-what-a-quorum-dual-custody-.md` | doc | 207 |  |
-| `46g-generate-gap.md` | doc | 41 |  |
-| `46h-harden-gap.md` | doc | 54 |  |
-| `47-gap-the-per-brand-currency-field-forces-the-.md` | doc | 179 |  |
-| `47g-generate-gap.md` | doc | 41 |  |
-| `47h-harden-gap.md` | doc | 46 |  |
-| `48-gap-group-currency-translation-for-consolida.md` | doc | 169 |  |
-| `48g-generate-gap.md` | doc | 40 |  |
-| `48h-harden-gap.md` | doc | 48 |  |
-| `49-gap-financial-close-as-a-managed-process-not.md` | doc | 175 |  |
-| `49g-generate-gap.md` | doc | 41 |  |
-| `49h-harden-gap.md` | doc | 53 |  |
-| `50-gap-landed-cost-apportionment-and-its-timing.md` | doc | 206 |  |
-| `50g-generate-gap.md` | doc | 41 |  |
-| `50h-harden-gap.md` | doc | 48 |  |
-| `51-gap-the-approval-that-stalls-without-a-leave.md` | doc | 195 |  |
-| `51g-generate-gap.md` | doc | 41 |  |
-| `51h-harden-gap.md` | doc | 46 |  |
-| `52-gap-no-lens-classifies-a-new-table-s-replica.md` | doc | 46 |  |
-| `52g-generate-gap.md` | doc | 26 |  |
-| `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (27)
+### `docs/erp-lenses/loyalty-consent-data-rights` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `23-loyalty-consent-data-rights.md` | doc | 67 |  |
+| `23g-generate-loyalty-consent-data-rights.md` | doc | 40 |  |
+| `23h-harden-loyalty-consent-data-rights.md` | doc | 36 |  |
+
+### `docs/erp-lenses/master-data-taxonomy` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `18-master-data-taxonomy.md` | doc | 185 |  |
+| `18g-generate-master-data-taxonomy.md` | doc | 42 |  |
+| `18h-harden-master-data-taxonomy.md` | doc | 37 |  |
+
+### `docs/erp-lenses/merchandising-assortment` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `17-merchandising-assortment.md` | doc | 172 |  |
+| `17g-generate-merchandising-assortment.md` | doc | 42 |  |
+| `17h-harden-merchandising-assortment.md` | doc | 39 |  |
+
+### `docs/erp-lenses/migration-cutover-restatement` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `27-migration-cutover-restatement.md` | doc | 72 |  |
+| `27g-generate-migration-cutover-restatement.md` | doc | 40 |  |
+| `27h-harden-migration-cutover-restatement.md` | doc | 35 |  |
+
+### `docs/erp-lenses/money-integrity-gl` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `07-money-integrity-gl.md` | doc | 190 |  |
+| `07g-generate-money-integrity-gl.md` | doc | 43 |  |
+| `07h-harden-money-integrity-gl.md` | doc | 35 |  |
+
+### `docs/erp-lenses/omnichannel-parity` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `21-omnichannel-parity.md` | doc | 172 |  |
+| `21g-generate-omnichannel-parity.md` | doc | 41 |  |
+| `21h-harden-omnichannel-parity.md` | doc | 39 |  |
+
+### `docs/erp-lenses/operator-hands` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `33-operator-hands.md` | doc | 187 |  |
+| `33g-generate-operator-hands.md` | doc | 40 |  |
+| `33h-harden-operator-hands.md` | doc | 36 |  |
+
+### `docs/erp-lenses/planning-replenishment` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `14-planning-replenishment.md` | doc | 208 |  |
+| `14g-generate-planning-replenishment.md` | doc | 42 |  |
+| `14h-harden-planning-replenishment.md` | doc | 36 |  |
+
+### `docs/erp-lenses/pricing-discount-governance` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `11-pricing-discount-governance.md` | doc | 66 |  |
+| `11g-generate-pricing-discount-governance.md` | doc | 42 |  |
+| `11h-harden-pricing-discount-governance.md` | doc | 35 |  |
+
+### `docs/erp-lenses/privacy-retention-residency` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `25-privacy-retention-residency.md` | doc | 155 |  |
+| `25g-generate-privacy-retention-residency.md` | doc | 41 |  |
+| `25h-harden-privacy-retention-residency.md` | doc | 36 |  |
+
+### `docs/erp-lenses/procurement-supplier-lifecycle` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `13-procurement-supplier-lifecycle.md` | doc | 162 |  |
+| `13g-generate-procurement-supplier-lifecycle.md` | doc | 40 |  |
+| `13h-harden-procurement-supplier-lifecycle.md` | doc | 37 |  |
+
+### `docs/erp-lenses/production-bom-subcontract` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `16-production-bom-subcontract.md` | doc | 149 |  |
+| `16g-generate-production-bom-subcontract.md` | doc | 41 |  |
+| `16h-harden-production-bom-subcontract.md` | doc | 32 |  |
+
+### `docs/erp-lenses/provenance-esg-statutory` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `34-provenance-esg-statutory.md` | doc | 170 |  |
+| `34g-generate-provenance-esg-statutory.md` | doc | 40 |  |
+| `34h-harden-provenance-esg-statutory.md` | doc | 35 |  |
+
+### `docs/erp-lenses/risk-insurance-continuity` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `35-risk-insurance-continuity.md` | doc | 215 |  |
+| `35g-generate-risk-insurance-continuity.md` | doc | 48 |  |
+| `35h-harden-risk-insurance-continuity.md` | doc | 48 |  |
+
+### `docs/erp-lenses/roles-ranks-orgchart` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `02-roles-ranks-orgchart.md` | doc | 216 |  |
+| `02g-generate-roles-ranks-orgchart.md` | doc | 49 |  |
+| `02h-harden-roles-ranks-orgchart.md` | doc | 41 |  |
+
+### `docs/erp-lenses/segregation-of-duties` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `03-segregation-of-duties.md` | doc | 171 |  |
+| `03g-generate-segregation-of-duties.md` | doc | 41 |  |
+| `03h-harden-segregation-of-duties.md` | doc | 36 |  |
+
+### `docs/erp-lenses/service-cases-sla` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `20-service-cases-sla.md` | doc | 186 |  |
+| `20g-generate-service-cases-sla.md` | doc | 42 |  |
+| `20h-harden-service-cases-sla.md` | doc | 36 |  |
+
+### `docs/erp-lenses/tax-jurisdiction-invoice` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `08-tax-jurisdiction-invoice.md` | doc | 214 |  |
+| `08g-generate-tax-jurisdiction-invoice.md` | doc | 47 |  |
+| `08h-harden-tax-jurisdiction-invoice.md` | doc | 41 |  |
+
+### `docs/erp-lenses/time-periods-backdating` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `30-time-periods-backdating.md` | doc | 193 |  |
+| `30g-generate-time-periods-backdating.md` | doc | 41 |  |
+| `30h-harden-time-periods-backdating.md` | doc | 35 |  |
+
+### `docs/erp-lenses/treasury-cash-reconciliation` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `09-treasury-cash-reconciliation.md` | doc | 157 |  |
+| `09g-generate-treasury-cash-reconciliation.md` | doc | 41 |  |
+| `09h-harden-treasury-cash-reconciliation.md` | doc | 39 |  |
+
+### `docs/erp-lenses/warehouse-logistics-fleet` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `15-warehouse-logistics-fleet.md` | doc | 170 |  |
+| `15g-generate-warehouse-logistics-fleet.md` | doc | 42 |  |
+| `15h-harden-warehouse-logistics-fleet.md` | doc | 36 |  |
+
+### `docs/erp-lenses/workforce-shifts-jml` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `06-workforce-shifts-jml.md` | doc | 169 |  |
+| `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
+| `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
+
+### `docs/implementation` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `01-inventory-purchasing-cost.md` | doc | 937 |  |
-| `02-admin-shell.md` | doc | 242 |  |
-| `03-variants-sku-seo.md` | doc | 471 |  |
-| `04-finance.md` | doc | 239 |  |
-| `05-promotions-giftcards.md` | doc | 320 |  |
-| `06-shipping-fulfilment-returns.md` | doc | 288 |  |
-| `07-customer-portal.md` | doc | 186 |  |
-| `08-content-marketing-search.md` | doc | 138 |  |
-| `09-ai-layer.md` | doc | 221 |  |
-| `10-admin-dashboard.md` | doc | 1843 |  |
-| `11-client-handover-model.md` | doc | 121 |  |
-| `12-extractor-script-spec.md` | doc | 59 |  |
-| `13-email-service-plan.md` | doc | 32 |  |
-| `14-managed-services-module.md` | doc | 270 |  |
-| `15-tax-module.md` | doc | 178 |  |
-| `16-pbac-row-scoping.md` | doc | 184 |  |
-| `17-inventory-locations.md` | doc | 254 |  |
-| `18-identity-verification.md` | doc | 143 |  |
-| `18-trading-partner-network.md` | doc | 61 |  |
-| `DECISIONS.md` | doc | 1238 |  |
-| `ENTERPRISE-SCALE.md` | doc | 266 |  |
-| `MULTI-SECTOR.md` | doc | 806 |  |
+| `253-distribution-stack-capability-map.md` | doc | 772 |  |
+| `254-office-replacement-program.md` | doc | 971 |  |
+| `DECISIONS.md` | doc | 134 |  |
+| `ENTERPRISE-SCALE.md` | doc | 278 |  |
+| `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
+| `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
+| `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 154 |  |
-| `RETAIL-ERP.md` | doc | 1083 |  |
+| `README.md` | doc | 730 |  |
+| `RETAIL-ERP.md` | doc | 1108 |  |
+| `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
+| `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
+
+### `docs/implementation/access-control-identity` (9)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `125-zero-trust-networking.md` | doc | 102 |  |
+| `126-pluggable-cryptography.md` | doc | 176 |  |
+| `16-pbac-row-scoping.md` | doc | 184 |  |
+| `161-sso-identity-federation.md` | doc | 366 |  |
+| `163-personal-api-keys.md` | doc | 635 |  |
+| `18-identity-verification.md` | doc | 149 |  |
+| `21-access-over-the-org-tree.md` | doc | 294 |  |
+| `212-role-scope-enforcement-gap.md` | doc | 129 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 553 |  |
+
+### `docs/implementation/admin-platform` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `02-admin-shell.md` | doc | 253 |  |
+| `10-admin-dashboard.md` | doc | 1854 |  |
+| `220-admin-ui-gemini-ideas-design-spec.md` | doc | 244 |  |
+| `44-manager-action-hub.md` | doc | 176 |  |
+| `72-fragmented-tool-consolidation-import.md` | doc | 184 |  |
+| `75-managerial-todo-widget-coverage-note.md` | doc | 86 |  |
+
+### `docs/implementation/ai-layer` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `09-ai-layer.md` | doc | 221 |  |
+| `116-agentic-integration-mcp.md` | doc | 161 |  |
+| `121-vector-multimodel-databases.md` | doc | 52 |  |
+| `135-intent-router-voice-video-agent.md` | doc | 136 |  |
+| `35-scalable-rag-document-retrieval.md` | doc | 354 |  |
+| `86-ai-ml-edi-business-automation.md` | doc | 51 |  |
+
+### `docs/implementation/analytics-reporting` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `45-order-count-tracking-coverage-note.md` | doc | 73 |  |
+| `57-multiday-category-velocity.md` | doc | 130 |  |
+| `58-live-operational-feed.md` | doc | 161 |  |
+| `69-order-lifecycle-status-dashboard.md` | doc | 121 |  |
+| `77-sales-category-breakdown-coverage-note.md` | doc | 70 |  |
+
+### `docs/implementation/architecture-patterns` (38)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `100-event-driven-architecture.md` | doc | 82 |  |
+| `103-semantic-data-contracts.md` | doc | 83 |  |
+| `104-jsonb-eav-extensibility.md` | doc | 169 |  |
+| `105-metadata-driven-ui-rendering.md` | doc | 109 |  |
+| `106-finite-state-machines-registry.md` | doc | 119 |  |
+| `107-visual-bpmn-workflow-modeling.md` | doc | 81 |  |
+| `108-event-triggered-side-effects.md` | doc | 79 |  |
+| `109-immutable-event-ledger.md` | doc | 102 |  |
+| `110-cqrs-read-write-separation.md` | doc | 99 |  |
+| `113-micro-frontend-embedding.md` | doc | 129 |  |
+| `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 85 |  |
+| `117-event-driven-choreography-immutability.md` | doc | 97 |  |
+| `118-headless-composable-api-capabilities.md` | doc | 117 |  |
+| `122-data-lake-cold-storage-architecture.md` | doc | 86 |  |
+| `127-policy-as-data-completeness-sweep.md` | doc | 117 |  |
+| `128-extension-point-coverage-audit.md` | doc | 194 |  |
+| `130-machine-readable-capability-manifest.md` | doc | 135 |  |
+| `131-versioned-domain-events.md` | doc | 84 |  |
+| `133-reusable-dry-run-harness.md` | doc | 77 |  |
+| `134-hexagonal-purity-ci-check.md` | doc | 82 |  |
+| `136-database-cache-portability-audit.md` | doc | 126 |  |
+| `138-technology-substitution-playbook.md` | doc | 91 |  |
+| `139-second-front-door-websocket-gateway.md` | doc | 124 |  |
+| `140-general-eav-extensibility-model.md` | doc | 184 |  |
+| `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |
+| `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
+| `143-micro-frontend-architecture.md` | doc | 199 |  |
+| `157-client-request-idempotency-keys.md` | doc | 319 |  |
+| `166-unified-product-reference-registry.md` | doc | 610 |  |
+| `92-microservices-module-decoupling.md` | doc | 94 |  |
+| `93-headless-frontend-architecture.md` | doc | 73 |  |
+| `94-cloud-native-container-scalability.md` | doc | 75 |  |
+| `95-externalized-rule-logic.md` | doc | 89 |  |
+| `96-version-controlled-policy-execution.md` | doc | 72 |  |
+| `97-realtime-validation-single-source-of-truth.md` | doc | 68 |  |
+| `98-contract-first-api-development.md` | doc | 89 |  |
+| `99-centralized-api-gateway.md` | doc | 66 |  |
+
+### `docs/implementation/attendance-workforce` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `22-attendance-shifts-leave.md` | doc | 292 |  |
+| `30-field-attendance-biometric-geofencing.md` | doc | 289 |  |
+| `43-visual-attendance-heatmap.md` | doc | 132 |  |
+| `55-anti-proxy-verification-coverage-note.md` | doc | 56 |  |
+| `59-workforce-attendance-ratios.md` | doc | 92 |  |
+| `65-cctv-camera-repurposing.md` | doc | 89 |  |
+| `85-ai-face-detection-proxy-attendance.md` | doc | 51 |  |
+| `87-corporate-attendance-automation.md` | doc | 71 |  |
+
+### `docs/implementation/b2b-wholesale-multientity` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `111-hierarchical-entity-isolation.md` | doc | 81 |  |
+| `146-wholesale-tiered-pricing.md` | doc | 203 |  |
+| `149-b2b-accounts-approvals-sector-packs.md` | doc | 212 |  |
+| `165-cross-tenant-marketplace-directory.md` | doc | 513 |  |
+| `73-multi-entity-multi-company-configuration.md` | doc | 139 |  |
+
+### `docs/implementation/catalog-variants-pricing` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `03-variants-sku-seo.md` | doc | 566 |  |
+| `150-product-kitting-bundles.md` | doc | 222 |  |
+| `47-preconfigured-sector-taxonomy.md` | doc | 175 |  |
+
+### `docs/implementation/commercial-licensing-agency` (15)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `11-client-handover-model.md` | doc | 131 |  |
+| `12-extractor-script-spec.md` | doc | 164 |  |
+| `14-managed-services-module.md` | doc | 299 |  |
+| `153-usage-based-pricing-model.md` | doc | 298 |  |
+| `154-three-headline-commercial-plans.md` | doc | 188 |  |
+| `155-wallet-stored-value-merchant-escrow.md` | doc | 385 |  |
+| `211-cloud-subscription-offline-license-separation.md` | doc | 124 |  |
+| `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
+| `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
+| `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |
+| `81-transparent-flat-rate-pricing.md` | doc | 67 |  |
+| `82-tiered-capex-licensing.md` | doc | 101 |  |
+| `83-entry-level-pos-deployment.md` | doc | 71 |  |
+| `84-micro-saas-hr-per-user-pricing.md` | doc | 65 |  |
+| `89-rapid-onboarding-customizable-reports.md` | doc | 87 |  |
+
+### `docs/implementation/composable-resilience-platform` (16)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `168-00-overview-and-decision-to-build-here.md` | doc | 496 |  |
+| `169-01-layer0-canonical-data-spine.md` | doc | 661 |  |
+| `170-02-layer1-stable-core-deltas.md` | doc | 534 |  |
+| `171-03-layer2-versioned-module-packs-build-manifest.md` | doc | 441 |  |
+| `172-04-layer3-ingestion-boundary-confidence-provenance.md` | doc | 940 |  |
+| `173-05-layer4-resilience-engine-extensions.md` | doc | 459 |  |
+| `174-06-layer5-control-center.md` | doc | 432 |  |
+| `175-07-layer6-settlement-execution-channel.md` | doc | 491 |  |
+| `176-08-platform-resilience-failure-modes.md` | doc | 377 |  |
+| `177-09-graph-derivability-pilot-scope-control.md` | doc | 235 |  |
+| `178-10-mvp-vertical-slice-vs-full-rollout.md` | doc | 196 |  |
+| `179-11-pilot-rollout-waves.md` | doc | 344 |  |
+| `180-12-metrics-success-criteria.md` | doc | 403 |  |
+| `181-13-risk-compliance-continuity-uae.md` | doc | 386 |  |
+| `182-14-why-newax-builds-and-owns-this.md` | doc | 286 |  |
+| `183-15-engineering-governance-two-agent-split.md` | doc | 233 |  |
+
+### `docs/implementation/content-marketing-search` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `08-content-marketing-search.md` | doc | 167 |  |
+| `251-checkout-abandonment-flow.md` | doc | 318 |  |
+| `252-video-block-chapters.md` | doc | 124 |  |
+
+### `docs/implementation/customer-portal-loyalty` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `07-customer-portal.md` | doc | 233 |  |
+
+### `docs/implementation/decisions` (92)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ADR-001-a-modular-monolith-one-process-per-node.md` | doc | 43 |  |
+| `ADR-002-a-sector-is-a-module-pack-behind-an-allowlist.md` | doc | 42 |  |
+| `ADR-003-modules-are-independent-side-effects-cross-through-events.md` | doc | 42 |  |
+| `ADR-004-events-are-delivered-through-a-transactional-outbox.md` | doc | 37 |  |
+| `ADR-005-money-is-an-integer-in-minor-units.md` | doc | 36 |  |
+| `ADR-006-customer-facing-text-is-a-row-not-a-column.md` | doc | 35 |  |
+| `ADR-007-access-control-is-permission-based-and-the-grants-are-data.md` | doc | 41 |  |
+| `ADR-008-migrations-are-hand-written-and-forward-only.md` | doc | 40 |  |
+| `ADR-009-a-branch-is-a-node-with-its-own-database-not-a-tenant-row.md` | doc | 41 |  |
+| `ADR-010-in-transit-stock-is-a-location-not-a-flag.md` | doc | 40 |  |
+| `ADR-011-a-till-sale-is-a-channel-of-orders.md` | doc | 36 |  |
+| `ADR-012-cross-module-references-are-bare-scalars-not-foreign-keys.md` | doc | 39 |  |
+| `ADR-013-one-deployment-serves-one-brand.md` | doc | 34 |  |
+| `ADR-014-the-repository-index-is-generated-and-enforced-not-written.md` | doc | 43 |  |
+| `ADR-015-model-and-effort-are-routed-per-job-from-one-policy.md` | doc | 44 |  |
+| `ADR-016-rules-that-apply-to-one-kind-of-file-are-path-scoped.md` | doc | 43 |  |
+| `ADR-017-an-observability-backend.md` | doc | 38 |  |
+| `ADR-018-horizontal-replicas-and-load-balancing.md` | doc | 37 |  |
+| `ADR-019-wo-b-4-ships-against-the-live-reports-idiom-not-track-a-s-unbuilt.md` | doc | 105 |  |
+| `ADR-020-bom-track-c-ships-as-a-new-module-production-stays-as-is.md` | doc | 92 |  |
+| `ADR-021-wo-23-3-s-scopelevel-pattern-a-new-core-owned-enum-fail-closed-on-the.md` | doc | 178 |  |
+| `ADR-022-wo-23-3b-enforces-allowbranchlocalpurchasing-through-a-new.md` | doc | 119 |  |
+| `ADR-023-wo-23-3c-e-node-retailbrandid-a-separate-policyquarantine-table-and.md` | doc | 138 |  |
+| `ADR-024-wo-23-3d-org-central-purchasing-recognized-narrowly-in.md` | doc | 145 |  |
+| `ADR-025-wo-e-2-is-not-executed-its-own-prerequisites-wo-a-1-wo-a-2-were-never.md` | doc | 126 |  |
+| `ADR-026-seven-heavier-extensibility-mechanisms-adopted-by-explicit-owner.md` | doc | 111 |  |
+| `ADR-027-the-three-highest-risk-items-from-adr-026-withdrawn-no-wasm-sandbox.md` | doc | 89 |  |
+| `ADR-028-wo-5-phase-5-discounts-promo-codes-gift-cards-store-credit-built-from.md` | doc | 135 |  |
+| `ADR-029-third-party-gift-card-redemption-at-checkout-giftkarta-a.md` | doc | 90 |  |
+| `ADR-030-docs-implementation-docs-erp-lenses-and-docs-design-reorganized-into.md` | doc | 76 |  |
+| `ADR-031-wo-7-phase-7-customer-portal-reviews-wishlist-returns-loyalty-mobile.md` | doc | 305 |  |
+| `ADR-032-phase-10-track-a-built-end-to-end-wo-a-1-a-5-superseding-adr-019-adr.md` | doc | 206 |  |
+| `ADR-033-admin-platform-docs-02-44-72-75-completed-doc-75-s-own-claims.md` | doc | 180 |  |
+| `ADR-034-the-wallet-module-doc-155-built-in-full-shipped-module-off-and.md` | doc | 203 |  |
+| `ADR-035-phase-8-content-marketing-and-search-audited-and-confirmed-built-the.md` | doc | 106 |  |
+| `ADR-036-wo-145-receivables-creditnote-debitnote-credit-limits-dunning-keys.md` | doc | 127 |  |
+| `ADR-037-personal-api-keys-a-user-bound-token-capped-live-by-its-owner-an.md` | doc | 81 |  |
+| `ADR-038-doc-153-usage-based-pricing-metering-reads-a-tenant-s-own.md` | doc | 158 |  |
+| `ADR-039-doc-14-managed-services-built-in-full-overriding-its-own-not-now.md` | doc | 181 |  |
+| `ADR-040-finance-accounting-docs-04-56-68-79-137-147-151-49-completed-a.md` | doc | 165 |  |
+| `ADR-041-an-intentrouter-core-extension-point-one-dispatch-shape-for-every.md` | doc | 99 |  |
+| `ADR-042-doc-154-three-headline-commercial-plans-public-pricing-page-copy.md` | doc | 137 |  |
+| `ADR-043-access-control-identity-docs-126-161-built-16-18-163-re-verified-125.md` | doc | 160 |  |
+| `ADR-044-docs-19-20-org-tree-positions-and-ranks-orgunit-kept-orthogonal-to.md` | doc | 139 |  |
+| `ADR-045-doc-21-access-over-the-org-tree-orgunitgrant-built-exactly-as.md` | doc | 139 |  |
+| `ADR-046-doc-22-attendance-shifts-and-leave-attendanceevent-partitioned-by.md` | doc | 195 |  |
+| `ADR-047-doc-165-cross-tenant-marketplace-directory-a-new-apps-platform-module.md` | doc | 114 |  |
+| `ADR-048-doc-166-unified-product-reference-registry-a-globalproductreference.md` | doc | 134 |  |
+| `ADR-049-docs-140-143-general-eav-metadata-driven-ui-bpmn-workflow-editor.md` | doc | 363 |  |
+| `ADR-050-doc-23-task-allotment-status-and-tracking-built-exactly-as-specified.md` | doc | 84 |  |
+| `ADR-051-docs-47-146-150-category-presets-wholesale-pricing-product-bundles.md` | doc | 110 |  |
+| `ADR-052-docs-127-128-136-hardcoded-policy-sweep-extension-point-coverage.md` | doc | 125 |  |
+| `ADR-053-doc-149-accounts-approvals-sector-packs-a-genuine-request-record.md` | doc | 203 |  |
+| `ADR-054-doc-139-websocket-sse-gateway-verified-deliberately-left-unbuilt-doc.md` | doc | 128 |  |
+| `ADR-055-doc-117-choreography-and-idempotency-and-doc-118-headless-composable.md` | doc | 109 |  |
+| `ADR-056-docs-122-data-lake-130-capability-manifest-and-131-versioned-domain.md` | doc | 113 |  |
+| `ADR-057-docs-133-dry-run-harness-134-hexagonal-purity-ci-check-and-138.md` | doc | 112 |  |
+| `ADR-058-doc-165-cross-tenant-marketplace-directory-part-two-wo-165-1-165-2.md` | doc | 130 |  |
+| `ADR-059-doc-166-unified-product-reference-registry-the-erp-1-side-pieces.md` | doc | 140 |  |
+| `ADR-060-doc-24-internal-notifications-meetings-and-escalation-built-in-full.md` | doc | 124 |  |
+| `ADR-061-docs-47-and-150-category-presets-product-bundles-the-missing-admin-ui.md` | doc | 118 |  |
+| `ADR-062-doc-61-policy-communications-bulletin-board-built-inside-the-notify.md` | doc | 115 |  |
+| `ADR-063-doc-167-bank-facility-management-promoted-from-a-gap-report-to-a.md` | doc | 133 |  |
+| `ADR-064-doc-64-in-app-help-desk-built-as-a-new-standalone-module-with-a-per.md` | doc | 118 |  |
+| `ADR-065-doc-148-external-customer-support-portal-built-as-a-second-contact.md` | doc | 168 |  |
+| `ADR-066-doc-144-r20-r26-supply-chain-resilience-planning-engine-built-as-a.md` | doc | 141 |  |
+| `ADR-067-docs-31-66-67-76-pos-hardware-category-the-till-hardware-layer-as.md` | doc | 162 |  |
+| `ADR-068-doc-37-scalability-future-upgrades-the-versioning-policy-ships-inert.md` | doc | 127 |  |
+| `ADR-069-docs-32-71-158-lots-serials-traceability-the-move-call-site-scoping.md` | doc | 219 |  |
+| `ADR-070-doc-38-resilience-engineering-a-table-driven-contract-test-over-the.md` | doc | 143 |  |
+| `ADR-071-docs-168-183-a-composable-resilience-first-sme-platform-for-du-built.md` | doc | 149 |  |
+| `ADR-072-docs-168-183-revised-newax-s-own-product-not-a-du-owned-platform-du.md` | doc | 194 |  |
+| `ADR-073-third-party-apps-docs-184-195-an-open-reviewed-directory-of-remote.md` | doc | 168 |  |
+| `ADR-074-doc-205-video-rooms-for-doc-24-s-meetings-self-host-livekit-as-newax.md` | doc | 209 |  |
+| `ADR-075-doc-206-rate-limiting-sudden-logout-ram-ceilings-connection-pooling.md` | doc | 139 |  |
+| `ADR-076-doc-207-checkout-admission-queue-prevent-overselling-during-rush.md` | doc | 75 |  |
+| `ADR-077-doc-208-l1-l2-l3-caching-each-tier-attached-to-a-found-hot-path-not.md` | doc | 141 |  |
+| `ADR-078-doc-209-semantic-caching-applied-to-exactly-one-of-ten-aifeature-call.md` | doc | 70 |  |
+| `ADR-079-doc-210-caching-third-party-api-calls-to-save-charges-checked-every.md` | doc | 60 |  |
+| `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
+| `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
+| `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
+| `ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | doc | 2065 |  |
+| `ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md` | doc | 52 |  |
+| `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
+| `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 562 |  |
+| `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
+| `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 305 |  |
+| `ADR-089-field-sales-is-a-capability-not-a-sector-pack-a-device-is-not-a-node.md` | doc | 304 |  |
+| `ADR-090-treasury-module-cheques-and-fund-transfers-a-subsidiary-ledger-of-cash-and-bank.md` | doc | 174 |  |
+| `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
+| `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
+
+### `docs/implementation/finance-accounting` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `04-finance.md` | doc | 321 |  |
+| `137-payment-method-resilience-audit.md` | doc | 84 |  |
+| `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
+| `147-fixed-asset-depreciation.md` | doc | 259 |  |
+| `151-layby-installment-sales.md` | doc | 253 |  |
+| `167-bank-facility-management.md` | doc | 296 |  |
+| `249-cheques-post-dated-cheques-printing.md` | doc | 997 |  |
+| `250-inter-branch-fund-transfers.md` | doc | 545 |  |
+| `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
+| `56-overdue-invoices-counter.md` | doc | 125 |  |
+| `68-realtime-gross-profit.md` | doc | 213 |  |
+| `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 86 |  |
+
+### `docs/implementation/hospitality-qr-nfc` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `213-hospitality-platform-overview.md` | doc | 138 |  |
+| `214-qr-nfc-tags-and-spaces.md` | doc | 150 |  |
+| `215-guest-menu-and-ordering.md` | doc | 145 |  |
+| `216-staff-operations-and-requests.md` | doc | 143 |  |
+| `217-tables-rooms-and-floor.md` | doc | 92 |  |
+| `218-staff-management-and-analytics.md` | doc | 98 |  |
+| `219-future-modules-roadmap.md` | doc | 117 |  |
+| `README.md` | doc | 52 |  |
+
+### `docs/implementation/housing-society` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `220-housing-society-overview.md` | doc | 148 |  |
+| `221-property-and-project-records.md` | doc | 86 |  |
+| `222-members-and-customers.md` | doc | 84 |  |
+| `223-bookings-and-sam-lifecycle.md` | doc | 162 |  |
+| `224-installments-and-billing.md` | doc | 102 |  |
+| `225-receipts-and-payments.md` | doc | 103 |  |
+| `226-accounting-and-reports.md` | doc | 105 |  |
+| `227-complaints-and-visitors.md` | doc | 121 |  |
+| `228-roles-permissions-and-configuration.md` | doc | 105 |  |
+| `229-excel-import-and-migration.md` | doc | 81 |  |
+| `230-and-much-more-roadmap.md` | doc | 41 |  |
+| `README.md` | doc | 52 |  |
+
+### `docs/implementation/hr-people-org` (19)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `164-department-permission-role-duty-control.md` | doc | 327 |  |
+| `19-org-structure-offices-departments.md` | doc | 304 |  |
+| `20-people-positions-ranks.md` | doc | 301 |  |
+| `26-performance-reviews.md` | doc | 247 |  |
+| `27-training-skill-development.md` | doc | 246 |  |
+| `28-recruitment-onboarding-document-vault.md` | doc | 335 |  |
+| `29-company-asset-tracking.md` | doc | 262 |  |
+| `42-timesheet-approval-chains.md` | doc | 235 |  |
+| `52-staff-self-service-mobile-app.md` | doc | 161 |  |
+| `53-new-hire-joiner-tracking.md` | doc | 104 |  |
+| `54-employee-document-lifecycle-alerts.md` | doc | 148 |  |
+| `60-headcount-growth-metrics.md` | doc | 102 |  |
+| `62-document-expiration-compliance.md` | doc | 121 |  |
+| `63-multi-tier-approval-hierarchies.md` | doc | 228 |  |
+| `74-hr-dashboard-financial-overview.md` | doc | 116 |  |
+| `78-hr-navigation-consolidation.md` | doc | 138 |  |
+| `79-employee-asset-management.md` | doc | 222 |  |
+| `80-employee-training-certification.md` | doc | 161 |  |
+| `91-staff-portal-mobile-access.md` | doc | 55 |  |
+
+### `docs/implementation/integrations-connectivity` (27)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `101-agnostic-notification-webhooks.md` | doc | 71 |  |
+| `102-hyperautomation-workflow-integration.md` | doc | 70 |  |
+| `120-decoupled-integration-engines.md` | doc | 48 |  |
+| `129-channel-abstraction-audit.md` | doc | 87 |  |
+| `13-email-service-plan.md` | doc | 32 |  |
+| `132-generic-inbound-webhook-receiver.md` | doc | 164 |  |
+| `159-telephony-provider-integration.md` | doc | 288 |  |
+| `160-dynamic-external-system-connectivity.md` | doc | 274 |  |
+| `162-file-based-connector-integration.md` | doc | 271 |  |
+| `18-trading-partner-network.md` | doc | 87 |  |
+| `184-app-platform-overview-and-remote-only-decision.md` | doc | 359 |  |
+| `185-app-manifest-and-directory-catalog.md` | doc | 554 |  |
+| `186-app-publisher-program-review-moderation.md` | doc | 571 |  |
+| `187-app-installation-consent-lifecycle.md` | doc | 818 |  |
+| `188-app-runtime-event-delivery-to-apps.md` | doc | 587 |  |
+| `189-app-runtime-scoped-client-credential.md` | doc | 568 |  |
+| `190-app-runtime-apps-as-extension-point-providers.md` | doc | 436 |  |
+| `191-app-revocation-kill-switch-tenant-isolation.md` | doc | 602 |  |
+| `192-app-commercial-model-billing.md` | doc | 468 |  |
+| `193-app-private-connection-escape-hatch.md` | doc | 226 |  |
+| `194-app-platform-failure-modes.md` | doc | 282 |  |
+| `195-app-platform-rollout-sequencing.md` | doc | 241 |  |
+| `213-partner-fact-exchange.md` | doc | 319 |  |
+| `255-ecosystem-alignment-roadmap.md` | doc | 188 |  |
+| `33-sms-whatsapp-channels.md` | doc | 249 |  |
+| `34-partner-developer-api-access.md` | doc | 262 |  |
+| `36-universal-connectivity-integration-framework.md` | doc | 283 |  |
+
+### `docs/implementation/inventory-purchasing` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `01-inventory-purchasing-cost.md` | doc | 937 |  |
+| `152-purchase-requisition.md` | doc | 222 |  |
+| `156-single-employee-branch-loss-prevention.md` | doc | 308 |  |
+| `17-inventory-locations.md` | doc | 254 |  |
+| `70-realtime-stock-depletion.md` | doc | 77 |  |
+
+### `docs/implementation/launchpad-apps` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `232-launchpad-and-app-manifest.md` | doc | 236 |  |
+| `233-mail-app.md` | doc | 208 |  |
+| `234-auction-app.md` | doc | 928 |  |
+| `235-vault-and-work-credit-app.md` | doc | 55 |  |
+| `README.md` | doc | 79 |  |
+
+### `docs/implementation/lots-serials-traceability` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `158-serialized-unit-tracking.md` | doc | 324 |  |
+| `32-lots-batch-expiry-fefo.md` | doc | 265 |  |
+| `71-recipe-batch-traceability.md` | doc | 270 |  |
+
+### `docs/implementation/payroll` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `19-payroll.md` | doc | 522 |  |
+| `25-advance-salary-and-payroll-posting.md` | doc | 266 |  |
+| `40-itemized-payroll-deductions.md` | doc | 238 |  |
+| `41-pending-vs-disbursed-payroll-tracking.md` | doc | 152 |  |
+
+### `docs/implementation/pos-hardware` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `31-sector-pos-hardware-integration.md` | doc | 312 |  |
+| `66-multi-form-factor-pos.md` | doc | 102 |  |
+| `67-secure-cash-drawer-triggering.md` | doc | 83 |  |
+| `76-pos-mobile-dashboard.md` | doc | 148 |  |
+
+### `docs/implementation/promotions-giftcards` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `05-promotions-giftcards.md` | doc | 347 |  |
+
+### `docs/implementation/resilience-scalability` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `119-containerized-workload-portability.md` | doc | 80 |  |
+| `123-automated-degradation-resilience.md` | doc | 95 |  |
+| `124-infrastructure-as-code.md` | doc | 73 |  |
+| `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
+| `206-rate-limiting-caching-compression-hardening.md` | doc | 351 |  |
+| `207-checkout-admission-queue-hot-sku-contention.md` | doc | 229 |  |
+| `208-l1-l2-l3-caching-architecture.md` | doc | 374 |  |
+| `209-semantic-caching-rag-generation.md` | doc | 182 |  |
+| `210-third-party-api-call-caching-status.md` | doc | 81 |  |
+| `37-scalability-future-upgrades.md` | doc | 306 |  |
+| `38-resilience-engineering.md` | doc | 380 |  |
+| `48-native-desktop-deployment.md` | doc | 312 |  |
+| `90-automatic-backups-local-support.md` | doc | 71 |  |
+
+### `docs/implementation/shipping-fulfilment-returns` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `06-shipping-fulfilment-returns.md` | doc | 335 |  |
+
+### `docs/implementation/supply-chain-operations` (14)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `236-supply-chain-operations-architecture.md` | doc | 612 |  |
+| `237-warehouse-management.md` | doc | 523 |  |
+| `238-order-routing-omnichannel-fulfilment.md` | doc | 445 |  |
+| `239-supply-network-sourcing-rules.md` | doc | 231 |  |
+| `240-edi-gateway.md` | doc | 495 |  |
+| `241-retailer-vendor-compliance.md` | doc | 549 |  |
+| `242-multi-plant-manufacturing.md` | doc | 496 |  |
+| `243-quality-inspection-holds.md` | doc | 283 |  |
+| `244-rfid-phantom-inventory.md` | doc | 260 |  |
+| `245-field-sales-distribution-architecture.md` | doc | 380 |  |
+| `246-field-sales.md` | doc | 798 |  |
+| `247-field-tracking.md` | doc | 510 |  |
+| `248-customer-receipts-allocation.md` | doc | 586 |  |
+| `README.md` | doc | 51 |  |
+
+### `docs/implementation/tasks-notifications-support` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `148-external-customer-support-portal.md` | doc | 224 |  |
+| `205-self-hosted-video-meetings-livekit.md` | doc | 1813 |  |
+| `23-tasks-allotment-tracking.md` | doc | 239 |  |
+| `24-internal-notifications-meetings-escalation.md` | doc | 264 |  |
+| `61-policy-communications-bulletin.md` | doc | 232 |  |
+| `64-help-desk-support-ticketing.md` | doc | 224 |  |
+
+### `docs/implementation/tax-compliance` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `112-pluggable-fiscal-engines.md` | doc | 51 |  |
+| `15-tax-module.md` | doc | 232 |  |
+| `46-fbr-verification-qr-codes.md` | doc | 143 |  |
+| `88-pral-fbr-pra-tax-compliance.md` | doc | 69 |  |
+
+### `docs/security` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `security-architecture.md` | doc | 59 |  |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/docs.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\docs.md) · [← index home](..\README.md)

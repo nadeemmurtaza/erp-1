@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { use, useCallback, useEffect, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatDateTime, nextStage, previousStage } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import {
   fieldLabel,
   jobCustomer,
@@ -14,7 +15,9 @@ import {
 } from '@/types/stitching';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
-import { Loading } from '@/components/ui';
+import { DataTable, Loading } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { IMAGE_UPLOAD_RULES } from '@/lib/upload-rules';
 
 /**
  * One job: the tailor's worksheet.
@@ -33,8 +36,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const permissions = useMemo(() => getStoredUser()?.permissions ?? [], []);
-  const canAssign = permissions.includes('stitching.jobs.assign');
+  const { can } = useAdminSession();
+  const canAssign = can('stitching.jobs.assign');
 
   const load = useCallback(async () => {
     setError(null);
@@ -145,24 +148,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card min-w-0 p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
-          {measurements.length === 0 ? (
-            <p className="text-sm text-neutral-900/60">No measurements were recorded.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <tbody className="divide-y divide-neutral-100">
-                  {measurements.map(([key, value]) => (
-                    <tr key={key}>
-                      <th scope="row" className="py-1.5 text-start font-normal text-neutral-900/60">
-                        {fieldLabel(key)}
-                      </th>
-                      <td className="py-1.5 text-end tabular-nums text-neutral-900">{value}&quot;</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <DataTable
+            rows={measurements}
+            rowKey={([key]) => key}
+            emptyLabel="No measurements were recorded."
+            columns={[
+              { header: 'Measurement', muted: true, cell: ([key]) => fieldLabel(key) },
+              { header: 'Value', align: 'end', numeric: true, cell: ([, value]) => `${value}"` },
+            ]}
+          />
 
           {job.optionsSnapshot?.length ? (
             <>
@@ -236,15 +230,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             />
           </label>
 
-          <label className="mt-3 block text-sm">
-            <span className="mb-1 block text-neutral-900/60">Photograph (optional)</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
-              className="block w-full max-w-full text-sm text-neutral-900/70"
-            />
-          </label>
+          {/* Choosing is not sending: the photograph travels with the stage move below, as one request, so there is no tray here. */}
+          <Dropzone
+            compact
+            className="mt-3"
+            rules={IMAGE_UPLOAD_RULES}
+            label="Photograph (optional): drop it here, click to choose, or paste"
+            selected={photo}
+            onFiles={([chosen]) => setPhoto(chosen ?? null)}
+          />
 
           <div className="mt-4 flex flex-wrap gap-2">
             {forward ? (

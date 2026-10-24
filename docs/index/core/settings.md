@@ -3,7 +3,7 @@
 
 # Core: `settings`
 
-Shared platform — available to every module, part of no feature · 6 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/settings/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 538 lines)
+## Files (7 · 1,034 lines)
 
 All paths relative to `apps/api/src/core/settings`.
 
@@ -20,10 +20,11 @@ All paths relative to `apps/api/src/core/settings`.
 |---|---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 | — |  |
 | `document-number.ts` | module | 50 | 2 |  |
-| `document-prefix.ts` | module | 45 | 1 | What this shop's documents are numbered with. |
-| `settings.defaults.ts` | module | 293 | 9 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
+| `document-prefix.ts` | module | 51 | 1 | What this shop's documents are numbered with. |
+| `settings.defaults.ts` | module | 615 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
 | `settings.module.ts` | nest module | 10 | 1 |  |
-| `settings.service.ts` | service | 103 | 1 | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total needs the… |
+| `settings.service.spec.ts` | unit test | 125 | — |  |
+| `settings.service.ts` | service | 146 | 4 | L1: how long this process serves a setting it has read. |
 
 
 ## HTTP routes (0)
@@ -65,11 +66,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `document-number.spec.ts` | 5 | documentNumber |
+| `settings.service.spec.ts` | 9 | SettingsService |
 
 
 ## Every export in this unit
@@ -79,19 +81,21 @@ check there before adding another.
 | `documentNumber` | function | `document-number.ts:31` |  |
 | `documentNumberPrefix` | function | `document-number.ts:47` | The bare `PREFIX-YEAR-` (or `PREFIX-NODE_ID-YEAR-`) stem, with no sequence — for a caller that allocates its… |
 | `documentPrefix` | function | `document-prefix.ts:17` | What this shop's documents are numbered with. |
-| `ShippingZone` | interface | `settings.defaults.ts:12` | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lea… |
-| `StoreSettings` | interface | `settings.defaults.ts:23` |  |
-| `DocumentLogoSource` | type | `settings.defaults.ts:32` | Which artwork a receipt, invoice or email shows at the top. |
-| `DocumentPrefixes` | interface | `settings.defaults.ts:35` | What each kind of document's numbers start with. |
-| `DocumentSettings` | interface | `settings.defaults.ts:55` |  |
-| `FinanceGatewayFeeBpsSettings` | interface | `settings.defaults.ts:69` | Basis points per payment provider (Rule 5 — 250 = 2.5%), read by OrderEconomicsService (WO-B.3) to derive `ga… |
-| `SettingKey` | const | `settings.defaults.ts:76` |  |
-| `SettingKeyName` | type | `settings.defaults.ts:155` |  |
-| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:157` |  |
+| `StoreSettings` | interface | `settings.defaults.ts:12` | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lea… |
+| `DocumentLogoSource` | type | `settings.defaults.ts:21` | Which artwork a receipt, invoice or email shows at the top. |
+| `DocumentPrefixes` | interface | `settings.defaults.ts:24` | What each kind of document's numbers start with. |
+| `DocumentSettings` | interface | `settings.defaults.ts:56` |  |
+| `FinanceGatewayFeeBpsSettings` | interface | `settings.defaults.ts:70` | Basis points per payment provider (Rule 5 — 250 = 2.5%), read by OrderEconomicsService (WO-B.3) to derive `ga… |
+| `SettingKey` | const | `settings.defaults.ts:77` |  |
+| `SettingKeyName` | type | `settings.defaults.ts:400` |  |
+| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:402` |  |
 | `SettingsModule` | class | `settings.module.ts:9` |  |
-| `SettingsService` | class | `settings.service.ts:14` | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total… |
+| `SETTINGS_L1_TTL_MS` | const | `settings.service.ts:14` | L1: how long this process serves a setting it has read. |
+| `SETTINGS_L1_MAX_ENTRIES` | const | `settings.service.ts:21` | L1 entries per process. |
+| `SETTINGS_L2_TTL_MS` | const | `settings.service.ts:28` | L2: how long a setting is shared in Redis (`settings:{key}`, doc 208 §2). |
+| `SettingsService` | class | `settings.service.ts:42` | Runtime business configuration, read from the Setting table and cached so hot paths (every cart total needs t… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

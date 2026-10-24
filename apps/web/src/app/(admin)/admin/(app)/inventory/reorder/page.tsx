@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@newax/shared';
-import { Loading } from '@/components/ui';
+import { DataTable } from '@/components/ui';
 
 interface Supplier {
   id: string;
@@ -23,14 +22,6 @@ interface ReorderSuggestion {
   product: { id: string; name: string };
   size: string | null;
   color: string | null;
-}
-
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
-      {children}
-    </th>
-  );
 }
 
 export default function ReorderSuggestionsPage() {
@@ -159,80 +150,93 @@ export default function ReorderSuggestionsPage() {
       </div>
 
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead className="whitespace-nowrap">
-              <tr>
-                <th className="w-10 text-center">
-                  <input 
-                    type="checkbox" 
-                    className="field-check"
-                    checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
-                    onChange={toggleAll}
-                  />
-                </th>
-                <Th>Product</Th>
-                <Th>SKU</Th>
-                <Th>Supplier</Th>
-                <Th className="text-end">Stock</Th>
-                <Th className="text-end">Threshold</Th>
-                <Th className="text-end">Last Cost</Th>
-                <Th className="text-end">MOQ</Th>
-                <Th className="text-end">Suggested Qty</Th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {busy && !suggestions ? (
-                <tr>
-                  <td colSpan={9} className="p-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                </tr>
-              ) : suggestions?.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="p-8 text-center text-neutral-900/60">No reorder suggestions right now.</td>
-                </tr>
-              ) : (
-                suggestions?.map((variant) => {
-                  let suggestedQty = (variant.reorderQuantity || (variant.reorderPoint - variant.stock));
-                  if (suggestedQty < variant.moq) suggestedQty = variant.moq;
-
-                  return (
-                    <tr key={variant.id} className={cn("hover:bg-neutral-50/50", selectedIds.has(variant.id) && "bg-neutral-50/30")}>
-                      <td className="text-center">
-                        <input 
-                          type="checkbox" 
-                          className="field-check"
-                          checked={selectedIds.has(variant.id)}
-                          onChange={() => toggleOne(variant.id)}
-                        />
-                      </td>
-                      <td>
-                        <div className="font-medium text-neutral-900">{variant.product.name}</div>
-                        <div className="text-xs text-neutral-900/60">
-                          {[variant.size, variant.color].filter(Boolean).join(' / ')}
-                        </div>
-                      </td>
-                      <td className="text-neutral-900/80">{variant.sku}</td>
-                      <td className="text-neutral-900/80">
-                        {variant.preferredSupplier ? variant.preferredSupplier.name : <span className="text-red-500">No Supplier</span>}
-                      </td>
-                      <td className="text-end font-medium text-red-600">
-                        {variant.stock}
-                      </td>
-                      <td className="text-end text-neutral-900/60">{variant.reorderPoint}</td>
-                      <td className="text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
-                      <td className="text-end text-neutral-900/60">{variant.moq}</td>
-                      <td className="text-end font-medium text-accent-hover">
-                        {suggestedQty}
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={suggestions}
+          loading={busy && !suggestions}
+          emptyLabel="No reorder suggestions right now."
+          rowKey={(variant) => variant.id}
+          columns={[
+            {
+              header: (
+                <input
+                  type="checkbox"
+                  className="field-check"
+                  checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
+                  onChange={toggleAll}
+                />
+              ),
+              cell: (variant) => (
+                <input
+                  type="checkbox"
+                  className="field-check"
+                  checked={selectedIds.has(variant.id)}
+                  onChange={() => toggleOne(variant.id)}
+                />
+              ),
+            },
+            {
+              header: 'Product',
+              cell: (variant) => (
+                <>
+                  <div className="font-medium text-neutral-900">{variant.product.name}</div>
+                  <div className="text-xs text-neutral-900/60">
+                    {[variant.size, variant.color].filter(Boolean).join(' / ')}
+                  </div>
+                </>
+              ),
+            },
+            { header: 'SKU', cell: (variant) => variant.sku, className: 'text-neutral-900/80' },
+            {
+              header: 'Supplier',
+              cell: (variant) =>
+                variant.preferredSupplier ? (
+                  variant.preferredSupplier.name
+                ) : (
+                  <span className="text-red-500">No Supplier</span>
+                ),
+              className: 'text-neutral-900/80',
+            },
+            {
+              header: 'Stock',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.stock,
+              className: 'font-medium text-red-600',
+            },
+            {
+              header: 'Threshold',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.reorderPoint,
+              className: 'text-neutral-900/60',
+            },
+            {
+              header: 'Last Cost',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => formatMoney(variant.lastCost),
+              className: 'text-neutral-900/80',
+            },
+            {
+              header: 'MOQ',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.moq,
+              className: 'text-neutral-900/60',
+            },
+            {
+              header: 'Suggested Qty',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => {
+                let suggestedQty = variant.reorderQuantity || variant.reorderPoint - variant.stock;
+                if (suggestedQty < variant.moq) suggestedQty = variant.moq;
+                return suggestedQty;
+              },
+              className: 'font-medium text-accent-hover',
+            },
+          ]}
+        />
       </div>
     </>
   );

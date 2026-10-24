@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { singleFlight } from '@newax/shared';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
@@ -18,6 +19,15 @@ export const API_URL =
   process.env.EXPO_PUBLIC_API_URL ??
   // The Android emulator reaches the host machine on 10.0.2.2, not localhost.
   (Platform.OS === 'android' ? 'http://10.0.2.2:3001/api/v1' : 'http://localhost:3001/api/v1');
+
+/**
+ * The storefront's own origin — used only to open the browser-print invoice
+ * page (WO-7.2) in the system browser, since that page's `window.print()`
+ * flow has no native-app equivalent worth building a second time here.
+ */
+export const SITE_URL =
+  process.env.EXPO_PUBLIC_SITE_URL ??
+  (Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000');
 
 /*
  * Namespaced to the builder, not the client — the same move the web app made
@@ -178,7 +188,12 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
   return (await response.json()) as T;
 }
 
-async function refresh(): Promise<boolean> {
+/**
+ * One refresh in flight at a time, however many requests hit a 401 together —
+ * they all await it rather than each presenting the same refresh token
+ * (206-rate-limiting-caching-compression-hardening.md §2.2).
+ */
+const refresh = singleFlight(async (): Promise<boolean> => {
   const refreshToken = await secureStore.get(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -193,4 +208,4 @@ async function refresh(): Promise<boolean> {
   const result = (await response.json()) as { accessToken: string; refreshToken: string };
   await storeTokens(result.accessToken, result.refreshToken);
   return true;
-}
+});

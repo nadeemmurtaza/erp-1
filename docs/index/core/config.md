@@ -3,7 +3,7 @@
 
 # Core: `config`
 
-Shared platform — available to every module, part of no feature · 6 files
+Shared platform — available to every module, part of no feature · 9 files
 
 
 
@@ -12,18 +12,21 @@ Source: `apps/api/src/core/config/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 546 lines)
+## Files (9 · 1,080 lines)
 
 All paths relative to `apps/api/src/core/config`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `app-config.service.ts` | service | 64 | 1 | Typed accessor over ConfigService. |
+| `app-config.service.ts` | service | 104 | 1 | Typed accessor over ConfigService. |
 | `config.module.ts` | nest module | 23 | 1 |  |
-| `env.validation.spec.ts` | unit test | 154 | — |  |
-| `env.validation.ts` | config | 250 | 3 |  |
+| `enabled-modules.ts` | config | 15 | 1 | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allowlist names. |
+| `env.validation.spec.ts` | unit test | 190 | — |  |
+| `env.validation.ts` | config | 444 | 3 |  |
 | `load-env.ts` | config | 14 | — |  |
-| `meta.controller.ts` | controller | 41 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
+| `meta.controller.ts` | controller | 39 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
+| `vault-loader.spec.ts` | unit test | 129 | — |  |
+| `vault-loader.ts` | config | 122 | 3 | Result of attempting to load secrets from nID Secrets Vault. |
 
 
 ## HTTP routes (1)
@@ -67,11 +70,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `env.validation.spec.ts` | 20 | validateEnv |
+| `env.validation.spec.ts` | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `vault-loader.spec.ts` | 6 | VaultLoader (WO-255.3) |
 
 
 ## Every export in this unit
@@ -80,12 +84,16 @@ check there before adding another.
 |---|---|---|---|
 | `AppConfigService` | class | `app-config.service.ts:11` | Typed accessor over ConfigService. |
 | `AppConfigModule` | class | `config.module.ts:22` |  |
-| `envSchema` | const | `env.validation.ts:30` |  |
-| `Env` | type | `env.validation.ts:145` |  |
-| `validateEnv` | function | `env.validation.ts:171` |  |
+| `enabledFeatureModules` | function | `enabled-modules.ts:10` | The feature modules this deployment has switched on: every `alwaysOn` entry plus whatever the `MODULES` allow… |
+| `envSchema` | const | `env.validation.ts:57` |  |
+| `Env` | type | `env.validation.ts:290` |  |
+| `validateEnv` | function | `env.validation.ts:320` |  |
 | `MetaController` | class | `meta.controller.ts:21` | What the frontend needs before it can decide what to show: which optional modules this deployment actually ha… |
+| `VaultLoadResult` | interface | `vault-loader.ts:6` | Result of attempting to load secrets from nID Secrets Vault. |
+| `VaultLoaderOptions` | interface | `vault-loader.ts:16` | Options for loading secrets from nID Secrets Vault. |
+| `loadVaultSecrets` | function | `vault-loader.ts:37` | Pre-bootstrap nID Secrets Vault loader (ECOSYSTEM.md, WO-255.3). |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

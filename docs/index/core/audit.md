@@ -12,14 +12,14 @@ Source: `apps/api/src/core/audit/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (2 · 59 lines)
+## Files (2 · 79 lines)
 
 All paths relative to `apps/api/src/core/audit`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `audit.module.ts` | nest module | 10 | 1 |  |
-| `audit.service.ts` | service | 49 | 2 |  |
+| `audit.service.ts` | service | 69 | 2 |  |
 
 
 ## HTTP routes (0)
@@ -70,4 +70,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

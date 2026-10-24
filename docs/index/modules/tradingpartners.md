@@ -3,72 +3,83 @@
 
 # Module: `tradingpartners`
 
-Pack **core** · enabled by the `MODULES` allowlist · 23 files
+Pack **core** · enabled by the `MODULES` allowlist · 30 files
 
 
 
-Source: `apps/api/src/modules/tradingpartners/`
+Source: `apps/api/src/modules/supply-chain/tradingpartners/`
 
-## Files (23 · 1,947 lines)
+## Files (30 · 3,334 lines)
 
-All paths relative to `apps/api/src/modules/tradingpartners/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `invoice.dto.ts` | dto | 67 | 2 |  |
+| `invoice.dto.ts` | dto | 77 | 3 |  |
 | `offer.dto.ts` | dto | 25 | 1 |  |
+| `partner-fact.dto.spec.ts` | unit test | 80 | — |  |
+| `partner-fact.dto.ts` | dto | 157 | 6 | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
 | `quote.dto.ts` | dto | 56 | 2 |  |
 | `trading-partner.dto.ts` | dto | 55 | 8 |  |
-| `invoice.service.spec.ts` | unit test | 106 | — |  |
-| `invoice.service.ts` | service | 117 | 1 | The "forth" direction's billing document (WO-18.3) — issuing one auto- pushes it to the linked TradingPartner immediate… |
-| `invoices.controller.ts` | controller | 31 | 1 |  |
+| `invoice.service.spec.ts` | unit test | 150 | — |  |
+| `invoice.service.ts` | service | 139 | 1 | The "forth" direction's billing document (WO-18.3) — issuing one auto- pushes it to the linked TradingPartner immediate… |
+| `invoices.controller.ts` | controller | 37 | 1 |  |
 | `offer.service.spec.ts` | unit test | 73 | — |  |
 | `offer.service.ts` | service | 53 | 1 | The "forth" direction's marketing push (WO-18.3) — the same broadcast shape as `ProductAlertsListener`, fanned out to e… |
 | `offers.controller.ts` | controller | 25 | 1 |  |
+| `partner-fact-inbox.integration.spec.ts` | unit test | 223 | — |  |
+| `partner-fact-inbox.service.spec.ts` | unit test | 299 | — |  |
+| `partner-fact-inbox.service.ts` | service | 190 | 4 | What the partner is told. |
+| `partner-fact-status.listener.spec.ts` | unit test | 69 | — |  |
+| `partner-fact-status.listener.ts` | event subscriber | 67 | 1 | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
 | `product-alerts.listener.spec.ts` | unit test | 72 | — |  |
 | `product-alerts.listener.ts` | event subscriber | 44 | 1 | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or BOTH) part… |
-| `quote.service.spec.ts` | unit test | 96 | — |  |
+| `quote.service.spec.ts` | unit test | 111 | — |  |
 | `quote.service.ts` | service | 102 | 1 | The "forth" direction's price-quotation document (WO-18.3) — issuing one auto-pushes it to the linked TradingPartner im… |
 | `quotes.controller.ts` | controller | 31 | 1 |  |
 | `supplier-digest.listener.spec.ts` | unit test | 51 | — |  |
 | `supplier-digest.listener.ts` | event subscriber | 35 | 1 | The "back" direction: SupplyChainDigestCron's own nightly stock/velocity computation, delivered to a connected SUPPLIER… |
-| `trading-partner-portal.controller.spec.ts` | unit test | 63 | — |  |
-| `trading-partner-portal.controller.ts` | controller | 46 | 1 | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never a user se… |
-| `trading-partners.controller.ts` | controller | 62 | 1 |  |
-| `trading-partners.module.ts` | nest module | 53 | 1 |  |
-| `trading-partners.service.spec.ts` | unit test | 385 | — |  |
-| `trading-partners.service.ts` | service | 299 | 1 | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery (WO-18.3)… |
+| `trading-partner-portal.controller.spec.ts` | unit test | 91 | — |  |
+| `trading-partner-portal.controller.ts` | controller | 73 | 1 | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never a user se… |
+| `trading-partners.controller.ts` | controller | 79 | 1 | `purchasing.manage` may be put in a personal API key (purchase-order sync is a legitimate integration), so every route… |
+| `trading-partners.module.ts` | nest module | 57 | 1 |  |
+| `trading-partners.service.spec.ts` | unit test | 472 | — |  |
+| `trading-partners.service.ts` | service | 341 | 1 | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery (WO-18.3)… |
 
 
-## HTTP routes (18)
+## HTTP routes (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/invoices` | `orders.manage` | `InvoicesController.findAll` :15 | List invoices issued to trading partners |
-| POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` :27 | Issue an invoice — auto-pushed to the trading partner immediately |
-| GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` :21 | Get an invoice |
+| POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` :33 | Issue an invoice — auto-pushed to the trading partner immediately |
+| GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` :27 | Get an invoice |
+| GET | `/admin/invoices/overdue-summary` | `orders.manage` | `InvoicesController.overdueSummary` :21 | Count, total and oldest due date of ISSUED invoices past their due date |
 | GET | `/admin/offers` | `orders.manage` | `OffersController.findAll` :15 | List offers broadcast to trading partners |
 | POST | `/admin/offers` | `orders.manage` | `OffersController.publish` :21 | Publish an offer — broadcast to every connected CUSTOMER/BOTH trading partner |
 | GET | `/admin/quotes` | `orders.manage` | `QuotesController.findAll` :15 | List quotes sent to trading partners |
 | POST | `/admin/quotes` | `orders.manage` | `QuotesController.send` :27 | Send a quote — auto-pushed to the trading partner immediately |
 | GET | `/admin/quotes/:id` | `orders.manage` | `QuotesController.findOne` :21 | Get a quote |
-| GET | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.findAll` :15 | List trading partners |
-| POST | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.create` :27 | Register a trading partner |
-| DELETE | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.remove` :39 | Remove a trading partner — linked suppliers fall back to manual entry |
-| GET | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.findOne` :21 | Get a trading partner |
-| PATCH | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.update` :33 | Update a trading partner |
-| POST | `/admin/trading-partners/:id/invite` | `purchasing.manage` | `TradingPartnersController.invite` :58 | Send the first-connection request — returns a one-time accept link, shown once |
-| POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` :51 | Store the key they gave us, for calling their API |
-| POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` :45 | Issue a fresh key for them to call us with — shown once, never retrievable again |
-| POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` :41 | "They accept" — the second half of the first-connection handshake, starts the relation |
-| GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` :25 |  |
+| GET | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.findAll` :28 | List trading partners |
+| POST | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.create` :40 | Register a trading partner |
+| DELETE | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.remove` :53 | Remove a trading partner — linked suppliers fall back to manual entry |
+| GET | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.findOne` :34 | Get a trading partner |
+| PATCH | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.update` :47 | Update a trading partner |
+| POST | `/admin/trading-partners/:id/invite` | `purchasing.manage` | `TradingPartnersController.invite` :75 | Send the first-connection request — returns a one-time accept link, shown once |
+| POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` :67 | Store the key they gave us, for calling their API |
+| POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` :60 | Issue a fresh key for them to call us with — shown once, never retrievable again |
+| POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` :68 | "They accept" — the second half of the first-connection handshake, starts the relation |
+| POST | `/trading-partners/facts` | **PUBLIC** | `TradingPartnerPortalController.submitFact` :60 | Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, applied after… |
+| GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` :31 |  |
 
 
 ## Domain events
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `PartnerFactReceived` | `partners.fact_received` | `partner-fact-inbox.service.ts:94` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -78,6 +89,8 @@ _none_
 | `ProductPublished` | `catalog.product_published` | `product-alerts.listener.ts:26` → `onProductPublished()` |
 | `ProductPriceChanged` | `catalog.product_price_changed` | `product-alerts.listener.ts:31` → `onProductPriceChanged()` |
 | `SupplierDigestReady` | `analytics.supplier_digest_ready` | `supplier-digest.listener.ts:22` → `onSupplierDigestReady()` |
+| `PartnerFactApplied` | `partners.fact_applied` | `partner-fact-status.listener.ts:29` → `onApplied()` |
+| `PartnerFactNeedsReview` | `partners.fact_needs_review` | `partner-fact-status.listener.ts:49` → `onNeedsReview()` |
 
 
 
@@ -89,7 +102,7 @@ _none_
 **`TradingPartnersModule`** (`trading-partners.module.ts`)
 - imports: —
 - controllers: `TradingPartnersController`, `TradingPartnerPortalController`, `InvoicesController`, `QuotesController`, `OffersController`
-- providers: `TradingPartnersService`, `InvoiceService`, `QuoteService`, `OfferService`, `SupplierDigestListener`, `ProductAlertsListener`
+- providers: `TradingPartnersService`, `PartnerFactInboxService`, `PartnerFactStatusListener`, `InvoiceService`, `QuoteService`, `OfferService`, `SupplierDigestListener`, `ProductAlertsListener`
 - exports: `TradingPartnersService`
 
 
@@ -101,6 +114,7 @@ _none_
 - core `prisma`
 - core `security`
 - core `settings`
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -108,26 +122,37 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (7)
+## Tests (11)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `invoice.service.spec.ts` | 4 | InvoiceService · issue · findOne |
+| `partner-fact.dto.spec.ts` | 4 | SubmitPartnerFactDto |
+| `invoice.service.spec.ts` | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `offer.service.spec.ts` | 3 | OfferService · publish |
+| `partner-fact-inbox.integration.spec.ts` | 8 | PartnerFactInbox — real database (WO-213.1) |
+| `partner-fact-inbox.service.spec.ts` | 22 | PartnerFactInboxService · accept — the normal case · accept — who may send what · accept — the second copy of the same… |
+| `partner-fact-status.listener.spec.ts` | 6 | PartnerFactStatusListener |
 | `product-alerts.listener.spec.ts` | 4 | ProductAlertsListener |
-| `quote.service.spec.ts` | 4 | QuoteService · send · findOne |
+| `quote.service.spec.ts` | 5 | QuoteService · send · findOne |
 | `supplier-digest.listener.spec.ts` | 3 | SupplierDigestListener |
-| `trading-partner-portal.controller.spec.ts` | 6 | TradingPartnerPortalController · accept |
-| `trading-partners.service.spec.ts` | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKey · setOutboundApiKe… |
+| `trading-partner-portal.controller.spec.ts` | 9 | TradingPartnerPortalController · submitFact — WO-213.1 · accept |
+| `trading-partners.service.spec.ts` | 39 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKey · setOutboundApiKe… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `InvoiceLineDto` | class | `invoice.dto.ts:16` |  |
-| `CreateInvoiceDto` | class | `invoice.dto.ts:38` |  |
+| `InvoiceLineDto` | class | `invoice.dto.ts:17` |  |
+| `CreateInvoiceDto` | class | `invoice.dto.ts:39` |  |
+| `InvoiceQueryDto` | class | `invoice.dto.ts:69` |  |
 | `CreateOfferDto` | class | `offer.dto.ts:4` |  |
+| `PARTNER_FACT_TYPES` | const | `partner-fact.dto.ts:24` | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
+| `PartnerFactType` | type | `partner-fact.dto.ts:25` | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
+| `PARTNER_FACT_SCHEMA_VERSIONS` | const | `partner-fact.dto.ts:28` | The shape version this deployment understands. |
+| `PARTNER_FACT_MAX_LINES` | const | `partner-fact.dto.ts:36` | 500 lines is about 85 KiB at roughly 170 bytes a line — inside the platform's existing 100 KiB JSON body limi… |
+| `PartnerFactLineDto` | class | `partner-fact.dto.ts:46` | One line of a fact. |
+| `SubmitPartnerFactDto` | class | `partner-fact.dto.ts:103` |  |
 | `QuoteLineDto` | class | `quote.dto.ts:16` |  |
 | `CreateQuoteDto` | class | `quote.dto.ts:38` |  |
 | `TRADING_PARTNER_KINDS` | const | `trading-partner.dto.ts:4` |  |
@@ -142,16 +167,21 @@ check there before adding another.
 | `InvoicesController` | class | `invoices.controller.ts:10` |  |
 | `OfferService` | class | `offer.service.ts:14` | The "forth" direction's marketing push (WO-18.3) — the same broadcast shape as `ProductAlertsListener`, fanne… |
 | `OffersController` | class | `offers.controller.ts:10` |  |
+| `PartnerFactReceipt` | interface | `partner-fact-inbox.service.ts:11` | What the partner is told. |
+| `canonicalJson` | function | `partner-fact-inbox.service.ts:22` | A key-sorted JSON string, so two senders that list the same fields in a different order produce the same hash. |
+| `hashFact` | function | `partner-fact-inbox.service.ts:33` |  |
+| `PartnerFactInboxService` | class | `partner-fact-inbox.service.ts:61` | "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md, ADR-087). |
+| `PartnerFactStatusListener` | class | `partner-fact-status.listener.ts:24` | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
 | `ProductAlertsListener` | class | `product-alerts.listener.ts:20` | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or… |
 | `QuoteService` | class | `quote.service.ts:40` | The "forth" direction's price-quotation document (WO-18.3) — issuing one auto-pushes it to the linked Trading… |
 | `QuotesController` | class | `quotes.controller.ts:10` |  |
 | `SupplierDigestListener` | class | `supplier-digest.listener.ts:16` | The "back" direction: SupplyChainDigestCron's own nightly stock/velocity computation, delivered to a connecte… |
-| `TradingPartnerPortalController` | class | `trading-partner-portal.controller.ts:17` | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never… |
-| `TradingPartnersController` | class | `trading-partners.controller.ts:10` |  |
-| `TradingPartnersModule` | class | `trading-partners.module.ts:52` |  |
-| `TradingPartnersService` | class | `trading-partners.service.ts:31` | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery… |
+| `TradingPartnerPortalController` | class | `trading-partner-portal.controller.ts:20` | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never… |
+| `TradingPartnersController` | class | `trading-partners.controller.ts:23` | `purchasing.manage` may be put in a personal API key (purchase-order sync is a legitimate integration), so ev… |
+| `TradingPartnersModule` | class | `trading-partners.module.ts:56` |  |
+| `TradingPartnersService` | class | `trading-partners.service.ts:38` | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

@@ -3,11 +3,11 @@
  * Enforces the two rules that make this codebase extensible.
  *
  * DEPTH — a feature module may not reach into another feature module's
- * internals. Allowed from inside apps/api/src/modules/<name>/:
+ * internals. Allowed from inside apps/api/src/modules/<domain>/<name>/:
  *   - anything under its own folder
  *   - anything under src/core/          (the shared platform)
  *   - packages (@newax/shared, node_modules)
- *   - another module's public surface:  ../<other>/<other>.module  |  .service
+ *   - another module's public surface:  <other>/<other>.module  |  .service
  *
  * Forbidden: ../<other>/dto/…, ../<other>/internal/…, deep files. Reaching for
  * one is the signal that an extension point or a domain event is missing.
@@ -52,7 +52,7 @@
  * See docs/implementation/MULTI-SECTOR.md.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 
 const MODULES_ROOT = resolve('apps/api/src/modules');
 const PACKS_FILE = resolve('apps/api/src/modules/module-packs.ts');
@@ -169,6 +169,88 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // same-transaction-write reasoning as production -> inventory above, for
   // the bom module's own production step.
   'bom -> inventory',
+  // orders.service.ts's checkout path needs a shipping fee before it can
+  // finalise the order total — the same synchronous-pricing reason
+  // orders -> tax already exists for above. ShippingService.quote() is a
+  // pure read (no write of its own), so there is no transaction to share;
+  // the coupling is the same "checkout cannot commit without this number"
+  // dependency, not a stock/ledger write.
+  'orders -> fulfilment',
+  // returns.service.ts's inspect() (WO-6.6) restocks a saleable item or
+  // writes off a damaged one (InventoryService.move()) inside the same
+  // transaction as the ReturnRequestItem.restockable/restocked write it
+  // belongs to — same same-transaction reasoning as purchasing/production/
+  // bom -> inventory above.
+  'fulfilment -> inventory',
+  // orders.service.ts's place() validates a promo code and applies its
+  // discount, then — inside the SAME transaction as the order write —
+  // conditionally increments Discount/PromoCode.usageCount and writes the
+  // OrderDiscount snapshot (PromotionsService.redeemInTransaction). A lost
+  // race there must roll back the whole order (WO-5's exit criterion #2),
+  // the same same-transaction-write reasoning as orders -> inventory.
+  'orders -> promotions',
+  // orders.service.ts's place() debits a gift card / store credit tender
+  // inside the SAME transaction as the order write (GiftCardsService /
+  // StoreCreditService's own redeemInTransaction) — a lost race must roll
+  // back the whole order (WO-5's exit criterion #3), same reasoning again.
+  'orders -> giftcards',
+  // loyalty.service.ts's redeem() debits loyalty points and credits store
+  // credit (StoreCreditService.creditInTransaction) inside one transaction —
+  // Phase 7 WO-7.7's own words, "reusing the Phase 5 ledger rather than
+  // inventing a second balance." A lost race must roll back both sides.
+  'loyalty -> giftcards',
+  // 146-wholesale-tiered-pricing.md — cart.service.ts's toView() and
+  // orders.service.ts's place() both need a customer's own resolved
+  // wholesale price before a line can render or commit. PricingService.
+  // resolvePrices() is a pure read (no write of its own) — the same
+  // "checkout cannot commit without this number" dependency orders -> tax
+  // already establishes above, not a stock/ledger write.
+  'cart -> pricing',
+  'orders -> pricing',
+  // 150-product-kitting-bundles.md — orders.service.ts's place() calls
+  // BundlesService.sellBundle() to decrement every component
+  // (InventoryService.move()) inside the SAME transaction as the order
+  // write itself, so a bundle sale is one atomic unit — the same
+  // same-transaction-write reasoning as orders -> inventory above, one
+  // level removed through catalog's own bundle service.
+  'orders -> catalog',
+  // returns.service.ts's inspect() calls BundlesService.restockBundle() to
+  // restock every component inside the SAME transaction as the
+  // ReturnRequestItem write it belongs to — same same-transaction
+  // reasoning as fulfilment -> inventory above.
+  'fulfilment -> catalog',
+  // 149-b2b-accounts-approvals-sector-packs.md — AccountProvider.initiate()
+  // (payments/providers/account.provider.ts) needs CreditTermsService.
+  // checkCreditAvailable() before checkout can commit — a pure read, the
+  // same "checkout cannot commit without this number" reasoning as
+  // `orders -> tax`/`cart -> pricing` above, not a stock/ledger write.
+  'payments -> receivables',
+  // AccountsService.convertToOrder() hands an approved B2BOrderRequest to
+  // OrdersService.place() itself — "a channel that funnels into the normal
+  // order-creation path," the same reasoning `pos -> orders` already
+  // establishes, not a same-transaction write (place() runs its own,
+  // separate transaction, sequentially after the approval already
+  // committed).
+  'accounts -> orders',
+  // AccountsService.submitOrderRequest() needs the buyer's own resolved
+  // price before it can decide whether a cart is at or above the account's
+  // approval threshold — the identical PricingService.resolvePrices() pure
+  // read `cart -> pricing`/`orders -> pricing` already establish.
+  'accounts -> pricing',
+  // 148-external-customer-support-portal.md — customer-support.service.ts's
+  // raise() finds-or-creates the authenticated customer's own Contact
+  // (CrmService.upsertContact()) inside the SAME transaction as the
+  // CustomerSupportTicket write, so a ticket never exists without its
+  // Contact and vice versa — the identical same-transaction reasoning
+  // `purchasing -> parties` already establishes for a Supplier and its Party.
+  'support -> crm',
+  // online-stock.service.ts's assignFulfillingBranch() (144-supply-chain-
+  // resilience-planning-engine.md, R26) reverses stock at an order's
+  // current fulfilling location and re-commits it at the new one
+  // (InventoryService.move(), twice) inside one transaction — the same
+  // same-transaction-write reasoning as orders/purchasing/production/bom/
+  // fulfilment -> inventory above.
+  'planning -> inventory',
 ]);
 
 function walk(dir) {
@@ -184,10 +266,35 @@ function walk(dir) {
   return entries;
 }
 
-function moduleNames() {
-  return readdirSync(MODULES_ROOT).filter((name) =>
-    statSync(join(MODULES_ROOT, name)).isDirectory(),
-  );
+/**
+ * Modules live two levels down: modules/<domain>/<module>/. A domain is only a
+ * folder that groups modules for people; it carries no rule. The module NAME
+ * (the second segment) is what MODULE_PACKS, the env allowlist and every
+ * coupling list below are keyed by, so the grouping can change without
+ * touching any of them.
+ */
+function moduleDirs() {
+  const dirs = new Map(); // module name -> absolute directory
+  for (const domain of readdirSync(MODULES_ROOT)) {
+    const domainDir = join(MODULES_ROOT, domain);
+    if (!statSync(domainDir).isDirectory()) continue;
+    for (const name of readdirSync(domainDir)) {
+      if (!statSync(join(domainDir, name)).isDirectory()) continue;
+      if (dirs.has(name)) {
+        throw new Error(`Two modules are both called "${name}" (${relative(process.cwd(), dirs.get(name))} and ${relative(process.cwd(), join(domainDir, name))}).`);
+      }
+      dirs.set(name, join(domainDir, name));
+    }
+  }
+  return dirs;
+}
+
+/** The module an absolute path belongs to, or null when it is outside every module. */
+function moduleOfPath(abs, dirs) {
+  for (const [name, dir] of dirs) {
+    if (abs === dir || abs.startsWith(dir + sep)) return name;
+  }
+  return null;
 }
 
 /**
@@ -262,7 +369,7 @@ function directionViolation(ownModule, targetModule, packs) {
   return null;
 }
 
-function checkFile(file, ownModule, modules, packs) {
+function checkFile(file, ownModule, modules, packs, dirs) {
   const violations = [];
   const source = readFileSync(file, 'utf8');
 
@@ -273,7 +380,7 @@ function checkFile(file, ownModule, modules, packs) {
     const target = resolve(file, '..', specifier);
     if (!target.startsWith(MODULES_ROOT)) continue;
 
-    const targetModule = relative(MODULES_ROOT, target).split(/[\\/]/)[0];
+    const targetModule = moduleOfPath(target, dirs);
     if (!targetModule || targetModule === ownModule || !modules.includes(targetModule)) {
       continue;
     }
@@ -473,9 +580,12 @@ function checkPrismaBoundaries(packs) {
 
 function main() {
   let modules;
+  let dirs;
   try {
-    modules = moduleNames();
-  } catch {
+    dirs = moduleDirs();
+    modules = [...dirs.keys()];
+  } catch (error) {
+    if (!/No such file|ENOENT/.test(String(error))) throw error;
     console.log('No apps/api/src/modules directory yet — nothing to check.');
     return;
   }
@@ -491,7 +601,7 @@ function main() {
   const violations = [
     ...checkClassification(modules, packs),
     ...modules.flatMap((name) =>
-      walk(join(MODULES_ROOT, name)).flatMap((file) => checkFile(file, name, modules, packs)),
+      walk(dirs.get(name)).flatMap((file) => checkFile(file, name, modules, packs, dirs)),
     ),
     ...checkPrismaBoundaries(packs),
     // After the walk, so it knows which entries fired.

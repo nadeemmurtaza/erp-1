@@ -33,6 +33,10 @@ export type ProductKind = (typeof PRODUCT_KINDS)[number];
 export const PRODUCT_STATUSES = ['DRAFT', 'ACTIVE', 'ARCHIVED'] as const;
 export type ProductStatus = (typeof PRODUCT_STATUSES)[number];
 
+/** Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). */
+export const OPTION_DISPLAYS = ['BUTTON', 'DROPDOWN', 'SWATCH', 'TEXT'] as const;
+export type OptionDisplay = (typeof OPTION_DISPLAYS)[number];
+
 export const ORDER_STATUSES = [
   'PENDING',
   'CONFIRMED',
@@ -54,6 +58,10 @@ export const PAYMENT_STATUSES = [
   'CANCELLED',
 ] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
+
+/** WO-9.4 (09-ai-layer.md). Matches the Prisma `CodRiskAction` enum in orders.prisma. */
+export const COD_RISK_ACTIONS = ['AUTO_CONFIRM', 'CONFIRMATION_CALL', 'REQUIRE_ADVANCE_PAYMENT'] as const;
+export type CodRiskAction = (typeof COD_RISK_ACTIONS)[number];
 
 export const STITCHING_STAGES = [
   'RECEIVED',
@@ -97,3 +105,16 @@ export function previousStage(stage: StitchingStage): StitchingStage | null {
   const index = STITCHING_STAGES.indexOf(stage);
   return index > 0 ? (STITCHING_STAGES[index - 1] as StitchingStage) : null;
 }
+
+/**
+ * architecture-patterns/104-jsonb-eav-extensibility.md — the closed,
+ * code-known list of entities `CustomFieldDefinition.entityType` may name.
+ * Adding one is a small, reviewed code change (a Prisma column, a service
+ * branch, an admin-form-rendering branch), never an arbitrary string a
+ * client could point at a table this mechanism was never wired into.
+ */
+export const CUSTOM_FIELD_ENTITY_TYPES = ['Supplier'] as const;
+export type CustomFieldEntityType = (typeof CUSTOM_FIELD_ENTITY_TYPES)[number];
+
+export const CUSTOM_FIELD_VALUE_TYPES = ['TEXT', 'NUMBER', 'BOOLEAN', 'DATE'] as const;
+export type CustomFieldValueType = (typeof CUSTOM_FIELD_VALUE_TYPES)[number];

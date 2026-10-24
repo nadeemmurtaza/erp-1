@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-493 files · 66,893 lines
+1,306 files · 180,861 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -12,29 +12,30 @@ so a route with no `@RequirePermission` is authenticated-but-unrestricted,
 which CLAUDE.md calls "almost never intended".
 
 Structure: `src/core/` is the shared platform every deployment runs;
-`src/modules/<name>/` is one feature module, independent of every other one.
+`src/modules/<domain>/<name>/` is one feature module, independent of every other one;
+the domain folder (sales, merchandising, supply-chain, money, people, customers, system) only groups them.
 
 ## Go deeper
 
-- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
-- **Core subsystems (L2):** [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`health`](../core/health.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`replication`](../core/replication.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`storage`](../core/storage.md) · [`time`](../core/time.md)
-- **Every route:** [cross/routes.md](../cross/routes.md)
-- **Every table:** [cross/data-model.md](../cross/data-model.md)
-- **Every exported symbol here:** [symbols/api.md](../symbols/api.md)
-- **Every file here:** [files/api.md](../files/api.md)
+- **Feature modules (L2):** [`accounting`](..\modules\accounting.md) · [`accounts`](..\modules\accounts.md) · [`addresses`](..\modules\addresses.md) · [`analytics`](..\modules\analytics.md) · [`attendance`](..\modules\attendance.md) · [`auction`](..\modules\auction.md) · [`bankfacilities`](..\modules\bankfacilities.md) · [`bom`](..\modules\bom.md) · [`bpmn-workflows`](..\modules\bpmn-workflows.md) · [`cart`](..\modules\cart.md) · [`catalog`](..\modules\catalog.md) · [`collections`](..\modules\collections.md) · [`content`](..\modules\content.md) · [`crm`](..\modules\crm.md) · [`custom-fields`](..\modules\custom-fields.md) · [`embeds`](..\modules\embeds.md) · [`entity-attributes`](..\modules\entity-attributes.md) · [`example-hello-world-pack`](..\modules\example-hello-world-pack.md) · [`feature-flags`](..\modules\feature-flags.md) · [`finance`](..\modules\finance.md) · [`fragments`](..\modules\fragments.md) · [`fulfilment`](..\modules\fulfilment.md) · [`giftcards`](..\modules\giftcards.md) · [`hr`](..\modules\hr.md) · [`identity-verification`](..\modules\identity-verification.md) · [`inventory`](..\modules\inventory.md) · [`loyalty`](..\modules\loyalty.md) · [`managed-services`](..\modules\managed-services.md) · [`marketing`](..\modules\marketing.md) · [`marketplace`](..\modules\marketplace.md) · [`measurements`](..\modules\measurements.md) · [`metadata-forms`](..\modules\metadata-forms.md) · [`notification-preferences`](..\modules\notification-preferences.md) · [`notify`](..\modules\notify.md) · [`onsitemessages`](..\modules\onsitemessages.md) · [`orders`](..\modules\orders.md) · [`organization`](..\modules\organization.md) · [`orgstructure`](..\modules\orgstructure.md) · [`parties`](..\modules\parties.md) · [`payments`](..\modules\payments.md) · [`payroll`](..\modules\payroll.md) · [`planning`](..\modules\planning.md) · [`pos`](..\modules\pos.md) · [`pricing`](..\modules\pricing.md) · [`production`](..\modules\production.md) · [`promotions`](..\modules\promotions.md) · [`purchasing`](..\modules\purchasing.md) · [`rag`](..\modules\rag.md) · [`receivables`](..\modules\receivables.md) · [`recommendations`](..\modules\recommendations.md) · [`reports`](..\modules\reports.md) · [`resilience`](..\modules\resilience.md) · [`reviews`](..\modules\reviews.md) · [`search`](..\modules\search.md) · [`settings`](..\modules\settings.md) · [`settlements`](..\modules\settlements.md) · [`stitching`](..\modules\stitching.md) · [`support`](..\modules\support.md) · [`tasks`](..\modules\tasks.md) · [`tax`](..\modules\tax.md) · [`tracking`](..\modules\tracking.md) · [`tradingpartners`](..\modules\tradingpartners.md) · [`transfers`](..\modules\transfers.md) · [`users`](..\modules\users.md) · [`wallet`](..\modules\wallet.md) · [`wishlist`](..\modules\wishlist.md)
+- **Core subsystems (L2):** [`action-hub`](..\core\action-hub.md) · [`ai`](..\core\ai.md) · [`anax`](..\core\anax.md) · [`approvals`](..\core\approvals.md) · [`audit`](..\core\audit.md) · [`auth`](..\core\auth.md) · [`cache`](..\core\cache.md) · [`checkout`](..\core\checkout.md) · [`common`](..\core\common.md) · [`config`](..\core\config.md) · [`crm`](..\core\crm.md) · [`crypto`](..\core\crypto.md) · [`ecosystem`](..\core\ecosystem.md) · [`events`](..\core\events.md) · [`extension-points`](..\core\extension-points.md) · [`feature-flags`](..\core\feature-flags.md) · [`feed`](..\core\feed.md) · [`health`](..\core\health.md) · [`idempotency`](..\core\idempotency.md) · [`intent`](..\core\intent.md) · [`launchpad`](..\core\launchpad.md) · [`metrics`](..\core\metrics.md) · [`notifications`](..\core\notifications.md) · [`prisma`](..\core\prisma.md) · [`redis`](..\core\redis.md) · [`replication`](..\core\replication.md) · [`resilience`](..\core\resilience.md) · [`security`](..\core\security.md) · [`settings`](..\core\settings.md) · [`slo`](..\core\slo.md) · [`storage`](..\core\storage.md) · [`throttling`](..\core\throttling.md) · [`time`](..\core\time.md) · [`versioning`](..\core\versioning.md)
+- **Every route:** [cross/routes.md](..\cross\routes.md)
+- **Every table:** [cross/data-model.md](..\cross\data-model.md)
+- **Every exported symbol here:** [symbols/api.md](..\symbols\api.md)
+- **Every file here:** [files/api.md](..\files\api.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `apps/api` | 10 | 832 | file, script, json, module |
-| `apps/api/prisma` | 3 | 3,269 | module |
-| `apps/api/prisma/schema` | 83 | 7,780 | prisma schema, migration, toml |
-| `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 111 | 11,698 | nest module, service, module, controller |
-| `apps/api/src/modules` | 265 | 37,104 | nest module, unit test, service, module |
-| `apps/api/test` | 18 | 6,036 | e2e test, unit test, module |
-| `apps/api/test/support` | 1 | 43 | module |
+| `apps/api` | 10 | 847 | file, script, json, module |
+| `apps/api/prisma` | 3 | 3,294 | module |
+| `apps/api/prisma/schema` | 187 | 18,678 | prisma schema, migration, toml |
+| `apps/api/src` | 2 | 172 | nest module, module |
+| `apps/api/src/core` | 259 | 33,498 | unit test, service, module, controller |
+| `apps/api/src/modules` | 805 | 112,415 | doc, unit test, service, controller |
+| `apps/api/test` | 38 | 11,876 | e2e test, unit test, module |
+| `apps/api/test/support` | 2 | 81 | module |
 
 
 ## Entry points
@@ -43,6 +44,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|
 | `apps/api/package.json` | json |  |
 | `apps/api/src/app.module.ts` | nest module |  |
+| `apps/api/src/core/ecosystem/index.ts` | module |  |
 | `apps/api/src/main.ts` | module | Must come before AppModule: the module registry reads MODULES from the |
 
 
@@ -50,23 +52,23 @@ Structure: `src/core/` is the shared platform every deployment runs;
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/api/prisma/seed.ts` | 3,030 | module |  |
-| `apps/api/src/modules/orders/orders.service.ts` | 1,114 | service |  |
+| `apps/api/prisma/seed.ts` | 3,199 | module |  |
+| `apps/api/src/modules/money/analytics/analytics.service.ts` | 2,593 | service |  |
+| `apps/api/src/modules/sales/orders/orders.service.ts` | 1,400 | service |  |
+| `apps/api/src/modules/sales/auction/auction.service.ts` | 1,152 | service |  |
+| `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
+| `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
-| `apps/api/src/core/notifications/email/templates.ts` | 1,005 | module |  |
-| `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
+| `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
+| `apps/api/src/core/events/domain-events.ts` | 833 | module | The catalogue of domain events. |
+| `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | 823 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
-| `apps/api/src/modules/analytics/analytics.service.ts` | 779 | service |  |
-| `apps/api/src/modules/transfers/transfers.service.spec.ts` | 701 | unit test |  |
-| `apps/api/src/modules/cart/cart.service.ts` | 678 | service |  |
-| `apps/api/src/modules/purchasing/purchasing.service.ts` | 654 | service |  |
-| `apps/api/src/modules/catalog/product-admin.service.ts` | 631 | service |  |
-| `apps/api/test/stitching.e2e-spec.ts` | 590 | e2e test |  |
-| `apps/api/test/email-channel.behavior.spec.ts` | 580 | unit test | Behavior tests for the email notification channel. |
-| `apps/api/src/modules/inventory/inventory.service.ts` | 576 | service |  |
-| `apps/api/src/modules/finance/finance.service.ts` | 558 | service |  |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
+| `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
+| `apps/api/src/modules/sales/auction/auction-settlement.service.ts` | 770 | service |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

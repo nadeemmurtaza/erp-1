@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDate, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PaginatedResponse } from '@/types/api';
+import { useAdminSession } from '@/components/admin/session';
+import { Select } from '@/components/ui/select';
 
 type BomStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
 type RecipeFilter = 'all' | 'active' | 'missing' | 'incomplete-cost';
@@ -43,8 +45,9 @@ interface MissingSummary {
  * doesn't, and one that exists but whose cost cannot be trusted yet.
  */
 export default function RecipesPage() {
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
+  const canViewCost = can('inventory.view_cost');
 
   const [rows, setRows] = useState<PaginatedResponse<RecipeRow | MissingRow> | null>(null);
   const [summary, setSummary] = useState<MissingSummary | null>(null);
@@ -133,20 +136,21 @@ export default function RecipesPage() {
           aria-label="Search"
           disabled={isMissingFilter}
         />
-        <select
+        <Select
+          label="Filter"
           value={filter}
-          onChange={(event) => {
+          onChange={(next) => {
             setPage(1);
-            setFilter(event.target.value as RecipeFilter);
+            setFilter(next as RecipeFilter);
           }}
-          className="field-input w-auto"
-          aria-label="Filter"
-        >
-          <option value="all">All recipes</option>
-          <option value="active">Active</option>
-          <option value="missing">Missing</option>
-          <option value="incomplete-cost">Incomplete cost</option>
-        </select>
+          className="w-auto"
+          options={[
+            { value: 'all', label: 'All recipes' },
+            { value: 'active', label: 'Active' },
+            { value: 'missing', label: 'Missing' },
+            { value: 'incomplete-cost', label: 'Incomplete cost' },
+          ]}
+        />
       </div>
 
       <div className="overflow-hidden">

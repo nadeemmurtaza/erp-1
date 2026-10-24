@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { hash } from 'bcryptjs';
 import {
+  BRAND,
   DEFAULT_GARMENT_TYPES,
   DEFAULT_LOCALE,
   PERMISSION_CATALOG,
@@ -16,11 +17,12 @@ config({ path: ['.env', '../../.env'], quiet: true });
 import { EventBusService } from '../src/core/events/event-bus.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AuditService } from '../src/core/audit/audit.service';
-import { InventoryService } from '../src/modules/inventory/inventory.service';
+import { InventoryService } from '../src/modules/supply-chain/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../src/core/extension-points/entity-enrichment.registry';
-import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
+import { IntentRouterService } from '../src/core/intent/intent-router.service';
+import { CHART_OF_ACCOUNTS } from '../src/modules/money/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
@@ -32,6 +34,7 @@ const inventoryService = new InventoryService(
   eventBus,
   new StockIntakeRegistry(),
   new EntityEnrichmentRegistry(),
+  new IntentRouterService(),
 );
 
 /**
@@ -48,14 +51,17 @@ async function main(): Promise<void> {
   await seedPermissions();
   const users = await seedUsers();
   await seedRoles();
+  await seedOrgStructure();
   await seedChartOfAccounts();
   await seedExpenseCategories();
+  await seedReturnReasons();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
   await retireOldOptionGroups();
   const categories = await seedCategories();
   await seedRawMaterialCategory();
+  await seedCategoryPresets();
   const locationId = await inventoryService.defaultLocationId();
   await seedProducts(categories, garments, locationId);
   await seedStitchingServices(categories, garments, locationId);
@@ -168,6 +174,34 @@ async function seedRoles(): Promise<void> {
 }
 
 /**
+ * hr-people-org/19-org-structure-offices-departments.md WO-19.1 — every
+ * deployment gets exactly one root `OrgUnit`, named from `brand.ts`, so a
+ * Solo shop that never opens the org-structure screen still has a real
+ * tree underneath it (one row) rather than an empty table later code has
+ * to special-case. Idempotent: does nothing once any `OrgUnit` exists —
+ * once a real admin has built out a tree, a later seed run must never
+ * re-assert its own idea of "the root," the same "never re-sync past the
+ * first run" discipline `seedRoles()` already applies just above.
+ */
+async function seedOrgStructure(): Promise<void> {
+  const headOfficeType = await prisma.orgUnitType.upsert({
+    where: { key: 'head_office' },
+    update: { label: 'Head Office', rank: 0, isOffice: true },
+    create: { key: 'head_office', label: 'Head Office', rank: 0, isOffice: true },
+  });
+
+  const alreadySeeded = await prisma.orgUnit.count();
+  if (alreadySeeded > 0) return;
+
+  const root = await prisma.orgUnit.create({
+    data: { code: 'hq', name: BRAND.identity.name, typeId: headOfficeType.id, path: [], depth: 0 },
+  });
+  await prisma.orgUnit.update({ where: { id: root.id }, data: { path: [root.id] } });
+
+  console.warn(`  Seeded the org tree's one root unit: "${BRAND.identity.name}".`);
+}
+
+/**
  * Seeds the accounts the posting rules (WO-19.2) and the year-end close
  * (WO-19.5) resolve by code —
  * `chart-of-accounts.ts`'s `CHART_OF_ACCOUNTS`. Runs unconditionally, the
@@ -219,6 +253,43 @@ async function seedExpenseCategories(): Promise<void> {
       update: { name: category.name, isDirect: category.isDirect, order: category.order },
       create: category,
     });
+  }
+}
+
+/**
+ * WO-6.6 — "reason codes are a seeded, editable list, not free text: they
+ * are the input to the fit-feedback loop in Phase 9." Upsert on `key` keeps
+ * ids stable across re-runs, same idiom as seedExpenseCategories() above.
+ */
+async function seedReturnReasons(): Promise<void> {
+  const reasons: Array<{ key: string; order: number; labelEn: string; labelUr: string }> = [
+    { key: 'too_small', order: 0, labelEn: 'Too small', labelUr: 'زیادہ چھوٹا' },
+    { key: 'too_big', order: 1, labelEn: 'Too big', labelUr: 'زیادہ بڑا' },
+    { key: 'damaged', order: 2, labelEn: 'Arrived damaged', labelUr: 'خراب حالت میں پہنچا' },
+    { key: 'not_as_described', order: 3, labelEn: 'Not as described', labelUr: 'تفصیل سے مطابقت نہیں رکھتا' },
+    { key: 'wrong_item', order: 4, labelEn: 'Wrong item received', labelUr: 'غلط آئٹم موصول ہوا' },
+    { key: 'quality_issue', order: 5, labelEn: 'Quality issue', labelUr: 'معیار کا مسئلہ' },
+    { key: 'changed_mind', order: 6, labelEn: 'Changed my mind', labelUr: 'ارادہ بدل گیا' },
+    { key: 'late_delivery', order: 7, labelEn: 'Arrived too late', labelUr: 'دیر سے پہنچا' },
+    { key: 'other', order: 8, labelEn: 'Other', labelUr: 'دیگر' },
+  ];
+
+  for (const reason of reasons) {
+    const record = await prisma.returnReasonCode.upsert({
+      where: { key: reason.key },
+      update: { order: reason.order },
+      create: { key: reason.key, order: reason.order },
+    });
+    for (const [locale, label] of [
+      ['en', reason.labelEn],
+      ['ur', reason.labelUr],
+    ] as const) {
+      await prisma.returnReasonTranslation.upsert({
+        where: { reasonId_locale: { reasonId: record.id, locale } },
+        update: { label },
+        create: { reasonId: record.id, locale, label },
+      });
+    }
   }
 }
 
@@ -2337,6 +2408,104 @@ async function seedCategories() {
   }
 
   return byslug;
+}
+
+/**
+ * 47-preconfigured-sector-taxonomy.md — five starter category trees, one
+ * per named vertical (`MULTI-SECTOR.md`'s own taxonomy table). Upserted on
+ * `key`, never overwriting `treeJson` once a deployment may have started
+ * customizing what applying the preset already created — re-running this
+ * seed only refreshes the label/description, exactly `seedCategories()`'s
+ * own upsert-on-slug discipline applied to the preset row instead.
+ */
+async function seedCategoryPresets(): Promise<void> {
+  const presets: { key: string; label: string; description: string; treeJson: Prisma.InputJsonValue }[] = [
+    {
+      key: 'apparel',
+      label: 'Apparel & Clothing',
+      description: 'Menswear, womenswear, kidswear, footwear and accessories.',
+      treeJson: [
+        {
+          name: "Men's Wear",
+          nameUr: 'مردانہ لباس',
+          children: [{ name: 'Shirts' }, { name: 'Trousers' }, { name: 'Kurta & Shalwar' }],
+        },
+        {
+          name: "Women's Wear",
+          nameUr: 'زنانہ لباس',
+          children: [{ name: 'Unstitched', nameUr: 'اَن سلا' }, { name: 'Ready to Wear', nameUr: 'سلا ہوا' }, { name: 'Dupattas' }],
+        },
+        { name: 'Kids Wear', nameUr: 'بچوں کے کپڑے', children: [{ name: 'Boys' }, { name: 'Girls' }] },
+        { name: 'Footwear', children: [{ name: "Men's Shoes" }, { name: "Women's Shoes" }, { name: "Kids' Shoes" }] },
+        { name: 'Accessories', children: [{ name: 'Bags' }, { name: 'Jewellery' }, { name: 'Belts' }] },
+      ],
+    },
+    {
+      key: 'pharmacy',
+      label: 'Pharmacy & Medicine',
+      description: 'Prescription and over-the-counter medicine, personal care, baby care and medical supplies.',
+      treeJson: [
+        {
+          name: 'Prescription Medicines',
+          children: [{ name: 'Tablets & Capsules' }, { name: 'Syrups' }, { name: 'Injections' }],
+        },
+        {
+          name: 'OTC Medicines',
+          children: [{ name: 'Pain Relief' }, { name: 'Cold & Flu' }, { name: 'Digestive Health' }],
+        },
+        { name: 'Personal Care', children: [{ name: 'Skin Care' }, { name: 'Oral Care' }, { name: 'Hair Care' }] },
+        { name: 'Baby Care', children: [{ name: 'Diapers' }, { name: 'Baby Food' }, { name: 'Baby Skin Care' }] },
+        { name: 'Medical Devices & Supplies', children: [{ name: 'Diagnostic Devices' }, { name: 'First Aid' }] },
+      ],
+    },
+    {
+      key: 'grocery',
+      label: 'Grocery & Supermarket',
+      description: 'Fresh produce, dairy, bakery, pantry staples and household essentials.',
+      treeJson: [
+        { name: 'Fresh Produce', children: [{ name: 'Fruits' }, { name: 'Vegetables' }] },
+        { name: 'Dairy & Eggs', children: [{ name: 'Milk' }, { name: 'Cheese & Butter' }, { name: 'Eggs' }] },
+        { name: 'Bakery', children: [{ name: 'Bread' }, { name: 'Rusk & Biscuits' }] },
+        {
+          name: 'Pantry Staples',
+          children: [{ name: 'Rice & Grains' }, { name: 'Cooking Oil & Ghee' }, { name: 'Spices' }, { name: 'Pulses' }],
+        },
+        { name: 'Household Essentials', children: [{ name: 'Cleaning Supplies' }, { name: 'Paper Products' }] },
+      ],
+    },
+    {
+      key: 'paint-shop',
+      label: 'Paint & Hardware',
+      description: 'Interior and exterior paints, wood finishes, tools and waterproofing.',
+      treeJson: [
+        { name: 'Interior Paints', children: [{ name: 'Emulsion' }, { name: 'Primer & Undercoat' }] },
+        { name: 'Exterior Paints', children: [{ name: 'Weatherproof Paint' }, { name: 'Textured Paint' }] },
+        { name: 'Wood Finishes', children: [{ name: 'Varnish' }, { name: 'Wood Stain' }] },
+        { name: 'Tools & Accessories', children: [{ name: 'Brushes & Rollers' }, { name: "Painter's Tape" }] },
+        { name: 'Waterproofing', children: [{ name: 'Roof Waterproofing' }, { name: 'Wall Waterproofing' }] },
+      ],
+    },
+    {
+      key: 'beverages',
+      label: 'Beverages',
+      description: 'Soft drinks, juices, water, tea and coffee.',
+      treeJson: [
+        { name: 'Soft Drinks', children: [{ name: 'Carbonated Drinks' }, { name: 'Energy Drinks' }] },
+        { name: 'Juices & Nectars', children: [{ name: 'Fresh Juice' }, { name: 'Packaged Juice' }] },
+        { name: 'Water', children: [{ name: 'Mineral Water' }, { name: 'Sparkling Water' }] },
+        { name: 'Tea & Coffee', nameUr: 'چائے اور کافی', children: [{ name: 'Tea' }, { name: 'Coffee' }] },
+        { name: 'Dairy Beverages', children: [{ name: 'Flavoured Milk' }, { name: 'Lassi & Yogurt Drinks' }] },
+      ],
+    },
+  ];
+
+  for (const preset of presets) {
+    await prisma.categoryPreset.upsert({
+      where: { key: preset.key },
+      update: { label: preset.label, description: preset.description },
+      create: preset,
+    });
+  }
 }
 
 /**

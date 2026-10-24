@@ -1,13 +1,14 @@
 'use client';
 
-import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { ROUTES } from '@/constants/routes';
-import { Disclosure, Loading, PageHeader } from '@/components/ui';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
+import { Button, Dialog, Disclosure, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
+import { ORDER_NEXT_STATUS } from '@/constants/order-transitions';
 
 interface OrderItem {
   id: string;
@@ -66,6 +67,7 @@ interface OrderDetail {
   id: string;
   number: string;
   status: string;
+  userId: string | null;
   guestName: string | null;
   guestEmail: string | null;
   guestPhone: string | null;
@@ -83,30 +85,22 @@ interface OrderDetail {
   staffNote: string | null;
   cancelReason: string | null;
   placedAt: string;
+  codRiskScore: number | null;
+  codRiskAction: string | null;
+  codRiskReasonEn: string | null;
   items: OrderItem[];
   payments: Payment[];
   shipments: Shipment[];
   statusEvents: StatusEvent[];
 }
 
-/** Which status a staff member may move an order to next. Mirrors the API. */
-const NEXT_STATUS: Record<string, string[]> = {
-  PENDING: ['CONFIRMED', 'CANCELLED'],
-  CONFIRMED: ['PROCESSING', 'CANCELLED'],
-  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
-  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
-  SHIPPED: ['DELIVERED', 'RETURNED'],
-  DELIVERED: ['RETURNED'],
-  CANCELLED: [],
-  RETURNED: [],
-};
-
 export default function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
-  const canApprovePayments = getStoredUser()?.permissions.includes('payments.approve') ?? false;
+  const { can } = useAdminSession();
+  const canApprovePayments = can('payments.approve');
 
   const load = useCallback(async () => {
     setError(null);
@@ -147,9 +141,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
     setBusy(true);
     try {
-      await adminFetch(`/admin/orders/${id}/shipments`, {
+      // WO-6.4 — shipment booking moved to the fulfilment module; this
+      // quick action still lives here since the order is already in
+      // context, same UX as before.
+      await adminFetch(`/admin/fulfilment/shipments`, {
         method: 'POST',
-        body: { courier, trackingNumber },
+        headers: { 'Idempotency-Key': crypto.randomUUID() },
+        body: { orderId: id, courier, trackingNumber },
       });
       await load();
     } catch (cause) {
@@ -218,25 +216,38 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   // Cancelling and returning are not "next steps" — they undo the order, and
   // one of them puts stock back. They belong at the bottom with the rest of
   // the destructive actions, not beside the button that moves it forward.
-  const transitions = NEXT_STATUS[order.status] ?? [];
+  const transitions = ORDER_NEXT_STATUS[order.status] ?? [];
   const forward = transitions.filter((next) => next !== 'CANCELLED' && next !== 'RETURNED');
   const undoing = transitions.filter((next) => next === 'CANCELLED' || next === 'RETURNED');
 
   return (
     <>
       <PageHeader
-        context={
-          <Link href={ROUTES.admin.orders} className="hover:text-neutral-900">
-            ← Orders
-          </Link>
-        }
         title={
           <span className="flex items-center gap-3">
             {order.number}
             <StatusBadge status={order.status} />
+            {order.codRiskAction && order.codRiskAction !== 'AUTO_CONFIRM' ? (
+              <StatusBadge status={order.codRiskAction} />
+            ) : null}
           </span>
         }
-        description={`${order.guestName ?? '—'} · ${order.guestPhone ?? '—'} · Placed ${formatDateTime(order.placedAt)}`}
+        description={
+          <>
+            {order.guestName ?? '—'} · {order.guestPhone ?? '—'} · Placed {formatDateTime(order.placedAt)}
+            {order.userId && can('giftcards.view') ? (
+              <>
+                {' · '}
+                <Link href={`/admin/customers/${order.userId}`} className="hover:underline">
+                  Store credit
+                </Link>
+              </>
+            ) : null}
+            {order.codRiskAction && order.codRiskAction !== 'AUTO_CONFIRM' && order.codRiskReasonEn ? (
+              <span className="mt-1 block text-amber-700">{order.codRiskReasonEn}</span>
+            ) : null}
+          </>
+        }
         action={
           <div className="flex flex-wrap justify-end gap-2">
             {forward.map((next) => (
@@ -286,7 +297,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                         {[item.variantLabel, item.sku].filter(Boolean).join(' · ')} × {item.quantity}
                       </p>
                     </div>
-                    <p className="shrink-0 text-sm font-medium text-neutral-900">{formatMoney(item.lineTotal)}</p>
+                    <div className="shrink-0 text-end">
+                      <p className="text-sm font-medium text-neutral-900">{formatMoney(item.lineTotal)}</p>
+                      {item.discountUnit > 0 ? (
+                        <p className="text-xs text-neutral-900/60">-{formatMoney(item.discountUnit)}/unit discount</p>
+                      ) : null}
+                    </div>
                   </div>
 
                   {item.stitchingServiceName ? (
@@ -459,6 +475,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             </ul>
           </section>
 
+          <InstalmentPlanSection orderId={id} onOrderChanged={load} />
+
           <section>
             <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-900/60">
               Delivering to
@@ -527,6 +545,229 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 }
 
 
+
+interface InstalmentPaymentRow {
+  id: string;
+  receivedAt: string;
+  isDeposit: boolean;
+  payment: { amount: number; provider: string };
+}
+
+interface InstalmentScheduleRow {
+  id: string;
+  dueDate: string;
+  amountMinor: number;
+}
+
+interface InstalmentPlanDetail {
+  id: string;
+  type: 'LAYBY' | 'INSTALMENT';
+  status: 'ACTIVE' | 'COMPLETED' | 'DEFAULTED' | 'CANCELLED';
+  totalMinor: number;
+  depositMinor: number;
+  schedule: InstalmentScheduleRow[];
+  payments: InstalmentPaymentRow[];
+}
+
+/**
+ * finance-accounting/151-layby-installment-sales.md WO-151.5 — the plan's
+ * own detail: schedule and every actual payment, side by side (the doc's
+ * own "click the number" lens), never a bare "40% paid" figure. Silently
+ * absent for an order with no plan — an ordinary immediate-tender sale,
+ * today's exact majority case.
+ */
+function InstalmentPlanSection({ orderId, onOrderChanged }: { orderId: string; onOrderChanged: () => void }) {
+  const { can } = useAdminSession();
+  const canOperate = can('pos.operate');
+  const canCancel = can('pos.instalments.cancel');
+  const canDefault = can('pos.instalments.default');
+
+  const [plan, setPlan] = useState<InstalmentPlanDetail | null | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [payOpen, setPayOpen] = useState(false);
+  // architecture-patterns/157 — one key per open of this dialog, resent
+  // unchanged on every retry, so a staff member re-clicking "record
+  // payment" after a timeout replays the same payment instead of posting
+  // it twice; a fresh dialog open (a genuinely new payment) gets a fresh
+  // key.
+  const paymentIdempotencyKey = useRef<string | null>(null);
+  const [amountRupees, setAmountRupees] = useState('');
+
+  const load = useCallback(() => {
+    adminFetch<InstalmentPlanDetail>(`/admin/orders/${orderId}/instalments`)
+      .then(setPlan)
+      .catch(() => setPlan(null));
+  }, [orderId]);
+
+  useEffect(load, [load]);
+
+  if (plan === undefined || plan === null) return null;
+
+  const paidSoFar = plan.payments.reduce((sum, p) => sum + p.payment.amount, 0);
+  const remaining = plan.totalMinor - paidSoFar;
+
+  const recordPayment = async () => {
+    const amountMinor = Math.round((Number(amountRupees) || 0) * 100);
+    if (amountMinor <= 0) return;
+    setBusy(true);
+    setError(null);
+    if (paymentIdempotencyKey.current === null) paymentIdempotencyKey.current = crypto.randomUUID();
+    try {
+      await adminFetch(`/admin/orders/${orderId}/instalments/payments`, {
+        method: 'POST',
+        headers: { 'Idempotency-Key': paymentIdempotencyKey.current },
+        body: { amountMinor, provider: 'cash' },
+      });
+      paymentIdempotencyKey.current = null;
+      setPayOpen(false);
+      setAmountRupees('');
+      load();
+      onOrderChanged();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not record this payment');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const cancelPlan = async () => {
+    if (!confirm('Cancel this plan? The deposit is refunded or forfeited per the configured policy.')) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await adminFetch(`/admin/orders/${orderId}/instalments/cancel`, { method: 'POST' });
+      load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not cancel this plan');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const markDefaulted = async () => {
+    if (!confirm('Mark this plan defaulted? This writes off the unpaid balance.')) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await adminFetch(`/admin/orders/${orderId}/instalments/default`, { method: 'POST' });
+      load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not mark this plan defaulted');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section className="card p-6">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-900/60">
+          {plan.type === 'LAYBY' ? 'Layby plan' : 'Instalment plan'}
+        </h2>
+        <StatusBadge status={plan.status} />
+      </div>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-3">
+          {error}
+        </p>
+      ) : null}
+
+      <dl className="space-y-2 text-sm">
+        <Row label="Total" value={formatMoney(plan.totalMinor)} />
+        <Row label="Paid so far" value={formatMoney(paidSoFar)} />
+        <Row label="Remaining" value={formatMoney(remaining)} />
+      </dl>
+
+      <h3 className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Schedule</h3>
+      <ul className="space-y-1 text-sm text-neutral-900/70">
+        {plan.schedule.map((line) => (
+          <li key={line.id} className="flex justify-between">
+            <span>{formatDate(line.dueDate)}</span>
+            <span>{formatMoney(line.amountMinor)}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h3 className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
+        Payments received
+      </h3>
+      {plan.payments.length === 0 ? (
+        <p className="text-sm text-neutral-900/60">None yet.</p>
+      ) : (
+        <ul className="space-y-1 text-sm text-neutral-900/70">
+          {plan.payments.map((p) => (
+            <li key={p.id} className="flex justify-between">
+              <span>
+                {formatDate(p.receivedAt)} {p.isDeposit ? '· deposit' : ''}
+              </span>
+              <span>{formatMoney(p.payment.amount)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {plan.status === 'ACTIVE' ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {canOperate ? (
+            <Button
+              variant="secondary"
+              onClick={() => {
+                paymentIdempotencyKey.current = null;
+                setPayOpen(true);
+              }}
+              disabled={busy}
+            >
+              Record payment
+            </Button>
+          ) : null}
+          {canCancel ? (
+            <Button variant="danger" onClick={() => void cancelPlan()} disabled={busy}>
+              Cancel plan
+            </Button>
+          ) : null}
+          {canDefault ? (
+            <Button variant="danger" onClick={() => void markDefaulted()} disabled={busy}>
+              Mark defaulted
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
+
+      <Dialog
+        open={payOpen}
+        onClose={() => setPayOpen(false)}
+        title="Record an instalment payment"
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" onClick={() => setPayOpen(false)} disabled={busy}>
+              Cancel
+            </Button>
+            <Button onClick={() => void recordPayment()} disabled={busy || !amountRupees} loading={busy}>
+              Record
+            </Button>
+          </div>
+        }
+      >
+        <label htmlFor="instalment-amount" className="field-label">
+          Amount (Rs)
+        </label>
+        <input
+          id="instalment-amount"
+          type="number"
+          min="0"
+          step="0.01"
+          className="field-input mt-1 w-full"
+          value={amountRupees}
+          onChange={(e) => setAmountRupees(e.target.value)}
+          placeholder="0.00"
+        />
+        <p className="mt-2 text-xs text-neutral-900/60">Remaining: {formatMoney(remaining)}</p>
+      </Dialog>
+    </section>
+  );
+}
 
 function Row({ label, value }: { label: string; value: string }) {
   return (

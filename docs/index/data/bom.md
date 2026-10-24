@@ -3,7 +3,7 @@
 
 # Schema: `bom.prisma`
 
-5 models · 2 enums. Owned by module [`bom`](../modules/bom.md).
+6 models · 2 enums. Owned by module [`bom`](..\modules\bom.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -37,7 +37,7 @@ against a real database.
 
 Indexes: `@@unique([recipeId, rawMaterialId])` · `@@index([rawMaterialId])`
 
-### `BomProductionLine`  <sub>`apps/api/prisma/schema/bom.prisma:205`</sub>
+### `BomProductionLine`  <sub>`apps/api/prisma/schema/bom.prisma:214`</sub>
 
 > One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself.
 
@@ -52,8 +52,24 @@ Indexes: `@@unique([recipeId, rawMaterialId])` · `@@index([rawMaterialId])`
 | `lineCost` | `Int` |  |  |
 | `run` | `BomProductionRun` | relation | @relation(fields: [runId], references: [id], onDelete: Cascade) |
 | `rawMaterial` | `RawMaterial` | relation | @relation(fields: [rawMaterialId], references: [id]) |
+| `lotAllocations` | `BomProductionLineLot[]` |  |  |
 
 Indexes: `@@index([runId])` · `@@index([rawMaterialId])`
+
+### `BomProductionLineLot`  <sub>`apps/api/prisma/schema/bom.prisma:246`</sub>
+
+> 71-recipe-batch-traceability.md, DECISIONS.md ADR-068.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `productionLineId` | `String` |  |  |
+| `lotId` | `String` |  |  |
+| `quantityBase` | `Int` |  |  |
+| `productionLine` | `BomProductionLine` | relation | @relation(fields: [productionLineId], references: [id], onDelete: Cascade) |
+| `lot` | `Lot` | relation | @relation(fields: [lotId], references: [id]) |
+
+Indexes: `@@index([productionLineId])` · `@@index([lotId])`
 
 ### `BomProductionRun`  <sub>`apps/api/prisma/schema/bom.prisma:152`</sub>
 
@@ -78,12 +94,14 @@ Indexes: `@@index([runId])` · `@@index([rawMaterialId])`
 | `scopeLevel` | `ScopeLevel` |  | @default(BRAND) |
 | `originNodeId` | `String?` | optional |  |
 | `locationId` | `String` |  |  |
+| `outputLotId` | `String?` | optional |  |
 | `recipe` | `BomRecipe` | relation | @relation(fields: [recipeId], references: [id]) |
 | `variant` | `ProductVariant` | relation | @relation("BomProducedVariant", fields: [variantId], references: [id]) |
 | `operator` | `User?` | relation, optional | @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetN… |
 | `lines` | `BomProductionLine[]` |  |  |
+| `outputLot` | `Lot?` | relation, optional | @relation("BomOutputLot", fields: [outputLotId], references: [id]) |
 
-Indexes: `@@index([producedAt])` · `@@index([scopeLevel])` · `@@index([locationId])` · `@@index([recipeId])` · `@@index([variantId])`
+Indexes: `@@index([producedAt])` · `@@index([scopeLevel])` · `@@index([locationId])` · `@@index([recipeId])` · `@@index([variantId])` · `@@index([outputLotId])`
 
 ### `BomRecipe`  <sub>`apps/api/prisma/schema/bom.prisma:81`</sub>
 
@@ -160,4 +178,4 @@ Indexes: `@@index([isActive, kind])` · `@@index([name])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

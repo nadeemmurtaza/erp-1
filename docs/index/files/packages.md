@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 55 tracked files in `packages/*`, by directory.
+All 117 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -17,6 +17,42 @@ All 55 tracked files in `packages/*`, by directory.
 | `tsconfig.base.json` | config | 26 |  |
 | `tsconfig.nest.json` | config | 15 |  |
 
+### `packages/desktop-runtime` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `eslint.config.mjs` | script | 4 |  |
+| `jest.config.js` | script | 13 | @type {import('jest').Config} |
+| `package.json` | json | 44 |  |
+| `tsconfig.json` | json | 15 |  |
+
+### `packages/desktop-runtime/src` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `backup-scheduler.integration.spec.ts` | unit test | 121 |  |
+| `backup-scheduler.spec.ts` | unit test | 240 |  |
+| `backup-scheduler.ts` | module | 387 |  |
+| `index.ts` | module | 9 |  |
+| `logger.ts` | module | 31 | 48-native-desktop-deployment.md — a minimal structured-logging seam. |
+| `postgres-lifecycle.integration.spec.ts` | unit test | 104 |  |
+| `postgres-lifecycle.spec.ts` | unit test | 303 |  |
+| `postgres-lifecycle.ts` | module | 481 |  |
+| `setup-wizard.spec.ts` | unit test | 244 |  |
+| `setup-wizard.ts` | module | 314 |  |
+
+### `packages/desktop-runtime/src/hardware` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `escpos.spec.ts` | unit test | 39 |  |
+| `escpos.ts` | module | 71 | 48-native-desktop-deployment.md WO-48.4 — the ESC/POS byte-command set, as pure functions. |
+| `serial-cash-drawer.spec.ts` | unit test | 83 |  |
+| `serial-cash-drawer.ts` | module | 67 |  |
+| `serial-port-io.ts` | module | 83 | 48-native-desktop-deployment.md WO-48.4 — the seam over the `serialport` npm package shared by both native drivers belo… |
+| `serial-receipt-printer.spec.ts` | unit test | 140 |  |
+| `serial-receipt-printer.ts` | module | 98 |  |
+
 ### `packages/pos-core` (4)
 
 | File | Kind | Lines | Purpose |
@@ -26,17 +62,18 @@ All 55 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 15 |  |
 
-### `packages/pos-core/src` (9)
+### `packages/pos-core/src` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `basket.spec.ts` | unit test | 55 |  |
-| `basket.ts` | module | 66 |  |
-| `index.ts` | module | 5 |  |
+| `basket.spec.ts` | unit test | 131 |  |
+| `basket.ts` | module | 122 |  |
+| `hardware.ts` | module | 35 |  |
+| `index.ts` | module | 6 |  |
 | `outbox.spec.ts` | unit test | 70 |  |
 | `outbox.ts` | module | 84 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` description). |
-| `receipt.spec.ts` | unit test | 34 |  |
-| `receipt.ts` | module | 62 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
+| `receipt.spec.ts` | unit test | 49 |  |
+| `receipt.ts` | module | 80 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
 | `tender.spec.ts` | unit test | 16 |  |
 | `tender.ts` | module | 20 | Cash tender and change — pure, in paisa. |
 
@@ -46,32 +83,70 @@ All 55 tracked files in `packages/*`, by directory.
 |---|---|---|---|
 | `eslint.config.mjs` | script | 4 |  |
 | `jest.config.js` | script | 13 | @type {import('jest').Config} |
-| `package.json` | json | 37 |  |
+| `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (19)
+### `packages/shared/src` (57)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `brand.ts` | module | 334 | THE BRAND FILE. |
-| `constants.ts` | module | 146 |  |
-| `enums.ts` | module | 100 | Enum values mirrored from the Prisma schema. |
+| `api-keys.spec.ts` | unit test | 231 |  |
+| `api-keys.ts` | module | 334 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
+| `auction.ts` | module | 15 | Constants the Auction app's API and web app must agree on (launchpad-apps/234-auction-app.md). |
+| `brand.ts` | module | 664 | THE BRAND FILE. |
+| `cod-risk.spec.ts` | unit test | 199 |  |
+| `cod-risk.ts` | module | 167 |  |
+| `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
+| `constants.spec.ts` | unit test | 76 |  |
+| `constants.ts` | module | 237 |  |
+| `content-blocks.ts` | module | 48 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
+| `demand-forecast.spec.ts` | unit test | 179 |  |
+| `demand-forecast.ts` | module | 112 |  |
+| `discounts.spec.ts` | unit test | 215 |  |
+| `discounts.ts` | module | 322 | The discount rules engine. |
+| `enums.ts` | module | 121 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
-| `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
-| `index.ts` | module | 18 |  |
+| `http-client.spec.ts` | unit test | 90 |  |
+| `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
+| `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
+| `index.ts` | module | 52 |  |
+| `launchpad.spec.ts` | unit test | 133 |  |
+| `launchpad.ts` | module | 380 | The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launch… |
+| `markdown-suggestion.spec.ts` | unit test | 86 |  |
+| `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
+| `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 501 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 1552 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |
 | `pricing.ts` | module | 275 | Order maths. |
+| `secret-crypto.spec.ts` | unit test | 36 |  |
+| `secret-crypto.ts` | module | 65 |  |
+| `segment-filter.ts` | module | 31 | The filter shape `Segment.filter` (crm.prisma) holds. |
+| `sku.spec.ts` | unit test | 52 |  |
+| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
-| `theme-colors.ts` | module | 18 |  |
-| `theme-radii.ts` | module | 17 |  |
+| `theme-colors.ts` | module | 29 |  |
+| `theme-contrast.spec.ts` | unit test | 176 |  |
+| `theme-contrast.ts` | module | 47 |  |
+| `theme-elevation.ts` | module | 12 |  |
+| `theme-layers.ts` | module | 9 |  |
+| `theme-motion.ts` | module | 22 |  |
+| `theme-radii.spec.ts` | unit test | 65 |  |
+| `theme-radii.ts` | module | 29 |  |
+| `theme-runtime.spec.ts` | unit test | 76 |  |
+| `theme-runtime.ts` | module | 63 | How a surface decides which theme it is in — plain functions, no framework. |
+| `theme-size.ts` | module | 29 |  |
+| `theme-space.spec.ts` | unit test | 118 |  |
+| `theme-space.ts` | module | 22 |  |
+| `theme-tailwind.ts` | module | 344 |  |
 | `theme-type.ts` | module | 42 |  |
 | `units.spec.ts` | unit test | 43 |  |
 | `units.ts` | module | 58 | Raw-material quantities. |
+| `variant-matrix.spec.ts` | unit test | 76 |  |
+| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md… |
 
 ### `packages/shared/src/entities` (11)
 
@@ -89,16 +164,18 @@ All 55 tracked files in `packages/*`, by directory.
 | `supplier.spec.ts` | unit test | 45 |  |
 | `supplier.ts` | module | 44 | Organization-shaped data in this system today is vendor-side: `Supplier`. |
 
-### `packages/shared/src/measurements` (4)
+### `packages/shared/src/measurements` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `defaults.ts` | module | 448 |  |
 | `schema.spec.ts` | unit test | 166 |  |
 | `schema.ts` | module | 78 |  |
-| `types.ts` | module | 42 |  |
+| `size-recommendation.spec.ts` | unit test | 155 |  |
+| `size-recommendation.ts` | module | 132 |  |
+| `types.ts` | module | 46 |  |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/packages.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\packages.md) · [← index home](..\README.md)

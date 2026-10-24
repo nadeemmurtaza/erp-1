@@ -3,7 +3,7 @@
 
 # Schema: `inventory.prisma`
 
-7 models · 4 enums. Owned by module [`inventory`](../modules/inventory.md).
+16 models · 7 enums. Owned by module [`inventory`](..\modules\inventory.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Location`  <sub>`apps/api/prisma/schema/inventory.prisma:81`</sub>
+### `Location`  <sub>`apps/api/prisma/schema/inventory.prisma:83`</sub>
 
 > A place stock physically lives.
 
@@ -28,7 +28,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `name` | `String` |  |  |
-| `code` | `String` | unique | "MAIN", "LHR-01" — short, used in ledger refs |
+| `code` | `String` | unique | @unique |
 | `type` | `LocationType` |  | @default(STORE) |
 | `retailBrandId` | `String?` | optional |  |
 | `originNodeId` | `String?` | optional |  |
@@ -41,10 +41,161 @@ against a real database.
 | `movements` | `StockMovement[]` |  |  |
 | `workOrders` | `WorkOrder[]` |  |  |
 | `variances` | `StockVariance[]` |  |  |
+| `spotCheckPolicies` | `SpotCheckPolicy[]` |  |  |
+| `spotChecks` | `SpotCheck[]` |  |  |
+| `lotStocks` | `LotStock[]` |  |  |
+| `serializedUnits` | `SerializedUnit[]` |  |  |
 
 Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
-### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:196`</sub>
+### `Lot`  <sub>`apps/api/prisma/schema/inventory.prisma:342`</sub>
+
+> 32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `productVariantId` | `String` |  |  |
+| `lotCode` | `String` |  |  |
+| `expiresOn` | `DateTime?` | optional |  |
+| `receivedOn` | `DateTime` |  | @default(now()) |
+| `sourceReceiptId` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [productVariantId], references: [id], onDelete: Cascade) |
+| `stocks` | `LotStock[]` |  |  |
+| `allocations` | `LotAllocation[]` |  |  |
+| `outputOfRuns` | `BomProductionRun[]` | relation | @relation("BomOutputLot") |
+| `consumedByLines` | `BomProductionLineLot[]` |  |  |
+| `serializedUnits` | `SerializedUnit[]` |  |  |
+
+Indexes: `@@unique([productVariantId, lotCode])` · `@@index([expiresOn])`
+
+### `LotAllocation`  <sub>`apps/api/prisma/schema/inventory.prisma:396`</sub>
+
+> One row per unit of movement that consumed a specific lot — the join a recall query walks.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `lotId` | `String` |  |  |
+| `stockMovementId` | `String` |  |  |
+| `quantity` | `Int` |  |  |
+| `allocatedAt` | `DateTime` |  | @default(now()) |
+| `lot` | `Lot` | relation | @relation(fields: [lotId], references: [id]) |
+| `stockMovement` | `StockMovement` | relation | @relation(fields: [stockMovementId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([lotId, stockMovementId])` · `@@index([lotId])` · `@@index([stockMovementId])`
+
+### `LotStock`  <sub>`apps/api/prisma/schema/inventory.prisma:379`</sub>
+
+> The per-location quantity for ONE lot.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `lotId` | `String` |  |  |
+| `locationId` | `String` |  |  |
+| `quantity` | `Int` |  | @default(0) |
+| `lot` | `Lot` | relation | @relation(fields: [lotId], references: [id], onDelete: Cascade) |
+| `location` | `Location` | relation | @relation(fields: [locationId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([lotId, locationId])` · `@@index([locationId])`
+
+### `MarkdownSuggestion`  <sub>`apps/api/prisma/schema/inventory.prisma:315`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `variantId` | `String` |  |  |
+| `discountId` | `String?` | optional |  |
+| `suggestedBps` | `Int` |  |  |
+| `estimatedClearancePct` | `Float` |  |  |
+| `estimatedClearanceDays` | `Int` |  |  |
+| `marginBeforePaisa` | `Int` |  |  |
+| `marginAfterPaisa` | `Int` |  |  |
+| `status` | `MarkdownSuggestionStatus` |  | @default(PENDING) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `resolvedAt` | `DateTime?` | optional |  |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@index([variantId, status])` · `@@index([status, createdAt])`
+
+### `SerializedUnit`  <sub>`apps/api/prisma/schema/inventory.prisma:431`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `productVariantId` | `String` |  |  |
+| `serialNumber` | `String` | unique | @unique |
+| `status` | `SerializedUnitStatus` |  | @default(IN_STOCK) |
+| `lotId` | `String?` | optional |  |
+| `locationId` | `String?` | optional |  |
+| `orderId` | `String?` | optional |  |
+| `stockMovementId` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `variant` | `ProductVariant` | relation | @relation(fields: [productVariantId], references: [id], onDelete: Cascade) |
+| `lot` | `Lot?` | relation, optional | @relation(fields: [lotId], references: [id], onDelete: SetNull) |
+| `location` | `Location?` | relation, optional | @relation(fields: [locationId], references: [id], onDelete: SetNull) |
+| `stockMovement` | `StockMovement?` | relation, optional | @relation(fields: [stockMovementId], references: [id], onDelete: SetNull) |
+| `variances` | `StockVariance[]` |  |  |
+
+Indexes: `@@index([productVariantId, status])` · `@@index([orderId])` · `@@index([stockMovementId])`
+
+### `SpotCheck`  <sub>`apps/api/prisma/schema/inventory.prisma:211`</sub>
+
+> A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes on the POS/mobile device.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `policyId` | `String` |  |  |
+| `locationId` | `String` |  |  |
+| `status` | `SpotCheckStatus` |  | @default(PENDING) |
+| `scheduledFor` | `DateTime` |  |  |
+| `startedAt` | `DateTime?` | optional |  |
+| `completedAt` | `DateTime?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `policy` | `SpotCheckPolicy` | relation | @relation(fields: [policyId], references: [id]) |
+| `location` | `Location` | relation | @relation(fields: [locationId], references: [id]) |
+| `lines` | `SpotCheckLine[]` |  |  |
+
+Indexes: `@@index([locationId, status])` · `@@index([policyId, scheduledFor])`
+
+### `SpotCheckLine`  <sub>`apps/api/prisma/schema/inventory.prisma:229`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `spotCheckId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `expected` | `Int` |  |  |
+| `counted` | `Int?` | optional |  |
+| `variance` | `Int?` | optional |  |
+| `spotCheck` | `SpotCheck` | relation | @relation(fields: [spotCheckId], references: [id], onDelete: Cascade) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Restrict) |
+
+Indexes: `@@unique([spotCheckId, variantId])`
+
+### `SpotCheckPolicy`  <sub>`apps/api/prisma/schema/inventory.prisma:184`</sub>
+
+> 156-single-employee-branch-loss-prevention.md §3.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `locationId` | `String?` | optional |  |
+| `minSkusPerCheck` | `Int` |  | @default(5) |
+| `frequencyDays` | `Int` |  | @default(3) |
+| `isActive` | `Boolean` |  | @default(true) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `location` | `Location?` | relation, optional | @relation(fields: [locationId], references: [id], onDelete: Cascade) |
+| `checks` | `SpotCheck[]` |  |  |
+
+Indexes: `@@index([locationId, isActive])`
+
+### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:485`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -65,7 +216,7 @@ Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
 Indexes: `@@index([status])`
 
-### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:219`</sub>
+### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:508`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -101,10 +252,12 @@ Indexes: `@@unique([stockCountId, variantId])`
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 | `actor` | `User?` | relation, optional | @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull) |
 | `location` | `Location?` | relation, optional | @relation(fields: [locationId], references: [id], onDelete: SetNull) |
+| `lotAllocations` | `LotAllocation[]` |  |  |
+| `serializedUnits` | `SerializedUnit[]` |  |  |
 
 Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · `@@index([refType, refId])` · `@@index([locationId])`
 
-### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:132`</sub>
+### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:138`</sub>
 
 > One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).
 
@@ -121,13 +274,31 @@ Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · 
 | `resolvedByUserId` | `String?` | optional |  |
 | `resolvedAt` | `DateTime?` | optional |  |
 | `resolutionNote` | `String?` | optional |  |
+| `posShiftId` | `String?` | optional |  |
+| `serializedUnitId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 | `location` | `Location` | relation | @relation(fields: [locationId], references: [id], onDelete: Cascade) |
+| `posShift` | `PosShift?` | relation, optional | @relation(fields: [posShiftId], references: [id], onDelete: SetNull) |
+| `serializedUnit` | `SerializedUnit?` | relation, optional | @relation(fields: [serializedUnitId], references: [id], onDelete: SetNull) |
 
-Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])`
+Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])` · `@@index([posShiftId])` · `@@index([serializedUnitId])`
 
-### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:161`</sub>
+### `VariantForecast`  <sub>`apps/api/prisma/schema/inventory.prisma:287`</sub>
+
+> WO-9.3 (09-ai-layer.md).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `variantId` | `String` | id | @id |
+| `forecastedDailyDemand` | `Float` |  | @default(0) |
+| `seasonalFactor` | `Float?` | optional |  |
+| `projectedStockoutAt` | `DateTime?` | optional |  |
+| `reasonEn` | `String?` | optional |  |
+| `computedAt` | `DateTime` |  | @default(now()) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
+
+### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:251`</sub>
 
 > Stock, per variant, per location.
 
@@ -142,7 +313,7 @@ Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])
 
 Indexes: `@@id([variantId, locationId])`
 
-### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:174`</sub>
+### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:264`</sub>
 
 > CACHE: variantId as primary key.
 
@@ -163,7 +334,7 @@ Indexes: `@@id([variantId, locationId])`
 
 ## Enums
 
-### `LocationType`  <sub>`apps/api/prisma/schema/inventory.prisma:68`</sub>
+### `LocationType`  <sub>`apps/api/prisma/schema/inventory.prisma:70`</sub>
 
 > STORE/WAREHOUSE are physical, staffed or stocked normally.
 
@@ -174,7 +345,38 @@ Indexes: `@@id([variantId, locationId])`
 | `IN_TRANSIT` |  |
 | `PRODUCTION` |  |
 
-### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:189`</sub>
+### `MarkdownSuggestionStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:309`</sub>
+
+> WO-9.8.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `CREATED` |  |
+| `DISMISSED` |  |
+
+### `SerializedUnitStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:423`</sub>
+
+> 158-serialized-unit-tracking.md, DECISIONS.md ADR-068.
+
+| Value | Meaning |
+|---|---|
+| `IN_STOCK` |  |
+| `SOLD` |  |
+| `RETURNED` |  |
+| `RMA_TO_SUPPLIER` |  |
+| `WRITTEN_OFF` |  |
+
+### `SpotCheckStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:202`</sub>
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `IN_PROGRESS` |  |
+| `COMPLETED` |  |
+| `CANCELLED` |  |
+
+### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:478`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -189,22 +391,22 @@ Indexes: `@@id([variantId, locationId])`
 
 | Value | Meaning |
 |---|---|
-| `PURCHASE_RECEIPT` | goods received against a purchase order |
-| `SALE` | order placed |
-| `CANCELLATION` | order cancelled, stock returned to the shelf |
-| `RETURN` | customer returned goods |
-| `ADJUSTMENT` | manual correction by staff |
-| `DAMAGE` | written off as damaged |
-| `COUNT` | variance posted by a stock count |
-| `WRITE_OFF` | lost, stolen, expired |
-| `PRODUCTION_CONSUMPTION` | raw material consumed by a released WorkOrder |
-| `PRODUCTION_RECEIPT` | finished goods credited by a completed WorkOrder |
-| `POS_SALE` | till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Or… |
-| `POS_OFFLINE_VARIANCE` | InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row |
-| `TRANSFER_OUT` | WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel) |
-| `TRANSFER_IN` | WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/canc… |
+| `PURCHASE_RECEIPT // goods received against a purchase order` |  |
+| `SALE // order placed` |  |
+| `CANCELLATION // order cancelled, stock returned to the shelf` |  |
+| `RETURN // customer returned goods` |  |
+| `ADJUSTMENT // manual correction by staff` |  |
+| `DAMAGE // written off as damaged` |  |
+| `COUNT // variance posted by a stock count` |  |
+| `WRITE_OFF // lost, stolen, expired` |  |
+| `PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder` |  |
+| `PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder` |  |
+| `POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order` |  |
+| `POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row` |  |
+| `TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)` |  |
+| `TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)` |  |
 
-### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:120`</sub>
+### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:126`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -214,4 +416,4 @@ Indexes: `@@id([variantId, locationId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

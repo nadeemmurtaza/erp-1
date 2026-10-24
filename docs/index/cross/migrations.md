@@ -3,7 +3,7 @@
 
 # Migrations
 
-**58** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**132** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -91,8 +91,82 @@ nothing here fails a build.
 | 2026-09-22 | `add_bom_recipes` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomComponent, BomRecipe |
 | 2026-09-22 | `add_bom_production_runs` | 13 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomProductionLine, BomProductionRun |
 | 2026-09-22 | `add_tier_scope_columns` | 16 | CREATE TYPE, ALTER TYPE, ALTER TABLE, UPDATE, CREATE INDEX | BomProductionRun, Expense, GoodsReceipt, PurchaseOrder |
+| 2026-09-22 | `add_node_brand_and_policy_quarantine` | 8 | ALTER TABLE, CREATE TABLE, CREATE INDEX | Node, PolicyQuarantine |
+| 2026-09-23 | `add_payroll` | 39 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLin… |
+| 2026-09-24 | `init` | 29 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformTenant, PlatformUsageRecord, SupportAccessGran… |
+| 2026-09-24 | `add_option_templates_redirects_sku_seo` | 24 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, INSERT, CREATE INDEX | Category, OptionTemplate, OptionTemplateTranslation, OptionTemplateValue, OptionTemplateValueTranslation, Pro… |
+| 2026-09-24 | `add_promotions_giftcards_store_credit` | 31 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Discount, GiftCard, GiftCardTransaction, OrderDiscount, PromoCode, StoreCreditTransaction, User |
+| 2026-09-24 | `add_customer_portal_reviews_wishlist_loyalty` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, INSERT | BackInStockRequest, LoyaltyTier, LoyaltyTransaction, NotificationPreference, Referral, Review, User, Wishlist… |
+| 2026-09-24 | `add_fulfilment_shipping_returns` | 67 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE, INSERT | Contact, Manifest, ManifestNumberCounter, Product, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest,… |
+| 2026-09-25 | `add_content_collections_search_marketing_onsite` | 82 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, UPDATE | Banner, BannerTranslation, BlogPost, BlogPostTranslation, Campaign, CampaignRecipient, Cart, Collection, Coll… |
+| 2026-09-25 | `add_ai_layer` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | AiUsageLog, MarkdownSuggestion, Order, ProductAiSuggestion, ProductCrossSell, ProductReviewSummary, ProductSi… |
+| 2026-09-25 | `wo39_quotas_export_routing` | 18 | ALTER TABLE, CREATE TABLE, CREATE TYPE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, ResourceQuotaAlert, ResourceTierQuota, SupportAccessGrant, TenantDataExport |
+| 2026-09-25 | `wo50_pricing_billing` | 20 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformPlan |
+| 2026-09-25 | `wo51_trials` | 11 | ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, SignupVerification, TrialExtension |
+| 2026-09-25 | `wo153_usage_based_pricing` | 27 | ALTER TYPE, ALTER TABLE, CREATE INDEX, CREATE TABLE, CREATE TYPE, CREATE UNIQUE INDEX | MeteredOrderFee, PlatformInvoice, PlatformPlan, PlatformRateCardChangeRequest, UsageMeter, UsageMeteringCursor |
+| 2026-09-25 | `wo14_agency_managed_services` | 19 | ALTER TABLE, CREATE UNIQUE INDEX, CREATE TYPE, CREATE TABLE, CREATE INDEX | AgencyUsageSnapshot, PlatformInvoice, PlatformTenant |
+| 2026-09-25 | `wo154_headline_plans` | 8 | ALTER TABLE | PlatformPlan |
+| 2026-09-25 | `add_personal_api_keys` | 18 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | ApiKey |
+| 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
+| 2026-09-25 | `add_requisitions_approvals_and_loss_prevention` | 40 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | ApprovalChain, ApprovalStep, PurchaseRequisition, RequisitionLine, SpotCheck, SpotCheckLine, SpotCheckPolicy,… |
+| 2026-09-25 | `add_whatsapp_message_external_id` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | WhatsAppMessage |
+| 2026-09-25 | `add_review_summary_urdu` | 1 | ALTER TABLE | ProductReviewSummary |
+| 2026-09-25 | `add_wallet_merchant_payable` | 20 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
+| 2026-09-25 | `add_receivables_credit_notes_dunning` | 15 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
+| 2026-09-25 | `add_hr_assets` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Asset, AssetAssignment |
+| 2026-09-25 | `add_asset_depreciation` | 10 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AssetDepreciationPosting, AssetDepreciationSchedule |
+| 2026-09-25 | `add_instalment_plans` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
+| 2026-09-25 | `add_instalment_payment_is_deposit` | 1 | ALTER TABLE | InstalmentPayment |
+| 2026-09-25 | `add_settlements` | 11 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | SettlementBatch, SettlementBatchLine, SettlementProvider |
+| 2026-09-25 | `add_settlement_writeoff_approval` | 4 | ALTER TABLE | SettlementBatch |
+| 2026-09-25 | `add_sso_identity_federation` | 8 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX | SsoConnection, User |
+| 2026-09-26 | `add_rag_document_retrieval` | 17 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | DocumentChunk, DocumentSource |
+| 2026-09-26 | `add_org_structure` | 12 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | OrgUnit, OrgUnitType |
+| 2026-09-26 | `add_positions_ranks` | 22 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | EmployeeProfile, Position, Posting, Rank |
+| 2026-09-26 | `add_custom_fields` | 5 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | CustomFieldDefinition, Supplier |
+| 2026-09-26 | `add_org_unit_grant` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | OrgUnitGrant |
+| 2026-09-26 | `add_embedded_widgets` | 3 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | EmbeddedWidget |
+| 2026-09-26 | `add_attendance` | 44 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AttendanceDevice, AttendanceEvent, AttendanceEvent_default, AttendanceException, Shift |
+| 2026-09-26 | `add_entity_attributes` | 3 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | EntityAttribute |
+| 2026-09-26 | `add_tasks` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Task, TaskStageDefinition, TaskTransition |
+| 2026-09-26 | `add_micro_frontend_fragments` | 4 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | MicroFrontendFragment |
+| 2026-09-26 | `wo166_product_reference_registry` | 25 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink,… |
+| 2026-09-26 | `add_form_metadata` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | FormMetadata |
+| 2026-09-26 | `wo146_pricing_module` | 10 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | PriceList, PriceListAssignment, PriceListEntry |
+| 2026-09-26 | `wo47_category_presets` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | CategoryPreset |
+| 2026-09-26 | `add_bpmn_workflow_definitions` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | BpmnWorkflowDefinition |
+| 2026-09-26 | `wo150_product_bundles` | 5 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | BundleComponent, ProductBundle |
+| 2026-09-26 | `add_idempotency_key` | 4 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | IdempotencyKey |
+| 2026-09-26 | `wo149_b2b_accounts_approvals` | 13 | CREATE TYPE, ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | ApprovalStep, B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
+| 2026-09-26 | `wo165_marketplace_listing_viewer_engagement` | 16 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | MarketplaceEngagement, MarketplaceListing, MarketplaceViewerProfile |
+| 2026-09-26 | `wo1656_sso_enforce_sso` | 1 | ALTER TABLE | SsoConnection |
+| 2026-09-26 | `wo24_notify_meetings_escalation` | 22 | ALTER TYPE, CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | Audience, BroadcastMessage, EscalationFire, EscalationRule, Meeting, MeetingInvitation |
+| 2026-09-26 | `wo166_product_reference_sync_provenance` | 2 | ALTER TABLE | ProductImage, ProductTranslation |
+| 2026-09-27 | `add_bank_facilities` | 16 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
+| 2026-09-27 | `wo61_bulletin_board` | 6 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | Bulletin, BulletinAcknowledgement |
+| 2026-09-27 | `wo64_support_ticketing` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | SupportTicket, TicketMessage |
+| 2026-09-27 | `wo144_supplier_lead_time_observation` | 3 | ALTER TYPE, CREATE TABLE, CREATE INDEX | SupplierLeadTimeObservation |
+| 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
+| 2026-09-27 | `wo31_pos_hardware_park_retrieve` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | PosLineModifier, PosLineQuantitySource, PosParkedSale |
+| 2026-09-27 | `wo32_wo71_wo158_lots_serials_traceability` | 37 | CREATE TYPE, CREATE TABLE, ALTER TABLE, CREATE UNIQUE INDEX, CREATE INDEX | BomProductionLineLot, BomProductionRun, Lot, LotAllocation, LotStock, ProductVariant, SerializedUnit, StockVa… |
+| 2026-09-27 | `wo37_feature_flags` | 4 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | FeatureFlag |
+| 2026-09-27 | `wo38_request_outcomes` | 3 | CREATE TABLE, CREATE INDEX | RequestOutcome |
+| 2026-09-28 | `wo206_refresh_token_reuse_detection` | 10 | ALTER TABLE, UPDATE, CREATE UNIQUE INDEX, CREATE INDEX | RefreshToken |
+| 2026-09-30 | `wo213_1_partner_fact_inbox` | 9 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PartnerFactInbox, TradingPartner |
+| 2026-09-30 | `wo213_2_purchase_order_source_fact` | 3 | ALTER TABLE, CREATE UNIQUE INDEX | PurchaseOrder |
+| 2026-10-02 | `launchpad_manage_permission` | 2 | INSERT |  |
+| 2026-10-02 | `wo234_1_auction_foundation` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Auction, AuctionLot |
+| 2026-10-02 | `wo234_1_auction_permissions` | 3 | INSERT |  |
+| 2026-10-02 | `wo234_2_bidding` | 16 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Auction, AuctionLot, Bid, Bidder |
+| 2026-10-02 | `wo234_3_proxy_and_close` | 9 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX | AuctionLot, AuctionResult, ProxyBid |
+| 2026-10-03 | `wo234_5_bidder_trust` | 9 | ALTER TYPE, CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX | Auction, Bidder, BidderStrike |
+| 2026-10-03 | `wo234_5_bidders_permission` | 4 | INSERT |  |
+| 2026-10-07 | `order_source_ref` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | Order |
+| 2026-10-07 | `wo234_6_settlement` | 15 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | AuctionSettlement, AuctionSettlementPayment, BidderStrike |
+| 2026-10-07 | `wo234_6_settle_permission` | 4 | INSERT |  |
+| 2026-10-09 | `wo234_12_lot_images` | 3 | CREATE TABLE, CREATE INDEX, ALTER TABLE | AuctionLotImage |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

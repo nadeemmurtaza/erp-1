@@ -3,7 +3,7 @@
 
 # Schema: `cart.prisma`
 
-3 models · 0 enums. Owned by module [`cart`](../modules/cart.md).
+3 models · 0 enums. Owned by module [`cart`](..\modules\cart.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -34,12 +34,18 @@ against a real database.
 | `expiresAt` | `DateTime` |  |  |
 | `reminderSentAt` | `DateTime?` | optional |  |
 | `incentiveSentAt` | `DateTime?` | optional |  |
+| `firstTouchSentAt` | `DateTime?` | optional |  |
+| `incentivePromoCodeId` | `String?` | optional |  |
+| `guestPhone` | `String?` | optional |  |
+| `guestMarketingConsentAt` | `DateTime?` | optional |  |
 | `user` | `User?` | relation, optional | @relation(fields: [userId], references: [id], onDelete: Cascade) |
+| `incentivePromoCode` | `PromoCode?` | relation, optional | @relation(fields: [incentivePromoCodeId], references: [id], onDelete: SetNull) |
 | `items` | `CartItem[]` |  |  |
+| `convertedOrders` | `Order[]` |  |  |
 
-Indexes: `@@index([userId])` · `@@index([expiresAt])`
+Indexes: `@@index([userId])` · `@@index([expiresAt])` · `@@index([guestPhone])`
 
-### `CartItem`  <sub>`apps/api/prisma/schema/cart.prisma:29`</sub>
+### `CartItem`  <sub>`apps/api/prisma/schema/cart.prisma:58`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -65,7 +71,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@index([cartId])`
 
-### `CartItemStitchingOption`  <sub>`apps/api/prisma/schema/cart.prisma:64`</sub>
+### `CartItemStitchingOption`  <sub>`apps/api/prisma/schema/cart.prisma:93`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -81,4 +87,4 @@ Indexes: `@@id([cartItemId, optionId])`
 
 ---
 
-[← all schemas](../cross/data-model.md) · [← index home](../README.md)
+[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)

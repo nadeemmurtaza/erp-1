@@ -4,13 +4,23 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
+import { uploadFile } from '@/lib/upload-client';
+import { IMAGE_UPLOAD_RULES } from '@/lib/upload-rules';
+import { Dropzone } from '@/components/ui/dropzone';
+import { useUploads } from '@/components/admin/upload-provider';
 
 interface ProductImageRow {
   id: string;
   url: string;
+  /** Deprecated (WO-3.6) — kept only as a pre-migration fallback; `translations` is authoritative. */
   alt: string | null;
+  translations?: Array<{ locale: string; alt: string }>;
   order: number;
   isPrimary: boolean;
+}
+
+function altFor(image: ProductImageRow, locale: string): string {
+  return image.translations?.find((t) => t.locale === locale)?.alt ?? (locale === 'en' ? image.alt ?? '' : '');
 }
 
 /** What makes alt text worth writing, shown once above the grid rather than repeated per image. */
@@ -29,6 +39,13 @@ const ALT_TEXT_PLACEHOLDER = 'e.g. "Maroon chiffon 3-piece suit, front view"';
  * Reordering is by move-left/move-right rather than drag-and-drop: it works on
  * a phone and with a keyboard, which drag-and-drop does not, and shop staff
  * photograph and upload from a phone.
+ *
+ * Photographs go up through the shell's upload tray (`useUploads`), not through
+ * this component: each is its own lane with a percent, speed and Cancel, one
+ * failing never stops the others, and the transfer carries on if the operator
+ * moves to another page (UPL-5, UPL-6). They are sent one at a time for this
+ * product (`serialKey`), because the API numbers a new image from the count it
+ * read before it saved, and two sent together would both take the same place.
  */
 export function ImageManager({
   productId,
@@ -47,47 +64,58 @@ export function ImageManager({
   const [images, setImages] = useState<ProductImageRow[]>(
     [...initialImages].sort((a, b) => a.order - b.order),
   );
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const uploads = useUploads();
+  // The tray lists every upload in the shell; the form around this only cares about the ones started here.
+  const [started, setStarted] = useState<ReadonlySet<string>>(() => new Set());
+  const lanes = uploads.items.filter((lane) => started.has(lane.id));
+  const busy = lanes.some((lane) => lane.status === 'queued' || lane.status === 'uploading');
+  // A lane that failed holds the save until it is retried or dismissed; a canceled one was the operator's own choice.
+  const failed = error !== null || lanes.some((lane) => lane.status === 'failed' || lane.status === 'rejected');
 
   // Mirrored up to the form on every change, so "saving" and "still
   // uploading" can never be true at the same time.
   useEffect(() => {
-    onUploadState?.({ busy, failed: error !== null });
-  }, [busy, error, onUploadState]);
+    onUploadState?.({ busy, failed });
+  }, [busy, failed, onUploadState]);
 
-  async function upload(files: FileList | null) {
-    if (!files?.length) return;
-    setBusy(true);
+  function upload(files: File[]) {
     setError(null);
-
-    try {
-      for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append('file', file);
-        // No alt text here — a filename ("IMG_2024_0193") is not a
-        // description of the photo. Staff write the real one below,
-        // per image, right after it lands in the grid.
-
-        const created = await adminFetch<ProductImageRow>(
-          `/admin/catalog/products/${productId}/images`,
-          { method: 'POST', formData },
-        );
-        setImages((current) => [...current, created]);
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Upload failed');
-    } finally {
-      setBusy(false);
-    }
+    const { ids } = uploads.enqueue(files, {
+      rules: IMAGE_UPLOAD_RULES,
+      // No alt text here — a filename ("IMG_2024_0193") is not a
+      // description of the photo. Staff write the real one below,
+      // per image, right after it lands in the grid.
+      send: (file, context) =>
+        uploadFile<ProductImageRow>({
+          path: `/admin/catalog/products/${productId}/images`,
+          file,
+          serialKey: `product-images:${productId}`,
+          ...context,
+        }),
+      onDone: (created) => setImages((current) => [...current, created]),
+    });
+    setStarted((current) => new Set([...current, ...ids]));
   }
 
-  async function saveAlt(id: string, alt: string) {
+  async function saveAlt(id: string, alt: string, locale: string) {
     const previous = images;
-    setImages((current) => current.map((image) => (image.id === id ? { ...image, alt } : image)));
+    setImages((current) =>
+      current.map((image) =>
+        image.id === id
+          ? {
+              ...image,
+              translations: [
+                ...(image.translations ?? []).filter((t) => t.locale !== locale),
+                { locale, alt },
+              ],
+            }
+          : image,
+      ),
+    );
 
     try {
-      await adminFetch(`/admin/catalog/images/${id}`, { method: 'PATCH', body: { alt } });
+      await adminFetch(`/admin/catalog/images/${id}`, { method: 'PATCH', body: { alt, locale } });
     } catch (cause) {
       setImages(previous);
       setError(cause instanceof Error ? cause.message : 'Could not save the alt text');
@@ -155,7 +183,7 @@ export function ImageManager({
               <div className="relative aspect-[3/4] bg-white">
                 <Image
                   src={image.url}
-                  alt={image.alt ?? ''}
+                  alt={altFor(image, 'en')}
                   fill
                   sizes="150px"
                   className="object-cover"
@@ -189,11 +217,19 @@ export function ImageManager({
                 </button>
               </div>
 
-              <div className="px-1.5 pb-1.5">
+              <div className="space-y-1 px-1.5 pb-1.5">
                 <AltTextField
-                  key={image.id}
-                  value={image.alt ?? ''}
-                  onSave={(alt) => void saveAlt(image.id, alt)}
+                  key={`${image.id}-en`}
+                  value={altFor(image, 'en')}
+                  placeholder={ALT_TEXT_PLACEHOLDER}
+                  onSave={(alt) => void saveAlt(image.id, alt, 'en')}
+                />
+                <AltTextField
+                  key={`${image.id}-ur`}
+                  value={altFor(image, 'ur')}
+                  placeholder="اردو متن (اختیاری)"
+                  dir="rtl"
+                  onSave={(alt) => void saveAlt(image.id, alt, 'ur')}
                 />
               </div>
             </li>
@@ -204,21 +240,7 @@ export function ImageManager({
         <p className="mb-4 text-sm text-neutral-900/60">No photographs yet.</p>
       )}
 
-      <label className="btn-secondary cursor-pointer">
-        {busy ? 'Uploading…' : 'Upload images'}
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/avif"
-          multiple
-          disabled={busy}
-          onChange={(event) => {
-            void upload(event.target.files);
-            event.target.value = '';
-          }}
-          className="sr-only"
-        />
-      </label>
-      <p className="mt-2 text-xs text-neutral-900/60">JPEG, PNG, WebP or AVIF, up to 8MB each.</p>
+      <Dropzone multiple rules={IMAGE_UPLOAD_RULES} label="Drop photographs here, click to choose, or paste" onFiles={upload} />
     </div>
   );
 }
@@ -229,19 +251,33 @@ export function ImageManager({
  * re-render mid-edit, but resets if the image's saved value changes under it
  * (e.g. a rollback after a failed save elsewhere).
  */
-function AltTextField({ value, onSave }: { value: string; onSave: (value: string) => void }) {
+function AltTextField({
+  value,
+  onSave,
+  placeholder = ALT_TEXT_PLACEHOLDER,
+  dir,
+}: {
+  value: string;
+  onSave: (value: string) => void;
+  placeholder?: string;
+  dir?: 'rtl';
+}) {
   const [draft, setDraft] = useState(value);
 
   return (
     <input
       type="text"
       value={draft}
-      placeholder={ALT_TEXT_PLACEHOLDER}
+      placeholder={placeholder}
+      dir={dir}
       onChange={(event) => setDraft(event.target.value)}
       onBlur={() => {
         if (draft !== value) onSave(draft);
       }}
-      className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
+      className={cn(
+        'w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none',
+        dir === 'rtl' && 'font-urdu',
+      )}
     />
   );
 }
@@ -283,6 +319,7 @@ export interface StagedImage {
   file: File;
   previewUrl: string;
   alt: string;
+  altUr: string;
 }
 
 function newLocalId(): string {
@@ -319,13 +356,14 @@ export function ImageStager({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function addFiles(files: FileList | null) {
-    if (!files?.length) return;
-    const added = Array.from(files).map((file) => ({
+  function addFiles(files: File[]) {
+    if (files.length === 0) return;
+    const added = files.map((file) => ({
       localId: newLocalId(),
       file,
       previewUrl: URL.createObjectURL(file),
       alt: '',
+      altUr: '',
     }));
     onChange([...images, ...added]);
   }
@@ -336,8 +374,8 @@ export function ImageStager({
     onChange(images.filter((image) => image.localId !== localId));
   }
 
-  function setAlt(localId: string, alt: string) {
-    onChange(images.map((image) => (image.localId === localId ? { ...image, alt } : image)));
+  function setAlt(localId: string, patch: Partial<Pick<StagedImage, 'alt' | 'altUr'>>) {
+    onChange(images.map((image) => (image.localId === localId ? { ...image, ...patch } : image)));
   }
 
   function move(index: number, direction: -1 | 1) {
@@ -401,13 +439,21 @@ export function ImageStager({
                   </button>
                 </div>
 
-                <div className="px-1.5 pb-1.5">
+                <div className="space-y-1 px-1.5 pb-1.5">
                   <input
                     type="text"
                     value={image.alt}
                     placeholder={ALT_TEXT_PLACEHOLDER}
-                    onChange={(event) => setAlt(image.localId, event.target.value)}
+                    onChange={(event) => setAlt(image.localId, { alt: event.target.value })}
                     className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
+                  />
+                  <input
+                    type="text"
+                    value={image.altUr}
+                    placeholder="اردو متن (اختیاری)"
+                    dir="rtl"
+                    onChange={(event) => setAlt(image.localId, { altUr: event.target.value })}
+                    className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 font-urdu placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
                   />
                 </div>
               </li>
@@ -418,23 +464,13 @@ export function ImageStager({
         <p className="mb-4 text-sm text-neutral-900/60">No photographs yet.</p>
       )}
 
-      <label className="btn-secondary cursor-pointer">
-        Choose images
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/avif"
-          multiple
-          onChange={(event) => {
-            addFiles(event.target.files);
-            event.target.value = '';
-          }}
-          className="sr-only"
-        />
-      </label>
-      <p className="mt-2 text-xs text-neutral-900/60">
-        JPEG, PNG, WebP or AVIF, up to 8MB each. Uploaded when you create the product below — no
-        separate trip needed.
-      </p>
+      <Dropzone
+        multiple
+        rules={IMAGE_UPLOAD_RULES}
+        label="Drop photographs here, click to choose, or paste"
+        hint="Uploaded when you create the product below — no separate trip needed."
+        onFiles={addFiles}
+      />
     </div>
   );
 }
@@ -470,10 +506,18 @@ export async function uploadStagedImages(
       formData.append('file', image.file);
       if (image.alt.trim()) formData.append('alt', image.alt.trim());
 
-      await adminFetch(`/admin/catalog/products/${productId}/images`, {
+      const created = await adminFetch<{ id: string }>(`/admin/catalog/products/${productId}/images`, {
         method: 'POST',
         formData,
       });
+
+      if (image.altUr.trim()) {
+        await adminFetch(`/admin/catalog/images/${created.id}`, {
+          method: 'PATCH',
+          body: { alt: image.altUr.trim(), locale: 'ur' },
+        });
+      }
+
       uploaded += 1;
     } catch (cause) {
       firstError ??= cause instanceof Error ? cause.message : 'Upload failed';

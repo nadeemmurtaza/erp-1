@@ -82,3 +82,17 @@ export function updateCartItem(
 export function removeCartItem(itemId: string, locale: string): Promise<Cart> {
   return cartFetch(`/items/${itemId}`, { method: 'DELETE', locale });
 }
+
+/**
+ * WO-8.5 — captures a guest's phone and marketing consent onto the cart as
+ * soon as they're typed at checkout, before the order exists. A no-op
+ * server-side for a signed-in customer (their account email already covers
+ * this), so it's safe to call unconditionally from the checkout form.
+ */
+export function updateGuestContact(
+  phone: string,
+  marketingConsent: boolean,
+  locale: string,
+): Promise<Cart> {
+  return cartFetch('/guest-contact', { method: 'PATCH', body: { phone, marketingConsent }, locale });
+}

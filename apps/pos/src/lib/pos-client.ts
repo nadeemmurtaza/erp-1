@@ -69,9 +69,52 @@ export interface PosOrder {
   payment: { provider: string; status: string; amount: number };
 }
 
+/** pos-hardware/31 §2 — a modifier changes the till total ("extra shot"). */
+export interface PosLineModifierRequest {
+  key: string;
+  label: string;
+  priceDeltaMinor: number;
+}
+
+/** pos-hardware/31 §2 — where a line's quantity came from, when not typed. */
+export type PosLineQuantitySourceRequest =
+  | { source: 'TYPED' }
+  | { source: 'SCALE_WEIGHT' }
+  | { source: 'BOM_RECIPE_SCALE'; recipeId: string };
+
 export interface PosSaleLine {
   variantId: string;
   quantity: number;
+  lineRef?: string;
+  modifiers?: PosLineModifierRequest[];
+  quantitySource?: PosLineQuantitySourceRequest;
+}
+
+/** pos-hardware/31 §3 (WO-31.3) — a sale started but not yet tendered. */
+export interface PosParkedSale {
+  id: string;
+  shiftId: string;
+  orderType: 'COUNTER' | 'TAB' | 'TABLE';
+  label: string;
+  basketSnapshot: unknown;
+  parkedAt: string;
+  retrievedAt: string | null;
+}
+
+/** pos-hardware/31 §1/WO-31.4 — a sellable BOM recipe, for a BOM_RECIPE_SCALE line. */
+export interface PosSellableRecipe {
+  recipeId: string;
+  variantId: string;
+  sku: string;
+  nameEn: string;
+  unitPrice: number;
+}
+
+/** finance-accounting/151-layby-installment-sales.md — requested at the point of sale. */
+export interface PosInstalmentPlanRequest {
+  type: 'LAYBY' | 'INSTALMENT';
+  depositMinor: number;
+  schedule: { dueDate: string; amountMinor: number }[];
 }
 
 export interface PosSaleRequest {
@@ -79,6 +122,7 @@ export interface PosSaleRequest {
   customerName?: string;
   customerPhone?: string;
   customerEmail?: string;
+  instalmentPlan?: PosInstalmentPlanRequest;
 }
 
 export interface PosReceiptData {
@@ -132,6 +176,29 @@ export function searchProducts(terminalId: string, q: string): Promise<{ data: P
   return request(`/admin/pos/products/search`, { query: { terminalId, q } });
 }
 
+/** pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line. */
+export function listSellableRecipes(): Promise<{ data: PosSellableRecipe[] }> {
+  return request('/admin/pos/products/recipes');
+}
+
+/** pos-hardware/76-pos-mobile-dashboard.md WO-76.1 — scoped to one terminal's own location. */
+export interface PosDashboardSummary {
+  dailySales: { revenue: number; orderCount: number };
+  totalCustomers: number;
+  lowStockVariants: Array<{
+    variantId: string;
+    sku: string;
+    productName: string;
+    variantLabel: string;
+    stock: number;
+    reorderPoint: number;
+  }>;
+}
+
+export function getDashboardSummary(terminalId: string): Promise<PosDashboardSummary> {
+  return request('/admin/pos/dashboard', { query: { terminalId } });
+}
+
 export function openShift(terminalId: string, openingCashMinor: number): Promise<PosShift> {
   return request('/admin/pos/shifts/open', { method: 'POST', body: { terminalId, openingCashMinor } });
 }
@@ -157,8 +224,41 @@ export function recordCashMovement(
   return request(`/admin/pos/shifts/${shiftId}/cash-movements`, { method: 'POST', body: { type, amountMinor, reason } });
 }
 
-export function sell(shiftId: string, sale: PosSaleRequest): Promise<PosOrder> {
-  return request(`/admin/pos/shifts/${shiftId}/sales`, { method: 'POST', body: sale });
+/**
+ * architecture-patterns/157 — `idempotencyKey` is generated once, at the
+ * moment the sale is first attempted, and resent unchanged on every retry
+ * (the immediate one here, and any later outbox-sync retry of the same
+ * queued sale) so a lost response or a flaky reconnect collapses to the
+ * one order the till already promised the customer, never a second one.
+ */
+export function sell(shiftId: string, sale: PosSaleRequest, idempotencyKey: string): Promise<PosOrder> {
+  return request(`/admin/pos/shifts/${shiftId}/sales`, {
+    method: 'POST',
+    headers: { 'Idempotency-Key': idempotencyKey },
+    body: sale,
+  });
+}
+
+/** pos-hardware/31 WO-31.3 — park a TAB/TABLE sale in progress. A COUNTER sale is refused server-side. */
+export function parkSale(
+  shiftId: string,
+  orderType: 'TAB' | 'TABLE',
+  label: string,
+  basketSnapshot: unknown,
+): Promise<PosParkedSale> {
+  return request(`/admin/pos/shifts/${shiftId}/parked-sales`, {
+    method: 'POST',
+    body: { orderType, label, basketSnapshot },
+  });
+}
+
+/** Idempotent — retrieving an already-retrieved sale is refused (409). */
+export function retrieveParkedSale(shiftId: string, parkedSaleId: string): Promise<PosParkedSale> {
+  return request(`/admin/pos/shifts/${shiftId}/parked-sales/${parkedSaleId}/retrieve`, { method: 'POST' });
+}
+
+export function listParkedSales(shiftId: string): Promise<{ data: PosParkedSale[] }> {
+  return request(`/admin/pos/shifts/${shiftId}/parked-sales`);
 }
 
 export function getReceipt(orderId: string): Promise<PosReceiptData> {

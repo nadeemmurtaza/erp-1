@@ -13,14 +13,14 @@ Source: `apps/api/src/core/prisma/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (4 · 133 lines)
+## Files (4 · 139 lines)
 
 All paths relative to `apps/api/src/core/prisma`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `client.ts` | module | 11 | — | Single import point for the generated Prisma client. |
-| `enums.spec.ts` | unit test | 66 | — |  |
+| `enums.spec.ts` | unit test | 72 | — |  |
 | `prisma.module.ts` | nest module | 10 | 1 |  |
 | `prisma.service.ts` | service | 46 | 1 |  |
 
@@ -81,4 +81,4 @@ check there before adding another.
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

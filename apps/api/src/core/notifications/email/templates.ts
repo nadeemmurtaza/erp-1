@@ -104,6 +104,17 @@ export interface EmailVerificationEmailData {
   token: string;
 }
 
+/**
+ * A personal API key's secret was issued (163-personal-api-keys.md). Never
+ * the secret, and never the key's name — that is text whoever minted it
+ * chose, with no place in a trusted message.
+ */
+export interface ApiKeyIssuedEmailData {
+  surface: 'ADMIN' | 'STOREFRONT';
+  lastFour: string;
+  reason: 'CREATED' | 'ROTATED';
+}
+
 /** A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue, not an order snapshot. */
 export interface MarketingProduct {
   name: string;
@@ -201,6 +212,17 @@ function emailVerificationUrl(ctx: EmailContext, locale: Locale, token: string):
   return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/verify-email?token=${encodeURIComponent(
     token,
   )}`;
+}
+
+/**
+ * Where the owner reviews and revokes the key: the storefront account page
+ * for a store key, the admin's own page for an admin key. The admin is served
+ * by the same web app as the storefront, under /admin, and is English-only —
+ * so it takes no locale segment.
+ */
+function apiKeysUrl(ctx: EmailContext, locale: Locale, surface: ApiKeyIssuedEmailData['surface']): string {
+  const base = ctx.storefrontUrl.replace(/\/+$/, '');
+  return surface === 'ADMIN' ? `${base}/admin/account/api-keys` : `${base}/${locale}/account/api-keys`;
 }
 
 function renderOrderConfirmed(
@@ -525,6 +547,59 @@ function renderPasswordChanged(
   return { subject: t.passwordChanged.subject, html, text: htmlToText(html) };
 }
 
+function renderApiKeyIssued(data: ApiKeyIssuedEmailData, locale: Locale, ctx: EmailContext): RenderedEmail {
+  const t = copyFor(locale);
+  const lastFour = ltr(data.lastFour);
+  const body = [
+    heading(t.apiKeyIssued.heading, locale),
+    paragraph(
+      data.reason === 'ROTATED'
+        ? t.apiKeyIssued.rotated(lastFour, data.surface)
+        : t.apiKeyIssued.created(lastFour, data.surface),
+      locale,
+    ),
+    paragraph(t.apiKeyIssued.notYou, locale),
+    button(t.apiKeyIssued.cta, apiKeysUrl(ctx, locale, data.surface), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.apiKeyIssued.subject, html, text: htmlToText(html) };
+}
+
+/**
+ * 161-sso-identity-federation.md §3. Carries no data on purpose: never the
+ * identity provider, never the external identity, and never the admin-typed
+ * connection label — only that a new way in exists. The footer's contact
+ * line is the way to report one that was not theirs.
+ */
+function renderSsoAccountLinked(
+  _data: Record<string, never>,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.ssoAccountLinked.heading, locale),
+    paragraph(t.ssoAccountLinked.intro, locale),
+    paragraph(t.ssoAccountLinked.notYou, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.ssoAccountLinked.subject, html, text: htmlToText(html) };
+}
+
 function renderPasswordReset(
   data: PasswordResetEmailData,
   locale: Locale,
@@ -578,6 +653,35 @@ function productGrid(products: MarketingProduct[]): LineItem[] {
     quantity: 1,
     amount: product.price ?? '',
   }));
+}
+
+/** WO-8.5's own first stage of the doc's 1h/24h/72h sequence — a soft nudge, no incentive. */
+function renderAbandonedCartFirstTouch(
+  data: AbandonedCartEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.abandonedCartFirstTouch.heading, locale),
+    paragraph(t.marketing.abandonedCartFirstTouch.intro, locale),
+    button(t.marketing.abandonedCartFirstTouch.cta, data.cartUrl, locale),
+    itemsTable(productGrid(data.items), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.marketing.abandonedCartFirstTouch.subject,
+    html,
+    text: htmlToText(html),
+  };
 }
 
 function renderAbandonedCartReminder(
@@ -929,7 +1033,22 @@ export const EMAIL_TEMPLATES: Record<
     locale: Locale,
     ctx: EmailContext,
   ) => RenderedEmail,
+  'user.api_key_issued': renderApiKeyIssued as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.sso_account_linked': renderSsoAccountLinked as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
   'user.email_verification': renderEmailVerification as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.abandoned_cart_first_touch': renderAbandonedCartFirstTouch as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

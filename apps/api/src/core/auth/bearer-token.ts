@@ -13,3 +13,18 @@ export function bearerToken(authorization: string | undefined): string {
   }
   return authorization.slice('Bearer '.length);
 }
+
+/**
+ * The credential in an `Authorization: Bearer <credential>` header, or
+ * undefined — never throws. For JwtAuthGuard, which must look at the
+ * credential before deciding which path authenticates it (a personal API
+ * key, or a session JWT). Parsed exactly as passport-jwt's
+ * `fromAuthHeaderAsBearerToken()` parses it — the first two
+ * whitespace-separated tokens, scheme compared case-insensitively — so the
+ * two paths can never disagree about which string is the credential.
+ */
+export function bearerCredential(authorization: string | undefined): string | undefined {
+  const match = /(\S+)\s+(\S+)/.exec(authorization ?? '');
+  if (!match || match[1].toLowerCase() !== 'bearer') return undefined;
+  return match[2];
+}

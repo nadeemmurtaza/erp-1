@@ -3,37 +3,70 @@
 
 # Module: `analytics`
 
-Pack **core** · enabled by the `MODULES` allowlist · 7 files
+Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
-Source: `apps/api/src/modules/analytics/`
+Source: `apps/api/src/modules/money/analytics/`
 
-## Files (7 · 1,693 lines)
+## Files (20 · 6,342 lines)
 
-All paths relative to `apps/api/src/modules/analytics`.
+All paths relative to `apps/api/src/modules/money/analytics`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `analytics.comparison.spec.ts` | unit test | 309 | — |  |
-| `analytics.controller.ts` | controller | 73 | 1 |  |
-| `analytics.module.ts` | nest module | 11 | 1 |  |
-| `analytics.service.ts` | service | 779 | 8 |  |
+| `analytics.category-velocity.spec.ts` | unit test | 139 | — |  |
+| `analytics.comparison.spec.ts` | unit test | 314 | — |  |
+| `analytics.controller.ts` | controller | 253 | 1 |  |
+| `analytics.customers.spec.ts` | unit test | 171 | — |  |
+| `analytics.inventory.spec.ts` | unit test | 199 | — |  |
+| `analytics.lifecycle.spec.ts` | unit test | 118 | — |  |
+| `analytics.metrics.spec.ts` | unit test | 210 | — |  |
+| `analytics.metrics.ts` | module | 454 | 7 |  |
+| `analytics.module.ts` | nest module | 30 | 1 |  |
+| `analytics.orders.spec.ts` | unit test | 204 | — |  |
+| `analytics.products.spec.ts` | unit test | 265 | — |  |
+| `analytics.purchasing.spec.ts` | unit test | 388 | — |  |
+| `analytics.sales.spec.ts` | unit test | 157 | — |  |
+| `analytics.service.ts` | service | 2593 | 39 |  |
+| `analytics.summary.spec.ts` | unit test | 97 | — |  |
+| `analytics.workshop.spec.ts` | unit test | 185 | — |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |
+| `cards.dto.ts` | dto | 44 | 2 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 | — |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 | 1 | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (StockMovement,… |
 
 
-## HTTP routes (6)
+## HTTP routes (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` :52 | Sales, purchases and expenses side by side, bucketed by day, week or month |
-| GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` :19 | Everything the dashboard shows, in one request |
-| GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` :36 | Funnel, geography, fulfilment and payment-mix metrics |
-| PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` :69 | Set the monthly revenue target shown on the dashboard |
-| GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` :28 | Which garments and style options drive the stitching business |
-| GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` :44 | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/cards` | `analytics.view` | `AnalyticsController.cards` :20 | Every dashboard card, batched by provider (D2) — one request per range change |
+| GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` :232 | Sales, purchases and expenses side by side, bucketed by day, week or month |
+| GET | `/admin/analytics/customers/overview` | `analytics.view` | `AnalyticsController.customersOverview` :185 | The customer book — totals, by city, by acquisition source, by lifecycle status |
+| GET | `/admin/analytics/customers/retention` | `analytics.view` | `AnalyticsController.customersRetention` :194 | Signup cohorts and how many of each went on to order again, plus the overall repeat rate |
+| GET | `/admin/analytics/customers/top` | `analytics.view` | `AnalyticsController.customersTop` :203 | The highest-lifetime-value customers |
+| GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` :57 | Everything the dashboard shows, in one request |
+| GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` :74 | Funnel, geography, fulfilment and payment-mix metrics |
+| GET | `/admin/analytics/inventory/movements` | `analytics.view` | `AnalyticsController.inventoryMovements` :173 | Stock movement volume by day and reason, plus the most recent individual movements |
+| GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` :161 | What the stock on hand is worth right now, by category, kind and age |
+| PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` :249 | Set the monthly revenue target shown on the dashboard |
+| GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` :94 | Average and median time spent in each order-status transition |
+| GET | `/admin/analytics/orders/lifecycle-breakdown` | `analytics.view` | `AnalyticsController.orderLifecycleBreakdown` :88 | Every order, right now, grouped by status into Pending/Completed/Voided |
+| GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` :82 | Open orders right now — ageing buckets, the oldest worklist, by-city and by-payment |
+| GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` :147 | Revenue, units and product count by category, with a daily trend |
+| GET | `/admin/analytics/products/category-velocity` | `analytics.view` | `AnalyticsController.categoryVelocity` :155 | The top categories' own revenue, broken out day by day |
+| GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` :141 | In-stock, active variants flagged as slow movers, oldest first |
+| GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` :131 | Best-selling products by revenue, with units and margin |
+| GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` :102 | What was ordered, received, billed and is still owed to suppliers |
+| GET | `/admin/analytics/purchasing/suppliers` | `analytics.view` | `AnalyticsController.purchasingSuppliers` :119 | Spend, order count, on-time rate and lead time by supplier |
+| GET | `/admin/analytics/sales/aov` | `analytics.view` | `AnalyticsController.salesAov` :34 | Average order value, its median and basket size, plus the value distribution |
+| GET | `/admin/analytics/sales/funnel` | `analytics.view` | `AnalyticsController.salesFunnel` :51 | View-to-purchase funnel, conversion rate, abandoned carts and traffic sources |
+| GET | `/admin/analytics/sales/profit` | `analytics.view` | `AnalyticsController.salesProfit` :40 | Direct gross profit — revenue less unit cost — overall and by product |
+| GET | `/admin/analytics/sales/revenue` | `analytics.view` | `AnalyticsController.salesRevenue` :28 | Revenue, AOV, channel split and progress against the monthly target |
+| GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` :66 | Which garments and style options drive the stitching business |
+| GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` :224 | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` :212 | Workshop throughput — started/completed per day, time in each stage, output by tailor, th… |
 
 
 ## Domain events
@@ -66,7 +99,7 @@ _none_
 **`AnalyticsModule`** (`analytics.module.ts`)
 - imports: —
 - controllers: `AnalyticsController`
-- providers: `AnalyticsService`, `SupplyChainDigestCron`
+- providers: `AnalyticsService`, `SupplyChainDigestCron`, `SalesMetricsProvider`, `SalesCostMetricsProvider`, `OrdersMetricsProvider`, `ProductsMetricsProvider`, `CustomersMetricsProvider`, `WorkshopMetricsProvider`, `WorkshopStaffMetricsProvider`
 - exports: —
 
 
@@ -76,21 +109,35 @@ _none_
 - core `common`
 - core `config`
 - core `events`
+- core `metrics`
 - core `notifications`
 - core `prisma`
+- core `redis`
 - core `settings`
 - core `time`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (13)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `analytics.category-velocity.spec.ts` | 4 | AnalyticsService.categoryVelocity — WO-57.1 |
 | `analytics.comparison.spec.ts` | 8 | AnalyticsService.comparison |
+| `analytics.customers.spec.ts` | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention · customersTop |
+| `analytics.inventory.spec.ts` | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
+| `analytics.lifecycle.spec.ts` | 4 | AnalyticsService.orderLifecycleBreakdown — WO-69.1 |
+| `analytics.metrics.spec.ts` | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider · CustomersMetricsPro… |
+| `analytics.orders.spec.ts` | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
+| `analytics.products.spec.ts` | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlowSellers · productsCa… |
+| `analytics.purchasing.spec.ts` | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9.9 — avgProductRatin… |
+| `analytics.sales.spec.ts` | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit · salesFunnel |
+| `analytics.summary.spec.ts` | 2 | AnalyticsService.summary — WO-45.1 totalUnits |
+| `analytics.workshop.spec.ts` | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
 | `supply-chain-digest.cron.spec.ts` | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
 
 
@@ -98,20 +145,60 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AnalyticsController` | class | `analytics.controller.ts:14` |  |
-| `AnalyticsModule` | class | `analytics.module.ts:10` |  |
-| `MonthlyTarget` | interface | `analytics.service.ts:17` |  |
-| `DashboardSummary` | interface | `analytics.service.ts:24` |  |
-| `StitchingAnalytics` | interface | `analytics.service.ts:44` |  |
-| `ExtendedAnalytics` | interface | `analytics.service.ts:53` |  |
-| `ComparisonBucket` | interface | `analytics.service.ts:74` |  |
-| `ComparisonAnalytics` | interface | `analytics.service.ts:84` |  |
-| `VisitorAnalytics` | interface | `analytics.service.ts:99` |  |
-| `AnalyticsService` | class | `analytics.service.ts:121` | Dashboard numbers. |
+| `AnalyticsController` | class | `analytics.controller.ts:15` |  |
+| `SalesMetricsProvider` | class | `analytics.metrics.ts:38` |  |
+| `SalesCostMetricsProvider` | class | `analytics.metrics.ts:113` |  |
+| `OrdersMetricsProvider` | class | `analytics.metrics.ts:172` |  |
+| `ProductsMetricsProvider` | class | `analytics.metrics.ts:223` |  |
+| `CustomersMetricsProvider` | class | `analytics.metrics.ts:312` |  |
+| `WorkshopMetricsProvider` | class | `analytics.metrics.ts:374` |  |
+| `WorkshopStaffMetricsProvider` | class | `analytics.metrics.ts:430` | `workshop.staff_accounts` alone — needs `users.manage`, stricter than the rest of this group. |
+| `AnalyticsModule` | class | `analytics.module.ts:29` |  |
+| `MonthlyTarget` | interface | `analytics.service.ts:24` |  |
+| `SalesRevenueReport` | interface | `analytics.service.ts:31` |  |
+| `SalesAovReport` | interface | `analytics.service.ts:38` |  |
+| `SalesProfitReport` | interface | `analytics.service.ts:44` |  |
+| `SalesFunnelReport` | interface | `analytics.service.ts:50` |  |
+| `DashboardSummary` | interface | `analytics.service.ts:57` |  |
+| `StitchingAnalytics` | interface | `analytics.service.ts:80` |  |
+| `ExtendedAnalytics` | interface | `analytics.service.ts:89` |  |
+| `OrderAgeingBucket` | interface | `analytics.service.ts:110` |  |
+| `OrdersOverview` | interface | `analytics.service.ts:115` |  |
+| `OrderLifecycleBreakdown` | interface | `analytics.service.ts:124` |  |
+| `OrderTransitionTiming` | interface | `analytics.service.ts:143` |  |
+| `OrdersFulfilment` | interface | `analytics.service.ts:151` |  |
+| `PurchasingSpend` | interface | `analytics.service.ts:156` |  |
+| `PurchasingSupplierRow` | interface | `analytics.service.ts:171` |  |
+| `PurchasingSuppliers` | interface | `analytics.service.ts:194` |  |
+| `ProductTopSellerRow` | interface | `analytics.service.ts:198` |  |
+| `ProductsTopSellers` | interface | `analytics.service.ts:210` |  |
+| `ProductSlowSellerRow` | interface | `analytics.service.ts:214` |  |
+| `ProductsSlowSellers` | interface | `analytics.service.ts:223` |  |
+| `ProductCategoryRow` | interface | `analytics.service.ts:227` |  |
+| `ProductsCategories` | interface | `analytics.service.ts:238` |  |
+| `CategoryVelocitySeries` | interface | `analytics.service.ts:245` | WO-57.1 — one category's own revenue, broken out day by day, for the top categories in the window plus one "O… |
+| `InventoryValuation` | interface | `analytics.service.ts:252` |  |
+| `StockMovementReasonRow` | interface | `analytics.service.ts:265` |  |
+| `InventoryMovementRow` | interface | `analytics.service.ts:272` |  |
+| `InventoryMovements` | interface | `analytics.service.ts:282` |  |
+| `CustomersOverview` | interface | `analytics.service.ts:288` |  |
+| `CustomerCohort` | interface | `analytics.service.ts:295` |  |
+| `CustomersRetention` | interface | `analytics.service.ts:303` |  |
+| `CustomerTopRow` | interface | `analytics.service.ts:308` |  |
+| `CustomersTop` | interface | `analytics.service.ts:318` |  |
+| `WorkshopStageRow` | interface | `analytics.service.ts:322` |  |
+| `WorkshopTailorRow` | interface | `analytics.service.ts:328` |  |
+| `WorkshopOutput` | interface | `analytics.service.ts:335` |  |
+| `ComparisonBucket` | interface | `analytics.service.ts:342` |  |
+| `ComparisonAnalytics` | interface | `analytics.service.ts:352` |  |
+| `VisitorAnalytics` | interface | `analytics.service.ts:367` |  |
+| `AnalyticsService` | class | `analytics.service.ts:389` | Dashboard numbers. |
 | `SetMonthlyTargetDto` | class | `analytics.dto.ts:4` |  |
+| `DashboardCardsQueryDto` | class | `cards.dto.ts:7` | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
+| `DashboardCardsResponse` | interface | `cards.dto.ts:33` | The response shape D2 pins — every key the caller may see AND whose module is enabled. |
 | `SupplyChainDigestCron` | class | `supply-chain-digest.cron.ts:24` | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (Stoc… |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

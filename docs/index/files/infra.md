@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 55 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 66 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -13,38 +13,39 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
-| `.env.branch.example` | example | 99 |  |
-| `.env.example` | example | 125 |  |
-| `.env.production.example` | example | 113 |  |
-| `.gitignore` | file | 53 |  |
+| `.env.branch.example` | example | 109 |  |
+| `.env.example` | example | 193 |  |
+| `.env.production.example` | example | 140 |  |
+| `.gitignore` | file | 75 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
-| `docker-compose.branch.yml` | yaml | 98 |  |
+| `docker-compose.branch.yml` | yaml | 129 |  |
 | `docker-compose.caddy.yml` | yaml | 31 |  |
 | `docker-compose.mail.yml` | yaml | 75 |  |
-| `docker-compose.prod.yml` | yaml | 101 |  |
-| `docker-compose.yml` | yaml | 42 |  |
+| `docker-compose.prod.yml` | yaml | 150 |  |
+| `docker-compose.yml` | yaml | 61 |  |
 | `docker-stack.edge.yml` | yaml | 42 |  |
-| `docker-stack.prod.yml` | yaml | 88 |  |
-| `docker-stack.staging.yml` | yaml | 88 |  |
-| `package.json` | json | 58 |  |
-| `pnpm-lock.yaml` | yaml | 17512 |  |
-| `pnpm-workspace.yaml` | yaml | 12 |  |
-| `turbo.json` | json | 49 |  |
+| `docker-stack.prod.yml` | yaml | 124 |  |
+| `docker-stack.staging.yml` | yaml | 124 |  |
+| `package.json` | json | 66 |  |
+| `pnpm-lock.yaml` | yaml | 19483 |  |
+| `pnpm-workspace.yaml` | yaml | 24 |  |
+| `turbo.json` | json | 56 |  |
 | `wrangler.toml` | toml | 17 |  |
 
 ### `.github` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `copilot-instructions.md` | doc | 80 |  |
+| `copilot-instructions.md` | doc | 81 |  |
 
-### `.github/workflows` (2)
+### `.github/workflows` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ci.yml` | yaml | 164 |  |
+| `ci.yml` | yaml | 203 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
+| `qodo-review.yml` | yaml | 44 |  |
 
 ### `deploy` (3)
 
@@ -73,37 +74,47 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (17)
+### `scripts` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2511 |  |
+| `build-index.mjs` | script | 2638 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
-| `check-contrast.mjs` | script | 425 |  |
+| `check-chart-imports.mjs` | script | 117 |  |
+| `check-clipboard.mjs` | script | 174 |  |
+| `check-contrast.mjs` | script | 650 |  |
+| `check-danger.mjs` | script | 220 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
-| `check-links.mjs` | script | 402 |  |
-| `check-module-boundaries.mjs` | script | 542 |  |
+| `check-hardcoded-policy.mjs` | script | 85 |  |
+| `check-hexagonal-purity.mjs` | script | 149 |  |
+| `check-links.mjs` | script | 416 |  |
+| `check-menus.mjs` | script | 229 |  |
+| `check-metadata-renderer.mjs` | script | 134 |  |
+| `check-module-boundaries.mjs` | script | 652 |  |
 | `check-overflow.mjs` | script | 644 |  |
+| `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
-| `check-rules.mjs` | script | 148 |  |
+| `check-rules.mjs` | script | 224 |  |
+| `check-tells.mjs` | script | 658 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
+| `load-auction.mjs` | script | 312 |  |
 | `nested-borders.py` | py | — |  |
-| `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
+| `sync-client.mjs` | script | 723 | scripts/sync-client.mjs — the Extractor. |
 
 ### `scripts/lib` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `index-scan.mjs` | utility | 906 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `index-scan.mjs` | utility | 965 | Scanners for the repository index. |
+| `model-routing.mjs` | utility | 401 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 
 ---
 
-[← all files](../cross/files.md) · [L1 page](../areas/infra.md) · [← index home](../README.md)
+[← all files](..\cross\files.md) · [L1 page](..\areas\infra.md) · [← index home](..\README.md)

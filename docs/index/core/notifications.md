@@ -3,7 +3,7 @@
 
 # Core: `notifications`
 
-Shared platform — available to every module, part of no feature · 19 files
+Shared platform — available to every module, part of no feature · 23 files
 
 
 > Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (19 · 4,193 lines)
+## Files (23 · 4,771 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -25,19 +25,23 @@ All paths relative to `apps/api/src/core/notifications`.
 | `email-accounts.service.ts` | service | 389 | 6 | Everything but the two *Encrypted columns — what the API is allowed to return. |
 | `email.channel.spec.ts` | unit test | 43 | — |  |
 | `email.channel.ts` | channel | 337 | 2 | Sends customer email over SMTP. |
-| `catalog.ts` | module | 342 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 557 | 2 | Email wording, in both languages the storefront ships. |
+| `catalog.ts` | module | 373 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 628 | 2 | Email wording, in both languages the storefront ships. |
 | `email-templates.admin.controller.ts` | controller | 59 | 1 | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or the honest… |
 | `html.ts` | module | 414 | 19 | Escapes text for interpolation into HTML. |
-| `templates.spec.ts` | unit test | 365 | — |  |
-| `templates.ts` | module | 1005 | 21 | Everything a template needs that comes from configuration, not the event. |
+| `templates.spec.ts` | unit test | 392 | — |  |
+| `templates.ts` | module | 1124 | 22 | Everything a template needs that comes from configuration, not the event. |
 | `expo-push.channel.ts` | channel | 89 | 1 | Push notifications to the mobile app, through Expo's push service. |
 | `log.channel.ts` | channel | 26 | 1 | Writes notifications to the application log instead of sending them. |
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 | 1 |  |
-| `notifications.service.ts` | service | 59 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
+| `notification-preferences.service.ts` | service | 71 | 2 |  |
+| `notifications.module.ts` | nest module | 36 | 1 |  |
+| `notifications.service.spec.ts` | unit test | 121 | — |  |
+| `notifications.service.ts` | service | 80 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
+| `sms.channel.ts` | channel | 48 | 1 | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `unsubscribe.controller.ts` | controller | 41 | 1 | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `unsubscribe.dto.ts` | dto | 15 | 1 |  |
+| `whatsapp.channel.ts` | channel | 63 | 1 | WO-8.4. |
 
 
 ## HTTP routes (14)
@@ -64,7 +68,9 @@ All paths relative to `apps/api/src/core/notifications`.
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `NotificationSent` | `notification.sent` | `notifications.service.ts:73` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -81,12 +87,13 @@ _none_
 **`NotificationsModule`** (`notifications.module.ts`)
 - imports: —
 - controllers: `DevicesController`, `EmailTemplatesAdminController`, `EmailAccountsAdminController`, `UnsubscribeController`
-- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `NotificationsService`, `EmailAccountsService`
-- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`
+- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `WhatsAppChannel`, `SmsChannel`, `NotificationsService`, `EmailAccountsService`, `NotificationPreferencesService`
+- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`, `WhatsAppChannel`, `NotificationPreferencesService`
 
 
 ## Reaches out to
 
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -94,12 +101,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `email.channel.spec.ts` | 2 | isDeliverable |
-| `templates.spec.ts` | 27 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
+| `templates.spec.ts` | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
+| `notifications.service.spec.ts` | 3 | NotificationsService |
 
 
 ## Every export in this unit
@@ -128,9 +136,9 @@ check there before adding another.
 | `EmailTemplateCategory` | type | `catalog.ts:18` |  |
 | `EmailTemplateCatalogEntry` | interface | `catalog.ts:20` |  |
 | `EMAIL_TEMPLATE_CATALOG` | const | `catalog.ts:83` |  |
-| `purposeForTemplate` | function | `catalog.ts:338` | Which connected mailbox (see EmailAccountsService) a template should send from. |
+| `purposeForTemplate` | function | `catalog.ts:369` | Which connected mailbox (see EmailAccountsService) a template should send from. |
 | `EmailCopy` | interface | `copy.ts:15` | Email wording, in both languages the storefront ships. |
-| `copyFor` | function | `copy.ts:554` |  |
+| `copyFor` | function | `copy.ts:625` |  |
 | `EmailTemplatesAdminController` | class | `email-templates.admin.controller.ts:23` | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or… |
 | `esc` | function | `html.ts:22` | Escapes text for interpolation into HTML. |
 | `escUrl` | function | `html.ts:38` | Escapes a URL for an href or src. |
@@ -162,27 +170,32 @@ check there before adding another.
 | `RefundEmailData` | interface | `templates.ts:90` |  |
 | `PasswordResetEmailData` | interface | `templates.ts:97` |  |
 | `EmailVerificationEmailData` | interface | `templates.ts:102` |  |
-| `MarketingProduct` | interface | `templates.ts:108` | A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue,… |
-| `AbandonedCartEmailData` | interface | `templates.ts:116` |  |
-| `AbandonedBrowseEmailData` | interface | `templates.ts:126` |  |
-| `ReviewRequestEmailData` | interface | `templates.ts:130` |  |
-| `CrossSellEmailData` | interface | `templates.ts:136` |  |
-| `ReplenishmentEmailData` | interface | `templates.ts:142` |  |
-| `CampaignEmailData` | interface | `templates.ts:153` | A one-off campaign send — holiday sale, product launch, flash sale. |
-| `StitchingEmailData` | interface | `templates.ts:163` |  |
-| `EMAIL_TEMPLATES` | const | `templates.ts:873` | Template key -> renderer. |
-| `renderEmail` | function | `templates.ts:995` | Renders a template, or null when none is registered for that key. |
+| `ApiKeyIssuedEmailData` | interface | `templates.ts:112` | A personal API key's secret was issued (163-personal-api-keys.md). |
+| `MarketingProduct` | interface | `templates.ts:119` | A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue,… |
+| `AbandonedCartEmailData` | interface | `templates.ts:127` |  |
+| `AbandonedBrowseEmailData` | interface | `templates.ts:137` |  |
+| `ReviewRequestEmailData` | interface | `templates.ts:141` |  |
+| `CrossSellEmailData` | interface | `templates.ts:147` |  |
+| `ReplenishmentEmailData` | interface | `templates.ts:153` |  |
+| `CampaignEmailData` | interface | `templates.ts:164` | A one-off campaign send — holiday sale, product launch, flash sale. |
+| `StitchingEmailData` | interface | `templates.ts:174` |  |
+| `EMAIL_TEMPLATES` | const | `templates.ts:977` | Template key -> renderer. |
+| `renderEmail` | function | `templates.ts:1114` | Renders a template, or null when none is registered for that key. |
 | `ExpoPushChannel` | class | `expo-push.channel.ts:29` | Push notifications to the mobile app, through Expo's push service. |
 | `LogNotificationChannel` | class | `log.channel.ts:12` | Writes notifications to the application log instead of sending them. |
 | `NotificationRecipient` | interface | `notification-channel.ts:9` | Extension point: outbound customer messaging. |
 | `NotificationMessage` | interface | `notification-channel.ts:23` |  |
 | `NotificationChannel` | interface | `notification-channel.ts:32` |  |
-| `NotificationsModule` | class | `notifications.module.ts:29` |  |
-| `NotificationsService` | class | `notifications.service.ts:15` | Fans a message out to every enabled channel that can reach the recipient. |
+| `PreferenceCell` | interface | `notification-preferences.service.ts:7` |  |
+| `NotificationPreferencesService` | class | `notification-preferences.service.ts:21` | WO-7.8. |
+| `NotificationsModule` | class | `notifications.module.ts:35` |  |
+| `NotificationsService` | class | `notifications.service.ts:19` | Fans a message out to every enabled channel that can reach the recipient. |
+| `SmsChannel` | class | `sms.channel.ts:7` | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `UnsubscribeController` | class | `unsubscribe.controller.ts:17` | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `UnsubscribeDto` | class | `unsubscribe.dto.ts:4` |  |
+| `WhatsAppChannel` | class | `whatsapp.channel.ts:22` | WO-8.4. |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

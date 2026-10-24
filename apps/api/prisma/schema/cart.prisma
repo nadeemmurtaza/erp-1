@@ -16,14 +16,43 @@ model Cart {
   /// Placing an order empties CartItem but leaves this row, so these persist
   /// past a converted cart; the cron's own `items: { some: {} }` filter is
   /// what actually excludes a converted cart, not these fields.
-  reminderSentAt  DateTime?
-  incentiveSentAt DateTime?
+  reminderSentAt       DateTime?
+  incentiveSentAt      DateTime?
+  /// WO-8.5 — the 1-hour first touch the doc's 3-step sequence (1h/24h/72h)
+  /// was missing. A soft nudge, never an incentive (doc: "sending one
+  /// immediately trains customers to abandon").
+  firstTouchSentAt     DateTime?
+  /// The single-use code minted for this cart's incentiveSentAt send —
+  /// nullable because most carts convert before ever reaching that stage.
+  /// PromoCode lives in promotions.prisma; the relation crosses that module
+  /// boundary the same sanctioned way orders -> promotions already does
+  /// (KNOWN_MODULE_COUPLINGS), via PromotionsService.createPromoCode(), not
+  /// a raw write into a table `marketing` does not own.
+  incentivePromoCodeId String?
 
-  user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items CartItem[]
+  /// WO-8.5 — a guest checkout has no account to hold a phone or a consent
+  /// flag, so both are captured onto the cart itself the moment the
+  /// customer types a phone number at checkout (CartController's own
+  /// guest-contact endpoint), before the cart can be abandoned. Normalised
+  /// E.164 (packages/shared/normalizePhone), same as Contact.phoneE164 and
+  /// Order.guestPhone.
+  guestPhone              String?
+  /// Null = no consent given (or not yet asked). Set = the customer
+  /// explicitly opted in to a marketing SMS/WhatsApp touch on this cart —
+  /// checked again at send time against PhoneOptOut (marketing.prisma),
+  /// since consent can be withdrawn after it was given.
+  guestMarketingConsentAt DateTime?
+
+  user               User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  incentivePromoCode PromoCode? @relation(fields: [incentivePromoCodeId], references: [id], onDelete: SetNull)
+  items              CartItem[]
+  /// orders.prisma (WO-8.5) — revenue-attribution: which order (if any) this
+  /// cart converted into, for the recovered-revenue report.
+  convertedOrders    Order[]
 
   @@index([userId])
   @@index([expiresAt])
+  @@index([guestPhone])
 }
 
 model CartItem {

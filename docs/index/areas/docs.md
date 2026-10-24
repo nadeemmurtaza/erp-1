@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-247 files · 35,981 lines
+580 files · 109,320 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -12,7 +12,7 @@ has a bug.
 
 ## Go deeper
 
-- **Every file here:** [files/docs.md](../files/docs.md)
+- **Every file here:** [files/docs.md](..\files\docs.md)
 
 ## Directory breakdown
 
@@ -21,9 +21,100 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/design` | 17 | 3,510 | doc |
-| `docs/erp-lenses` | 195 | 21,167 | doc |
-| `docs/implementation` | 27 | 10,769 | doc, file |
+| `docs/design` | 1 | 120 | doc |
+| `docs/design/accessibility` | 1 | 166 | doc |
+| `docs/design/components-states` | 2 | 716 | doc |
+| `docs/design/content` | 1 | 130 | doc |
+| `docs/design/foundations` | 1 | 324 | doc |
+| `docs/design/layout-composition` | 3 | 586 | doc |
+| `docs/design/motion` | 1 | 340 | doc |
+| `docs/design/principles-laws` | 2 | 1,025 | doc |
+| `docs/design/process-governance` | 5 | 1,076 | doc |
+| `docs/erp-lenses/_meta` | 32 | 7,258 | doc |
+| `docs/erp-lenses/approval-delegation` | 3 | 210 | doc |
+| `docs/erp-lenses/assets-facilities-maintenance` | 3 | 237 | doc |
+| `docs/erp-lenses/audit-evidence-hold` | 3 | 235 | doc |
+| `docs/erp-lenses/automation-and-ai-surface` | 3 | 268 | doc |
+| `docs/erp-lenses/channels-franchise-wholesale` | 3 | 332 | doc |
+| `docs/erp-lenses/cost-to-serve` | 3 | 265 | doc |
+| `docs/erp-lenses/costing-transfer-pricing` | 3 | 296 | doc |
+| `docs/erp-lenses/credit-receivables` | 3 | 246 | doc |
+| `docs/erp-lenses/day-two-operations` | 3 | 162 | doc |
+| `docs/erp-lenses/enablement-onboarding` | 3 | 276 | doc |
+| `docs/erp-lenses/extensibility-without-fork` | 3 | 314 | doc |
+| `docs/erp-lenses/findability-at-scale` | 3 | 315 | doc |
+| `docs/erp-lenses/fraud-insider-risk` | 3 | 264 | doc |
+| `docs/erp-lenses/gap-38` | 3 | 297 | doc |
+| `docs/erp-lenses/gap-39` | 3 | 247 | doc |
+| `docs/erp-lenses/gap-40` | 3 | 266 | doc |
+| `docs/erp-lenses/gap-41` | 3 | 216 | doc |
+| `docs/erp-lenses/gap-42` | 3 | 241 | doc |
+| `docs/erp-lenses/gap-43` | 3 | 294 | doc |
+| `docs/erp-lenses/gap-44` | 3 | 267 | doc |
+| `docs/erp-lenses/gap-45` | 3 | 311 | doc |
+| `docs/erp-lenses/gap-46` | 3 | 302 | doc |
+| `docs/erp-lenses/gap-47` | 3 | 266 | doc |
+| `docs/erp-lenses/gap-48` | 3 | 257 | doc |
+| `docs/erp-lenses/gap-49` | 3 | 269 | doc |
+| `docs/erp-lenses/gap-50` | 3 | 295 | doc |
+| `docs/erp-lenses/gap-51` | 3 | 282 | doc |
+| `docs/erp-lenses/gap-52` | 3 | 112 | doc |
+| `docs/erp-lenses/ground` | 7 | 670 | doc |
+| `docs/erp-lenses/identity-actor-types` | 3 | 246 | doc |
+| `docs/erp-lenses/internal-audit-controls-testing` | 3 | 265 | doc |
+| `docs/erp-lenses/loyalty-consent-data-rights` | 3 | 143 | doc |
+| `docs/erp-lenses/master-data-taxonomy` | 3 | 264 | doc |
+| `docs/erp-lenses/merchandising-assortment` | 3 | 253 | doc |
+| `docs/erp-lenses/migration-cutover-restatement` | 3 | 147 | doc |
+| `docs/erp-lenses/money-integrity-gl` | 3 | 268 | doc |
+| `docs/erp-lenses/omnichannel-parity` | 3 | 252 | doc |
+| `docs/erp-lenses/operator-hands` | 3 | 263 | doc |
+| `docs/erp-lenses/planning-replenishment` | 3 | 286 | doc |
+| `docs/erp-lenses/pricing-discount-governance` | 3 | 143 | doc |
+| `docs/erp-lenses/privacy-retention-residency` | 3 | 232 | doc |
+| `docs/erp-lenses/procurement-supplier-lifecycle` | 3 | 239 | doc |
+| `docs/erp-lenses/production-bom-subcontract` | 3 | 222 | doc |
+| `docs/erp-lenses/provenance-esg-statutory` | 3 | 245 | doc |
+| `docs/erp-lenses/risk-insurance-continuity` | 3 | 311 | doc |
+| `docs/erp-lenses/roles-ranks-orgchart` | 3 | 306 | doc |
+| `docs/erp-lenses/segregation-of-duties` | 3 | 248 | doc |
+| `docs/erp-lenses/service-cases-sla` | 3 | 264 | doc |
+| `docs/erp-lenses/tax-jurisdiction-invoice` | 3 | 302 | doc |
+| `docs/erp-lenses/time-periods-backdating` | 3 | 269 | doc |
+| `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
+| `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
+| `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
+| `docs/implementation` | 14 | 6,621 | doc, file |
+| `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
+| `docs/implementation/admin-platform` | 6 | 2,797 | doc |
+| `docs/implementation/ai-layer` | 6 | 975 | doc |
+| `docs/implementation/analytics-reporting` | 5 | 555 | doc |
+| `docs/implementation/architecture-patterns` | 38 | 4,882 | doc |
+| `docs/implementation/attendance-workforce` | 8 | 1,072 | doc |
+| `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
+| `docs/implementation/catalog-variants-pricing` | 3 | 963 | doc |
+| `docs/implementation/commercial-licensing-agency` | 15 | 2,865 | doc |
+| `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
+| `docs/implementation/content-marketing-search` | 3 | 609 | doc |
+| `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
+| `docs/implementation/decisions` | 92 | 13,338 | doc |
+| `docs/implementation/finance-accounting` | 12 | 3,867 | doc |
+| `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
+| `docs/implementation/housing-society` | 12 | 1,190 | doc |
+| `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
+| `docs/implementation/integrations-connectivity` | 27 | 8,405 | doc |
+| `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 1,506 | doc |
+| `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
+| `docs/implementation/payroll` | 4 | 1,178 | doc |
+| `docs/implementation/pos-hardware` | 4 | 645 | doc |
+| `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
+| `docs/implementation/resilience-scalability` | 13 | 2,926 | doc |
+| `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
+| `docs/implementation/supply-chain-operations` | 14 | 6,219 | doc |
+| `docs/implementation/tasks-notifications-support` | 6 | 2,996 | doc |
+| `docs/implementation/tax-compliance` | 4 | 495 | doc |
+| `docs/security` | 1 | 59 | doc |
 
 
 
@@ -32,23 +123,23 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/10-admin-dashboard.md` | 1,843 | doc |  |
-| `docs/implementation/DECISIONS.md` | 1,238 | doc |  |
-| `docs/implementation/RETAIL-ERP.md` | 1,083 | doc |  |
-| `docs/erp-lenses/_agent-cluster.md` | 944 | doc |  |
-| `docs/implementation/01-inventory-purchasing-cost.md` | 937 | doc |  |
-| `docs/design/10-laws.md` | 850 | doc |  |
-| `docs/erp-lenses/_canonical-decisions.md` | 828 | doc |  |
-| `docs/implementation/MULTI-SECTOR.md` | 806 | doc |  |
-| `docs/erp-lenses/_cluster-analysis.md` | 675 | doc |  |
-| `docs/erp-lenses/_conflicts.md` | 645 | doc |  |
-| `docs/erp-lenses/_index.md` | 548 | doc |  |
-| `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
-| `docs/implementation/00-HOUSE-RULES.md` | 496 | doc |  |
-| `docs/implementation/03-variants-sku-seo.md` | 471 | doc |  |
-| `docs/email.md` | 438 | doc |  |
+| `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | 2,065 | doc |  |
+| `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
+| `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
+| `docs/implementation/RETAIL-ERP.md` | 1,108 | doc |  |
+| `docs/implementation/finance-accounting/249-cheques-post-dated-cheques-printing.md` | 997 | doc |  |
+| `docs/implementation/254-office-replacement-program.md` | 971 | doc |  |
+| `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
+| `docs/design/principles-laws/10-laws.md` | 942 | doc |  |
+| `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 940 | doc |  |
+| `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
+| `docs/implementation/launchpad-apps/234-auction-app.md` | 928 | doc |  |
+| `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
+| `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
+| `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
+| `docs/implementation/supply-chain-operations/246-field-sales.md` | 798 | doc |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

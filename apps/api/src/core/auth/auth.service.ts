@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, createHmac, randomBytes, randomUUID } from 'node:crypto';
 import {
   ConflictException,
   Injectable,
@@ -6,17 +6,64 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcryptjs';
 import { normalizeEmail, normalizePkPhone } from '@newax/shared';
+import { AuditService } from '../audit/audit.service';
 import { AppConfigService } from '../config/app-config.service';
 import { EventBusService } from '../events/event-bus.service';
 import { DomainEvent } from '../events/domain-events';
 import { PrismaService } from '../prisma/prisma.service';
-import type { Prisma } from '../prisma/client';
+import type { Prisma, RefreshToken, User } from '../prisma/client';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
-import { hashPassword } from './password.util';
+import { LoginThrottleService } from './login-throttle.service';
+import { hashPassword, verifyPassword } from './password.util';
 import { PermissionsResolverService } from './permissions.service';
 import { RolesService } from './roles.service';
+
+/**
+ * doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within
+ * 10 s of its own rotation is a race — two tabs, a retried request — and is
+ * answered with the very pair the first rotation issued. 10 s covers a real
+ * race (they resolve in low single-digit seconds) while giving a token
+ * replayed minutes or hours after theft nothing.
+ */
+export const REFRESH_REUSE_GRACE_MS = 10_000;
+
+export const REFRESH_REUSE_DETECTED_AUDIT_ACTION = 'auth.refresh_reuse_detected';
+
+/** Domain separation for successorOf()'s HMAC: the refresh secret derives nothing else under this label. */
+const REFRESH_ROTATION_LABEL = 'newax.refresh-rotation.v1';
+
+/**
+ * pg_advisory_xact_lock namespace for one refresh-token family (the 8_241_1xx
+ * range the numbering locks already use). Rotation and family revocation both
+ * take it, so they serialise: a revocation that waited behind a rotation then
+ * reads with a fresh snapshot and sees the successor that rotation created —
+ * without it, READ COMMITTED would let that successor slip past the
+ * revocation, left live in the hands of whoever rotated.
+ */
+export const REFRESH_FAMILY_LOCK_NAMESPACE = 8_241_160;
+
+const SESSION_EXPIRED_MESSAGE = 'Your session has expired. Please sign in again.';
+
+/** Where a session request came from — for the audit trail only, never for a decision. */
+export interface SessionRequestContext {
+  /** Express's client address (main.ts trusts exactly one proxy hop). */
+  ip?: string | null;
+}
+
+export interface RefreshOptions {
+  /**
+   * The token may be exchanged exactly once: a second presentation inside the
+   * grace window is refused (401) instead of replayed; outside it, it is
+   * reuse like any other. For a credential redeemed once by design — the
+   * single sign-on handoff (161-sso-identity-federation.md) — rather than a
+   * session refreshing itself, where the window (doc 206 §2.2, which scopes
+   * it to `POST /auth/refresh`) is what keeps racing tabs signed in.
+   */
+  singleUse?: boolean;
+}
+
+type StoredRefreshToken = RefreshToken & { user: User };
 
 export interface AuthTokens {
   accessToken: string;
@@ -55,6 +102,8 @@ export class AuthService {
     private readonly events: EventBusService,
     private readonly permissions: PermissionsResolverService,
     private readonly roles: RolesService,
+    private readonly loginThrottle: LoginThrottleService,
+    private readonly audit: AuditService,
   ) {}
 
   async register(input: RegisterInput): Promise<AuthResult> {
@@ -113,7 +162,13 @@ export class AuthService {
     return this.issue(user);
   }
 
-  async login(identifier: string, password: string): Promise<AuthResult> {
+  async login(identifier: string, password: string, context: SessionRequestContext = {}): Promise<AuthResult> {
+    // WO-206.2: the per-account bucket, spent before the account is even
+    // looked up — a refused attempt costs no query and no bcrypt round, and
+    // is refused identically whether or not the account exists. 429 when the
+    // identifier has no attempts left, 503 when Redis cannot say.
+    await this.loginThrottle.consume(identifier, context);
+
     // Customers sign in with either their email or their phone number.
     const email = normalizeEmail(identifier);
     const phone = normalizePkPhone(identifier).e164;
@@ -127,13 +182,32 @@ export class AuthService {
     // Compare against a dummy hash when the user does not exist so that a
     // missing account and a wrong password take the same time to answer.
     const passwordHash = user?.passwordHash ?? DUMMY_HASH;
-    const ok = await compare(password, passwordHash);
+    const ok = await verifyPassword(password, passwordHash);
 
     if (!user || !ok) {
       throw new UnauthorizedException('Incorrect email/phone or password.');
     }
+    // doc 206 §1.2: a correct password refills the bucket, before anything
+    // else is decided — earlier typos are not carried into the next session.
+    await this.loginThrottle.reset(identifier);
     if (!user.isActive) {
       throw new UnauthorizedException('This account has been deactivated.');
+    }
+    // WO-165.6 (165-cross-tenant-marketplace-directory.md §3, piece one):
+    // a staff/tailor/admin account is refused password sign-in once any
+    // active SsoConnection enforces SSO — a plain CUSTOMER is never
+    // affected, since this column exists to move STAFF sign-in onto SSO,
+    // not to gate storefront login. The one exception is whichever admin
+    // enabled enforcement (SsoConnection.createdByUserId): they can always
+    // undo their own change without being locked out by it.
+    if (user.role !== 'CUSTOMER') {
+      const enforced = await this.prisma.ssoConnection.findFirst({
+        where: { status: 'ACTIVE', enforceSso: true, createdByUserId: { not: user.id } },
+        select: { label: true },
+      });
+      if (enforced) {
+        throw new UnauthorizedException(`Password sign-in is disabled for staff accounts. Use "Sign in with ${enforced.label}" instead.`);
+      }
     }
 
     await this.prisma.user.update({
@@ -144,27 +218,79 @@ export class AuthService {
     return this.issue(user);
   }
 
-  /** Rotates a refresh token: the presented one is revoked as it is used. */
-  async refresh(refreshToken: string): Promise<AuthResult> {
-    const tokenHash = hashToken(refreshToken);
+  /**
+   * Rotates a refresh token: the presented one is spent, a successor issued
+   * in its family (WO-206.3, 206-rate-limiting-caching-compression-hardening.md §2.2).
+   *
+   * A token that was already rotated is one of two things. Within
+   * REFRESH_REUSE_GRACE_MS of its rotation it is a race (two tabs, a retried
+   * request) and gets back the same token pair the first rotation issued —
+   * so neither racer is signed out. Later than that it is reuse: the token is
+   * in two places at once, so its whole family is revoked and one
+   * `auth.refresh_reuse_detected` audit row is written.
+   */
+  async refresh(
+    refreshToken: string,
+    context: SessionRequestContext = {},
+    options: RefreshOptions = {},
+  ): Promise<AuthResult> {
     const stored = await this.prisma.refreshToken.findUnique({
-      where: { tokenHash },
+      where: { tokenHash: hashToken(refreshToken) },
       include: { user: true },
     });
 
-    if (!stored || stored.revokedAt || stored.expiresAt < new Date()) {
-      throw new UnauthorizedException('Your session has expired. Please sign in again.');
+    if (!stored) {
+      throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
+    }
+    if (stored.rotatedAt) {
+      return this.answerRotatedToken(stored, stored.rotatedAt, refreshToken, context, options);
+    }
+    if (stored.revokedAt || stored.expiresAt < new Date()) {
+      throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
     }
     if (!stored.user.isActive) {
       throw new UnauthorizedException('This account has been deactivated.');
     }
 
-    await this.prisma.refreshToken.update({
-      where: { id: stored.id },
-      data: { revokedAt: new Date() },
+    const rotatedAt = new Date();
+    const successorToken = this.successorOf(refreshToken);
+    const rotated = await this.prisma.$transaction(async (tx) => {
+      await lockRefreshFamily(tx, stored.familyId);
+      // Predicate-on-write: two requests racing with one token both pass the
+      // checks above, and are serialised here — the second re-evaluates
+      // `rotatedAt: null` after the first commits, finds it false, and is
+      // answered as the race it is below.
+      const claimed = await tx.refreshToken.updateMany({
+        where: { id: stored.id, revokedAt: null, rotatedAt: null },
+        data: { revokedAt: rotatedAt, rotatedAt },
+      });
+      if (claimed.count === 0) return false;
+
+      const successor = await tx.refreshToken.create({
+        data: {
+          userId: stored.userId,
+          tokenHash: hashToken(successorToken),
+          familyId: stored.familyId,
+          expiresAt: new Date(rotatedAt.getTime() + parseDuration(this.config.get('JWT_REFRESH_TTL'))),
+        },
+      });
+      await tx.refreshToken.update({ where: { id: stored.id }, data: { replacedById: successor.id } });
+      return true;
     });
 
-    return this.issue(stored.user);
+    if (!rotated) {
+      const current = await this.prisma.refreshToken.findUnique({
+        where: { id: stored.id },
+        include: { user: true },
+      });
+      if (current?.rotatedAt) {
+        return this.answerRotatedToken(current, current.rotatedAt, refreshToken, context, options);
+      }
+      // Revoked some other way in between (a logout in another tab).
+      throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
+    }
+
+    return this.issue(stored.user, { refreshToken: successorToken, issuedAt: rotatedAt });
   }
 
   async logout(refreshToken: string | undefined): Promise<void> {
@@ -181,7 +307,7 @@ export class AuthService {
     newPassword: string,
   ): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user?.passwordHash || !(await compare(currentPassword, user.passwordHash))) {
+    if (!user?.passwordHash || !(await verifyPassword(currentPassword, user.passwordHash))) {
       throw new UnauthorizedException('Your current password is incorrect.');
     }
 
@@ -359,17 +485,47 @@ export class AuthService {
     };
   }
 
-  private async issue(user: {
+  /**
+   * Mints a session for an account another sign-in path has already
+   * authenticated — today single sign-on (sso.service.ts). The same
+   * `issue()` a password sign-in ends in: how a session is minted never
+   * depends on how the person proved who they are. Every check that path
+   * owes (an active account, a verified identity) is the caller's.
+   */
+  issueSession(user: {
     id: string;
     email: string | null;
     phone: string | null;
     firstName: string | null;
     lastName: string | null;
   }): Promise<AuthResult> {
+    return this.issue(user);
+  }
+
+  /**
+   * Signs the access token and returns the pair. A sign-in (no `rotation`)
+   * also starts a new refresh-token family; a rotation passes the successor
+   * refresh() already stored, and the moment it was issued.
+   */
+  private async issue(
+    user: {
+      id: string;
+      email: string | null;
+      phone: string | null;
+      firstName: string | null;
+      lastName: string | null;
+    },
+    rotation?: { refreshToken: string; issuedAt: Date },
+  ): Promise<AuthResult> {
+    const issuedAt = rotation?.issuedAt ?? new Date();
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
       phone: user.phone,
+      // Pinned to the issue moment rather than left to the signer's clock:
+      // HS256 is deterministic, so a grace-window replay (answerRotatedToken)
+      // re-signs byte-for-byte the access token the first rotation issued.
+      iat: Math.floor(issuedAt.getTime() / 1000),
     };
 
     const accessToken = await this.jwt.signAsync(payload, {
@@ -380,16 +536,7 @@ export class AuthService {
 
     const { roles, permissions } = await this.permissions.resolveForUser(user.id);
 
-    // Refresh tokens are opaque random strings, stored only as a SHA-256 hash,
-    // so a leaked database dump cannot be replayed as a session.
-    const refreshToken = randomBytes(48).toString('base64url');
-    await this.prisma.refreshToken.create({
-      data: {
-        userId: user.id,
-        tokenHash: hashToken(refreshToken),
-        expiresAt: new Date(Date.now() + parseDuration(this.config.get('JWT_REFRESH_TTL'))),
-      },
-    });
+    const refreshToken = rotation?.refreshToken ?? (await this.startFamily(user.id));
 
     return {
       accessToken,
@@ -406,10 +553,146 @@ export class AuthService {
       },
     };
   }
+
+  /**
+   * The first token of a new family (a sign-in, never a rotation). Refresh
+   * tokens are opaque random strings, stored only as a SHA-256 hash, so a
+   * leaked database dump cannot be replayed as a session.
+   */
+  private async startFamily(userId: string): Promise<string> {
+    const refreshToken = randomBytes(48).toString('base64url');
+    await this.prisma.refreshToken.create({
+      data: {
+        userId,
+        tokenHash: hashToken(refreshToken),
+        familyId: randomUUID(),
+        expiresAt: new Date(Date.now() + parseDuration(this.config.get('JWT_REFRESH_TTL'))),
+      },
+    });
+    return refreshToken;
+  }
+
+  /**
+   * doc 206 §2.2's "the same new token pair the first rotation issued" needs
+   * the successor's plaintext, which is never stored — so the successor is
+   * derived from the token it replaces rather than drawn at random: an HMAC
+   * under JWT_REFRESH_SECRET. Computing it takes both the presented token and
+   * that secret; the secret sits beside JWT_ACCESS_SECRET, which on its own
+   * already signs any access token, so this grants nothing a leaked
+   * environment did not. Sign-ins still start from 48 random bytes.
+   */
+  private successorOf(refreshToken: string): string {
+    return createHmac('sha256', this.config.get('JWT_REFRESH_SECRET'))
+      .update(`${REFRESH_ROTATION_LABEL}:${refreshToken}`)
+      .digest('base64url');
+  }
+
+  /** A token that was already rotated: a race inside the grace window, reuse outside it. */
+  private async answerRotatedToken(
+    stored: StoredRefreshToken,
+    rotatedAt: Date,
+    presentedToken: string,
+    context: SessionRequestContext,
+    options: RefreshOptions,
+  ): Promise<AuthResult> {
+    const sinceRotationMs = Date.now() - rotatedAt.getTime();
+
+    if (sinceRotationMs <= REFRESH_REUSE_GRACE_MS) {
+      // A single-use credential is not replayed, but a second presentation
+      // this soon is no evidence of theft either — refused, not revoked.
+      if (options.singleUse) throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
+      const replay = await this.replayRotation(stored, rotatedAt, presentedToken);
+      if (replay) return replay;
+      // Inside the window, but the successor is gone — signed out, password
+      // changed, deactivated. A benign race with nothing left to hand back,
+      // never evidence of theft.
+      throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
+    }
+
+    await this.revokeFamily(stored, rotatedAt, sinceRotationMs, context);
+    throw new UnauthorizedException(SESSION_EXPIRED_MESSAGE);
+  }
+
+  /** The pair the first rotation issued, re-issued — or null when its successor is no longer live. */
+  private async replayRotation(
+    stored: StoredRefreshToken,
+    rotatedAt: Date,
+    presentedToken: string,
+  ): Promise<AuthResult | null> {
+    if (!stored.replacedById) return null;
+
+    const successorToken = this.successorOf(presentedToken);
+    const successor = await this.prisma.refreshToken.findUnique({
+      where: { id: stored.replacedById },
+      include: { user: true },
+    });
+    if (
+      !successor ||
+      // Differs only if JWT_REFRESH_SECRET changed within the last 10 s.
+      successor.tokenHash !== hashToken(successorToken) ||
+      successor.revokedAt ||
+      successor.expiresAt < new Date() ||
+      !successor.user.isActive
+    ) {
+      return null;
+    }
+
+    return this.issue(successor.user, { refreshToken: successorToken, issuedAt: rotatedAt });
+  }
+
+  /**
+   * Reuse outside the grace window: the token was captured and is in two
+   * places at once, so every token of its family — the one being used
+   * legitimately included — is revoked, forcing a real sign-in.
+   */
+  private async revokeFamily(
+    stored: StoredRefreshToken,
+    rotatedAt: Date,
+    sinceRotationMs: number,
+    context: SessionRequestContext,
+  ): Promise<void> {
+    const { count } = await this.prisma.$transaction(async (tx) => {
+      // Behind any rotation of this family already in flight — see
+      // REFRESH_FAMILY_LOCK_NAMESPACE — so its successor is revoked too.
+      await lockRefreshFamily(tx, stored.familyId);
+      return tx.refreshToken.updateMany({
+        where: { familyId: stored.familyId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+    });
+    const secondsSinceRotation = Math.round(sinceRotationMs / 1000);
+    this.logger.warn(
+      `Refresh token reuse detected for user ${stored.userId}, ${secondsSinceRotation} s after rotation: ` +
+        `revoked ${count} live token(s) in family ${stored.familyId}`,
+    );
+
+    // Operational-class audit (canonical ruling 9), written after the
+    // revocation has committed: a failed audit write must never be able to
+    // undo it and leave a stolen token live.
+    await this.audit.record({
+      actorId: null,
+      action: REFRESH_REUSE_DETECTED_AUDIT_ACTION,
+      entity: 'User',
+      entityId: stored.userId,
+      data: {
+        refreshTokenId: stored.id,
+        familyId: stored.familyId,
+        rotatedAt: rotatedAt.toISOString(),
+        secondsSinceRotation,
+        tokensRevoked: count,
+      },
+      ip: context.ip ?? null,
+    });
+  }
 }
 
 function hashToken(token: string): string {
   return createHash('sha256').update(token).digest('hex');
+}
+
+/** Held until the transaction ends; two families that hash alike only wait on each other, never share state. */
+async function lockRefreshFamily(tx: Prisma.TransactionClient, familyId: string): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${REFRESH_FAMILY_LOCK_NAMESPACE}::int, hashtext(${familyId})::int)`;
 }
 
 /** "30d" -> milliseconds. Supports s, m, h, d. */

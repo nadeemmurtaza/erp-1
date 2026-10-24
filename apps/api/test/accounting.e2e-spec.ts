@@ -9,10 +9,10 @@
 import { BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { SettingsService } from '../src/core/settings/settings.service';
-import { AccountingService } from '../src/modules/accounting/accounting.service';
-import { FiscalPeriodsService } from '../src/modules/accounting/fiscal-periods.service';
-import { GlReportsService } from '../src/modules/accounting/gl-reports.service';
-import { ACCOUNT_CODE } from '../src/modules/accounting/chart-of-accounts';
+import { AccountingService } from '../src/modules/money/accounting/accounting.service';
+import { FiscalPeriodsService } from '../src/modules/money/accounting/fiscal-periods.service';
+import { GlReportsService } from '../src/modules/money/accounting/gl-reports.service';
+import { ACCOUNT_CODE } from '../src/modules/money/accounting/chart-of-accounts';
 
 describe('Accounting ledger invariants (integration)', () => {
   let prisma: PrismaService;

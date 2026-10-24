@@ -29,13 +29,13 @@
 import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync, statSync, chmodSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { join, dirname, basename, extname, relative } from 'node:path';
+import { join, dirname, basename, extname, relative, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   readText, trackedFiles, fileDoc, docAbove, clip, cell,
-  scanSymbols, scanReExports, scanImports,
+  scanSymbols, scanReExports, scanImports, scanNamedImports,
   scanController, accessOf, scanNestModule,
-  scanEventCatalog, scanEventUsage, scanCron,
+  scanEventCatalog, scanEventUsage, scanCron, scanStateMachines,
   scanPrisma, scanMigration, scanMigrationSql, schemaMigrationDrift,
   scanPermissionCatalog, scanRoleSeed,
   appRouterPath, routeKind, isClientComponent,
@@ -136,12 +136,17 @@ for (const r of records) {
   r.symbols = scanSymbols(r.source);
   r.reExports = scanReExports(r.source);
   r.imports = scanImports(r.source);
+  r.namedImports = scanNamedImports(r.source);
   if (r.ext === '.tsx') r.client = isClientComponent(r.source);
 }
 
 /* ── the API's own structure ───────────────────────────────────────────── */
 
-const apiModuleOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/([^/]+)\//) ?? [])[1] ?? null;
+// Modules live at src/modules/<domain>/<name>/ — the domain only groups them for
+// people, so a module's identity everywhere (packs, allowlist, index pages) is
+// its bare name, the second segment.
+const apiModuleOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/[^/]+\/([^/]+)\//) ?? [])[1] ?? null;
+const apiModuleDomainOf = (rel) => (rel.match(/^apps\/api\/src\/modules\/([^/]+)\/[^/]+\//) ?? [])[1] ?? null;
 const apiCoreOf = (rel) => (rel.match(/^apps\/api\/src\/core\/([^/]+)\//) ?? [])[1] ?? null;
 
 const controllers = [];
@@ -149,6 +154,7 @@ const nestModules = [];
 const crons = [];
 const eventSubscribers = [];
 const eventReferences = [];
+const stateMachines = [];
 
 for (const r of records) {
   if (!r.rel.startsWith('apps/api/src/') || !isTs(r) || isSpec(r)) continue;
@@ -158,6 +164,7 @@ for (const r of records) {
     if (m) nestModules.push(m);
   }
   if (/@Cron\(/.test(r.source)) crons.push(...scanCron(r.source, r.rel));
+  if (/Record<\s*\w+\s*,\s*\w+\[\]\s*>/.test(r.source)) stateMachines.push(...scanStateMachines(r.source, r.rel));
   if (/DomainEvent\./.test(r.source)) {
     const { subscribes, references } = scanEventUsage(r.source, r.rel);
     eventSubscribers.push(...subscribes);
@@ -436,7 +443,7 @@ const BACK = (self) => `\n---\n\n[← index home](${link(self, 'docs/index/READM
 /* ── counts used in several places ─────────────────────────────────────── */
 
 /** Design-system chapters, counted early because the README routes to them. */
-const DESIGN_CHAPTER_RE = /^docs\/design\/\d\d-.+\.md$/;
+const DESIGN_CHAPTER_RE = /^docs\/design\/(?:[^/]+\/)?\d\d-.+\.md$/;
 const designChapterCount = records.filter((r) => DESIGN_CHAPTER_RE.test(r.rel)).length;
 
 const areaStats = {};
@@ -446,6 +453,7 @@ for (const r of records) {
 }
 
 const apiModuleNames = [...new Set(records.map((r) => apiModuleOf(r.rel)).filter(Boolean))].sort();
+const moduleDomains = new Map(records.filter((r) => apiModuleOf(r.rel)).map((r) => [apiModuleOf(r.rel), apiModuleDomainOf(r.rel)]));
 const apiCoreNames = [...new Set(records.map((r) => apiCoreOf(r.rel)).filter(Boolean))].sort();
 
 const moduleFile = (name) => `docs/index/modules/${name}.md`;
@@ -461,6 +469,7 @@ const areaFile = (name) => `docs/index/areas/${name}.md`;
     ['“What permission do I need / who has it?”', `[cross/permissions.md](${link(self, 'docs/index/cross/permissions.md')})`, `all ${permissionCatalog.length} permissions → routes, UI call sites, seed`],
     ['“Which table/column holds X?”', `[cross/data-model.md](${link(self, 'docs/index/cross/data-model.md')})`, `all ${prismaModels.length} Prisma models and ${prismaEnums.length} enums, field by field`],
     ['“How do modules talk to each other?”', `[cross/events.md](${link(self, 'docs/index/cross/events.md')})`, `all ${eventCatalog.length} domain events → publishers and subscribers`],
+    ["“What are the valid status transitions for this entity?”", `[cross/state-machines.md](${link(self, 'docs/index/cross/state-machines.md')})`, `every named \`Record<XStatus, XStatus[]>\` transition table (${stateMachines.length})`],
     ['“What screen serves this URL?”', `[cross/ui-routes.md](${link(self, 'docs/index/cross/ui-routes.md')})`, `all ${uiRoutes.length} screens across web, POS and mobile`],
     ['“Is there already a component for this?”', `[cross/components.md](${link(self, 'docs/index/cross/components.md')})`, 'shared primitives and every component, with usage counts'],
     ['“How should this look / behave / read?”', `[cross/design-system.md](${link(self, 'docs/index/cross/design-system.md')})`, `the ${designChapterCount} design chapters, and the measured state of the code they govern`],
@@ -813,6 +822,7 @@ ${BACK(self)}`);
     ['a permission: what enforces it, which roles hold it', 'docs/index/cross/permissions.md'],
     ['a table, column or enum', 'docs/index/cross/data-model.md'],
     ['how two modules talk (domain events)', 'docs/index/cross/events.md'],
+    ['an entity’s valid status transitions', 'docs/index/cross/state-machines.md'],
     ['a screen, URL or nav entry', 'docs/index/cross/ui-routes.md'],
     ['whether a component already exists', 'docs/index/cross/components.md'],
     ['how something should look, behave or read', 'docs/index/cross/design-system.md'],
@@ -1129,7 +1139,8 @@ so a route with no \`@RequirePermission\` is authenticated-but-unrestricted,
 which CLAUDE.md calls "almost never intended".
 
 Structure: \`src/core/\` is the shared platform every deployment runs;
-\`src/modules/<name>/\` is one feature module, independent of every other one.`,
+\`src/modules/<domain>/<name>/\` is one feature module, independent of every other one;
+the domain folder (sales, merchandising, supply-chain, money, people, customers, system) only groups them.`,
   web: `Next.js App Router. **Two products in one deployment**: the admin console under
 \`(admin)/admin\` and the customer storefront under \`(storefront)/[locale]\`.
 They share primitives in \`src/components/ui\` and nothing else.
@@ -1253,9 +1264,12 @@ function renderUnit({ self, title, subtitle, unitRecords, routeFilter, schemaBas
       const resolved = imp.replace(/^\.\//, '');
       const up = imp.match(/\.\.\/\.\.\/core\/([\w-]+)/);
       if (up) { edges.add(`core \`${up[1]}\``); continue; }
-      const cross = imp.match(/\.\.\/([\w-]+)\/[\w.-]+/);
-      if (cross && apiModuleNames.includes(cross[1]) && !owned.has(`apps/api/src/modules/${cross[1]}/`)) {
-        if (!r.rel.includes(`/modules/${cross[1]}/`)) edges.add(`**module \`${cross[1]}\`** ⚠ direct import`);
+      // Resolve the import to the module that owns the target file, so a
+      // cross-domain import (../../money/tax/tax.service) is seen as well as a
+      // same-domain one.
+      const target = apiModuleOf(`${join(dirname(r.rel), imp)}/`);
+      if (target && apiModuleNames.includes(target) && target !== apiModuleOf(r.rel)) {
+        edges.add(`**module \`${target}\`** ⚠ direct import`);
       }
       void resolved;
     }
@@ -1372,7 +1386,7 @@ for (const name of apiModuleNames) {
     extraIntro: [
       moduleDoc ? `> ${moduleDoc}` : '',
       feature?.note ? `\n**Registry note** (\`modules.registry.ts\`): ${feature.note}` : '',
-      `\nSource: \`apps/api/src/modules/${name}/\``,
+      `\nSource: \`apps/api/src/modules/${moduleDomains.get(name)}/${name}/\``,
     ].filter(Boolean).join('\n'),
   });
 }
@@ -1825,6 +1839,49 @@ function moduleLabel(file) {
   return `\`${basename(file)}\``;
 }
 
+/* ── ⊗ cross/state-machines.md ─────────────────────────────────────────── */
+
+{
+  const self = 'docs/index/cross/state-machines.md';
+  const rows = stateMachines.map((s) => [`\`${s.name}\``, `\`${s.typeParam}\``, moduleLabel(s.file), `\`${s.file}:${s.line}\``]);
+
+  const detail = stateMachines.map((s) => `### \`${s.name}\` (${moduleLabel(s.file)})
+
+${s.doc ? `> ${s.doc}\n` : ''}\`${s.file}:${s.line}\`
+
+\`\`\`ts
+${s.body}
+\`\`\``);
+
+  emit(self, `${head(self, 'State machines', `Every **${stateMachines.length}** \`Record<XStatus, XStatus[]>\`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.`)}
+
+## What this page is, and is not
+
+Each table below is the **sole authority** for its own entity's valid state
+transitions, checked before every write in the module that owns it. This page
+only *lists* them for operator visibility — it changes nothing, and an
+administrator cannot edit a transition here. A structural transition (can a
+\`PENDING\` order become \`DELIVERED\` directly?) is a code-level invariant other
+code depends on, never a client-configurable policy.
+
+**What this scanner cannot see.** It matches one literal shape: a named
+\`Record<XStatus, XStatus[]>\` constant. A status enum whose valid transitions
+are instead enforced by scattered inline checks per method (no single named
+table) is real, and just as authoritative, but structurally invisible to a
+line-based scanner — it is not "missing," it is a different, equally valid
+enforcement shape this page cannot enumerate. Read the owning service's own
+methods for those.
+
+## Summary
+
+${table(['Table', 'Entity status type', 'Module', 'Where'], rows)}
+
+## Detail
+
+${detail.join('\n\n')}
+${BACK(self)}`);
+}
+
 /* ── ⊗ cross/jobs.md ───────────────────────────────────────────────────── */
 
 {
@@ -1912,22 +1969,80 @@ ${BACK(self)}`);
   const self = 'docs/index/cross/components.md';
   const componentRecords = records.filter((r) => r.ext === '.tsx' && r.rel.includes('/components/'));
 
-  // Usage count: how many files import each component module.
-  const usage = new Map();
-  for (const r of componentRecords) usage.set(r.rel, 0);
+  // Usage count: how many FILES import each component module, directly or through a barrel.
+  //
+  // A specifier is resolved to a path (`@/x` against the importing app's `src`, `./x` against the importer)
+  // and compared with the component's path, so `section` no longer matches `rail-section`. And
+  // `import { PageHeader } from '@/components/ui'` names no file at all, so the barrel's own re-exports say
+  // which file a name lives in; before this, PageHeader (taken by well over a hundred pages through the
+  // barrel) read as imported by one file.
+  const importers = new Map(componentRecords.map((c) => [c.rel, new Set()]));
+  /** The same, per exported name: `file#Name` -> importing files. */
+  const byName = new Map();
+  const stemPath = (c) => c.rel.replace(/\.tsx$/, '');
+  const byStem = new Map(componentRecords.map((c) => [stemPath(c), c]));
+  const resolveSpec = (importerRel, spec) => {
+    if (spec.startsWith('@/')) return posix.normalize(`${importerRel.split('/').slice(0, 3).join('/')}/${spec.slice(2)}`);
+    if (spec.startsWith('.')) return posix.normalize(posix.join(dirname(importerRel), spec));
+    return null;
+  };
+
+  // dir -> (exported name -> the component file that defines it), from each barrel's `export { … } from './x'`.
+  const barrels = new Map();
+  const typeExports = new Set();
+  for (const b of records) {
+    if (!/^index\.tsx?$/.test(b.base) || !b.rel.includes('/components/')) continue;
+    const names = new Map();
+    for (const re of b.reExports ?? []) {
+      const target = byStem.get(posix.normalize(posix.join(dirname(b.rel), re.from)));
+      if (!target) continue;
+      const taken = re.names[0] === '*' ? (target.symbols ?? []).map((sym) => sym.name) : re.names;
+      for (const name of taken) {
+        if (/^type\s/.test(name)) typeExports.add(name.replace(/^type\s+/, ''));
+        names.set(name.replace(/^type\s+/, ''), target.rel);
+      }
+    }
+    barrels.set(dirname(b.rel), names);
+  }
+
   for (const r of records) {
     if (!isTs(r)) continue;
-    for (const imp of r.imports ?? []) {
-      for (const c of componentRecords) {
-        const stem = c.rel.replace(/\.tsx$/, '');
-        if (imp.endsWith(`/${basename(stem)}`) || imp.endsWith(basename(stem))) {
-          if (imp.startsWith('@/components') || imp.startsWith('.')) {
-            usage.set(c.rel, (usage.get(c.rel) ?? 0) + 1);
-          }
-        }
+    for (const spec of r.imports ?? []) {
+      const resolved = resolveSpec(r.rel, spec);
+      const direct = resolved && byStem.get(resolved);
+      if (direct && direct.rel !== r.rel) importers.get(direct.rel).add(r.rel);
+    }
+    for (const { from, names } of r.namedImports ?? []) {
+      const resolved = resolveSpec(r.rel, from);
+      const barrel = resolved && barrels.get(resolved);
+      const direct = resolved && byStem.get(resolved);
+      for (const name of names) {
+        const target = barrel ? barrel.get(name) : direct ? direct.rel : null;
+        if (!target || target === r.rel) continue;
+        importers.get(target).add(r.rel);
+        const key = `${target}#${name}`;
+        if (!byName.has(key)) byName.set(key, new Set());
+        byName.get(key).add(r.rel);
       }
     }
   }
+  const usage = new Map([...importers].map(([rel, set]) => [rel, set.size]));
+  const unimported = componentRecords
+    .filter((c) => !usage.get(c.rel) && !/\/(?:index)\.tsx?$/.test(c.rel))
+    .map((c) => c.rel)
+    .sort();
+
+  // The primitives, read from the barrel that exports them, so the table cannot drift from the code.
+  // Counted per exported name, because one file can export a primitive a hundred pages use beside one nobody does.
+  const uiBarrel = barrels.get('apps/web/src/components/ui');
+  const inProduct = (set) => [...(set ?? [])].filter((rel) => !rel.includes('design-system'));
+  const primitives = uiBarrel
+    ? [...uiBarrel.entries()]
+        .filter(([name]) => /^[A-Z]/.test(name) && !typeExports.has(name))
+        .map(([name, rel]) => ({ name, rel, all: byName.get(`${rel}#${name}`)?.size ?? 0, product: inProduct(byName.get(`${rel}#${name}`)).length }))
+    : [];
+  const primitiveRows = primitives.map((p) => [`\`${p.name}\``, `\`${basename(p.rel)}\``, p.product, p.all - p.product]);
+  const specimenOnly = primitives.filter((p) => p.product === 0).map((p) => p.name);
 
   const groups = new Map();
   for (const r of componentRecords) {
@@ -1949,22 +2064,31 @@ ${BACK(self)}`);
 
 ## The primitives you must reuse
 
-\`apps/web/src/components/ui\` — grep for the literal before adding one.
+\`apps/web/src/components/ui\` — grep for the literal before adding one. What each one is for, and when
+not to use it, is the table in \`.claude/rules/ui.md\` ("Primitives"). This table is the barrel itself
+(\`components/ui/index.ts\`), read by the generator, so it lists every export and cannot go stale.
 
-| Import | For |
-|---|---|
-| \`PageHeader\` | context, title, one line, ONE primary action |
-| \`Section\` | a titled region with no box around it |
-| \`SectionRail\` | parts of one object — all present, jump to any |
-| \`Tabs\` | separate tasks on one object — one at a time |
-| \`Disclosure\` | rare, advanced or destructive — closed by default |
-| \`MetricStrip\` | a row of figures; \`detail\` opens a panel |
-| \`DataTable\` \`EmptyState\` \`Badge\` \`Button\` \`Dialog\` \`Loading\` | as named |
+${table(['Export', 'File', 'Product files', 'Design-system files'], primitiveRows)}
 
-Cross-surface: \`components/common/status-badge\` is **the** status pill — do not
-write an eighth. \`components/common/wizard\` is the only wizard.
+Cross-surface: \`components/common/status-badge\` is **the** status mark (a \`Badge\` in the house corner) —
+do not write an eighth. \`components/common/wizard\` is the only wizard.
 
-**Never** hand-roll: an alert, a status pill, a table, or a modal.
+**Never** hand-roll: an alert, a status mark, a table, or a modal.
+
+## Component files nothing imports (${unimported.length})
+
+${unimported.length ? unimported.map((rel) => `- \`${rel}\``).join('\n') : '—'}
+
+A file listed here has no importer the scanner can see. It is a map, not proof: a component reached only through
+a dynamic import or a name the scanner cannot resolve would appear too. Deleting one needs the owner's word.
+
+## Primitives no product file imports (${specimenOnly.length})
+
+${specimenOnly.length ? specimenOnly.map((name) => `\`${name}\``).join(' · ') : '—'}
+
+Exported by \`components/ui\` and specimened on the design-system page, but imported by no file outside it: each is
+either waiting for its first adopter or a candidate for the owner to cut. Neither is decided here, and a
+name taken through a path the scanner cannot resolve would appear too.
 
 ${sections.join('\n')}
 ${BACK(self)}`);
@@ -2159,12 +2283,13 @@ let designLaws = [];
     ['colour', 'packages/shared/src/theme-colors.ts'],
     ['radius', 'packages/shared/src/theme-radii.ts'],
     ['type', 'packages/shared/src/theme-type.ts'],
-    ['space', null],
-    ['size', null],
-    ['shadow', null],
-    ['z-index', null],
-    ['motion', null],
+    ['space', 'packages/shared/src/theme-space.ts'],
+    ['size', 'packages/shared/src/theme-size.ts'],
+    ['shadow', 'packages/shared/src/theme-elevation.ts'],
+    ['z-index', 'packages/shared/src/theme-layers.ts'],
+    ['motion', 'packages/shared/src/theme-motion.ts'],
   ];
+  const unbuiltGroups = TOKEN_GROUPS.filter(([, file]) => !file || !byPath.get(file)).length;
   const tokenRows = TOKEN_GROUPS.map(([group, file]) => {
     const r = file ? byPath.get(file) : null;
     return [
@@ -2247,9 +2372,11 @@ ${table(['Signal', 'Today', 'Note'], measured)}
 
 ## Token groups
 
-The ladder in chapter 03 starts at tokens. Five of the eight groups it needs
-do not exist yet, which is why several chapters are specifications rather than
-descriptions.
+The ladder in chapter 03 starts at tokens. ${
+  unbuiltGroups === 0
+    ? `All ${TOKEN_GROUPS.length} groups it needs exist. Each is a thin view onto \`packages/shared/src/brand.ts\`, the one source, and colour has a dark half (\`theme-tailwind.ts\` turns both into the CSS the two themes read).`
+    : `${unbuiltGroups} of the ${TOKEN_GROUPS.length} groups it needs do not exist yet, which is why some chapters are specifications rather than descriptions.`
+}
 
 ${table(['Group', 'File', 'Size', 'State'], tokenRows)}
 
@@ -2284,8 +2411,8 @@ ${BACK(self)}`);
    \`ENTERPRISE-SCALE.md\` overlap.
 4. Everything else, by topic.
 
-Architectural decisions go in \`docs/implementation/DECISIONS.md\` — a settled
-decision is not reopened without new evidence.
+Architectural decisions go in \`docs/implementation/decisions/\` (one file each, indexed by
+\`docs/implementation/DECISIONS.md\`) — a settled decision is not reopened without new evidence.
 
 ## Outlines
 
@@ -2453,7 +2580,7 @@ function existingIndexFiles(dir, acc = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
     if (entry.isDirectory()) existingIndexFiles(p, acc);
-    else acc.push(relative(ROOT, p));
+    else acc.push(relative(ROOT, p).replace(/\\/g, '/'));
   }
   return acc;
 }

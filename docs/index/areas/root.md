@@ -3,52 +3,69 @@
 
 # repository root files
 
-42 files · 9,049 lines
+216 files · 16,397 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
 
 ## Go deeper
 
-- **Every file here:** [files/root.md](../files/root.md)
+- **Every exported symbol here:** [symbols/root.md](..\symbols\root.md)
+- **Every file here:** [files/root.md](..\files\root.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 7,952 | file, doc, txt, script |
+| `.` | 19 | 2,581 | file, toml, doc |
 | `.claude` | 2 | 49 | json |
-| `.claude/agents` | 8 | 341 | doc |
+| `.claude/agents` | 9 | 390 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 10 | 488 | doc |
+| `.claude/rules` | 10 | 646 | doc |
+| `.claude/skills/feature-scope` | 1 | 225 | doc |
+| `.claude/skills/restyle` | 1 | 90 | doc |
+| `.claude/skills/ux-audit` | 1 | 108 | doc |
+| `.claude/skills/ux-design` | 1 | 122 | doc |
+| `.claude/skills/ux-review` | 1 | 123 | doc |
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
-| `.junie` | 1 | 80 | doc |
+| `.junie` | 1 | 81 | doc |
+| `apps/platform` | 7 | 155 | script, json, module |
+| `apps/platform/prisma` | 13 | 1,947 | prisma schema, migration, toml |
+| `apps/platform/src` | 144 | 9,730 | nest module, service, config, module |
+| `apps/platform/test` | 1 | 11 | module |
 
 
+## Entry points
+
+| File | Kind | Purpose |
+|---|---|---|
+| `apps/platform/package.json` | json |  |
+| `apps/platform/src/app.module.ts` | nest module |  |
+| `apps/platform/src/main.ts` | module |  |
 
 
 ## Largest files (where the weight is)
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 915 | doc |  |
-| `DEPLOYMENT.md` | 492 | doc |  |
-| `README.md` | 349 | doc |  |
-| `.claude/rules/ui.md` | 151 | doc |  |
-| `.claude/rules/design.md` | 136 | doc |  |
-| `CONTRIBUTING.md` | 127 | doc |  |
-| `.claude/hooks/suggest-model.sh` | 85 | hook |  |
-| `.junie/guidelines.md` | 80 | doc |  |
-| `AGENTS.md` | 80 | doc |  |
-| `GEMINI.md` | 80 | doc |  |
-| `.claude/hooks/session-start.sh` | 54 | hook |  |
-| `.claude/agents/architect.md` | 48 | doc |  |
-| `.claude/agents/schema.md` | 46 | doc |  |
-| `.claude/agents/security.md` | 46 | doc |  |
+| `CLAUDE.md` | 866 | doc |  |
+| `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
+| `DEPLOYMENT.md` | 529 | doc |  |
+| `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
+| `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
+| `apps/platform/src/modules/billing/billing.service.ts` | 275 | service |  |
+| `apps/platform/prisma/schema/marketplace.prisma` | 271 | prisma schema | The cross-tenant marketplace/product-reference network — doc 165 |
+| `.claude/skills/feature-scope/SKILL.md` | 225 | doc |  |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
+| `README.md` | 221 | doc |  |
+| `.claude/rules/ui.md` | 217 | doc |  |
+| `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
+| `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
+| `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 
 
 ---
 
-[← index home](../README.md)
+[← index home](..\README.md)

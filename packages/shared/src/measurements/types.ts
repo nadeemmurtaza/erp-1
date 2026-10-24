@@ -39,3 +39,7 @@ export interface GarmentTypeDef {
 
 /** A filled-in set of measurements: field key -> value in that field's unit. */
 export type MeasurementValues = Record<string, number>;
+
+/** The RTW size tokens a garment's size chart offers, XS through XXL. */
+export const GARMENT_SIZE_TOKENS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+export type GarmentSizeToken = (typeof GARMENT_SIZE_TOKENS)[number];

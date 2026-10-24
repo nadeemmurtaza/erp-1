@@ -3,6 +3,7 @@ import { Interval } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { AppConfigService } from '../config/app-config.service';
 import type { ReplicationOp } from '../prisma/client';
+import { SloRecorderService } from '../slo/slo-recorder.service';
 import { ReplicationCursorService } from './replication-cursor.service';
 import { ReplicationApplyService } from './replication-apply.service';
 import { PARENT_PEER_ID } from './replication.types';
@@ -52,6 +53,7 @@ export class ReplicationSyncAgent {
     private readonly config: AppConfigService,
     private readonly cursor: ReplicationCursorService,
     private readonly apply: ReplicationApplyService,
+    private readonly slo: SloRecorderService,
   ) {}
 
   @Interval(SYNC_INTERVAL_MS)
@@ -78,6 +80,14 @@ export class ReplicationSyncAgent {
       orderBy: { sequence: 'asc' },
       take: PUSH_BATCH_SIZE,
     });
+
+    // 38-resilience-engineering.md §3, WO-38.3 — the till-parent sync SLO:
+    // the age of the OLDEST still-unpushed fact right now, regardless of
+    // whether this tick's own push attempt below succeeds. `rows[0]` is the
+    // oldest pending record (the query orders by sequence ascending); no
+    // pending rows means the branch is fully caught up (age 0).
+    this.slo.recordReplicationTick(rows.length > 0 ? Date.now() - rows[0].occurredAt.getTime() : 0);
+
     if (rows.length === 0) return;
 
     try {

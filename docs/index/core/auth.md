@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (51 · 10,445 lines)
+## Files (51 · 10,443 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -53,7 +53,7 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `password.util.ts` | module | 89 | 6 |  |
 | `permissions.service.spec.ts` | unit test | 317 | — |  |
 | `permissions.service.ts` | service | 219 | 5 |  |
-| `nid.provider.spec.ts` | unit test | 226 | — |  |
+| `nid.provider.spec.ts` | unit test | 224 | — |  |
 | `nid.provider.ts` | module | 332 | 3 |  |
 | `oidc.provider.spec.ts` | unit test | 205 | — |  |
 | `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |

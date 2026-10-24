@@ -1,23 +1,6 @@
-﻿# Enterprise-Scale Feature-Scope Lenses (WO-22 Workflow)
+# WO-22: Lens Workflow Results (enterprise feature-scope lenses)
 
-Workflow run: `wf_8cc42e30-ada` — 41 agents spawned; 10 completed; 31 failed on session limits / DNS. Results captured for manual integration.
-
-## Summary
-
-10 agents successfully generated enterprise-scale scoping lenses across domains:
-- Notifications + communication (audience is capability, delivery is fact, daily total)
-- Integration contracts (failure path, credential ownership, facts vs requests, switch + blast radius)
-- Reporting & analytics (whose rows, click the number, file self-describes, per-role vision)
-- Scale-tier spectrum (three silhouettes, absent collaborator, adoption test, 100k-row performance)
-- Concurrency & volume (second copy of write, hundred-thousandth row, busiest minute locks)
-- Bulk operations (weaker writer, row authority, 14:02 undo, duplicate recovery)
-- Configurable policy (version stamp, authority + blast radius, dry run before live)
-- Resilience & degradation (four hours down + manual recovery, request vs record, switch + scope)
-- Lifecycle reversal (reversal document not flag, undo fan-out, who may unmake it)
-
-> The one-line summaries above are the index. The full text of every lens the
-> workflow produced — question, reasoning, worked example, done test and failure
-> mode — is reproduced verbatim below, extracted from the run journal.
+Extracted from workflow run `wf_8cc42e30-ada` (journal.jsonl, session 71f67c57-1bf3-49bb-ba09-6dfc5af4833e). 10 of 41 agents completed before the session hit its weekly limit; 31 failed (mostly `ContextWindowExceeded`/session-limit aborts, not content rejections). This doc is the raw material for expanding CLAUDE.md's "Feature scope" section with enterprise-scale lenses.
 
 ## Completed domains (10)
 
@@ -480,7 +463,6 @@ These aborted (session/context-window limits on the first account), not content 
 ## What never got a result
 
 All 41 agents the workflow intended to run were attempted at least once (this journal has no queued-but-never-started label). Of the 22 Generate-phase topics, 12 failed and produced no lenses: Approval chains and delegation, Audit trail/evidence/legal hold, Commercial contracts and B2B, Data privacy and retention, Identity/roles/ranks, Localisation and jurisdiction, Money integrity and accounting, Observability and day-two ops, Onboarding and documentation, Security/fraud/insider risk, Segregation of duties and authorization, Surfaces and omnichannel parity. All 4 Ground attempts failed, all 10 Critique attempts (one per completed Generate domain) failed, and all 5 Completeness checks failed. So the 10 lens sets below are first-draft, ungrounded-by-verification, and never critiqued — they read well but have not been checked against this repo's actual code the way the workflow design intended (that check is what the Critique/Ground phases were for).
-
 ## Workflow Failure Analysis
 
 **Failed Agents: 31/41**

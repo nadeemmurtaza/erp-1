@@ -6,8 +6,6 @@ import {
 } from '@nestjs/common';
 import { AuditService } from '../../audit/audit.service';
 import { AppConfigService } from '../../config/app-config.service';
-import { PrismaService } from '../../prisma/prisma.service';
-import { RedisService } from '../../redis/redis.service';
 import { AuthService } from '../auth.service';
 import { NidProvider } from './nid.provider';
 

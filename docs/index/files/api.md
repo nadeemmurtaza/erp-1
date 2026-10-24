@@ -887,10 +887,10 @@ All 1,306 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `anax-sensor.service.ts` | service | 159 |  |
-| `anax.controller.ts` | controller | 81 |  |
+| `anax.controller.ts` | controller | 86 |  |
 | `anax.module.ts` | nest module | 13 |  |
 | `anax.service.spec.ts` | unit test | 125 |  |
-| `anax.service.ts` | service | 565 |  |
+| `anax.service.ts` | service | 564 |  |
 | `anax.types.ts` | module | 221 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidan… |
 
 ### `apps/api/src/core/approvals` (3)
@@ -979,7 +979,7 @@ All 1,306 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `nid.provider.spec.ts` | unit test | 226 |  |
+| `nid.provider.spec.ts` | unit test | 224 |  |
 | `nid.provider.ts` | module | 332 |  |
 | `oidc.provider.spec.ts` | unit test | 205 |  |
 | `oidc.provider.ts` | module | 195 |  |
@@ -1065,7 +1065,7 @@ All 1,306 tracked files in `apps/api`, by directory.
 | `ecosystem.constants.ts` | module | 92 |  |
 | `ecosystem.controller.ts` | controller | 76 |  |
 | `ecosystem.module.ts` | nest module | 57 |  |
-| `ecosystem.spec.ts` | unit test | 428 |  |
+| `ecosystem.spec.ts` | unit test | 426 |  |
 | `index.ts` | module | 9 |  |
 | `marketing-dispatch-bridge.service.ts` | service | 96 |  |
 | `support-ticket-bridge.service.ts` | service | 112 |  |

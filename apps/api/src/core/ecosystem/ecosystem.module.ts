@@ -5,9 +5,9 @@ import {
 } from './ecosystem.constants';
 import { EcosystemController } from './ecosystem.controller';
 import { EcosystemEventBridgeService } from './ecosystem-event-bridge.service';
-import { EcosystemEventBusClient, HttpEcosystemEventBusClient } from './ecosystem-event-bus.client';
+import { HttpEcosystemEventBusClient } from './ecosystem-event-bus.client';
 import { EcosystemInboundService } from './ecosystem-inbound.service';
-import { EcosystemModuleGatewayClient, HttpEcosystemModuleGatewayClient } from './ecosystem-module-gateway.client';
+import { HttpEcosystemModuleGatewayClient } from './ecosystem-module-gateway.client';
 import { SupportTicketBridge } from './support-ticket-bridge.service';
 import { CustomerEngagementBridge } from './customer-engagement-bridge.service';
 import { MarketingDispatchBridge } from './marketing-dispatch-bridge.service';

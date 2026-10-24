@@ -9,7 +9,6 @@ import type {
   InterceptPoint,
   InternalTelemetrySignal,
   StateSpaceVector16,
-  StockInventoryEvaluation,
   WorldMacroSignal,
 } from './anax.types';
 

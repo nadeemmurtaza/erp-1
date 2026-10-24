@@ -12,7 +12,7 @@ Source: `apps/api/src/core/ecosystem/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (13 · 1,597 lines)
+## Files (13 · 1,595 lines)
 
 All paths relative to `apps/api/src/core/ecosystem`.
 
@@ -27,7 +27,7 @@ All paths relative to `apps/api/src/core/ecosystem`.
 | `ecosystem.constants.ts` | module | 92 | 6 | Dependency injection tokens and wire contracts for the NEWAX Ecosystem Module Gateway & Event Bus client. |
 | `ecosystem.controller.ts` | controller | 76 | 1 | Ecosystem Inbound Webhook Controller (ECOSYSTEM.md, WO-255.4). |
 | `ecosystem.module.ts` | nest module | 57 | 1 |  |
-| `ecosystem.spec.ts` | unit test | 428 | — |  |
+| `ecosystem.spec.ts` | unit test | 426 | — |  |
 | `index.ts` | module | 9 | — |  |
 | `marketing-dispatch-bridge.service.ts` | service | 96 | 3 |  |
 | `support-ticket-bridge.service.ts` | service | 112 | 3 |  |

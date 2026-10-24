@@ -13,7 +13,7 @@ Source: `apps/api/src/core/anax/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 1,169 lines)
+## Files (6 · 1,168 lines)
 
 All paths relative to `apps/api/src/core/anax`.
 
@@ -23,7 +23,7 @@ All paths relative to `apps/api/src/core/anax`.
 | `anax.controller.ts` | controller | 86 | 1 |  |
 | `anax.module.ts` | nest module | 13 | 1 |  |
 | `anax.service.spec.ts` | unit test | 125 | — |  |
-| `anax.service.ts` | service | 565 | 1 | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
+| `anax.service.ts` | service | 564 | 1 | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
 | `anax.types.ts` | module | 221 | 13 | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biological guidan… |
 
 
@@ -79,7 +79,7 @@ _none_
 | `AnaxSensorService` | class | `anax-sensor.service.ts:19` | AnaxSensorService: The 30,000-Ommatidia Compound Sensing Layer in ERP-1. |
 | `AnaxController` | class | `anax.controller.ts:23` |  |
 | `AnaxModule` | class | `anax.module.ts:12` |  |
-| `AnaxService` | class | `anax.service.ts:27` | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
+| `AnaxService` | class | `anax.service.ts:26` | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
 | `InternalTelemetrySignal` | interface | `anax.types.ts:8` | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biologi… |
 | `GeopoliticalWarSignal` | interface | `anax.types.ts:34` |  |
 | `CommodityForexSignal` | interface | `anax.types.ts:53` |  |

@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2958,
-    "lines": 468856,
+    "lines": 468851,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1378,8 +1378,8 @@
     },
     "api": {
       "files": 1306,
-      "lines": 180866,
-      "bytes": 7378303,
+      "lines": 180861,
+      "bytes": 7377983,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -65169,14 +65169,14 @@
       "path": "apps/api/src/core/anax/anax.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 565,
-      "bytes": 24882,
+      "lines": 564,
+      "bytes": 24853,
       "doc": "",
       "symbols": [
         {
           "name": "AnaxService",
           "kind": "class",
-          "line": 27
+          "line": 26
         }
       ]
     },
@@ -66277,8 +66277,8 @@
       "path": "apps/api/src/core/auth/providers/nid.provider.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 226,
-      "bytes": 7522,
+      "lines": 224,
+      "bytes": 7401,
       "doc": "",
       "symbols": []
     },
@@ -67295,7 +67295,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 57,
-      "bytes": 2139,
+      "bytes": 2084,
       "doc": "",
       "symbols": [
         {
@@ -67309,8 +67309,8 @@
       "path": "apps/api/src/core/ecosystem/ecosystem.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 428,
-      "bytes": 16056,
+      "lines": 426,
+      "bytes": 15941,
       "doc": "",
       "symbols": []
     },

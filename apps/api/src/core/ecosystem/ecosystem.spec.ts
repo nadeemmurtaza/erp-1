@@ -1,9 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuditService } from '../audit/audit.service';
 import { AppConfigService } from '../config/app-config.service';
 import { DomainEvent } from '../events/domain-events';
-import { PrismaService } from '../prisma/prisma.service';
 import {
   ECOSYSTEM_EVENT_BUS_CLIENT,
 } from './ecosystem.constants';

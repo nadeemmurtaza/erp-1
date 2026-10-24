@@ -6,10 +6,12 @@ import { InventoryListener } from './inventory.listener';
 
 import { StockCountController } from './stock-count.controller';
 import { StockCountService } from './stock-count.service';
+import { StockVarianceController } from './stock-variance.controller';
+import { StockVarianceService } from './stock-variance.service';
 
 @Module({
-  controllers: [InventoryAdminController, StockCountController],
-  providers: [InventoryService, InventoryCron, InventoryListener, StockCountService],
+  controllers: [InventoryAdminController, StockCountController, StockVarianceController],
+  providers: [InventoryService, InventoryCron, InventoryListener, StockCountService, StockVarianceService],
   exports: [InventoryService],
 })
 export class InventoryModule {}

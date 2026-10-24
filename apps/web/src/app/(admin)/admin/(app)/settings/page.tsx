@@ -1,29 +1,20 @@
 'use client';
 
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, type UserRole } from '@yaseen/shared';
+import { useCallback, useEffect, useState } from 'react';
+import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/lib/api-types';
+import type { AuditLogEntry, AuditLogPage, RoleSummary } from '@/types/api';
+import { Loading, PageHeader, Tabs } from '@/components/ui';
+import { RoleWizard } from '@/components/admin/role-wizard';
+import { useEnabledModules } from '@/components/admin/deployment-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 
-type Draft = Record<UserRole, Set<string>>;
-
-function draftFrom(roles: RolePermissions[]): Draft {
-  const draft = {} as Draft;
-  for (const role of BACK_OFFICE_ROLES) {
-    draft[role] = new Set(roles.find((r) => r.role === role)?.permissions ?? []);
-  }
-  return draft;
-}
-
-function sameSet(a: Set<string>, b: Set<string>): boolean {
-  return a.size === b.size && [...a].every((key) => b.has(key));
-}
+/** Undefined = wizard closed. `null` = creating a new role. A `RoleSummary` = editing that one. */
+type WizardTarget = RoleSummary | null | undefined;
 
 export default function AdminSettingsPage() {
-  const [permissions, setPermissions] = useState<PermissionDefinition[]>([]);
-  const [roles, setRoles] = useState<RolePermissions[]>([]);
-  const [draft, setDraft] = useState<Draft | null>(null);
-  const [savingRole, setSavingRole] = useState<UserRole | null>(null);
+  const [roles, setRoles] = useState<RoleSummary[]>([]);
+  const [wizardTarget, setWizardTarget] = useState<WizardTarget>(undefined);
   const [error, setError] = useState<string | null>(null);
 
   const [audit, setAudit] = useState<AuditLogPage | null>(null);
@@ -31,24 +22,18 @@ export default function AdminSettingsPage() {
   const [auditPage, setAuditPage] = useState(1);
   const [auditError, setAuditError] = useState<string | null>(null);
 
-  const loadPermissions = useCallback(async () => {
+  const loadRoles = useCallback(async () => {
     setError(null);
     try {
-      const [perms, roleGrants] = await Promise.all([
-        adminFetch<PermissionDefinition[]>('/admin/settings/permissions'),
-        adminFetch<RolePermissions[]>('/admin/settings/roles'),
-      ]);
-      setPermissions(perms);
-      setRoles(roleGrants);
-      setDraft(draftFrom(roleGrants));
+      setRoles(await adminFetch<RoleSummary[]>('/admin/roles'));
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Could not load permissions');
+      setError(cause instanceof Error ? cause.message : 'Could not load roles');
     }
   }, []);
 
   useEffect(() => {
-    void loadPermissions();
-  }, [loadPermissions]);
+    void loadRoles();
+  }, [loadRoles]);
 
   const loadAuditLog = useCallback(async () => {
     setAuditError(null);
@@ -74,146 +59,142 @@ export default function AdminSettingsPage() {
     void loadAuditLog();
   }, [loadAuditLog]);
 
-  const categories = useMemo(() => {
-    const seen = new Map<string, PermissionDefinition[]>();
-    for (const permission of permissions) {
-      const list = seen.get(permission.category) ?? [];
-      list.push(permission);
-      seen.set(permission.category, list);
-    }
-    return [...seen.entries()];
-  }, [permissions]);
-
-  function toggle(role: UserRole, key: string) {
-    if (!draft) return;
-    const next = { ...draft, [role]: new Set(draft[role]) };
-    if (next[role].has(key)) next[role].delete(key);
-    else next[role].add(key);
-    setDraft(next);
+  function handleWizardDone(saved: RoleSummary) {
+    setRoles((prev) => {
+      const exists = prev.some((r) => r.id === saved.id);
+      return exists ? prev.map((r) => (r.id === saved.id ? saved : r)) : [...prev, saved];
+    });
+    setWizardTarget(undefined);
   }
 
-  function isDirty(role: UserRole): boolean {
-    if (!draft) return false;
-    const saved = roles.find((r) => r.role === role);
-    return !sameSet(draft[role], new Set(saved?.permissions ?? []));
-  }
-
-  async function saveRole(role: UserRole) {
-    if (!draft) return;
-    setSavingRole(role);
+  async function deleteRole(role: RoleSummary) {
     setError(null);
     try {
-      const result = await adminFetch<RolePermissions>(`/admin/settings/roles/${role}/permissions`, {
-        method: 'PUT',
-        body: { permissionKeys: [...draft[role]] },
-      });
-      setRoles((prev) => prev.map((r) => (r.role === role ? result : r)));
+      await adminFetch(`/admin/roles/${role.id}`, { method: 'DELETE' });
+      setRoles((prev) => prev.filter((r) => r.id !== role.id));
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : `Could not save ${role}'s permissions`);
-    } finally {
-      setSavingRole(null);
+      setError(cause instanceof Error ? cause.message : `Could not delete "${role.name}"`);
     }
   }
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Settings</h1>
-      <p className="mb-6 text-sm text-ink/60">
-        What each role can do, and a record of every change made in the back office.
-      </p>
+      <PageHeader
+        title="Settings"
+        description="What each role can do, how media is stored, and a record of every change."
+      />
 
-      <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink/50">
-          Roles &amp; Permissions
-        </h2>
-
+      {/*
+        Three unrelated jobs — who can do what, how uploads are stored, what
+        happened. Tabs rather than one scroll: they are separate tasks on one
+        object, and stacking them is how a settings page becomes the longest
+        page in an admin.
+      */}
+      <Tabs
+        label="Settings areas"
+        items={[
+          {
+            key: 'permissions',
+            label: 'Roles & permissions',
+            content: (
+      <section>
         {error ? (
-          <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error mb-4">
             {error}
           </p>
         ) : null}
 
-        {!draft ? (
-          <p className="text-sm text-ink/50">Loading…</p>
+        {wizardTarget !== undefined ? (
+          <RoleWizard
+            role={wizardTarget ?? undefined}
+            onDone={handleWizardDone}
+            onCancel={() => setWizardTarget(undefined)}
+          />
+        ) : roles.length === 0 && !error ? (
+          <Loading />
         ) : (
-          <div className="card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-sand-200 bg-sand-50">
-                  <tr>
-                    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
-                      Permission
-                    </th>
-                    {BACK_OFFICE_ROLES.map((role) => (
-                      <th
-                        key={role}
-                        className="px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-ink/50"
-                      >
-                        {role}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-sand-100">
-                  {categories.map(([category, items]) => (
-                    <Fragment key={category}>
-                      <tr className="bg-sand-50/60">
-                        <td colSpan={BACK_OFFICE_ROLES.length + 1} className="px-4 py-1.5 text-xs font-semibold text-ink/60">
-                          {category}
-                        </td>
-                      </tr>
-                      {items.map((permission) => (
-                        <tr key={permission.id}>
-                          <td className="px-4 py-2.5">
-                            <span className="text-ink">{permission.label}</span>
-                            <p className="text-xs text-ink/40">{permission.key}</p>
-                          </td>
-                          {BACK_OFFICE_ROLES.map((role) => {
-                            const locked =
-                              role === 'ADMIN' &&
-                              (ADMIN_LOCKED_PERMISSIONS as readonly string[]).includes(permission.key);
-                            return (
-                              <td key={role} className="px-4 py-2.5 text-center">
-                                <input
-                                  type="checkbox"
-                                  checked={draft[role].has(permission.key)}
-                                  disabled={locked}
-                                  title={locked ? 'ADMIN must always keep this permission' : undefined}
-                                  onChange={() => toggle(role, permission.key)}
-                                  className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-40"
-                                />
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </Fragment>
-                  ))}
-                </tbody>
-              </table>
+          <div>
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm text-neutral-900/60">
+                {roles.length} role{roles.length === 1 ? '' : 's'} — each can hold any mix of the
+                permission groups.
+              </p>
+              <button type="button" onClick={() => setWizardTarget(null)} className="btn-primary">
+                New role
+              </button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 border-t border-sand-200 px-4 py-3">
-              {BACK_OFFICE_ROLES.map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  disabled={!isDirty(role) || savingRole === role}
-                  onClick={() => void saveRole(role)}
-                  className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {savingRole === role ? `Saving ${role}…` : `Save ${role}`}
-                </button>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="table-flat">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th className="text-end">Permissions</th>
+                    <th className="text-end">Holders</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {roles.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
+                        No roles yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    roles.map((role) => (
+                      <tr key={role.id}>
+                        <td>
+                          <button
+                            type="button"
+                            onClick={() => setWizardTarget(role)}
+                            className="font-medium text-accent-hover"
+                          >
+                            {role.name}
+                          </button>
+                          {role.description ? (
+                            <p className="text-xs text-neutral-900/60">{role.description}</p>
+                          ) : null}
+                        </td>
+                        <td className="text-end tabular-nums text-neutral-900/70">{role.permissions.length}</td>
+                        <td className="text-end tabular-nums text-neutral-900/70">{role.userCount}</td>
+                        <td className="text-end">
+                          <button
+                            type="button"
+                            onClick={() => void deleteRole(role)}
+                            className="btn-text text-feedback-negative"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
       </section>
-
+            ),
+          },
+          {
+            key: 'documents',
+            label: 'Documents & media',
+            content: (
+              <>
+                <DocumentSettingsPanel />
+                <MediaSettings />
+              </>
+            ),
+          },
+          {
+            key: 'audit',
+            label: 'Audit log',
+            content: (
       <section>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink/50">Audit Log</h2>
 
-        <div className="card mb-4 flex flex-wrap items-end gap-3 p-3">
+        <div className="mb-6 flex flex-wrap items-end gap-3 border-b border-neutral-100 pb-4">
           <label className="block">
             <span className="field-label">Entity</span>
             <input
@@ -255,22 +236,22 @@ export default function AdminSettingsPage() {
               setAuditPage(1);
               void loadAuditLog();
             }}
-            className="btn-ghost"
+            className="btn-secondary"
           >
             Filter
           </button>
         </div>
 
         {auditError ? (
-          <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error mb-4">
             {auditError}
           </p>
         ) : null}
 
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-sand-200 bg-sand-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>When</Th>
                   <Th>Actor</Th>
@@ -278,16 +259,16 @@ export default function AdminSettingsPage() {
                   <Th>Entity</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sand-100">
+              <tbody className="divide-y divide-neutral-100">
                 {!audit ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : audit.entries.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       No matching entries.
                     </td>
                   </tr>
@@ -299,7 +280,7 @@ export default function AdminSettingsPage() {
           </div>
 
           {audit && audit.total > audit.perPage ? (
-            <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm text-ink/60">
+            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm text-neutral-900/60">
               <span>
                 {(audit.page - 1) * audit.perPage + 1}–
                 {Math.min(audit.page * audit.perPage, audit.total)} of {audit.total}
@@ -326,13 +307,278 @@ export default function AdminSettingsPage() {
           ) : null}
         </div>
       </section>
+            ),
+          },
+        ]}
+      />
     </>
+  );
+}
+
+interface DocumentSettings {
+  logoSource: 'text' | 'site' | 'custom';
+  logoUrl: string | null;
+  prefixes: Record<string, string>;
+}
+
+/**
+ * `module` ties a field to the API module it only means something for — a
+ * pure B2B supplier deployment with `stitching`/`orders` off has no use for
+ * a stitching-order prefix or a consumer order prefix. Omitted `module`
+ * means universal (purchasing is `core`, so every deployment sees it).
+ */
+const PREFIX_FIELDS: Array<{ key: string; label: string; module?: string }> = [
+  { key: 'order', label: 'Orders', module: 'orders' },
+  { key: 'purchaseOrder', label: 'Purchase orders', module: 'purchasing' },
+  { key: 'goodsReceipt', label: 'Goods receipts', module: 'purchasing' },
+  { key: 'stitchingOrder', label: 'Stitching orders', module: 'stitching' },
+  { key: 'stitchingJob', label: 'Workshop jobs', module: 'stitching' },
+  { key: 'stockCount', label: 'Stock counts', module: 'inventory' },
+  { key: 'journalEntry', label: 'Journal entries', module: 'accounting' },
+  { key: 'invoice', label: 'Invoices (to trading partners)', module: 'tradingpartners' },
+  { key: 'quote', label: 'Quotes (to trading partners)', module: 'tradingpartners' },
+];
+
+const LOGO_CHOICES: Array<{ value: DocumentSettings['logoSource']; label: string; hint: string }> = [
+  {
+    value: 'text',
+    label: 'The shop name, as text',
+    hint: 'What most people see. Mail clients block hosted images until the reader asks for them.',
+  },
+  {
+    value: 'site',
+    label: "The storefront's logo",
+    hint: 'The same artwork the website header uses.',
+  },
+  {
+    value: 'custom',
+    label: 'A logo just for documents',
+    hint: 'For when the web logo is knocked out white and an invoice needs a dark one.',
+  },
+];
+
+/**
+ * What customer-facing paperwork shows, and how it is numbered.
+ *
+ * Prefixes are here rather than in code because a shop that already numbers
+ * its paperwork a particular way should not have to match ours — and because
+ * the shipped default for orders is the client's initials, which the next
+ * client will want changed. Changing one affects new documents only.
+ */
+function DocumentSettingsPanel() {
+  const enabledModules = useEnabledModules();
+  const prefixFields = PREFIX_FIELDS.filter((field) => isModuleEnabled(field.module, enabledModules));
+  const [settings, setSettings] = useState<DocumentSettings | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    adminFetch<DocumentSettings>('/admin/settings/documents')
+      .then(setSettings)
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause.message : 'Could not load document settings'),
+      );
+  }, []);
+
+  async function save(patch: Partial<DocumentSettings>) {
+    setSaving(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const next = await adminFetch<DocumentSettings>('/admin/settings/documents', {
+        method: 'PUT',
+        body: patch,
+      });
+      setSettings(next);
+      setNotice('Saved. New documents use these; anything already issued keeps its number.');
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save document settings');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!settings) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="mb-10 max-w-prose">
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+      {notice ? <p className="notice notice-success mb-4">{notice}</p> : null}
+
+      <h3 className="eyebrow mb-3">On receipts, invoices and emails</h3>
+      <div className="space-y-3">
+        {LOGO_CHOICES.map((choice) => (
+          <label key={choice.value} className="flex items-start gap-3">
+            <input
+              type="radio"
+              name="logoSource"
+              checked={settings.logoSource === choice.value}
+              disabled={saving}
+              onChange={() => void save({ logoSource: choice.value })}
+              className="field-check mt-1 rounded-full"
+            />
+            <span>
+              <span className="block text-sm text-neutral-900">{choice.label}</span>
+              <span className="mt-0.5 block text-xs text-neutral-900/60">{choice.hint}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      {settings.logoSource === 'custom' ? (
+        <label className="mt-4 block">
+          <span className="field-label">Logo URL</span>
+          <input
+            defaultValue={settings.logoUrl ?? ''}
+            onBlur={(event) => {
+              const next = event.target.value.trim() || null;
+              if (next !== settings.logoUrl) void save({ logoUrl: next });
+            }}
+            placeholder="https://…"
+            className="field-input"
+          />
+          <span className="mt-1 block text-xs text-neutral-900/60">
+            Upload it under Products &rsaquo; Images, then paste the address here. A wide,
+            short mark reads best — it is shown 36px tall.
+          </span>
+        </label>
+      ) : null}
+
+      <h3 className="eyebrow mb-3 mt-8">Number prefixes</h3>
+      <p className="mb-3 text-sm text-neutral-900/60">
+        What each kind of document&rsquo;s number starts with, before the year and the
+        sequence — <code className="text-neutral-900">{settings.prefixes.order}-2026-0001</code>.
+      </p>
+      <div className="grid gap-3 fold:grid-cols-2">
+        {prefixFields.map((field) => (
+          <label key={field.key} className="block">
+            <span className="field-label">{field.label}</span>
+            <input
+              defaultValue={settings.prefixes[field.key] ?? ''}
+              maxLength={8}
+              onBlur={(event) => {
+                const next = event.target.value.trim().toUpperCase();
+                if (next && next !== settings.prefixes[field.key]) {
+                  void save({ prefixes: { [field.key]: next } as Record<string, string> });
+                }
+              }}
+              className="field-input"
+            />
+          </label>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * How uploaded images are stored.
+ *
+ * One switch, and a plain statement of what it does — an owner turning this
+ * off should know it costs page speed, and that it changes nothing about the
+ * images already on the shelf.
+ */
+function MediaSettings() {
+  const [webpEnabled, setWebpEnabled] = useState<boolean | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    adminFetch<{ webpEnabled: boolean }>('/admin/settings/media')
+      .then((media) => setWebpEnabled(media.webpEnabled))
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause.message : 'Could not load media settings'),
+      );
+  }, []);
+
+  async function save(next: boolean) {
+    setSaving(true);
+    setError(null);
+    setNotice(null);
+    // Optimistic, then corrected by what the server returns — a switch that
+    // waits a round trip before moving feels broken.
+    setWebpEnabled(next);
+    try {
+      const media = await adminFetch<{ webpEnabled: boolean }>('/admin/settings/media', {
+        method: 'PUT',
+        body: { webpEnabled: next },
+      });
+      setWebpEnabled(media.webpEnabled);
+      setNotice(
+        media.webpEnabled
+          ? 'New uploads will be converted to WebP.'
+          : 'New uploads will be stored in their original format.',
+      );
+    } catch (cause) {
+      setWebpEnabled(!next);
+      setError(cause instanceof Error ? cause.message : 'Could not save media settings');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (webpEnabled === null) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+      {notice ? <p className="notice notice-success mb-4">{notice}</p> : null}
+
+      <label className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          checked={webpEnabled}
+          disabled={saving}
+          onChange={(event) => void save(event.target.checked)}
+          className="field-check mt-1"
+        />
+        <span>
+          <span className="block text-sm font-medium text-neutral-900">
+            Convert uploads to WebP
+          </span>
+          <span className="mt-1 block text-sm text-neutral-900/60">
+            WebP is smaller than JPEG or PNG at the same visual quality, so pages load faster and
+            Lighthouse stops flagging &ldquo;next-gen formats&rdquo;. Turn it off only if an
+            original has to be kept byte-for-byte.
+          </span>
+          <span className="mt-2 block text-xs text-neutral-900/60">
+            Applies to new uploads. Images already stored keep the format they were saved in.
+          </span>
+        </span>
+      </label>
+    </section>
   );
 }
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
+    <th>
       {children}
     </th>
   );
@@ -344,13 +590,13 @@ function AuditRow({ entry }: { entry: AuditLogEntry }) {
     : '—';
 
   return (
-    <tr className="hover:bg-sand-50">
-      <td className="px-4 py-3 text-ink/70">{new Date(entry.createdAt).toLocaleString('en-PK')}</td>
-      <td className="px-4 py-3 text-ink">{actorName}</td>
-      <td className="px-4 py-3 font-mono text-xs text-ink/80">{entry.action}</td>
-      <td className="px-4 py-3 text-ink/70">
+    <tr className="hover:bg-neutral-50">
+      <td className="text-neutral-900/70">{formatDateTime(entry.createdAt)}</td>
+      <td className="text-neutral-900">{actorName}</td>
+      <td className="font-mono text-neutral-900/80">{entry.action}</td>
+      <td className="text-neutral-900/70">
         {entry.entity}
-        {entry.entityId ? <span className="text-xs text-ink/40"> · {entry.entityId}</span> : null}
+        {entry.entityId ? <span className="text-xs text-neutral-900/60"> · {entry.entityId}</span> : null}
       </td>
     </tr>
   );

@@ -338,7 +338,7 @@ PR** so the next agent does not "fix" it back.
 |---|---|
 | Next 15.5.23 + React 19.2.8 | Recharts 3 declares react 18-or-19 and ships ESM. The whole admin tree is client-rendered by design (`admin-shell.tsx:20-22`), so there is no SSR or hydration surface to defend. |
 | Bundle | ~100 kB gz with d3 sub-deps — real, but confined. Imported only from `components/admin/charts/`, reachable only from the `(admin)` route group, which Next code-splits per route. **The storefront bundle does not change.** WO-A.2 adds a CI check enforcing it. |
-| Theming | Plain props for stroke/fill/tick — no CSS-in-JS, no theme provider to fight. Series 1 stays `#0f8fa3`, the exact value `sales-chart.tsx` uses. Grid stays `#e9e0cd`. |
+| Theming | Plain props for stroke/fill/tick — no CSS-in-JS, no theme provider to fight. Series 1 stays `#0e8294`, the exact value `sales-chart.tsx` uses (darkened from `#0f8fa3` when `check-contrast.mjs` found the original under the WCAG AA text floor — see `brand.ts`). Grid stays `#e9e0cd`. |
 | Accessibility | Weak on its own — which is why the wrapper is non-negotiable. |
 
 Rejected: **visx** (primitives, not charts — with 25 charts to build you would
@@ -638,7 +638,7 @@ scripts/check-chart-imports.mjs
 `package.json` (`lint` runs the new script), `pnpm-lock.yaml`.
 
 `chart-theme.ts` holds the categorical ramp
-`['#0f8fa3','#b8860b','#4a6fa5','#8a5a44','#5f7a4f','#7d5ba6']` (six hues, each
+`['#0e8294','#b8860b','#4a6fa5','#8a5a44','#5f7a4f','#7d5ba6']` (six hues, each
 at least 3:1 on white and distinguishable in common dichromacies),
 `GRID = '#e9e0cd'`, `SURFACE = '#ffffff'`, ink text at `#050505` with the
 50–60% opacities the existing charts use, the dash-pattern ramp, and
@@ -1185,7 +1185,7 @@ apps/web/src/app/(admin)/admin/(app)/products/page.tsx    badge/hide raw-materia
 // QUANTITIES ARE INTEGER BASE UNITS, the same discipline money uses. unitScale
 // says how many base units make one display unit: fabric is GAZ with unitScale
 // 1000, so stock 12500 is 12.5 gaz and costPrice is paisa per milli-gaz.
-// Convert only at the UI boundary, through @yaseen/shared's toBaseUnits /
+// Convert only at the UI boundary, through @newax/shared's toBaseUnits /
 // fromBaseUnits. A bare scale multiplication in a component is a bug.
 
 enum RawMaterialUnit { GAZ METRE PIECE SPOOL GRAM MILLILITRE }
@@ -1805,7 +1805,7 @@ On top of the house rules' checklist, every PR:
 - [ ] The dashboard still makes **one** request per range change.
 - [ ] Every money value in request, response, column and test is integer paisa.
 - [ ] Every raw-material quantity is integer base units, converted only through
-      `@yaseen/shared`.
+      `@newax/shared`.
 - [ ] Every new route has `@ApiOperation` and `@RequirePermission`.
 - [ ] Cost/margin data is **absent from the payload** — not merely hidden in the
       UI — for callers without `inventory.view_cost`.
@@ -1836,7 +1836,7 @@ Runnable once C.3 and B.5 have merged:
 ### A note on running the checks
 
 On Windows, `turbo run` currently fails with `spawn UNKNOWN`; run per-package
-(`cd apps/api && pnpm test`) until that is fixed. `pnpm --filter @yaseen/web build`
+(`cd apps/api && pnpm test`) until that is fixed. `pnpm --filter @newax/web build`
 also fails at the `.next/standalone` symlink step with `EPERM` — that is a
 Windows permissions issue, not a code defect; the compile itself succeeds. Do not
 "fix" either by weakening a check.

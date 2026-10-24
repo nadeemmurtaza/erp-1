@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL } from '@/config/site';
 
 /**
  * `/admin` is unprefixed (see middleware.ts); every account/cart/checkout

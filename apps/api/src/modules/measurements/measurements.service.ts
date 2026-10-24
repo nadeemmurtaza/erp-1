@@ -9,7 +9,7 @@ import {
   validateMeasurements,
   type MeasurementFieldDef,
   type MeasurementValues,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { MeasurementField, Prisma } from '../../core/prisma/client';
@@ -17,7 +17,7 @@ import type { MeasurementField, Prisma } from '../../core/prisma/client';
 /**
  * Garment types, their measurement fields, and customers' saved profiles.
  *
- * Validation is delegated to @yaseen/shared so the API, the website and the
+ * Validation is delegated to @newax/shared so the API, the website and the
  * mobile app apply identical rules — the field definitions are database rows,
  * so a measurement added in the dashboard is enforced everywhere immediately.
  */
@@ -184,7 +184,7 @@ export class MeasurementsService implements OnModuleInit {
   }
 }
 
-/** Prisma rows -> the plain definitions @yaseen/shared validates against. */
+/** Prisma rows -> the plain definitions @newax/shared validates against. */
 export function toFieldDefs(fields: MeasurementField[]): MeasurementFieldDef[] {
   return fields
     .filter((field) => field.isActive)

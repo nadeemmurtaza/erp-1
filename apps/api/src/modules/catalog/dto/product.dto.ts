@@ -15,7 +15,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@yaseen/shared';
+import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@newax/shared';
 
 export class ProductTranslationDto {
   @ApiProperty({ enum: LOCALES, example: 'en' })
@@ -151,7 +151,7 @@ export class CreateProductDto {
   @IsOptional()
   @IsString()
   @MaxLength(80)
-  brand?: string;
+  brandId?: string;
 
   @ApiPropertyOptional({ example: 'lawn' })
   @IsOptional()

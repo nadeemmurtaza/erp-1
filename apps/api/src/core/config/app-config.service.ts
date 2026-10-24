@@ -23,6 +23,31 @@ export class AppConfigService {
     return this.get('NODE_ENV') === 'test';
   }
 
+  get nodeRole(): Env['NODE_ROLE'] {
+    return this.get('NODE_ROLE');
+  }
+
+  get nodeId(): string {
+    return this.get('NODE_ID');
+  }
+
+  get parentUrl(): string | undefined {
+    return this.get('PARENT_URL');
+  }
+
+  get parentApiKey(): string | undefined {
+    return this.get('PARENT_API_KEY');
+  }
+
+  /**
+   * False for every deployment today. Once true, chain-topology UI (a brand
+   * picker, a scope selector, a sync screen) is allowed to render — RETAIL-ERP.md
+   * R14's "every tier concept must be invisible in Solo".
+   */
+  get isChainNode(): boolean {
+    return this.get('NODE_ROLE') !== 'STANDALONE';
+  }
+
   /** Optional feature modules switched on by the MODULES allowlist. */
   isModuleEnabled(name: string): boolean {
     return this.get('MODULES').includes(name);

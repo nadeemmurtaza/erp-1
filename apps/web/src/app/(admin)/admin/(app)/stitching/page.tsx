@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { STITCHING_STAGES, type StitchingStage } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { STITCHING_STAGES, formatDate, type StitchingStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
+import { Loading } from '@/components/ui';
 import {
   jobCustomer,
   STAGE_LABELS,
   type StitchingJob,
   type Workload,
-} from '@/lib/stitching-types';
+} from '@/types/stitching';
 
 /**
  * The tailor queue.
@@ -59,8 +60,8 @@ export default function TailorQueuePage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Tailor queue</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tailor queue</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Every garment in the workshop, soonest due first. A job moves one stage at a
         time; sending one back needs a reason.
       </p>
@@ -73,15 +74,15 @@ export default function TailorQueuePage() {
               type="button"
               onClick={() => setStage(stage === entry.stage ? '' : entry.stage)}
               aria-pressed={stage === entry.stage}
-              className={clsx(
+              className={cn(
                 'card p-3 text-start transition',
-                stage === entry.stage ? 'ring-2 ring-brand-500' : 'hover:bg-sand-50',
+                stage === entry.stage ? 'ring-2 ring-accent' : 'hover:bg-neutral-50',
               )}
             >
-              <p className="text-xs uppercase tracking-wide text-ink/50">
+              <p className="text-xs uppercase tracking-wide text-neutral-900/60">
                 {STAGE_LABELS[entry.stage]}
               </p>
-              <p className="mt-1 text-2xl font-semibold tabular-nums text-ink">
+              <p className="mt-1 text-2xl font-semibold tabular-nums text-neutral-900">
                 {entry.count}
               </p>
             </button>
@@ -89,7 +90,7 @@ export default function TailorQueuePage() {
         </div>
       ) : null}
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <select
           value={stage}
           onChange={(event) => setStage(event.target.value as StitchingStage | '')}
@@ -120,7 +121,7 @@ export default function TailorQueuePage() {
           </select>
         ) : null}
 
-        <label className="flex items-center gap-2 text-sm text-ink/70">
+        <label className="flex items-center gap-2 text-sm text-neutral-900/70">
           <input
             type="checkbox"
             checked={mine}
@@ -129,7 +130,7 @@ export default function TailorQueuePage() {
           Only mine
         </label>
 
-        <label className="flex items-center gap-2 text-sm text-ink/70">
+        <label className="flex items-center gap-2 text-sm text-neutral-900/70">
           <input
             type="checkbox"
             checked={overdue}
@@ -139,22 +140,22 @@ export default function TailorQueuePage() {
         </label>
 
         {workload && canManageAssignments ? (
-          <span className="ms-auto text-sm text-ink/50">
+          <span className="ms-auto text-sm text-neutral-900/60">
             {workload.unassigned} unassigned
           </span>
         ) : null}
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Job</Th>
                 <Th>Garment</Th>
@@ -164,16 +165,16 @@ export default function TailorQueuePage() {
                 <Th>Tailor</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {!jobs ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : jobs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/60">
                     Nothing in the queue matches those filters.
                   </td>
                 </tr>
@@ -183,25 +184,25 @@ export default function TailorQueuePage() {
                   const late = isOverdue(job);
 
                   return (
-                    <tr key={job.id} className="hover:bg-sand-50">
-                      <td className="px-4 py-3">
+                    <tr key={job.id} className="hover:bg-neutral-50">
+                      <td>
                         <Link
                           href={`/admin/stitching/jobs/${job.id}`}
-                          className="font-medium text-ink hover:text-brand-700"
+                          className="font-medium text-neutral-900 hover:text-accent-hover"
                         >
                           {job.number}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-ink/80">{job.garmentType.labelEn}</td>
-                      <td className="px-4 py-3">
-                        <p className="text-ink">{customer.name}</p>
-                        <p className="text-xs text-ink/40">{customer.reference}</p>
+                      <td className="text-neutral-900/80">{job.garmentType.labelEn}</td>
+                      <td>
+                        <p className="text-neutral-900">{customer.name}</p>
+                        <p className="text-xs text-neutral-900/60">{customer.reference}</p>
                       </td>
-                      <td className="px-4 py-3">
+                      <td>
                         <StageBadge stage={job.stage} />
                       </td>
-                      <td className="px-4 py-3 text-ink/70">
-                        {job.dueAt ? new Date(job.dueAt).toLocaleDateString('en-PK') : '—'}
+                      <td className="text-neutral-900/70">
+                        {job.dueAt ? formatDate(job.dueAt) : '—'}
                         {late ? (
                           // Marked with a word as well as a colour: colour alone
                           // is not a label.
@@ -210,7 +211,7 @@ export default function TailorQueuePage() {
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-ink/70">
+                      <td className="text-neutral-900/70">
                         {job.assignedTailor
                           ? (job.assignedTailor.firstName ?? 'Assigned')
                           : '—'}
@@ -226,14 +227,14 @@ export default function TailorQueuePage() {
 
       {workload && workload.tailors.length > 0 && canManageAssignments ? (
         <section className="card mt-6 p-4">
-          <h2 className="mb-3 text-sm font-semibold text-ink">Tailor load</h2>
+          <h2 className="mb-3 text-sm font-semibold text-neutral-900">Tailor load</h2>
           <ul className="space-y-2">
             {workload.tailors.map((tailor) => (
               <li key={tailor.id} className="flex items-center gap-3 text-sm">
-                <span className="w-40 shrink-0 text-ink/80">{tailor.name}</span>
-                <span className="h-2 flex-1 overflow-hidden rounded-full bg-sand-100">
+                <span className="w-20 shrink-0 truncate xs:w-40 text-neutral-900/80">{tailor.name}</span>
+                <span className="h-2 flex-1 overflow-hidden rounded bg-white">
                   <span
-                    className="block h-full rounded-full bg-brand-500"
+                    className="block h-full rounded bg-accent"
                     style={{
                       width: `${Math.min(
                         100,
@@ -244,7 +245,7 @@ export default function TailorQueuePage() {
                     }}
                   />
                 </span>
-                <span className="w-28 shrink-0 text-end tabular-nums text-ink/60">
+                <span className="w-14 shrink-0 text-end tabular-nums text-neutral-900/60 xs:w-28">
                   {tailor.openJobs} / {tailor.capacityPerWeek}
                 </span>
               </li>
@@ -264,9 +265,8 @@ function isOverdue(job: StitchingJob): boolean {
 
 function Th({ children }: { children?: React.ReactNode }) {
   return (
-    <th
-      scope="col"
-      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50"
+    <th scope="col"
+      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60"
     >
       {children}
     </th>

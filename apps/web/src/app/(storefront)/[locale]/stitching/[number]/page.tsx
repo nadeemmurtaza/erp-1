@@ -3,10 +3,12 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatMoney, type Locale, type StitchingStage } from '@yaseen/shared';
+import { formatDate, formatMoney, type Locale, type StitchingStage } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
-import { API_URL } from '@/lib/api';
+import { request } from '@/lib/api-client';
+import { ROUTES } from '@/constants/routes';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface BookingJob {
   id: string;
@@ -44,7 +46,6 @@ export default function StitchingBookingPage({
   const { number } = use(params);
   const t = useTranslations('stitching');
   const locale = useLocale() as Locale;
-  const dateLocale = locale === 'ur' ? 'ur-PK' : 'en-PK';
   const searchParams = useSearchParams();
   const justBooked = searchParams.get('booked') === '1';
 
@@ -55,22 +56,26 @@ export default function StitchingBookingPage({
 
   const track = useCallback(
     async (withPhone: string): Promise<boolean> => {
-      const response = await fetch(`${API_URL}/stitching/bookings/${number}/track`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: withPhone }),
-        credentials: 'include',
-      });
-
-      if (!response.ok) return false;
-      setBooking(await response.json());
-      return true;
+      try {
+        // A wrong phone is the expected case here, not an exception — this
+        // returns false so the caller can show the tracking form again.
+        setBooking(
+          await request<Booking>(`/stitching/bookings/${number}/track`, {
+            method: 'POST',
+            body: { phone: withPhone },
+            credentials: 'include',
+          }),
+        );
+        return true;
+      } catch {
+        return false;
+      }
     },
     [number],
   );
 
   useEffect(() => {
-    const remembered = sessionStorage.getItem(`yaseen.stitching.${number}`);
+    const remembered = sessionStorage.getItem(STORAGE_KEYS.guestBooking(number));
     if (!remembered) {
       setLoading(false);
       return;
@@ -84,22 +89,22 @@ export default function StitchingBookingPage({
     setError(null);
 
     if (await track(phone)) {
-      sessionStorage.setItem(`yaseen.stitching.${number}`, phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestBooking(number), phone);
     } else {
       setError(t('trackFailed'));
     }
   }
 
   if (loading) {
-    return <div className="container-page py-16 text-center text-sm text-ink/50">…</div>;
+    return <div className="container-page py-16 text-center text-sm text-neutral-900/60">…</div>;
   }
 
   if (!booking) {
     return (
       <div className="container-page py-16">
         <div className="mx-auto max-w-md">
-          <h1 className="text-2xl font-semibold text-ink">{t('trackTitle')}</h1>
-          <p className="mt-2 text-sm text-ink/60">{t('trackBody', { number })}</p>
+          <h1 className="text-2xl font-semibold text-neutral-900">{t('trackTitle')}</h1>
+          <p className="mt-2 text-sm text-neutral-900/60">{t('trackBody', { number })}</p>
 
           <form onSubmit={submit} className="card mt-6 space-y-4 p-4">
             <label className="block">
@@ -115,7 +120,7 @@ export default function StitchingBookingPage({
             </label>
 
             {error ? (
-              <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
@@ -132,39 +137,39 @@ export default function StitchingBookingPage({
   return (
     <div className="container-page py-8">
       {justBooked ? (
-        <div className="mb-6 rounded-md border border-brand-200 bg-brand-50 px-4 py-3">
-          <p className="text-sm font-medium text-brand-800">{t('booked')}</p>
-          <p className="mt-1 text-sm text-ink/70">{t('bookedBody')}</p>
+        <div className="mb-6 rounded-md border border-neutral-100 bg-neutral-50 px-4 py-3">
+          <p className="text-sm font-medium text-accent-hover">{t('booked')}</p>
+          <p className="mt-1 text-sm text-neutral-900/70">{t('bookedBody')}</p>
         </div>
       ) : null}
 
-      <h1 className="text-2xl font-semibold text-ink">
+      <h1 className="text-2xl font-semibold text-neutral-900">
         {t('bookingTitle')} {booking.number}
       </h1>
 
       <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
         <div>
-          <dt className="text-ink/50">{t('fabric')}</dt>
-          <dd className="text-ink">
+          <dt className="text-neutral-900/60">{t('fabric')}</dt>
+          <dd className="text-neutral-900">
             {booking.fabricReceivedAt
               ? t('fabricReceivedOn', {
-                  date: new Date(booking.fabricReceivedAt).toLocaleDateString(dateLocale),
+                  date: formatDate(booking.fabricReceivedAt, locale as Locale),
                 })
               : t('fabricAwaited')}
           </dd>
         </div>
         {booking.promisedAt ? (
           <div>
-            <dt className="text-ink/50">{t('promised')}</dt>
-            <dd className="text-ink">
-              {new Date(booking.promisedAt).toLocaleDateString(dateLocale)}
+            <dt className="text-neutral-900/60">{t('promised')}</dt>
+            <dd className="text-neutral-900">
+              {formatDate(booking.promisedAt, locale as Locale)}
             </dd>
           </div>
         ) : null}
         {booking.quotedFee !== null ? (
           <div>
-            <dt className="text-ink/50">{t('quote')}</dt>
-            <dd className="text-ink">{formatMoney(booking.quotedFee, locale)}</dd>
+            <dt className="text-neutral-900/60">{t('quote')}</dt>
+            <dd className="text-neutral-900">{formatMoney(booking.quotedFee, locale)}</dd>
           </div>
         ) : null}
       </dl>
@@ -173,14 +178,14 @@ export default function StitchingBookingPage({
         {booking.jobs.map((job) => (
           <section key={job.id} className="card p-4">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-sm font-semibold text-ink">
+              <h2 className="text-sm font-semibold text-neutral-900">
                 {locale === 'ur' ? job.garmentType.labelUr : job.garmentType.labelEn}
               </h2>
-              <span className="text-xs text-ink/40">{job.number}</span>
+              <span className="text-xs text-neutral-900/60">{job.number}</span>
             </div>
 
             {job.instructions ? (
-              <p className="mt-1 text-sm text-ink/60">{job.instructions}</p>
+              <p className="mt-1 text-sm text-neutral-900/60">{job.instructions}</p>
             ) : null}
 
             <div className="mt-4">
@@ -191,10 +196,10 @@ export default function StitchingBookingPage({
       </div>
 
       {booking.fabricNotes ? (
-        <p className="mt-6 text-sm text-ink/60">{booking.fabricNotes}</p>
+        <p className="mt-6 text-sm text-neutral-900/60">{booking.fabricNotes}</p>
       ) : null}
 
-      <Link href="/shop" className="btn-secondary mt-8 inline-block">
+      <Link href={ROUTES.storefront.shop} className="btn-secondary mt-8 inline-block">
         {t('continueShopping')}
       </Link>
     </div>

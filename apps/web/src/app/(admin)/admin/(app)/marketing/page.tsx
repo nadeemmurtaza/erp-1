@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { useToast } from '@/lib/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { Loading } from '@/components/ui';
 
 interface MarketingSettings {
   automationEnabled: boolean;
@@ -58,26 +59,28 @@ export default function MarketingAdminPage() {
       {toasts.length > 0 && (
         <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
           {toasts.map((t) => (
-            <div
+            <button
               key={t.id}
-              className={clsx(
-                'cursor-pointer rounded-md border p-4 text-sm shadow-md',
+              className={cn(
+                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
                 t.type === 'error'
                   ? 'border-red-200 bg-red-50 text-red-800'
                   : t.type === 'success'
                     ? 'border-green-200 bg-green-50 text-green-800'
                     : 'border-blue-200 bg-blue-50 text-blue-800',
               )}
+              type="button"
               onClick={() => removeToast(t.id)}
+              aria-label={`Dismiss: ${t.message}`}
             >
               {t.message}
-            </div>
+            </button>
           ))}
         </div>
       )}
 
-      <h1 className="mb-1 text-xl font-semibold text-ink">Marketing automation</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Marketing automation</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Off by default. Turning this on lets the store email a logged-in customer automatically —
         an abandoned-cart reminder, a post-delivery review request, a reorder nudge for products
         flagged as consumable. Guest checkouts are never included: there is no account to record
@@ -85,10 +88,10 @@ export default function MarketingAdminPage() {
       </p>
 
       {busy && !settings ? (
-        <p className="text-ink/50">Loading…</p>
+        <Loading />
       ) : (
         <section className="card p-5">
-          <label className="flex items-center gap-2 text-sm font-medium text-ink">
+          <label className="flex items-center gap-2 text-sm font-medium text-neutral-900">
             <input
               type="checkbox"
               checked={settings?.automationEnabled ?? false}
@@ -125,7 +128,7 @@ export default function MarketingAdminPage() {
             />
           </div>
 
-          <p className="mt-6 text-xs text-ink/50">
+          <p className="mt-6 text-xs text-neutral-900/60">
             Flag which products are worth a reorder nudge from the product editor (Consumable /
             repeat-buy).
           </p>
@@ -153,7 +156,7 @@ function NumberField({
   }, [value]);
 
   return (
-    <label className="flex flex-col gap-1 text-sm text-ink/80">
+    <label className="flex flex-col gap-1 text-sm text-neutral-900/80">
       {label}
       <div className="flex items-center gap-2">
         <input

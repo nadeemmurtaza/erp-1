@@ -1,7 +1,14 @@
+import { BRAND } from '@newax/shared';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
-import { PRODUCT_KINDS, slugifyWithFallback, toMinor, uniqueSlug } from '@yaseen/shared';
+import {
+  DEFAULT_LOCALE,
+  PRODUCT_KINDS,
+  slugifyWithFallback,
+  toMinor,
+  uniqueSlug,
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
@@ -84,7 +91,7 @@ export class ProductImportService {
           price_pkr: '4500',
           compare_at_pkr: '5500',
           category_slug: 'unstitched',
-          brand: 'Yaseen',
+          brand: BRAND.identity.name,
           fabric: 'lawn',
           season: 'summer',
           piece_count: '3',
@@ -116,13 +123,26 @@ export class ProductImportService {
     const categoryBySlug = new Map(categories.map((row) => [row.slug, row.id]));
     const garments = await this.prisma.garmentType.findMany({ select: { id: true, key: true } });
     const garmentByKey = new Map(garments.map((row) => [row.key, row.id]));
+    // Brands are matched case-insensitively and CREATED on demand, unlike
+    // categories: a merchant importing a fresh catalogue should not have to
+    // pre-enter every brand by hand, and an unknown category_slug is far more
+    // likely to be a typo than an unknown brand is.
+    const brands = await this.prisma.brand.findMany({
+      select: { id: true, translations: { select: { name: true } } },
+    });
+    const brandByName = new Map<string, string>();
+    for (const brand of brands) {
+      for (const translation of brand.translations) {
+        brandByName.set(translation.name.trim().toLowerCase(), brand.id);
+      }
+    }
     const locationId = await this.stockIntake.defaultLocationId();
 
     for (const [index, row] of rows.entries()) {
       // +2: one for the header line, one because humans count from 1.
       const lineNumber = index + 2;
       try {
-        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey, locationId);
+        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey, brandByName, locationId);
         summary.results.push(result);
         summary[result.action === 'skipped' ? 'skipped' : result.action] += 1;
       } catch (error) {
@@ -190,12 +210,48 @@ export class ProductImportService {
     return rows;
   }
 
+  /**
+   * Finds a brand by name, or creates it, caching either way.
+   *
+   * Matching is case-insensitive so "Gul Ahmed" and "gul ahmed" in the same
+   * CSV land on one brand instead of two — which is the whole reason brands
+   * stopped being a free-text column.
+   */
+  private async resolveBrandId(
+    raw: string | undefined,
+    brandByName: Map<string, string>,
+  ): Promise<string | null> {
+    const name = (raw ?? '').replace(/\s+/g, ' ').trim();
+    if (!name) return null;
+
+    const key = name.toLowerCase();
+    const known = brandByName.get(key);
+    if (known) return known;
+
+    const slugBase = slugifyWithFallback(name, 'brand');
+    const clashes = await this.prisma.brand.findMany({
+      where: { slug: { startsWith: slugBase } },
+      select: { slug: true },
+    });
+
+    const brand = await this.prisma.brand.create({
+      data: {
+        slug: uniqueSlug(slugBase, clashes.map((row) => row.slug)),
+        translations: { create: [{ locale: DEFAULT_LOCALE, name }] },
+      },
+    });
+
+    brandByName.set(key, brand.id);
+    return brand.id;
+  }
+
   private async importRow(
     actorId: string,
     row: Row,
     lineNumber: number,
     categoryBySlug: Map<string, string>,
     garmentByKey: Map<string, string>,
+    brandByName: Map<string, string>,
     locationId: string | null,
   ): Promise<ImportRowResult> {
     const sku = (row.sku ?? '').trim().toUpperCase();
@@ -303,7 +359,7 @@ export class ProductImportService {
         compareAtPrice: row.compare_at_pkr
           ? parseRupees(row.compare_at_pkr, 'compare_at_pkr')
           : null,
-        brand: (row.brand ?? '').trim() || null,
+        brandId: await this.resolveBrandId(row.brand, brandByName),
         fabric: (row.fabric ?? '').trim().toLowerCase() || null,
         season: (row.season ?? '').trim().toLowerCase() || null,
         tags: (row.tags ?? '')

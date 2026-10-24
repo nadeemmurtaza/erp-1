@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { DEFAULT_LOCALE, getPersonFullName } from '@yaseen/shared';
+import { DEFAULT_LOCALE, getPersonFullName } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 
 const variantListInclude = {
   product: {
@@ -60,6 +61,7 @@ export class InventoryService implements OnModuleInit {
     private readonly audit: AuditService,
     private readonly events: EventBusService,
     private readonly stockIntake: StockIntakeRegistry,
+    private readonly enrichment: EntityEnrichmentRegistry,
   ) {}
 
   /**
@@ -167,6 +169,22 @@ export class InventoryService implements OnModuleInit {
   }
 
   /**
+   * Every real, active location — a store or a warehouse, never an
+   * IN_TRANSIT bucket a StockTransfer (WO-22.1) created for itself. The one
+   * place anything that needs to let staff pick a location (a transfer's
+   * source/destination, a future terminal setup screen) should read from,
+   * rather than querying Prisma's Location table directly and re-deriving
+   * this exclusion.
+   */
+  async listLocations(): Promise<{ id: string; name: string; code: string; isDefault: boolean }[]> {
+    return this.prisma.location.findMany({
+      where: { isActive: true, type: { not: 'IN_TRANSIT' } },
+      select: { id: true, name: true, code: true, isDefault: true },
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  /**
    * The ONLY way stock changes. Callers inside a transaction pass their tx
    * client so the movement row and the stock change commit together.
    *
@@ -178,6 +196,32 @@ export class InventoryService implements OnModuleInit {
    * keeps working unmodified — B6, 17-inventory-locations.md.
    */
   async move(input: StockMoveInput, tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement> {
+    return this.applyMovement(input, tx, { unconditional: false });
+  }
+
+  /**
+   * The oversell path (RETAIL-ERP.md R5): a POS sale that already happened
+   * must never be rejected by sync, so this never throws InsufficientStockError
+   * — it applies the delta regardless of what's on the shelf. A DELIBERATE
+   * second method, not a flag on move(), because a flag would let a caller
+   * silently pass `unconditional: true` into the one guard the rest of the
+   * system relies on; this name has to be grepped for and chosen on purpose.
+   * When it drives a location negative, the movement's own reason becomes
+   * POS_OFFLINE_VARIANCE and a paired StockVariance row opens the exception
+   * queue a manager works from (R15's shrinkage journal follows from that row).
+   */
+  async postUnconditional(
+    input: StockMoveInput,
+    tx: Prisma.TransactionClient | PrismaService = this.prisma,
+  ): Promise<StockMovement> {
+    return this.applyMovement(input, tx, { unconditional: true });
+  }
+
+  private async applyMovement(
+    input: StockMoveInput,
+    tx: Prisma.TransactionClient | PrismaService,
+    opts: { unconditional: boolean },
+  ): Promise<StockMovement> {
     if (input.delta === 0) {
       throw new BadRequestException('Stock movement delta cannot be zero.');
     }
@@ -186,7 +230,16 @@ export class InventoryService implements OnModuleInit {
     // know whether this movement crosses the low-stock threshold.
     const beforeVariant = await tx.productVariant.findUnique({
       where: { id: input.variantId },
-      select: { stock: true, lowStockThreshold: true, productId: true, sku: true },
+      select: {
+        stock: true,
+        lowStockThreshold: true,
+        productId: true,
+        sku: true,
+        reorderPoint: true,
+        reorderQuantity: true,
+        producedInHouse: true,
+        preferredSupplierId: true,
+      },
     });
 
     if (!beforeVariant) {
@@ -194,6 +247,8 @@ export class InventoryService implements OnModuleInit {
     }
 
     const wasAboveThreshold = beforeVariant.stock > beforeVariant.lowStockThreshold;
+    const wasAboveReorderPoint =
+      beforeVariant.reorderPoint !== null && beforeVariant.stock > beforeVariant.reorderPoint;
 
     // A variant may not yet have touched this location — lazily ensure the
     // row exists before the guarded update below. Idempotent: a concurrent
@@ -208,9 +263,11 @@ export class InventoryService implements OnModuleInit {
     // The predicate-on-write idiom (House Rule 10), now keyed on the
     // composite (variantId, locationId) — the database arbitrates whether
     // THIS location has enough stock, not a read-then-write guess.
+    // postUnconditional() skips the predicate entirely (R5) rather than
+    // widening it — the till already happened, there is nothing left to guard.
     const updated = await tx.variantLocationStock.updateMany({
       where:
-        input.delta < 0
+        !opts.unconditional && input.delta < 0
           ? {
               variantId: input.variantId,
               locationId: input.locationId,
@@ -246,13 +303,27 @@ export class InventoryService implements OnModuleInit {
       RETURNING stock
     `;
 
+    // postUnconditional() may have driven THIS location negative. Read it
+    // back — updateMany() doesn't return rows — and if so, the movement
+    // records the variance reason and gets a paired StockVariance opened.
+    let overshootQty: number | null = null;
+    if (opts.unconditional) {
+      const locationRow = await tx.variantLocationStock.findUnique({
+        where: { variantId_locationId: { variantId: input.variantId, locationId: input.locationId } },
+        select: { quantity: true },
+      });
+      if (locationRow && locationRow.quantity < 0) {
+        overshootQty = -locationRow.quantity;
+      }
+    }
+
     const movement = await tx.stockMovement.create({
       data: {
         variantId: input.variantId,
         locationId: input.locationId,
         delta: input.delta,
         resultingStock,
-        reason: input.reason,
+        reason: overshootQty !== null ? 'POS_OFFLINE_VARIANCE' : input.reason,
         refType: input.refType ?? null,
         refId: input.refId ?? null,
         unitCost: input.unitCost ?? null,
@@ -260,6 +331,30 @@ export class InventoryService implements OnModuleInit {
         actorId: input.actorId ?? null,
       },
     });
+
+    if (overshootQty !== null) {
+      const variance = await tx.stockVariance.create({
+        data: {
+          variantId: input.variantId,
+          locationId: input.locationId,
+          overshootQty,
+          stockMovementId: movement.id,
+          refType: input.refType ?? null,
+          refId: input.refId ?? null,
+        },
+      });
+      await this.events.publish(
+        DomainEvent.StockVarianceRecorded,
+        {
+          stockVarianceId: variance.id,
+          variantId: input.variantId,
+          locationId: input.locationId,
+          overshootQty,
+          unitCost: input.unitCost ?? null,
+        },
+        tx,
+      );
+    }
 
     if (wasAboveThreshold && resultingStock <= beforeVariant.lowStockThreshold) {
       await this.events.publish(
@@ -270,6 +365,40 @@ export class InventoryService implements OnModuleInit {
           sku: beforeVariant.sku,
           stock: resultingStock,
           threshold: beforeVariant.lowStockThreshold,
+        },
+        tx,
+      );
+    }
+
+    if (
+      wasAboveReorderPoint &&
+      beforeVariant.reorderPoint !== null &&
+      resultingStock <= beforeVariant.reorderPoint
+    ) {
+      await this.events.publish(
+        DomainEvent.ProductReorderPointReached,
+        {
+          productId: beforeVariant.productId,
+          variantId: input.variantId,
+          sku: beforeVariant.sku,
+          stock: resultingStock,
+          reorderPoint: beforeVariant.reorderPoint,
+          reorderQuantity: beforeVariant.reorderQuantity,
+          producedInHouse: beforeVariant.producedInHouse,
+          preferredSupplierId: beforeVariant.preferredSupplierId,
+        },
+        tx,
+      );
+    }
+
+    if (input.delta > 0) {
+      await this.events.publish(
+        DomainEvent.StockReplenished,
+        {
+          variantId: input.variantId,
+          locationId: input.locationId,
+          delta: input.delta,
+          resultingStock,
         },
         tx,
       );
@@ -301,6 +430,94 @@ export class InventoryService implements OnModuleInit {
       movements.push(await this.move(input, tx));
     }
     return movements;
+  }
+
+  /**
+   * Everything about one SKU's place in the chain, in one call: stock per
+   * location, purchase orders still in flight, work orders still open,
+   * order lines still owed to a customer, and (via the existing
+   * "orderItem.stitchingJob" enrichment point stitching already registers)
+   * each of those lines' tailoring stage when it has one. Read-only, no
+   * write-path risk — safe to ship ahead of or alongside anything else.
+   */
+  async getChainStatus(variantId: string) {
+    const variant = await this.prisma.productVariant.findUnique({
+      where: { id: variantId },
+      select: { id: true, sku: true, label: true, stock: true, producedInHouse: true, reorderPoint: true },
+    });
+    if (!variant) throw new NotFoundException('That variant no longer exists.');
+
+    const [stocks, openPurchaseOrderItems, openWorkOrders, pendingOrderItems] = await Promise.all([
+      this.prisma.variantLocationStock.findMany({
+        where: { variantId },
+        include: { location: { select: { id: true, name: true, code: true } } },
+      }),
+      this.prisma.purchaseOrderItem.findMany({
+        where: { variantId, purchaseOrder: { status: { in: ['DRAFT', 'SENT', 'PARTIAL'] } } },
+        include: {
+          purchaseOrder: {
+            select: { id: true, number: true, status: true, expectedAt: true, supplier: { select: { id: true, name: true } } },
+          },
+        },
+      }),
+      this.prisma.workOrder.findMany({
+        where: { variantId, status: { in: ['DRAFT', 'RELEASED'] } },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.orderItem.findMany({
+        where: { variantId, order: { status: { notIn: ['SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED'] } } },
+        select: {
+          id: true,
+          quantity: true,
+          fulfillmentStatus: true,
+          awaitingSince: true,
+          order: { select: { id: true, number: true, status: true, placedAt: true } },
+        },
+      }),
+    ]);
+
+    const stitchingByOrderItem = await this.enrichment.enrich<{ number: string; stage: string; dueAt: Date | null }>(
+      'orderItem.stitchingJob',
+      pendingOrderItems.map((item) => item.id),
+    );
+
+    return {
+      variant,
+      stock: stocks.map((row) => ({
+        locationId: row.locationId,
+        locationName: row.location.name,
+        locationCode: row.location.code,
+        quantity: row.quantity,
+      })),
+      openPurchaseOrders: openPurchaseOrderItems.map((item) => ({
+        purchaseOrderId: item.purchaseOrder.id,
+        number: item.purchaseOrder.number,
+        status: item.purchaseOrder.status,
+        expectedAt: item.purchaseOrder.expectedAt,
+        supplier: item.purchaseOrder.supplier,
+        quantityOrdered: item.quantityOrdered,
+        quantityReceived: item.quantityReceived,
+      })),
+      openWorkOrders: openWorkOrders.map((wo) => ({
+        id: wo.id,
+        number: wo.number,
+        status: wo.status,
+        source: wo.source,
+        quantityOrdered: wo.quantityOrdered,
+        quantityCompleted: wo.quantityCompleted,
+      })),
+      pendingOrderLines: pendingOrderItems.map((item) => ({
+        orderItemId: item.id,
+        orderId: item.order.id,
+        orderNumber: item.order.number,
+        orderStatus: item.order.status,
+        placedAt: item.order.placedAt,
+        quantity: item.quantity,
+        fulfillmentStatus: item.fulfillmentStatus,
+        awaitingSince: item.awaitingSince,
+        stitchingJob: stitchingByOrderItem.get(item.id) ?? null,
+      })),
+    };
   }
 
   async history(variantId: string) {

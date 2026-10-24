@@ -3,10 +3,10 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useTransition, useState, useEffect } from 'react';
-import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@yaseen/shared';
+import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@newax/shared';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import type { CatalogFacets } from '@/lib/api-types';
-import clsx from 'clsx';
+import type { CatalogFacets } from '@/types/api';
+import { cn } from '@/utils/cn';
 
 interface FilterPanelProps {
   facets: CatalogFacets;
@@ -114,7 +114,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
           <button
             type="button"
             onClick={() => apply(new URLSearchParams())}
-            className="text-xs font-medium text-noir-900 hover:underline"
+            className="text-xs font-medium text-neutral-900 hover:underline"
           >
             {t('clearFilters')}
           </button>
@@ -165,7 +165,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
       ) : null}
 
       <FilterGroup title={t('price')}>
-        <p className="mb-2 text-xs text-noir-500">
+        <p className="mb-2 text-xs text-neutral-500">
           {formatMoney(facets.priceRange.min, locale)} –{' '}
           {formatMoney(facets.priceRange.max, locale)}
         </p>
@@ -183,7 +183,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('minPrice', event.target.value)}
-              className="sf-field-input px-3 py-1.5"
+              className="field-input px-3 py-1.5"
             />
           </label>
           <label className="flex-1">
@@ -199,7 +199,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('maxPrice', event.target.value)}
-              className="sf-field-input px-3 py-1.5"
+              className="field-input px-3 py-1.5"
             />
           </label>
         </div>
@@ -211,9 +211,9 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     <>
       <button
         type="button"
-        // sf-btn-primary supplies shape/colour so a future colour change still
+        // btn-primary supplies shape/colour so a future colour change still
         // reaches this button; only the transform-based hover lift is bespoke.
-        className="sf-btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
         onClick={() => setIsOpen(true)}
       >
         <svg
@@ -236,7 +236,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
         </svg>
         {t('filters')}
         {activeCount > 0 ? (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-noir-900">
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-neutral-900">
             {activeCount}
           </span>
         ) : null}
@@ -246,19 +246,19 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="fixed inset-0 bg-noir-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
-          <div className={clsx(
+          <div className={cn(
             'fixed inset-y-0 w-80 bg-white shadow-xl flex flex-col',
             isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
           )}>
-            <div className="flex items-center justify-between px-4 h-14 border-b border-noir-100">
-              <span className="font-display text-lg font-semibold text-noir-900">{t('filters')}</span>
+            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
+              <span className="font-display text-lg font-semibold text-neutral-900">{t('filters')}</span>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md text-noir-700 hover:bg-noir-50"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-neutral-700 hover:bg-neutral-50"
                 onClick={() => setIsOpen(false)}
               >
                 <svg
@@ -281,10 +281,10 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
             >
               {FilterContent}
             </div>
-            <div className="border-t border-noir-100 p-4">
+            <div className="border-t border-neutral-100 p-4">
               <button
                 type="button"
-                className="sf-btn-primary w-full font-semibold"
+                className="btn-primary w-full font-semibold"
                 onClick={() => setIsOpen(false)}
               >
                 {t('applyFilters')}
@@ -307,8 +307,8 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-noir-100 py-4">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-noir-500">
+    <section className="border-t border-neutral-100 py-4">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
         {title}
       </h3>
       <div>{children}</div>
@@ -345,10 +345,10 @@ function Chip({
       type="button"
       onClick={onChange}
       aria-pressed={checked}
-      className={clsx(
-        'sf-chip shrink-0 whitespace-nowrap',
+      className={cn(
+        'chip shrink-0 whitespace-nowrap',
         capitalise && 'capitalize',
-        checked ? 'sf-chip-selected' : 'sf-chip-unselected',
+        checked ? 'chip-selected' : 'chip-unselected',
       )}
     >
       {label}

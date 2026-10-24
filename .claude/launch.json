@@ -4,8 +4,20 @@
     {
       "name": "web-dev-server",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeArgs": ["--filter", "@newax/web", "dev"],
       "port": 3000
+    },
+    {
+      "name": "api-dev-server",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@newax/api", "dev"],
+      "port": 3001
+    },
+    {
+      "name": "pos-dev-server",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@newax/pos", "dev"],
+      "port": 3002
     }
   ]
 }

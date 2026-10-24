@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney, LEAD_STATUSES, toMinor } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { LEAD_STATUSES, formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 
 interface Lead {
@@ -84,13 +84,13 @@ export default function AdminLeadsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Enquiries</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Enquiries</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         People who have asked about something but not yet ordered.
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
@@ -100,42 +100,42 @@ export default function AdminLeadsPage() {
           const inColumn = leads.filter((lead) => lead.status === column);
 
           return (
-            <section key={column} className="card p-3">
-              <h2 className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink/50">
+            <section key={column} className="rounded-lg bg-neutral-50 p-3">
+              <h2 className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                 {column.charAt(0) + column.slice(1).toLowerCase()}
-                <span className="rounded bg-sand-100 px-1.5 py-0.5 text-ink/60">
+                <span className="rounded bg-white px-1.5 py-0.5 text-neutral-900/60">
                   {inColumn.length}
                 </span>
               </h2>
 
               <ul className="mt-3 space-y-2">
                 {inColumn.length === 0 ? (
-                  <li className="py-4 text-center text-xs text-ink/40">Empty</li>
+                  <li className="py-4 text-center text-xs text-neutral-900/60">Empty</li>
                 ) : (
                   inColumn.map((lead) => (
-                    <li key={lead.id} className="rounded-md border border-sand-200 p-2.5">
-                      <p className="text-sm font-medium text-ink">{lead.name}</p>
-                      <p className="text-xs text-ink/50">{lead.phone ?? lead.email ?? '—'}</p>
+                    <li key={lead.id} className="rounded-md border border-neutral-100 p-2.5">
+                      <p className="text-sm font-medium text-neutral-900">{lead.name}</p>
+                      <p className="text-xs text-neutral-900/60">{lead.phone ?? lead.email ?? '—'}</p>
 
                       {lead.message ? (
-                        <p className="mt-1 line-clamp-3 text-xs text-ink/70">{lead.message}</p>
+                        <p className="mt-1 line-clamp-3 text-xs text-neutral-900/70">{lead.message}</p>
                       ) : null}
 
                       {lead.contact ? (
-                        <p className="mt-1 text-xs text-brand-700">
+                        <p className="mt-1 text-xs text-accent-hover">
                           Existing customer · {formatMoney(lead.contact.lifetimeValue)}
                         </p>
                       ) : null}
 
                       {lead.quotedValue ? (
-                        <p className="mt-1 text-xs font-medium text-ink">
+                        <p className="mt-1 text-xs font-medium text-neutral-900">
                           Quoted {formatMoney(lead.quotedValue)}
                         </p>
                       ) : null}
 
-                      <p className="mt-1 text-[10px] uppercase tracking-wide text-ink/30">
+                      <p className="mt-1 text-[10px] uppercase tracking-wide text-neutral-900/60">
                         {lead.source.replace(/_/g, ' ')} ·{' '}
-                        {new Date(lead.createdAt).toLocaleDateString('en-PK')}
+                        {formatDate(lead.createdAt)}
                       </p>
 
                       {(NEXT[lead.status] ?? []).length > 0 ? (
@@ -146,11 +146,11 @@ export default function AdminLeadsPage() {
                               type="button"
                               disabled={busy}
                               onClick={() => void move(lead, next)}
-                              className={clsx(
+                              className={cn(
                                 'rounded px-1.5 py-0.5 text-[11px]',
                                 next === 'LOST'
                                   ? 'text-red-700 hover:bg-red-50'
-                                  : 'text-brand-700 hover:bg-brand-50',
+                                  : 'text-accent-hover hover:bg-neutral-50',
                               )}
                             >
                               {next.charAt(0) + next.slice(1).toLowerCase()}
@@ -167,7 +167,7 @@ export default function AdminLeadsPage() {
         })}
       </div>
 
-      <p className="mt-6 text-xs text-ink/40">
+      <p className="mt-6 text-xs text-neutral-900/60">
         Statuses: {LEAD_STATUSES.join(' → ')}
       </p>
     </>

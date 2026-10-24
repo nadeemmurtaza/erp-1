@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
@@ -48,7 +48,8 @@ const productInclude = {
   images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }] },
   variants: { where: { isActive: true }, orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
-    garmentTypes: true,
+  brand: { include: { translations: true } },
+  garmentTypes: true,
 } satisfies Prisma.ProductInclude;
 
 type ProductWithRelations = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
@@ -303,7 +304,7 @@ export async function localise(
     careInstructions: translation?.careInstructions ?? null,
     basePrice: product.basePrice,
     compareAtPrice: product.compareAtPrice,
-    brand: product.brand,
+    brand: brandName(product.brand, locale),
     fabric: product.fabric,
     season: product.season,
     tags: product.tags,
@@ -328,4 +329,24 @@ export async function localise(
     inStock: variants.some((variant) => variant.inStock),
     fromPrice: prices.length > 0 ? Math.min(...prices) : product.basePrice,
   };
+}
+
+/**
+ * Brand as the storefront wants it: one string, in the reader's locale.
+ *
+ * `Product.brand` used to be exactly that — a free-text column — and the API
+ * response promised a string. Brand is a related row with translations now,
+ * so this flattens it back rather than changing a shape every client already
+ * reads.
+ */
+function brandName(
+  brand: { translations: { locale: string; name: string }[] } | null,
+  locale: string,
+): string | null {
+  if (!brand) return null;
+  const row =
+    brand.translations.find((t) => t.locale === locale) ??
+    brand.translations.find((t) => t.locale === DEFAULT_LOCALE) ??
+    brand.translations[0];
+  return row?.name ?? null;
 }

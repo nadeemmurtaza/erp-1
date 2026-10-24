@@ -68,13 +68,21 @@ jobs:
         run: pnpm db:generate
 
       - name: Apply migrations
-        run: pnpm --filter @yaseen/api db:deploy
+        run: pnpm --filter @newax/api db:deploy
 
       - name: Seed the database
         run: pnpm db:seed
 
       - name: Lint
         run: pnpm lint
+
+      # The repository index (docs/index/) is generated from the code and staged
+      # by .githooks/pre-commit, so a commit should always carry a matching one.
+      # This catches the two ways that fails: a commit made with --no-verify, and
+      # a contributor whose hooks were never installed. Both leave agents and
+      # reviewers reading a map of a repository that has moved.
+      - name: Index is current
+        run: pnpm index:check
 
       - name: Typecheck
         run: pnpm typecheck
@@ -84,3 +92,72 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  # docs/design/15-integrity.md's build order, check 6 (ITG-4): every route
+  # at every one of Law 4's seven widths, no horizontal overflow. It needs a
+  # running api + web + pos, a browser, and real sign-ins — slow enough that
+  # the chapter itself says it "belong[s] in CI as their own job", not inside
+  # `verify`. A separate job also means a real crash here (a boot failure, a
+  # timeout) cannot block `verify`'s own, unrelated gates from reporting.
+  overflow:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: yaseen_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # This sandbox's own dev environment has Chromium pre-installed at a
+      # fixed path (see scripts/lib/render-harness.mjs); a GitHub-hosted
+      # runner does not, so it needs the ordinary Playwright install here.
+      # `--with-deps` also pulls the system libraries Chromium needs that a
+      # bare `apt` image does not ship.
+      - name: Install Playwright's Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate Prisma client
+        run: pnpm db:generate
+
+      - name: Apply migrations
+        run: pnpm --filter @newax/api db:deploy
+
+      - name: Seed the database
+        run: pnpm db:seed
+
+      - name: Overflow check (ITG-4)
+        run: pnpm check:overflow
+        env:
+          # A deliberately WIDER module set than `verify`'s: every togglable
+          # module except identity-verification (needs external NID_*
+          # credentials this job does not have — an absent module renders as
+          # an absent-module state, MOD-1, not a crash, so this costs the run
+          # nothing it could otherwise cover). check-overflow.mjs's own
+          # harnessEnv() sets this too; restated here so a CI failure and a
+          # local run are provably testing the same surface.
+          MODULES: catalog,measurements,cart,orders,payments,stitching,inventory,purchasing,production,parties,tradingpartners,crm,marketing,analytics,reports,tax,tracking,organization,accounting,pos,transfers
+          SEED_ADMIN_EMAIL: admin@yaseen.pk
+          SEED_ADMIN_PASSWORD: admin12345

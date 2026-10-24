@@ -1,4 +1,4 @@
-import { PRODUCT_KINDS } from '@yaseen/shared';
+import { PRODUCT_KINDS } from '@newax/shared';
 import {
   InteractionKind,
   LeadStatus,

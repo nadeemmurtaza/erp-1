@@ -17,7 +17,7 @@ import {
   updateCartItem,
   type AddToCartInput,
 } from '@/lib/cart-client';
-import type { Cart } from '@/lib/cart-types';
+import type { Cart } from '@/types/cart';
 
 interface CartContextValue {
   cart: Cart | null;

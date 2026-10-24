@@ -1,5 +1,5 @@
-import { formatMoney, type Locale } from '@yaseen/shared';
-import clsx from 'clsx';
+import { formatMoney, type Locale } from '@newax/shared';
+import { cn } from '@/utils/cn';
 
 interface PriceProps {
   /** Amount in paisa. */
@@ -26,10 +26,10 @@ export function Price({ amount, locale, compareAt, className, size = 'md' }: Pri
   const showCompare = typeof compareAt === 'number' && compareAt > amount;
 
   return (
-    <span className={clsx('inline-flex items-baseline gap-2', SIZES[size], className)}>
-      <span className="font-semibold text-noir-900">{formatMoney(amount, locale)}</span>
+    <span className={cn('inline-flex items-baseline gap-2', SIZES[size], className)}>
+      <span className="font-semibold text-neutral-900">{formatMoney(amount, locale)}</span>
       {showCompare ? (
-        <span className="text-sm font-normal text-noir-400 line-through">
+        <span className="text-sm font-normal text-neutral-400 line-through">
           {formatMoney(compareAt, locale)}
         </span>
       ) : null}

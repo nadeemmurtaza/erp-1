@@ -2,7 +2,7 @@
 //
 // pnpm keeps every dependency in a content-addressed store and symlinks it in,
 // so Metro has to be told to watch the repository root and to resolve modules
-// from both node_modules trees. Without this the app cannot see @yaseen/shared
+// from both node_modules trees. Without this the app cannot see @newax/shared
 // and hoisted packages resolve to nothing.
 const { getDefaultConfig } = require('expo/metro-config');
 const path = require('node:path');

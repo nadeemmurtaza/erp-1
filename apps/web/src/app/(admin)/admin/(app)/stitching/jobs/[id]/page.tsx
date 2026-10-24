@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useMemo, useState } from 'react';
-import { nextStage, previousStage } from '@yaseen/shared';
+import { formatDate, formatDateTime, nextStage, previousStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import {
   fieldLabel,
@@ -11,8 +11,10 @@ import {
   STAGE_LABELS,
   type StitchingJob,
   type Workload,
-} from '@/lib/stitching-types';
+} from '@/types/stitching';
 import { StageBadge } from '@/components/admin/stage-badge';
+import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 /**
  * One job: the tailor's worksheet.
@@ -105,11 +107,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     return (
       <>
         {error ? (
-          <p role="alert" className="card p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error">
             {error}
           </p>
         ) : (
-          <p className="text-sm text-ink/50">Loading…</p>
+          <Loading />
         )}
       </>
     );
@@ -122,39 +124,39 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   return (
     <>
-      <Link href="/admin/stitching" className="text-sm text-brand-700 hover:underline">
+      <Link href={ROUTES.admin.stitching} className="text-sm text-accent-hover hover:underline">
         ← Back to the queue
       </Link>
 
       <div className="mb-6 mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-semibold text-ink">{job.number}</h1>
+        <h1 className="text-xl font-semibold text-neutral-900">{job.number}</h1>
         <StageBadge stage={job.stage} />
-        <span className="text-sm text-ink/60">
+        <span className="text-sm text-neutral-900/60">
           {job.garmentType.labelEn} · {customer.name} · {customer.reference}
         </span>
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <section className="card p-4 lg:col-span-1">
-          <h2 className="mb-3 text-sm font-semibold text-ink">Measurements</h2>
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
+        <section className="card min-w-0 p-4 lg:col-span-1">
+          <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
           {measurements.length === 0 ? (
-            <p className="text-sm text-ink/50">No measurements were recorded.</p>
+            <p className="text-sm text-neutral-900/60">No measurements were recorded.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <tbody className="divide-y divide-sand-100">
+                <tbody className="divide-y divide-neutral-100">
                   {measurements.map(([key, value]) => (
                     <tr key={key}>
-                      <th scope="row" className="py-1.5 text-start font-normal text-ink/60">
+                      <th scope="row" className="py-1.5 text-start font-normal text-neutral-900/60">
                         {fieldLabel(key)}
                       </th>
-                      <td className="py-1.5 text-end tabular-nums text-ink">{value}&quot;</td>
+                      <td className="py-1.5 text-end tabular-nums text-neutral-900">{value}&quot;</td>
                     </tr>
                   ))}
                 </tbody>
@@ -164,8 +166,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
           {job.optionsSnapshot?.length ? (
             <>
-              <h3 className="mb-2 mt-4 text-sm font-semibold text-ink">Style</h3>
-              <ul className="space-y-1 text-sm text-ink/70">
+              <h3 className="mb-2 mt-4 text-sm font-semibold text-neutral-900">Style</h3>
+              <ul className="space-y-1 text-sm text-neutral-900/70">
                 {job.optionsSnapshot.map((option, index) => (
                   <li key={index}>
                     {option.groupLabelEn ? `${option.groupLabelEn}: ` : ''}
@@ -178,21 +180,21 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
           {job.instructions ? (
             <>
-              <h3 className="mb-1 mt-4 text-sm font-semibold text-ink">Instructions</h3>
-              <p className="text-sm text-ink/70">{job.instructions}</p>
+              <h3 className="mb-1 mt-4 text-sm font-semibold text-neutral-900">Instructions</h3>
+              <p className="text-sm text-neutral-900/70">{job.instructions}</p>
             </>
           ) : null}
 
           <dl className="mt-4 space-y-1 text-sm">
             <div className="flex justify-between">
-              <dt className="text-ink/50">Due</dt>
-              <dd className="text-ink/80">
-                {job.dueAt ? new Date(job.dueAt).toLocaleDateString('en-PK') : '—'}
+              <dt className="text-neutral-900/60">Due</dt>
+              <dd className="text-neutral-900/80">
+                {job.dueAt ? formatDate(job.dueAt) : '—'}
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-ink/50">Tailor</dt>
-              <dd className="text-ink/80">
+              <dt className="text-neutral-900/60">Tailor</dt>
+              <dd className="text-neutral-900/80">
                 {job.assignedTailor?.firstName ?? 'Unassigned'}
               </dd>
             </div>
@@ -200,7 +202,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
           {canAssign ? (
             <label className="mt-4 block text-sm">
-              <span className="mb-1 block text-ink/60">Assign to</span>
+              <span className="mb-1 block text-neutral-900/60">Assign to</span>
               <select
                 className="field-input"
                 value={job.assignedTailorId ?? ''}
@@ -218,11 +220,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           ) : null}
         </section>
 
-        <section className="card p-4 lg:col-span-2">
-          <h2 className="mb-3 text-sm font-semibold text-ink">Move this job on</h2>
+        <section className="card min-w-0 p-4 lg:col-span-2">
+          <h2 className="mb-3 text-sm font-semibold text-neutral-900">Move this job on</h2>
 
           <label className="block text-sm">
-            <span className="mb-1 block text-ink/60">
+            <span className="mb-1 block text-neutral-900/60">
               Note {back ? '(required when sending the job back)' : '(optional)'}
             </span>
             <textarea
@@ -235,12 +237,12 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           </label>
 
           <label className="mt-3 block text-sm">
-            <span className="mb-1 block text-ink/60">Photograph (optional)</span>
+            <span className="mb-1 block text-neutral-900/60">Photograph (optional)</span>
             <input
               type="file"
               accept="image/*"
               onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
-              className="text-sm text-ink/70"
+              className="block w-full max-w-full text-sm text-neutral-900/70"
             />
           </label>
 
@@ -266,31 +268,31 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               </button>
             ) : null}
             {!forward && !back ? (
-              <p className="text-sm text-ink/50">This job is finished.</p>
+              <p className="text-sm text-neutral-900/60">This job is finished.</p>
             ) : null}
           </div>
 
-          <h2 className="mb-3 mt-8 text-sm font-semibold text-ink">History</h2>
+          <h2 className="mb-3 mt-8 text-sm font-semibold text-neutral-900">History</h2>
           <ol className="space-y-3">
             {job.events.map((event) => (
-              <li key={event.id} className="border-s-2 border-sand-200 ps-3 text-sm">
-                <p className="text-ink">
+              <li key={event.id} className="border-s-2 border-neutral-100 ps-3 text-sm">
+                <p className="text-neutral-900">
                   {event.fromStage ? `${STAGE_LABELS[event.fromStage]} → ` : ''}
                   {STAGE_LABELS[event.toStage]}
-                  <span className="ms-2 text-xs text-ink/40">
-                    {new Date(event.createdAt).toLocaleString('en-PK')}
+                  <span className="ms-2 text-xs text-neutral-900/60">
+                    {formatDateTime(event.createdAt)}
                   </span>
                 </p>
-                {event.note ? <p className="text-ink/60">{event.note}</p> : null}
+                {event.note ? <p className="text-neutral-900/60">{event.note}</p> : null}
                 {event.actor?.firstName ? (
-                  <p className="text-xs text-ink/40">by {event.actor.firstName}</p>
+                  <p className="text-xs text-neutral-900/60">by {event.actor.firstName}</p>
                 ) : null}
                 {event.photoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={event.photoUrl}
                     alt={`${STAGE_LABELS[event.toStage]} photograph`}
-                    className="mt-2 max-h-40 rounded border border-sand-200"
+                    className="mt-2 max-h-40 rounded border border-neutral-100"
                   />
                 ) : null}
               </li>

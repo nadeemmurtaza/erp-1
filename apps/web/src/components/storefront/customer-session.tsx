@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { AuthUser } from '@/lib/api-types';
+import type { AuthUser } from '@/types/api';
 import { getStoredCustomerUser } from '@/lib/customer-client';
 
 const CustomerSessionContext = createContext<{

@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { AuthPage } from '@/components/storefront/auth-page';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { loginCustomer } from '@/lib/customer-client';
 import { useCustomerSession } from '@/components/storefront/customer-session';
+import { ROUTES } from '@/constants/routes';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,13 +38,29 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
-      <div className="flex flex-1 items-center justify-center px-4 py-12 lg:px-8">
-        <div className="w-full max-w-sm">
-          <h1 className="text-center text-2xl font-semibold text-brand-700">Sign In</h1>
-          <p className="mt-1 text-center text-sm text-ink/60">
-            Welcome back to {tSite('name')}
+    <AuthPage
+      title="Sign In"
+      description={`Welcome back to ${tSite('name')}`}
+      footer={
+        <>
+          Don&apos;t have an account?{' '}
+          <Link href={ROUTES.storefront.register} className="font-medium text-accent-hover hover:underline">
+            Register here
+          </Link>
+        </>
+      }
+      aside={
+        <>
+          <h2 className="text-4xl font-bold tracking-tight text-neutral-900">
+            Welcome to {tSite('name')}
+          </h2>
+          <p className="mt-4 text-lg text-accent-hover/80">
+            Sign in to track your orders, manage your custom stitching profiles, and checkout
+            faster.
           </p>
+        </>
+      }
+    >
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
             <div>
@@ -64,7 +82,7 @@ export default function LoginPage() {
                 <label className="field-label" htmlFor="password">
                   Password
                 </label>
-                <Link href="/forgot-password" className="text-xs text-brand-700 hover:underline">
+                <Link href={ROUTES.storefront.forgotPassword} className="text-xs text-accent-hover hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -80,7 +98,7 @@ export default function LoginPage() {
             </div>
 
             {error ? (
-              <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
@@ -90,24 +108,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-ink/60">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-medium text-brand-700 hover:underline">
-              Register here
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="hidden lg:flex lg:flex-1 relative bg-brand-50 items-center justify-center p-12">
-        <div className="max-w-lg text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-brand-800">
-            Welcome to {tSite('name')}
-          </h2>
-          <p className="mt-4 text-lg text-brand-700/80">
-            Sign in to track your orders, manage your custom stitching profiles, and checkout faster.
-          </p>
-        </div>
-      </div>
-    </div>
+    </AuthPage>
   );
 }

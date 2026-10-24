@@ -2,14 +2,16 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { BRAND, formatMoney, type Locale } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
-import { API_URL, ApiError } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import { getCustomerToken } from '@/lib/cart-client';
+import { ROUTES } from '@/constants/routes';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface PaymentMethod {
   key: string;
@@ -20,15 +22,14 @@ interface PaymentMethod {
   fee: number;
 }
 
-const PROVINCES = [
-  'Sindh',
-  'Punjab',
-  'Khyber Pakhtunkhwa',
-  'Balochistan',
-  'Islamabad Capital Territory',
-  'Gilgit-Baltistan',
-  'Azad Jammu & Kashmir',
-];
+/** What POST /orders hands back. Only the parts this page acts on. */
+interface CheckoutResponse {
+  number: string;
+  payment?: {
+    redirectUrl?: string;
+    meta?: { fields?: Record<string, string> };
+  };
+}
 
 /**
  * Checkout.
@@ -54,7 +55,10 @@ export default function CheckoutPage() {
     line1: '',
     line2: '',
     city: '',
-    province: 'Sindh',
+    // Widened: the brand list is `as const`, so the first entry would
+    // otherwise type this field as that one literal and reject every other
+    // region the select offers.
+    province: BRAND.locale.regions[0] as string,
     postalCode: '',
     note: '',
   });
@@ -62,12 +66,13 @@ export default function CheckoutPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    void fetch(`${API_URL}/payments/methods`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: PaymentMethod[]) => {
+    void request<PaymentMethod[]>('/payments/methods')
+      .then((loaded) => {
         setMethods(loaded);
         setMethod((current) => current || (loaded[0]?.key ?? ''));
       })
+      // A checkout with no payment methods listed is broken anyway; failing
+      // quietly here keeps the page usable for the cash-on-delivery default.
       .catch(() => undefined);
   }, []);
 
@@ -83,14 +88,17 @@ export default function CheckoutPage() {
 
     try {
       const token = getCustomerToken();
-      const response = await fetch(`${API_URL}/orders?locale=${locale}`, {
+      // Through the shared client: it raises ApiError carrying a message that
+      // is already fit to show, so this no longer joins a string[] by hand —
+      // which is how the same validation failure came to read differently
+      // here than everywhere else in the app.
+      const payload = await request<CheckoutResponse>('/orders', {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({
+        query: { locale },
+        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+        fallbackMessage: t('failed'),
+        body: {
           shippingAddress: {
             fullName: form.fullName,
             phone: form.phone,
@@ -103,24 +111,14 @@ export default function CheckoutPage() {
           paymentMethod: method,
           email: form.email || undefined,
           note: form.note || undefined,
-        }),
+        },
       });
-
-      const payload = await response.json().catch(() => undefined);
-
-      if (!response.ok) {
-        const message = (payload as { message?: string | string[] } | undefined)?.message;
-        throw new ApiError(
-          response.status,
-          Array.isArray(message) ? message.join('\n') : (message ?? t('failed')),
-        );
-      }
 
       // A guest has no session, so the confirmation page would otherwise ask
       // them to prove who they are seconds after they ordered. Remember the
       // number they gave, for this tab only, so it can show their order
       // straight away; a returning visitor still gets the tracking form.
-      sessionStorage.setItem(`yaseen.order.${payload.number}`, form.phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestOrder(payload.number), form.phone);
 
       const gatewayFields = payload.payment?.meta?.fields as Record<string, string> | undefined;
 
@@ -135,7 +133,7 @@ export default function CheckoutPage() {
 
       // Cash on delivery / bank transfer: nothing more to collect now. A
       // full navigation, so the cart provider reloads and shows it emptied.
-      window.location.href = `/${locale}/orders/${payload.number}?placed=1`;
+      window.location.href = `/${locale}${ROUTES.storefront.order(payload.number)}?placed=1`;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t('failed'));
       setBusy(false);
@@ -144,24 +142,24 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="container-page py-16 text-center text-sm text-noir-400">…</div>
+      <div className="container-page py-16 text-center text-sm text-neutral-400">…</div>
     );
   }
 
   if (!cart || cart.items.length === 0) {
     return (
       <div className="container-page py-16 text-center font-display">
-        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
-        <p className="mt-2 text-sm text-noir-500">{t('emptyCart')}</p>
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+        <p className="mt-2 text-sm text-neutral-500">{t('emptyCart')}</p>
       </div>
     );
   }
 
   if (cart.issues.length > 0) {
     return (
-      <div className="container-page pb-28 pt-16 font-display md:pb-16">
-        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
-        <ul className="mt-4 space-y-1 rounded-2xl border border-noir-200 bg-noir-50 px-4 py-3 text-sm text-noir-800">
+      <div className="container-page pt-16 font-display md:pb-16">
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -169,7 +167,7 @@ export default function CheckoutPage() {
         <button
           type="button"
           onClick={() => router.push('/cart')}
-          className="sf-btn-secondary mt-6 px-5 py-2.5"
+          className="btn-secondary mt-6 px-5 py-2.5"
         >
           {t('backToCart')}
         </button>
@@ -189,8 +187,8 @@ export default function CheckoutPage() {
       label: t('deliveryAddress'),
       isValid: addressValid,
       content: (
-        <section className="sf-card p-4 sm:p-6">
-          <h2 className="text-base font-semibold text-noir-900">{t('deliveryAddress')}</h2>
+        <section className="card p-4 sm:p-6">
+          <h2 className="text-base font-semibold text-neutral-900">{t('deliveryAddress')}</h2>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label={t('fullName')} required>
@@ -199,7 +197,7 @@ export default function CheckoutPage() {
                 onChange={(event) => setForm({ ...form, fullName: event.target.value })}
                 required
                 autoComplete="name"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -211,7 +209,7 @@ export default function CheckoutPage() {
                 inputMode="tel"
                 autoComplete="tel"
                 placeholder="03001234567"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -222,7 +220,7 @@ export default function CheckoutPage() {
                   onChange={(event) => setForm({ ...form, line1: event.target.value })}
                   required
                   autoComplete="address-line1"
-                  className="sf-field-input"
+                  className="field-input"
                 />
               </Field>
             </div>
@@ -233,7 +231,7 @@ export default function CheckoutPage() {
                   value={form.line2}
                   onChange={(event) => setForm({ ...form, line2: event.target.value })}
                   autoComplete="address-line2"
-                  className="sf-field-input"
+                  className="field-input"
                 />
               </Field>
             </div>
@@ -244,7 +242,7 @@ export default function CheckoutPage() {
                 onChange={(event) => setForm({ ...form, city: event.target.value })}
                 required
                 autoComplete="address-level2"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -252,9 +250,9 @@ export default function CheckoutPage() {
               <select
                 value={form.province}
                 onChange={(event) => setForm({ ...form, province: event.target.value })}
-                className="sf-field-input"
+                className="field-input"
               >
-                {PROVINCES.map((province) => (
+                {BRAND.locale.regions.map((province) => (
                   <option key={province} value={province}>
                     {province}
                   </option>
@@ -267,7 +265,7 @@ export default function CheckoutPage() {
                 value={form.postalCode}
                 onChange={(event) => setForm({ ...form, postalCode: event.target.value })}
                 autoComplete="postal-code"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -277,7 +275,7 @@ export default function CheckoutPage() {
                 value={form.email}
                 onChange={(event) => setForm({ ...form, email: event.target.value })}
                 autoComplete="email"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
           </div>
@@ -289,8 +287,8 @@ export default function CheckoutPage() {
       label: t('payment'),
       isValid: Boolean(method),
       content: (
-        <section className="sf-card p-4 sm:p-6">
-          <h2 className="text-base font-semibold text-noir-900">{t('payment')}</h2>
+        <section className="card p-4 sm:p-6">
+          <h2 className="text-base font-semibold text-neutral-900">{t('payment')}</h2>
 
           {/*
            * The real payment options are cash-on-delivery and bank
@@ -302,11 +300,11 @@ export default function CheckoutPage() {
             {methods.map((option) => (
               <label
                 key={option.key}
-                className={clsx(
-                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-noir-900 focus-within:ring-offset-2',
+                className={cn(
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
                   option.key === method
-                    ? 'border-noir-900 bg-noir-900/[0.03]'
-                    : 'border-noir-200 hover:border-noir-300',
+                    ? 'border-neutral-900 bg-neutral-900/[0.03]'
+                    : 'border-neutral-100 hover:border-neutral-300',
                 )}
               >
                 <input
@@ -318,27 +316,27 @@ export default function CheckoutPage() {
                 />
                 <span
                   aria-hidden
-                  className={clsx(
+                  className={cn(
                     'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                    option.key === method ? 'border-noir-900' : 'border-noir-300',
+                    option.key === method ? 'border-neutral-900' : 'border-neutral-300',
                   )}
                 >
                   {option.key === method ? (
-                    <span className="h-2.5 w-2.5 rounded-full bg-noir-900" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-neutral-900" />
                   ) : null}
                 </span>
                 <span className="flex-1">
                   <span className="flex justify-between gap-3">
-                    <span className="text-sm font-medium text-noir-900">
+                    <span className="text-sm font-medium text-neutral-900">
                       {locale === 'ur' ? option.labelUr : option.labelEn}
                     </span>
                     {option.fee > 0 ? (
-                      <span className="text-sm text-noir-500">
+                      <span className="text-sm text-neutral-500">
                         +{formatMoney(option.fee, locale)}
                       </span>
                     ) : null}
                   </span>
-                  <span className="mt-0.5 block text-xs text-noir-500">
+                  <span className="mt-0.5 block text-xs text-neutral-500">
                     {locale === 'ur' ? option.descriptionUr : option.descriptionEn}
                   </span>
                 </span>
@@ -354,60 +352,60 @@ export default function CheckoutPage() {
       isValid: true,
       content: (
         <div className="space-y-6">
-          <section className="sf-card p-4 sm:p-6">
+          <section className="card p-4 sm:p-6">
             <Field label={t('note')} hint={t('noteHint')}>
               <textarea
                 value={form.note}
                 onChange={(event) => setForm({ ...form, note: event.target.value })}
                 rows={2}
                 maxLength={500}
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
           </section>
 
-          <section className="sf-card p-4 sm:p-6">
-            <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
+          <section className="card p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
             <ul className="mt-3 space-y-2 text-sm">
               {cart.items.map((line) => (
                 <li key={line.id} className="flex justify-between gap-3">
-                  <span className="min-w-0 text-noir-600">
+                  <span className="min-w-0 text-neutral-600">
                     <span className="block truncate">{line.name}</span>
                     {line.stitching ? (
-                      <span className="block text-xs text-noir-500">
+                      <span className="block text-xs text-neutral-500">
                         + {line.stitching.serviceName}
                       </span>
                     ) : null}
-                    <span className="text-xs text-noir-400">× {line.quantity}</span>
+                    <span className="text-xs text-neutral-400">× {line.quantity}</span>
                   </span>
-                  <span className="shrink-0 text-noir-900">
+                  <span className="shrink-0 text-neutral-900">
                     {formatMoney(line.lineTotal, locale)}
                   </span>
                 </li>
               ))}
             </ul>
 
-            <dl className="mt-4 space-y-2 border-t border-noir-200 pt-4 text-sm">
+            <dl className="mt-4 space-y-2 border-t border-neutral-100 pt-4 text-sm">
               <div className="flex justify-between">
-                <dt className="text-noir-500">{t('goods')}</dt>
-                <dd className="text-noir-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
+                <dt className="text-neutral-500">{t('goods')}</dt>
+                <dd className="text-neutral-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-noir-500">{t('shipping')}</dt>
-                <dd className="text-noir-400">{t('shippingByCity')}</dd>
+                <dt className="text-neutral-500">{t('shipping')}</dt>
+                <dd className="text-neutral-400">{t('shippingByCity')}</dd>
               </div>
               {selectedMethod && selectedMethod.fee > 0 ? (
                 <div className="flex justify-between">
-                  <dt className="text-noir-500">
+                  <dt className="text-neutral-500">
                     {locale === 'ur' ? selectedMethod.labelUr : selectedMethod.labelEn}
                   </dt>
-                  <dd className="text-noir-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
+                  <dd className="text-neutral-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
                 </div>
               ) : null}
             </dl>
 
-            <p className="mt-3 text-xs text-noir-400">{t('finalTotalNote')}</p>
+            <p className="mt-3 text-xs text-neutral-400">{t('finalTotalNote')}</p>
           </section>
         </div>
       ),
@@ -415,8 +413,8 @@ export default function CheckoutPage() {
   ];
 
   return (
-    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
-      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">
+    <div className="container-page pt-6 font-display sm:pt-8 md:pb-8">
+      <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
         {t('title')}
       </h1>
 
@@ -427,14 +425,14 @@ export default function CheckoutPage() {
           submitLabel={busy ? t('placing') : t('placeOrder')}
           submitBusy={busy}
           submitDisabled={busy || !method}
-          accentClassName="bg-noir-900 text-white"
+          accentClassName="bg-neutral-900 text-white"
           backLabel={t('back')}
           nextLabel={t('next')}
           error={
             error ? (
               <p
                 role="alert"
-                className="whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+                className="notice notice-error whitespace-pre-line"
               >
                 {error}
               </p>
@@ -483,12 +481,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-noir-500">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
         {label}
         {required ? <span className="text-red-600"> *</span> : null}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-noir-400">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-neutral-400">{hint}</span> : null}
     </label>
   );
 }

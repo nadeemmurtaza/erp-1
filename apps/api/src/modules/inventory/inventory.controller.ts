@@ -1,3 +1,4 @@
+import type { StockMovementReason } from '../../core/prisma/client';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -29,6 +30,12 @@ export class InventoryAdminController {
     return this.inventory.getSlowMovers();
   }
 
+  @Get('locations')
+  @ApiOperation({ summary: 'Every real, active location — never an in-transit bucket (WO-22.1)' })
+  locations() {
+    return this.inventory.listLocations();
+  }
+
   @Post(':variantId/adjust')
   @ApiOperation({ summary: 'Move stock up or down, with a reason on record' })
   async adjust(
@@ -36,7 +43,7 @@ export class InventoryAdminController {
     @Param('variantId') variantId: string,
     @Body() dto: AdjustStockDto,
   ) {
-    const reasonMap: Record<string, any> = {
+    const reasonMap: Record<string, StockMovementReason> = {
       damaged: 'DAMAGE',
     };
     const reason = reasonMap[dto.reason] || 'ADJUSTMENT';
@@ -57,5 +64,12 @@ export class InventoryAdminController {
   @ApiOperation({ summary: 'Every adjustment made to a variant, newest first' })
   history(@Param('variantId') variantId: string) {
     return this.inventory.history(variantId);
+  }
+
+  @Get(':variantId/chain')
+  @RequirePermission('production.view_chain')
+  @ApiOperation({ summary: "A SKU's full supply-chain status: stock, open POs, open work orders, pending order lines" })
+  chain(@Param('variantId') variantId: string) {
+    return this.inventory.getChainStatus(variantId);
   }
 }

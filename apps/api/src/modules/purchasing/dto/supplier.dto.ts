@@ -54,7 +54,18 @@ export class CreateSupplierDto {
   isActive?: boolean;
 }
 
-export class UpdateSupplierDto extends PartialType(CreateSupplierDto) {}
+export class UpdateSupplierDto extends PartialType(CreateSupplierDto) {
+  /**
+   * Links this supplier to a TradingPartner (18-trading-partner-network.md)
+   * so its bills arrive automatically instead of being typed in by hand.
+   * Not on CreateSupplierDto — a supplier is always created the plain way
+   * first; linking is a deliberate second step. Pass `null` to unlink.
+   */
+  @ApiPropertyOptional({ nullable: true })
+  @IsOptional()
+  @IsString()
+  tradingPartnerId?: string | null;
+}
 
 export class AddSupplierProductDto {
   @ApiProperty()

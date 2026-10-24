@@ -2,17 +2,18 @@
 
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type {
+  AdminBrand,
   AdminCategory,
   AdminProduct,
   AdminVariant,
   GarmentType,
-} from '@/lib/api-types';
-import { ImageManager } from './image-manager';
+} from '@/types/api';
+import { ImageManager, ImageStager, uploadStagedImages, type StagedImage } from './image-manager';
 
 const KIND_LABELS: Record<string, string> = {
   GOODS: 'Goods',
@@ -38,6 +39,7 @@ interface ProductFormProps {
   product?: AdminProduct;
   categories: AdminCategory[];
   garmentTypes: GarmentType[];
+  brands: AdminBrand[];
 }
 
 /**
@@ -50,9 +52,17 @@ interface ProductFormProps {
  * Prices are typed in RUPEES here and converted to paisa on submit — the API
  * and database are integer paisa throughout, and this is the boundary.
  */
-export function ProductForm({ product, categories, garmentTypes }: ProductFormProps) {
+export function ProductForm({ product, categories, garmentTypes, brands }: ProductFormProps) {
   const router = useRouter();
-  const isEdit = Boolean(product);
+
+  // Set once a create request succeeds. Distinct from `product` (the prop,
+  // fixed for this component's lifetime) so the form can flip from "creating"
+  // to "editing" in place after the product exists — without a navigation —
+  // if a staged photo failed to upload and the user needs ImageManager's
+  // retry button rather than being sent away from the error.
+  const [createdProduct, setCreatedProduct] = useState<AdminProduct | null>(null);
+  const effectiveProduct = product ?? createdProduct;
+  const isEdit = Boolean(effectiveProduct);
 
   const englishTranslation = product?.translations.find((t) => t.locale === 'en');
   const urduTranslation = product?.translations.find((t) => t.locale === 'ur');
@@ -66,7 +76,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   const [compareAtPrice, setCompareAtPrice] = useState(
     product?.compareAtPrice ? String(toMajor(product.compareAtPrice)) : '',
   );
-  const [brand, setBrand] = useState(product?.brand ?? '');
+  const [brandId, setBrandId] = useState(product?.brandId ?? '');
   const [fabric, setFabric] = useState(product?.fabric ?? '');
   const [season, setSeason] = useState(product?.season ?? '');
   const [tags, setTags] = useState((product?.tags ?? []).join(', '));
@@ -101,6 +111,20 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
 
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Only used when creating: photos picked before the product has an id.
+  // Uploaded in onSubmit, right after the create request returns one — see
+  // ImageStager's doc comment for why this exists instead of a second trip.
+  const [pendingImages, setPendingImages] = useState<StagedImage[]>([]);
+  /*
+   * Whether the photo grid is mid-upload or holding a failure.
+   *
+   * Saving is blocked while either is true. Choosing a photo and hitting save
+   * a second later used to store the product without it — the upload was
+   * still in flight, nothing waited for it, and the only sign was a photo
+   * that quietly never appeared.
+   */
+  const [imageUpload, setImageUpload] = useState({ busy: false, failed: false });
 
   // Duplicate SKUs and duplicate size/colour combinations both reach the API
   // fine syntactically but collide there — one against a global unique
@@ -137,7 +161,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         categoryId: categoryId || undefined,
         basePrice: toMinor(Number(basePrice)),
         compareAtPrice: compareAtPrice ? toMinor(Number(compareAtPrice)) : undefined,
-        brand: brand || undefined,
+        brandId: brandId || undefined,
         fabric: fabric || undefined,
         season: season || undefined,
         tags: tags
@@ -190,8 +214,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           })),
       };
 
+      const wasCreate = !isEdit;
       const saved = isEdit
-        ? await adminFetch<AdminProduct>(`/admin/catalog/products/${product!.id}`, {
+        ? await adminFetch<AdminProduct>(`/admin/catalog/products/${effectiveProduct!.id}`, {
             method: 'PATCH',
             body: payload,
           })
@@ -199,6 +224,30 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             method: 'POST',
             body: payload,
           });
+
+      // The product now has an id, so any photos picked during the Images
+      // step can finally be sent. Failures here are reported but never undo
+      // the product that was just created — see uploadStagedImages's comment.
+      if (wasCreate && pendingImages.length > 0) {
+        const result = await uploadStagedImages(saved.id, pendingImages);
+        setPendingImages([]);
+        if (result.failed > 0) {
+          // Flip to edit mode in place, on this same page, rather than
+          // navigating away: the Images step now renders the real
+          // ImageManager against `saved.id`, so the retry button for the
+          // failed upload is right there instead of on a page the user has
+          // to be told to go find.
+          setCreatedProduct(saved);
+          setError(
+            `Product created, but ${result.failed} of ${result.uploaded + result.failed} photo(s) ` +
+              `failed to upload` +
+              (result.firstError ? ` (${result.firstError})` : '') +
+              '. Retry from the Images step below.',
+          );
+          setSaving(false);
+          return;
+        }
+      }
 
       router.push(`/admin/products/${saved.id}`);
       router.refresh();
@@ -264,7 +313,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             type="checkbox"
             checked={isConsumable}
             onChange={(event) => setIsConsumable(event.target.checked)}
-            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+            className="field-check"
           />
           Consumable / repeat-buy — worth an automated reorder nudge (Marketing settings)
         </label>
@@ -279,11 +328,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     content: (
       <Section
         title="Name and description"
-        hint="Urdu is optional but the storefront falls back to English without it."
+        description="Urdu is optional but the storefront falls back to English without it."
       >
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 fold:grid-cols-2">
           <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink/40">English</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">English</p>
             <Field label="Name" required>
               <input
                 value={nameEn}
@@ -312,7 +361,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           </div>
 
           <div className="space-y-4" dir="rtl">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink/40" dir="ltr">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60" dir="ltr">
               Urdu
             </p>
             <Field label="نام" dir="rtl">
@@ -350,7 +399,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     label: 'Pricing',
     isValid: Boolean(basePrice.trim()),
     content: (
-      <Section title="Pricing" hint="Enter rupees; the system stores exact paisa.">
+      <Section title="Pricing" description="Enter rupees; the system stores exact paisa.">
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label={isService ? 'Stitching fee (Rs)' : 'Price (Rs)'} required>
             <input
@@ -467,7 +516,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
               type="checkbox"
               checked={stitchingAvailable}
               onChange={(event) => setStitchingAvailable(event.target.checked)}
-              className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+              className="field-check"
             />
             Offer &ldquo;get it stitched&rdquo; on this fabric
           </label>
@@ -475,7 +524,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           {stitchingAvailable ? (
             <fieldset className="mt-4">
               <legend className="field-label">Can be stitched as</legend>
-              <p className="mb-2 text-xs text-ink/50">
+              <p className="mb-2 text-xs text-neutral-900/60">
                 Tick every garment this cloth can be made into. The customer sees these
                 choices with the fee shown here; fees are set per garment on the Garments
                 page.
@@ -494,10 +543,10 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                   return (
                     <label
                       key={garment.id}
-                      className={clsx(
+                      className={cn(
                         'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                        selected ? 'border-brand-500 bg-brand-50' : 'border-sand-200',
-                        offered ? 'text-ink' : 'bg-sand-50 text-ink/50',
+                        selected ? 'border-accent bg-neutral-50' : 'border-neutral-100',
+                        offered ? 'text-neutral-900' : 'bg-neutral-50 text-neutral-900/60',
                       )}
                     >
                       <input
@@ -511,14 +560,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-50"
+                        className="field-check"
                       />
                       {garment.labelEn}
                       {offered ? (
                         <span
-                          className={clsx(
+                          className={cn(
                             'text-xs',
-                            garment.stitchingPrice > 0 ? 'text-ink/60' : 'text-red-700',
+                            garment.stitchingPrice > 0 ? 'text-neutral-900/60' : 'text-red-700',
                           )}
                         >
                           {garment.stitchingPrice > 0
@@ -526,7 +575,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                             : 'no fee set'}
                         </span>
                       ) : (
-                        <span className="text-xs text-ink/40">not offered</span>
+                        <span className="text-xs text-neutral-900/60">not offered</span>
                       )}
                     </label>
                   );
@@ -550,12 +599,28 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           content: (
         <Section title="Attributes">
           <div className="grid gap-4 sm:grid-cols-3">
-            <Field label="Brand">
-              <input
-                value={brand}
-                onChange={(event) => setBrand(event.target.value)}
+            <Field
+              label="Brand"
+              hint="Managed under Brands — pick one rather than typing, so the same label is not stored three different ways"
+            >
+              <select
+                value={brandId}
+                onChange={(event) => setBrandId(event.target.value)}
                 className="field-input"
-              />
+              >
+                <option value="">No brand</option>
+                {brands.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.translations.find((t) => t.locale === 'en')?.name ?? option.slug}
+                  </option>
+                ))}
+                {/* A brand that has since been deactivated stays selectable on
+                    a product already using it, so opening and saving an old
+                    product does not silently clear its brand. */}
+                {brandId && !brands.some((option) => option.id === brandId) ? (
+                  <option value={brandId}>(brand no longer listed)</option>
+                ) : null}
+              </select>
             </Field>
             {/* Fabric/season/size chart are apparel-specific (GOODS/SERVICE/DIGITAL
                 have no garment to size). */}
@@ -582,7 +647,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           {kind === 'STITCHED' ? (
             <fieldset className="mt-4">
               <legend className="field-label">Size chart</legend>
-              <p className="mb-2 text-xs text-ink/50">
+              <p className="mb-2 text-xs text-neutral-900/60">
                 Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
                 chart&rdquo; link on the product page showing each garment&apos;s standard
                 measurements — set under Garments.
@@ -593,9 +658,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                   return (
                     <label
                       key={garment.id}
-                      className={clsx(
+                      className={cn(
                         'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                        selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
+                        selected ? 'border-accent bg-neutral-50 text-neutral-900' : 'border-neutral-100 text-neutral-900/70',
                       )}
                     >
                       <input
@@ -608,7 +673,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                        className="field-check"
                       />
                       {garment.labelEn}
                     </label>
@@ -626,7 +691,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     label: 'Tags',
     isValid: true,
     content: (
-      <Section title="Tags" hint="Comma separated; used by search and merchandising.">
+      <Section title="Tags" description="Comma separated; used by search and merchandising.">
         <input
           value={tags}
           onChange={(event) => setTags(event.target.value)}
@@ -644,7 +709,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     content: (
       <Section
         title="Variants"
-        hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
+        description="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
         <div className="space-y-3">
           {variants.map((variant, index) => {
@@ -654,9 +719,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             return (
             <div
               key={variant.id ?? index}
-              className={clsx(
+              className={cn(
                 'grid gap-3 rounded-md border p-3 sm:grid-cols-6',
-                variant.isActive ? 'border-sand-200' : 'border-sand-200 bg-sand-50 opacity-60',
+                variant.isActive ? 'border-neutral-100' : 'border-neutral-100 bg-neutral-50 opacity-60',
               )}
             >
               <div>
@@ -754,15 +819,20 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     id: 'images',
     label: 'Images',
     isValid: true,
-    content: product ? (
-      <Section title="Images" hint="The first image is the listing thumbnail.">
-        <ImageManager productId={product.id} initialImages={product.images} />
+    content: effectiveProduct ? (
+      <Section title="Images" description="The first image is the listing thumbnail.">
+        <ImageManager
+          productId={effectiveProduct.id}
+          initialImages={effectiveProduct.images}
+          onUploadState={setImageUpload}
+        />
       </Section>
     ) : (
-      <Section title="Images">
-        <p className="text-sm text-ink/60">
-          Save the product first, then upload photographs here.
-        </p>
+      <Section
+        title="Images"
+        description="Uploaded together with the rest of this product when you hit Create product below."
+      >
+        <ImageStager images={pendingImages} onChange={setPendingImages} />
       </Section>
     ),
   };
@@ -780,7 +850,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   return (
     <div className="space-y-4 pb-16">
       {error ? (
-        <p role="alert" className="card whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error whitespace-pre-line">
           {error}
         </p>
       ) : null}
@@ -789,10 +859,23 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         <Wizard
           steps={steps}
           onSubmit={onSubmit}
-          submitLabel={saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
-          submitBusy={saving}
-          submitDisabled={saving}
-          accentClassName="bg-brand-600 text-white"
+          submitLabel={
+            saving
+              ? 'Saving…'
+              : imageUpload.busy
+                ? 'Uploading photos…'
+                : imageUpload.failed
+                  ? 'Fix the photo upload first'
+                  : isEdit
+                    ? 'Save changes'
+                    : 'Create product'
+          }
+          submitBusy={saving || imageUpload.busy}
+          // A photo still uploading, or one that failed, blocks the save —
+          // the button says which, because a disabled control with no reason
+          // is indistinguishable from a broken one.
+          submitDisabled={saving || imageUpload.busy || imageUpload.failed}
+          accentClassName="bg-accent-hover text-white"
         />
       </div>
 
@@ -860,19 +943,32 @@ function findVariantIssues(variants: VariantDraft[]): VariantIssues {
   return { duplicateSkus, duplicateCombos };
 }
 
+/**
+ * A step's heading and its content.
+ *
+ * This used to be a local `Section` that drew `card p-4 sm:p-5` — inside a
+ * wizard that is itself a card. Every step of adding a product showed a box
+ * drawn immediately inside another box, two borders a few pixels apart with
+ * nothing between them. It also shadowed the shared `Section` in
+ * components/ui by name, which is the parallel-system failure: two
+ * components, one name, one of them boxed and one not, and which you got
+ * depended on which file you were in.
+ */
 function Section({
   title,
-  hint,
+  description,
   children,
 }: {
   title: string;
-  hint?: string;
+  description?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="card p-4 sm:p-5">
-      <h2 className="text-sm font-semibold text-ink">{title}</h2>
-      {hint ? <p className="mt-1 text-xs text-ink/50">{hint}</p> : null}
+    <section>
+      <h2 className="text-sm font-semibold text-neutral-900">{title}</h2>
+      {description ? (
+        <p className="mt-1 text-xs text-neutral-900/60">{description}</p>
+      ) : null}
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -898,7 +994,7 @@ function Field({
         {required ? <span className="text-red-600"> *</span> : null}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-ink/40">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-neutral-900/60">{hint}</span> : null}
     </label>
   );
 }
@@ -920,14 +1016,14 @@ function LabelledInput({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-ink/50">{label}</span>
+      <span className="mb-1 block text-xs text-neutral-900/60">{label}</span>
       <input
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={invalid || undefined}
-        className={clsx(
+        className={cn(
           'field-input py-1.5 text-sm',
           invalid && 'border-red-400 focus:border-red-500',
         )}

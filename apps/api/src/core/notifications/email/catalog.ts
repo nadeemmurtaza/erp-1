@@ -12,6 +12,7 @@
  * templates.spec.ts checks that in both directions.
  */
 
+import { BRAND } from '@newax/shared';
 import type { EmailAccountPurpose } from '../../prisma/client';
 
 export type EmailTemplateCategory = 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
@@ -54,15 +55,23 @@ const sampleOrderItems = [
   },
 ];
 
+/**
+ * The order number every preview shows. The prefix is the client's initials,
+ * so it is a brand value (BRAND.commerce.orderNumberPrefix) and not a literal
+ * to type — an admin previewing these for another client must not be shown
+ * this one's order numbers.
+ */
+const sampleOrderNumber = `${BRAND.commerce.orderNumberPrefix}-2026-0142`;
+
 const sampleAddress = {
   fullName: 'Ayesha Khan',
-  phone: '+923001234567',
+  phone: BRAND.contact.phone,
   line1: 'House 12, Street 4, F-8/3',
   line2: null,
   city: 'Islamabad',
   province: 'Islamabad',
   postalCode: '44000',
-  country: 'PK',
+  country: BRAND.locale.countryCode,
 };
 
 const sampleProducts = [
@@ -79,7 +88,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription: 'Sent when checkout completes (order.placed → OrderNotificationSubscriber).',
     sampleData: {
-      orderNumber: 'YSN-2026-0142',
+      orderNumber: sampleOrderNumber,
       items: sampleOrderItems,
       itemsSubtotal: 479700,
       stitchingSubtotal: 150000,
@@ -100,7 +109,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when an order moves to SHIPPED (order.status_changed → OrderNotificationSubscriber). Also covers "out for delivery" — the schema has no distinct status for that hand-off yet.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'SHIPPED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'SHIPPED' },
   },
   {
     key: 'order.delivered',
@@ -108,7 +117,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Orders',
     trigger: 'automatic',
     triggerDescription: 'Sent when an order moves to DELIVERED (order.status_changed).',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'DELIVERED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'DELIVERED' },
   },
   {
     key: 'order.cancelled',
@@ -117,7 +126,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when an order is cancelled (order.cancelled). Adds a refund note automatically when the order was already paid.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'CANCELLED', awaitingRefund: true },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'CANCELLED', awaitingRefund: true },
   },
   {
     key: 'order.status_changed',
@@ -126,7 +135,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Fallback for any status not covered by a dedicated template above — currently RETURNED.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'RETURNED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'RETURNED' },
   },
   {
     key: 'payment.received',
@@ -134,7 +143,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Payments',
     trigger: 'automatic',
     triggerDescription: 'Sent when an online payment settles (payment.succeeded), excluding COD.',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 639700 },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 639700 },
   },
   {
     key: 'payment.failed',
@@ -142,7 +151,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Payments',
     trigger: 'automatic',
     triggerDescription: 'Sent when a gateway declines a payment (payment.failed).',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 639700 },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 639700 },
   },
   {
     key: 'payment.refunded',
@@ -151,7 +160,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when staff mark a payment refunded (POST /admin/payments/:id/refund → payment.refunded). Moving the money back is still a manual step outside this system, same as bank-transfer approval.',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 349900, provider: 'bank_transfer' },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 349900, provider: 'bank_transfer' },
   },
   {
     key: 'user.welcome',
@@ -197,8 +206,8 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       'Sent by MarketingAutomationCron (modules/marketing) when a logged-in customer\'s cart sits idle past marketing.abandoned_cart_reminder_hours (Settings). Guest carts have no email captured yet, so this covers logged-in customers only. Off by default (marketing.automation_enabled).',
     sampleData: {
       items: sampleOrderItems,
-      cartUrl: 'https://yaseen.pk/en/cart',
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      cartUrl: `${BRAND.identity.url}/en/cart`,
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -210,10 +219,10 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       'Sent by the same cron, marketing.abandoned_cart_incentive_hours after the reminder, if the cart is still not converted. No discount-code system exists, so this goes out without one — discountCode/discountLabel stay unset rather than showing a fake code.',
     sampleData: {
       items: sampleOrderItems,
-      cartUrl: 'https://yaseen.pk/en/cart',
+      cartUrl: `${BRAND.identity.url}/en/cart`,
       discountCode: 'COMEBACK10',
       discountLabel: '10% off',
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -233,9 +242,9 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     triggerDescription:
       "Sent by MarketingAutomationCron marketing.review_request_days (Settings) after an order is marked DELIVERED. The CTA links to the order's own page — there is no separate reviews module, so it points customers at what they can already see rather than a review form that doesn't exist. Off by default (marketing.automation_enabled).",
     sampleData: {
-      orderNumber: 'YSN-2026-0142',
+      orderNumber: sampleOrderNumber,
       items: sampleProducts,
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -255,7 +264,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       "Sent by MarketingAutomationCron marketing.replenishment_reminder_days (Settings) after a delivered order for a product flagged Product.isConsumable, one per order item. Not per-product cadence-tuned — a single global day count, admin-configurable in Settings. Off by default (marketing.automation_enabled).",
     sampleData: {
       product: sampleProducts[0],
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -269,7 +278,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: 'Eid Sale — up to 40% off',
       message: 'Our biggest sale of the season is live. Shop new arrivals and bestsellers before they sell out.',
       ctaLabel: 'Shop the sale',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: null,
     },
   },
@@ -283,7 +292,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: 'Just dropped: the Winter Collection',
       message: 'New fabrics, new colours. Be the first to shop the new collection.',
       ctaLabel: 'Shop new arrivals',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: null,
     },
   },
@@ -297,7 +306,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: '24 hours only: 25% off everything',
       message: 'One day only. Use the code at checkout before it is gone.',
       ctaLabel: 'Shop now',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: 'tonight at midnight',
     },
   },
@@ -307,7 +316,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Stitching',
     trigger: 'automatic',
     triggerDescription: 'Sent when a stitching job reaches the READY stage (stitching.job_stage_changed).',
-    sampleData: { garment: 'Kurta', stage: 'READY', reference: 'YSN-2026-0142' },
+    sampleData: { garment: 'Kurta', stage: 'READY', reference: sampleOrderNumber },
   },
   {
     key: 'stitching.stage_changed',
@@ -315,7 +324,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Stitching',
     trigger: 'automatic',
     triggerDescription: 'Sent on other tracked stitching-stage changes.',
-    sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: 'YSN-2026-0142' },
+    sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: sampleOrderNumber },
   },
 ];
 

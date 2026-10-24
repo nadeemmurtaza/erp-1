@@ -463,3 +463,58 @@ These aborted (session/context-window limits on the first account), not content 
 ## What never got a result
 
 All 41 agents the workflow intended to run were attempted at least once (this journal has no queued-but-never-started label). Of the 22 Generate-phase topics, 12 failed and produced no lenses: Approval chains and delegation, Audit trail/evidence/legal hold, Commercial contracts and B2B, Data privacy and retention, Identity/roles/ranks, Localisation and jurisdiction, Money integrity and accounting, Observability and day-two ops, Onboarding and documentation, Security/fraud/insider risk, Segregation of duties and authorization, Surfaces and omnichannel parity. All 4 Ground attempts failed, all 10 Critique attempts (one per completed Generate domain) failed, and all 5 Completeness checks failed. So the 10 lens sets below are first-draft, ungrounded-by-verification, and never critiqued — they read well but have not been checked against this repo's actual code the way the workflow design intended (that check is what the Critique/Ground phases were for).
+## Workflow Failure Analysis
+
+**Failed Agents: 31/41**
+
+Phase | Attempted | Passed | Failed | Reason
+--- | --- | --- | --- | ---
+Ground (reconnaissance) | 4 | 0 | 4 | Session limit (ground:1–3) + DNS outage (ground:4 retried 4x)
+Generate (lens creation) | 22 | 9 | 13 | Session limit + DNS (most hit during generation phase)
+Critique (adversarial filter) | 10 | 0 | 10 | All failed on session limit
+Completeness (missing lenses) | 5 | 0 | 5 | All failed on session limit
+
+**Session Limits Hit:** 27 agents (user hit weekly cap mid-workflow)
+**DNS Outage:** 4 agents (ENOTFOUND)
+
+---
+
+## Integration Path for Next Session
+
+1. **Retry strategy (Option A):** Resume workflow with `resumeFromRunId: "wf_8cc42e30-ada"` on 2nd account with fresh weekly limit. Agents with unchanged (prompt, opts) cache-hit; only 31 failures re-run. Expected: ~1–2 hours, cloud environment.
+
+2. **Manual synthesis (Option B):** Use 9 completed lens sets + context from the grounded facts (README excerpts below) to manually craft enterprise lenses. Deterministic, ~2 hours desk work.
+
+3. **Hybrid:** Retry grounding agents (4 quick reads) + generator phase on cloud, skip critique + completeness (too aggressive, build lenses by hand).
+
+---
+
+## Grounded Context (partial, from ground:4 retries)
+
+Not all grounding completed, but critical reads achieved:
+
+**RETAIL-ERP.md rulings (R1–R26):** 25 rulings + 3 tranches (ID/topology, financial, settlement). Organization ▸ Brand ▸ Branch ▸ Location topology. Double-entry GL. Intercompany tagging (R17). Cost snapshot at dispatch (R12).
+
+**Permissions infrastructure:** PERMISSION_CATALOG + ROLE_PERMISSION_SEED in packages/shared. Role ▸ RoleGrant ▸ UserRoleAssignment Prisma models. 100+ role design not yet enforced (baseline is ~15 roles today).
+
+**Modules registry:** 22 packs + core, ~80% togglable via MODULES env. Accounting, transfers, identity-verification off by default.
+
+**User-facing surfaces:** apps/web (storefront, admin, customer dashboard), apps/pos (till), shared components, admin nav registry.
+
+---
+
+## Recommendation
+
+**On 2nd account (fresh weekly limit):**
+
+1. Retry workflow on cloud (Option A). Grounding 4 agents will complete this time; generation should finish; likely unblock critique.
+2. If critique + completeness still fail, use 9 results + manual synthesis to expand CLAUDE.md "Feature scope" section with 12–15 enterprise lenses.
+3. Target: 2–3 hours. Result: complete "Feature scope: build the whole capability" rule with worked examples (cart, transfer, inventory count, reporting export, etc.) matching this repo's real domain.
+
+**Why cloud for retry:** Workflow spawned 41 agents concurrently; local machine at 0.04 GB free when workflow started. Cloud has headroom. Previous attempts showed agents complete when not RAM-starved.
+
+---
+
+Generated: 2026-09-19 17:14 UTC+5
+Workflow script: `.../workflows/scripts/enterprise-scope-lenses-wf_8cc42e30-ada.js`
+Journal: `.../subagents/workflows/wf_8cc42e30-ada/journal.jsonl` (93 lines)

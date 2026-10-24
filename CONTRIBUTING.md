@@ -26,7 +26,7 @@ Say you are adding `reviews`.
 models that module owns. Do not touch another module's file. Then:
 
 ```bash
-pnpm --filter @yaseen/api db:migrate -- --name add_reviews
+pnpm --filter @newax/api db:migrate -- --name add_reviews
 ```
 
 **2. Its code.** Create `apps/api/src/modules/reviews/` with the usual shape:
@@ -82,7 +82,7 @@ in `core/settings/settings.defaults.ts` instead.
 Add the class, add its key to the relevant env allowlist, and no caller changes.
 
 **Money is integer paisa.** Rs 3,499 is `349900`. Never a float, never a string.
-Use `toMinor` / `formatMoney` from `@yaseen/shared`.
+Use `toMinor` / `formatMoney` from `@newax/shared`.
 
 **Customer-facing text is never a column.** It is a `*Translation` row, one per
 locale. Every product, category and garment needs both `en` and `ur`.
@@ -90,7 +90,7 @@ locale. Every product, category and garment needs both `en` and `ur`.
 **Order lines are snapshots.** Name, price, measurements and stitching options
 are copied onto the order at purchase and never joined back to the live product.
 
-**The rules live in `@yaseen/shared`, and every app calls them.** Pricing,
+**The rules live in `@newax/shared`, and every app calls them.** Pricing,
 measurement validation and phone normalisation are used by the API, the website
 and the mobile app alike — a figure the phone accepts is one the API accepts,
 because it is the same function. Never reimplement one of them in an app.

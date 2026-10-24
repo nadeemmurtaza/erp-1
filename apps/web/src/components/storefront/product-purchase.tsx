@@ -2,15 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { formatMoney, type Locale } from '@newax/shared';
 import { useRouter } from '@/i18n/navigation';
-import type { StorefrontProduct } from '@/lib/api-types';
+import type { StorefrontProduct } from '@/types/api';
 import { Price } from './price';
 import { useCart } from './cart-provider';
 import { StitchingPanel, type StitchingSelection } from './stitching-panel';
 import { SizeChartModal } from './size-chart-modal';
-import type { StitchingGarment } from '@/lib/cart-types';
+import type { StitchingGarment } from '@/types/cart';
 
 /**
  * One garment this fabric can become, with the fabric-need range derived from
@@ -137,35 +137,34 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
     <div className="space-y-6">
       <div>
         <Price amount={price} compareAt={product.compareAtPrice} locale={locale} size="lg" />
-        <SizeChartModal productName={product.name} garments={stitchingGarments} locale={locale} />
         <p className="mt-1 text-sm">
           {selected && selected.stock > 0 ? (
             selected.stock <= 3 ? (
-              <span className="font-semibold text-noir-900">
+              <span className="font-semibold text-neutral-900">
                 {t('lowStock', { count: selected.stock })}
               </span>
             ) : (
-              <span className="text-noir-500">{t('inStock')}</span>
+              <span className="text-neutral-500">{t('inStock')}</span>
             )
           ) : (
-            <span className="text-noir-400">{t('outOfStock')}</span>
+            <span className="text-neutral-400">{t('outOfStock')}</span>
           )}
         </p>
       </div>
 
       <div>
-        <span className="mb-1.5 block text-sm font-medium text-noir-900">{t('quantity')}</span>
+        <span className="mb-1.5 block text-sm font-medium text-neutral-900">{t('quantity')}</span>
         <div className="inline-flex items-center gap-4">
           <button
             type="button"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
             disabled={quantity <= 1}
             aria-label={t('decreaseQuantity')}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-noir-300 text-noir-900 transition-colors duration-200 hover:border-noir-900 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-900 transition-colors duration-200 hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <MinusIcon />
           </button>
-          <span className="w-6 text-center text-base font-semibold text-noir-900" aria-live="polite">
+          <span className="w-6 text-center text-base font-semibold text-neutral-900" aria-live="polite">
             {quantity}
           </span>
           <button
@@ -173,7 +172,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
             onClick={() => setQuantity((current) => Math.min(maxQuantity, current + 1))}
             disabled={quantity >= maxQuantity}
             aria-label={t('increaseQuantity')}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-noir-300 text-noir-900 transition-colors duration-200 hover:border-noir-900 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-900 transition-colors duration-200 hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <PlusIcon />
           </button>
@@ -181,7 +180,23 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       </div>
 
       {sizes.length > 1 ? (
-        <SizeRow label={t('selectSize')} options={sizes} value={size} onChange={setSize} />
+        <SizeRow
+          label={t('selectSize')}
+          options={sizes}
+          value={size}
+          onChange={setSize}
+          // Sits on the Size row itself rather than up beside the price: a
+          // shopper wants the chart at the moment they are choosing between
+          // S/M/L, not before they have got there. Renders nothing when the
+          // product has no garment carrying a size chart.
+          action={
+            <SizeChartModal
+              productName={product.name}
+              garments={stitchingGarments}
+              locale={locale}
+            />
+          }
+        />
       ) : null}
 
       {colours.length > 1 ? (
@@ -195,12 +210,12 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       ) : null}
 
       {fabricNeed.length > 0 ? (
-        <div className="rounded-2xl border border-noir-200 bg-white p-3 text-sm">
-          <p className="font-semibold text-noir-900">{t('fabricNeedEstimate')}</p>
+        <div className="rounded-2xl border border-neutral-100 bg-white p-3 text-sm">
+          <p className="font-semibold text-neutral-900">{t('fabricNeedEstimate')}</p>
           <ul className="mt-1.5 space-y-1">
             {fabricNeed.map((row) => (
-              <li key={row.key} className="text-noir-600">
-                <span className="font-medium text-noir-900">{row.label}</span>:{' '}
+              <li key={row.key} className="text-neutral-600">
+                <span className="font-medium text-neutral-900">{row.label}</span>:{' '}
                 {row.isRange
                   ? t('fabricNeedRange', {
                       low: row.low,
@@ -213,7 +228,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
             ))}
           </ul>
           {fabricMayRunShort ? (
-            <p className="mt-1.5 text-xs text-noir-500">{t('fabricNeedCheckNote')}</p>
+            <p className="mt-1.5 text-xs text-neutral-500">{t('fabricNeedCheckNote')}</p>
           ) : null}
         </div>
       ) : null}
@@ -225,24 +240,24 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
         type="button"
         onClick={() => void onAdd()}
         disabled={addDisabled}
-        className="sf-btn-primary hidden md:inline-flex"
+        className="btn-primary hidden md:inline-flex"
       >
         {busy ? t('adding') : t('addToCart')}
       </button>
 
       {error ? (
-        <p role="alert" className="whitespace-pre-line rounded-2xl bg-red-50 px-3 py-2 text-sm text-red-700 animate-slideUp">
+        <p role="alert" className="notice notice-error whitespace-pre-line animate-slideUp">
           {error}
         </p>
       ) : null}
 
       {added && !error ? (
-        <p className="flex flex-wrap items-center gap-3 rounded-2xl border border-noir-200 bg-noir-50 px-3 py-2 text-sm text-noir-900 animate-slideUp">
+        <p className="flex flex-wrap items-center gap-3 rounded-2xl border border-neutral-100 bg-neutral-50 px-3 py-2 text-sm text-neutral-900 animate-slideUp">
           {t('addedToCart')}
           <button
             type="button"
             onClick={() => router.push('/cart')}
-            className="font-medium underline transition-colors hover:text-noir-600"
+            className="font-medium underline transition-colors hover:text-neutral-600"
           >
             {t('viewCart')}
           </button>
@@ -250,7 +265,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       ) : null}
 
       {selected ? (
-        <p className="text-xs text-noir-400">
+        <p className="text-xs text-neutral-400">
           {t('sku')}: {selected.sku}
         </p>
       ) : null}
@@ -268,7 +283,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
           type="button"
           onClick={() => void onAdd()}
           disabled={addDisabled}
-          className="sf-btn-primary w-full justify-between gap-3 py-4 shadow-lg shadow-noir-900/30"
+          className="btn-primary w-full justify-between gap-3 py-4 shadow-lg shadow-neutral-900/30"
         >
           <span className="text-sm font-semibold">{busy ? t('adding') : t('addToCart')}</span>
           <span className="flex items-baseline gap-2">
@@ -290,15 +305,18 @@ function SizeRow({
   options,
   value,
   onChange,
+  action,
 }: {
   label: string;
   options: string[];
   value: string | null;
   onChange: (next: string) => void;
+  /** Optional control shown under the chips — the size-chart link. */
+  action?: React.ReactNode;
 }) {
   return (
-    <fieldset>
-      <legend className="mb-1.5 text-sm font-medium text-noir-900">{label}</legend>
+    <fieldset className="w-full">
+      <legend className="mb-1.5 text-sm font-medium text-neutral-900">{label}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <button
@@ -306,12 +324,16 @@ function SizeRow({
             type="button"
             onClick={() => onChange(option)}
             aria-pressed={value === option}
-            className={clsx('sf-chip', value === option ? 'sf-chip-selected' : 'sf-chip-unselected')}
+            className={cn('chip', value === option ? 'chip-selected' : 'chip-unselected')}
           >
             {option}
           </button>
         ))}
       </div>
+      {/* Under the chips, not beside the label: the question "which of these
+          is me?" only arises once the sizes are in front of you, so the chart
+          sits where the eye already is. */}
+      {action ? <div className="mt-2">{action}</div> : null}
     </fieldset>
   );
 }
@@ -338,9 +360,9 @@ function ColourRow({
 }) {
   return (
     <fieldset>
-      <legend className="mb-1.5 text-sm font-medium text-noir-900">
+      <legend className="mb-1.5 text-sm font-medium text-neutral-900">
         {label}
-        {value ? <span className="ms-1.5 font-normal text-noir-500">{value}</span> : null}
+        {value ? <span className="ms-1.5 font-normal text-neutral-500">{value}</span> : null}
       </legend>
       <div className="flex flex-wrap gap-2.5">
         {options.map((option) => {
@@ -355,10 +377,10 @@ function ColourRow({
               aria-label={option}
               title={option}
               style={hex ? { backgroundColor: hex } : undefined}
-              className={clsx(
+              className={cn(
                 'h-9 w-9 rounded-full border transition-[box-shadow,border-color] duration-200',
-                hex ? 'border-noir-200' : 'border-noir-300 bg-noir-100',
-                active ? 'ring-2 ring-noir-900 ring-offset-2' : 'hover:border-noir-500',
+                hex ? 'border-neutral-100' : 'border-neutral-300 bg-neutral-100',
+                active ? 'ring-2 ring-neutral-900 ring-offset-2' : 'hover:border-neutral-500',
               )}
             />
           );

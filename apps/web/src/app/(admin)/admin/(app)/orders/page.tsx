@@ -2,10 +2,13 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
-import { formatMoney, ORDER_STATUSES } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { PaginatedResponse } from '@/lib/api-types';
+import type { PaginatedResponse } from '@/types/api';
+import { EmptyState, Loading, PageHeader } from '@/components/ui';
+import { StatusBadge, statusLabel } from '@/components/common/status-badge';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface AdminOrder {
   id: string;
@@ -104,12 +107,12 @@ export default function AdminOrdersPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Orders</h1>
-      <p className="mb-6 text-sm text-ink/60">
-        Confirm, prepare and dispatch. Cancelling an order puts its stock back.
-      </p>
+      <PageHeader
+        title="Orders"
+        description="Confirm, prepare and dispatch. Cancelling an order puts its stock back."
+      />
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Order number, name or phone"
@@ -131,22 +134,22 @@ export default function AdminOrdersPage() {
           <option value="">All statuses</option>
           {ORDER_STATUSES.map((option) => (
             <option key={option} value={option}>
-              {label(option)}
+              {statusLabel(option)}
             </option>
           ))}
         </select>
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Order</Th>
                 <Th>Customer</Th>
@@ -156,61 +159,64 @@ export default function AdminOrdersPage() {
                 <Th />
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {!orders ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : orders.data.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
-                    No orders match those filters.
+                  <td colSpan={6}>
+                    <EmptyState
+                      title="No orders match those filters"
+                      description="Clear the search or choose a different status to see more."
+                    />
                   </td>
                 </tr>
               ) : (
                 orders.data.map((order) => (
-                  <tr key={order.id} className="hover:bg-sand-50">
-                    <td className="px-4 py-3">
+                  <tr key={order.id} className="hover:bg-neutral-50">
+                    <td>
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="font-medium text-ink hover:text-brand-700"
+                        className="font-medium text-neutral-900 hover:text-accent-hover"
                       >
                         {order.number}
                       </Link>
-                      <p className="text-xs text-ink/40">
-                        {new Date(order.placedAt).toLocaleDateString('en-PK')}
+                      <p className="text-xs text-neutral-900/60">
+                        {formatDate(order.placedAt)}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
-                      <p className="text-ink">{order.guestName ?? '—'}</p>
-                      <p className="text-xs text-ink/40">
+                    <td>
+                      <p className="text-neutral-900">{order.guestName ?? '—'}</p>
+                      <p className="text-xs text-neutral-900/60">
                         {order.guestPhone} · {order.shippingAddress.city}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       {order.payments.map((payment) => (
                         <p key={payment.id} className="text-xs">
-                          <span className="text-ink/70">{payment.provider}</span>
+                          <span className="text-neutral-900/70">{paymentProviderLabel(payment.provider)}</span>
                           <span
-                            className={clsx(
+                            className={cn(
                               'ms-1 font-medium',
-                              payment.status === 'PAID' ? 'text-brand-700' : 'text-gold',
+                              payment.status === 'PAID' ? 'text-accent-hover' : 'text-amber-600',
                             )}
                           >
-                            {payment.status.toLowerCase().replace(/_/g, ' ')}
+                            {statusLabel(payment.status)}
                           </span>
                         </p>
                       ))}
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <StatusBadge status={order.status} />
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-ink">
+                    <td className="text-end tabular-nums text-neutral-900">
                       {formatMoney(order.grandTotal)}
                     </td>
-                    <td className="px-4 py-3 text-end">
+                    <td className="text-end">
                       <div className="flex flex-wrap justify-end gap-1">
                         {(NEXT_STATUS[order.status] ?? []).map((next) => (
                           <button
@@ -218,14 +224,14 @@ export default function AdminOrdersPage() {
                             type="button"
                             disabled={busy}
                             onClick={() => void advance(order, next)}
-                            className={clsx(
+                            className={cn(
                               'rounded px-2 py-1 text-xs',
                               next === 'CANCELLED' || next === 'RETURNED'
                                 ? 'text-red-700 hover:bg-red-50'
-                                : 'text-brand-700 hover:bg-brand-50',
+                                : 'text-accent-hover hover:bg-neutral-50',
                             )}
                           >
-                            {label(next)}
+                            {statusLabel(next)}
                           </button>
                         ))}
                         {order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED' ? (
@@ -233,7 +239,7 @@ export default function AdminOrdersPage() {
                             type="button"
                             disabled={busy}
                             onClick={() => void addTracking(order)}
-                            className="rounded px-2 py-1 text-xs text-ink/60 hover:bg-sand-100"
+                            className="rounded px-2 py-1 text-xs text-neutral-900/60 hover:bg-white"
                           >
                             Tracking
                           </button>
@@ -248,7 +254,7 @@ export default function AdminOrdersPage() {
         </div>
 
         {orders && orders.meta.totalPages > 1 ? (
-          <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm">
+          <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
             <button
               type="button"
               className="btn-ghost"
@@ -257,7 +263,7 @@ export default function AdminOrdersPage() {
             >
               Previous
             </button>
-            <span className="text-ink/60">
+            <span className="text-neutral-900/60">
               Page {orders.meta.page} of {orders.meta.totalPages} · {orders.meta.total} orders
             </span>
             <button
@@ -275,16 +281,12 @@ export default function AdminOrdersPage() {
   );
 }
 
-function label(status: string): string {
-  return status.charAt(0) + status.slice(1).toLowerCase().replace(/_/g, ' ');
-}
 
 function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
-      className={clsx(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50',
+    <th scope="col"
+      className={cn(
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
         className,
       )}
     >
@@ -293,20 +295,3 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={clsx(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-brand-100 text-brand-800',
-        status === 'CANCELLED' && 'bg-red-50 text-red-700',
-        status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-sand-100 text-ink/60',
-        !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-brand-50 text-brand-700',
-      )}
-    >
-      {label(status)}
-    </span>
-  );
-}

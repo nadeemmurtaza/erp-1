@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * Client-only "saved items" wishlist, persisted to this browser's
@@ -16,7 +17,7 @@ import { useSyncExternalStore } from 'react';
  * without needing a provider wrapped around the tree.
  */
 
-const STORAGE_KEY = 'yaseen_wishlist_ids';
+const STORAGE_KEY = STORAGE_KEYS.wishlist;
 
 let ids: string[] = [];
 let hydrated = false;

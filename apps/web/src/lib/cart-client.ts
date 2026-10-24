@@ -1,8 +1,9 @@
 'use client';
 
 import { trackEvent } from './analytics-client';
-import { API_URL, ApiError } from './api';
-import type { Cart } from './cart-types';
+import { request } from './api-client';
+import type { Cart } from '@/types/cart';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * Browser-side cart client.
@@ -13,7 +14,7 @@ import type { Cart } from './cart-types';
  * the account's cart instead — one cart, whichever device they are on.
  */
 
-const ACCESS_KEY = 'yaseen.customer.access';
+const ACCESS_KEY = STORAGE_KEYS.customer.access;
 
 export function getCustomerToken(): string | null {
   return typeof window === 'undefined' ? null : localStorage.getItem(ACCESS_KEY);
@@ -25,34 +26,21 @@ interface CartRequest {
   locale?: string;
 }
 
+/**
+ * No 401 refresh here, unlike the admin and customer clients: a cart works
+ * signed out. The token is attached when there is one so the cart merges into
+ * the account, and its absence is a normal guest cart rather than an error.
+ */
 async function cartFetch(path: string, options: CartRequest = {}): Promise<Cart> {
-  const headers: Record<string, string> = { Accept: 'application/json' };
-
   const token = getCustomerToken();
-  if (token) headers.Authorization = `Bearer ${token}`;
-  if (options.body !== undefined) headers['Content-Type'] = 'application/json';
 
-  const query = options.locale ? `?locale=${options.locale}` : '';
-
-  const response = await fetch(`${API_URL}/cart${path}${query}`, {
+  return request<Cart>(`/cart${path}`, {
     method: options.method ?? 'GET',
-    headers,
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    body: options.body,
+    query: options.locale ? { locale: options.locale } : undefined,
     credentials: 'include',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
-
-  const payload = await response.json().catch(() => undefined);
-
-  if (!response.ok) {
-    const message = (payload as { message?: string | string[] } | undefined)?.message;
-    throw new ApiError(
-      response.status,
-      Array.isArray(message) ? message.join('\n') : (message ?? 'Could not update the cart'),
-      payload,
-    );
-  }
-
-  return payload as Cart;
 }
 
 export function fetchCart(locale: string): Promise<Cart> {

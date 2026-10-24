@@ -1,9 +1,11 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import Link from 'next/link';
+import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
+import { Loading } from '@/components/ui';
 
 interface InventoryVariant {
   id: string;
@@ -38,7 +40,7 @@ interface StockMovementRow {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th className={clsx('px-3 py-3 text-start font-medium text-ink/70', className)}>
+    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
       {children}
     </th>
   );
@@ -47,6 +49,7 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
 export default function AdminInventoryPage() {
   const user = getStoredUser();
   const canViewCost = user?.permissions.includes('inventory.view_cost');
+  const canViewChain = user?.permissions.includes('production.view_chain');
 
   const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
   const [search, setSearch] = useState('');
@@ -102,12 +105,12 @@ export default function AdminInventoryPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Inventory</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Inventory</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Stock on hand and movement ledger.
       </p>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Search SKU or product"
@@ -120,9 +123,9 @@ export default function AdminInventoryPage() {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={clsx(
+              className={cn(
                 'px-3 py-1 rounded text-sm',
-                filter === f ? 'bg-brand-100 text-brand-800 font-medium' : 'bg-sand-100 text-ink/70 hover:bg-sand-200'
+                filter === f ? 'bg-neutral-100 text-accent-hover font-medium' : 'bg-white text-neutral-900/70 hover:bg-neutral-100'
               )}
             >
               {f === 'all' ? 'All' : f === 'low' ? 'Low Stock' : f === 'out' ? 'Out of Stock' : 'Slow Movers'}
@@ -132,15 +135,15 @@ export default function AdminInventoryPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>Product</Th>
                 <Th>SKU</Th>
@@ -158,16 +161,16 @@ export default function AdminInventoryPage() {
                 <Th className="text-end">Actions</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !variants ? (
                 <tr>
-                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-ink/50">
-                    Loading...
+                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : variants?.length === 0 ? (
                 <tr>
-                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-ink/50">
+                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-neutral-900/60">
                     No variants found.
                   </td>
                 </tr>
@@ -177,17 +180,17 @@ export default function AdminInventoryPage() {
                   
                   return (
                     <Fragment key={variant.id}>
-                      <tr className="hover:bg-sand-50/50">
-                        <td className="px-3 py-3">
-                          <div className="font-medium text-ink">{variant.product.name}</div>
-                          <div className="text-xs text-ink/60">
+                      <tr className="hover:bg-neutral-50/50">
+                        <td>
+                          <div className="font-medium text-neutral-900">{variant.product.name}</div>
+                          <div className="text-xs text-neutral-900/60">
                             {[variant.size, variant.color].filter(Boolean).join(' / ')}
                           </div>
                         </td>
-                        <td className="px-3 py-3 text-ink/80">{variant.sku}</td>
-                        <td className="px-3 py-3 text-ink/60">{variant.barcode || '—'}</td>
-                        <td className="px-3 py-3 text-end font-medium">
-                          <span className={clsx(
+                        <td className="text-neutral-900/80">{variant.sku}</td>
+                        <td className="text-neutral-900/60">{variant.barcode || '—'}</td>
+                        <td className="text-end font-medium">
+                          <span className={cn(
                             variant.stock <= 0 ? 'text-red-600' :
                             variant.stock <= variant.lowStockThreshold ? 'text-amber-600' :
                             'text-green-600'
@@ -195,79 +198,84 @@ export default function AdminInventoryPage() {
                             {variant.stock}
                           </span>
                         </td>
-                        <td className="px-3 py-3 text-end text-ink/60">{variant.lowStockThreshold}</td>
+                        <td className="text-end text-neutral-900/60">{variant.lowStockThreshold}</td>
                         
                         {canViewCost && (
                           <>
-                            <td className="px-3 py-3 text-end text-ink/80">{formatMoney(variant.costPrice)}</td>
-                            <td className="px-3 py-3 text-end font-medium text-ink/90">
+                            <td className="text-end text-neutral-900/80">{formatMoney(variant.costPrice)}</td>
+                            <td className="text-end font-medium text-neutral-900/90">
                               {formatMoney(variant.stock * variant.costPrice)}
                             </td>
                           </>
                         )}
                         
-                        <td className="px-3 py-3 text-end text-ink/60">
+                        <td className="text-end text-neutral-900/60">
                           {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
                             ? Math.round(variant.salesStat.daysOfCover)
                             : '—'}
                         </td>
-                        <td className="px-3 py-3 text-ink/60">
+                        <td className="text-neutral-900/60">
                           {variant.salesStat?.lastSoldAt 
-                            ? new Date(variant.salesStat.lastSoldAt).toLocaleDateString()
+                            ? formatDate(variant.salesStat.lastSoldAt)
                             : '—'}
                         </td>
-                        <td className="px-3 py-3 text-end">
+                        <td className="px-3 py-3 text-end whitespace-nowrap">
                           <button
                             type="button"
                             onClick={() => toggleHistory(variant.id)}
-                            className="text-brand-600 hover:underline"
+                            className="text-accent-hover hover:underline"
                           >
                             {historyOpen ? 'Hide ledger' : 'Ledger'}
                           </button>
+                          {canViewChain ? (
+                            <Link href={`/admin/inventory/${variant.id}/chain`} className="ml-3 text-accent-hover hover:underline">
+                              Chain
+                            </Link>
+                          ) : null}
                         </td>
                       </tr>
 
                       {historyOpen ? (
-                        <tr className="bg-sand-50">
+                        <tr className="bg-neutral-50">
                           <td colSpan={canViewCost ? 10 : 8} className="px-4 py-4">
                             {historyBusy ? (
-                              <p className="text-sm text-ink/50">Loading ledger...</p>
+                              <Loading label="Loading ledger" />
                             ) : !historyRows || historyRows.length === 0 ? (
-                              <p className="text-sm text-ink/50">No movements recorded yet.</p>
+                              <p className="text-sm text-neutral-900/60">No movements recorded yet.</p>
                             ) : (
                               <div className="overflow-x-auto">
-                                <table className="w-full text-xs">
+                                <table className="table-flat">
                                   <thead>
                                     <tr>
-                                      <th className="py-1 text-start font-medium text-ink/50">Date</th>
-                                      <th className="py-1 text-start font-medium text-ink/50">Actor</th>
-                                      <th className="py-1 text-start font-medium text-ink/50">Reason</th>
-                                      <th className="py-1 text-start font-medium text-ink/50">Ref</th>
-                                      <th className="py-1 text-start font-medium text-ink/50">Note</th>
-                                      <th className="py-1 text-end font-medium text-ink/50">Delta</th>
-                                      <th className="py-1 text-end font-medium text-ink/50">Balance</th>
+                                      <th>Date</th>
+                                      <th>Actor</th>
+                                      <th>Reason</th>
+                                      <th>Ref</th>
+                                      <th>Note</th>
+                                      <th className="text-end">Delta</th>
+                                      <th className="text-end">Balance</th>
                                     </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-sand-200">
+                                  <tbody className="divide-y divide-neutral-100">
                                     {historyRows.map((row) => (
                                       <tr key={row.id}>
-                                        <td className="py-2 text-ink/70">
-                                          {new Date(row.createdAt).toLocaleString()}
+                                        <td className="text-neutral-900/70">
+                                          {formatDateTime(row.createdAt)}
                                         </td>
-                                        <td className="py-2 text-ink/70">{row.actorName || 'System'}</td>
-                                        <td className="py-2 text-ink/70">{row.reason}</td>
-                                        <td className="py-2 text-ink/70">
+                                        <td className="text-neutral-900/70">{row.actorName || 'System'}</td>
+                                        <td className="text-neutral-900/70">{row.reason}</td>
+                                        <td className="text-neutral-900/70">
                                           {row.refType ? `${row.refType} ${row.refId || ''}` : '—'}
                                         </td>
-                                        <td className="py-2 text-ink/70 max-w-xs truncate" title={row.note || undefined}>
+                                        <td className="text-neutral-900/70 max-w-xs truncate" title={row.note || undefined}>
                                           {row.note || '—'}
                                         </td>
-                                        <td className="py-2 text-end font-medium">
+                                        <td className="text-end font-medium">
                                           <span className={row.delta > 0 ? 'text-green-600' : 'text-red-600'}>
                                             {row.delta > 0 ? '+' : ''}{row.delta}
                                           </span>
                                         </td>
-                                        <td className="py-2 text-end text-ink/80">{row.resultingStock}</td>
+                                        <td className="text-end text-neutral-900/80">{row.resultingStock}</td>
                                       </tr>
                                     ))}
                                   </tbody>

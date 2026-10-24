@@ -15,6 +15,12 @@ enum OrderStatus {
   RETURNED
 }
 
+/// R11: a till sale is a channel of `orders`, not a parallel order system.
+enum OrderChannel {
+  WEB
+  POS
+}
+
 model Order {
   id        String      @id @default(cuid())
   number    String      @unique // "YSN-2026-0001"
@@ -22,6 +28,16 @@ model Order {
   contactId String?
   status    OrderStatus @default(PENDING)
   currency  String      @default("PKR")
+
+  /// R11's additive scalar columns. Bare scalars, not relations — `pos` and
+  /// `organization` are separate modules from `orders` (module-boundary
+  /// rule), and originNodeId is replication scaffolding (R6/R7), not
+  /// currently written by anything. Null for every WEB order.
+  channel      OrderChannel @default(WEB)
+  locationId   String?
+  terminalId   String?
+  shiftId      String?
+  originNodeId String?
 
   /// Guest checkout: no account, so contact details live on the order.
   guestName  String?
@@ -69,11 +85,26 @@ model Order {
   shipments      Shipment[]
   statusEvents   OrderStatusEvent[]
   convertedLeads Lead[]             @relation("LeadConvertedOrder")
+  /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
+  economics      OrderEconomics?
 
   @@index([status, placedAt])
   @@index([userId])
   @@index([contactId])
   @@index([guestPhone])
+  @@index([channel])
+  @@index([shiftId])
+}
+
+enum OrderItemFulfillmentStatus {
+  READY
+  /// Backordered against an externally sourced variant — waiting on a
+  /// PurchaseOrder receipt (StockReplenished).
+  AWAITING_STOCK
+  /// Backordered against a producedInHouse variant — waiting on a WorkOrder
+  /// completion (also StockReplenished; the two are indistinguishable to
+  /// the customer, both just "stock isn't here yet").
+  AWAITING_PRODUCTION
 }
 
 model OrderItem {
@@ -130,6 +161,14 @@ model OrderItem {
   /// (marketing.replenishment_reminder) for this line's Product.isConsumable
   /// item — per item, not per order, since one order can hold several.
   replenishmentReminderSentAt DateTime?
+
+  /// Scoped to the LINE, not Order.status — a backordered item does not
+  /// change what CONFIRMED/PROCESSING/etc. mean for the order as a whole
+  /// (that state machine already tracks payment/fulfillment separately).
+  /// Only set away from READY when checkout.allow_backorder is on; stays
+  /// READY (the default) for every order placed with it off.
+  fulfillmentStatus OrderItemFulfillmentStatus @default(READY)
+  awaitingSince     DateTime?
 
   createdAt DateTime @default(now())
 
@@ -194,7 +233,11 @@ model Shipment {
 }
 
 /// Backing store for sequential per-year order numbers (YSN-2026-0001). One
-/// row per year; `counter` is incremented via a single atomic
+/// row per year — this node's own row, in this node's own database, which
+/// is why it stays correct once a chain deployment has more than one node
+/// (WO-18.2): the sequence is allocated purely locally, and NODE_ID is
+/// folded into the final string by document-number.ts, not into this
+/// table. `counter` is incremented via a single atomic
 /// `INSERT ... ON CONFLICT DO UPDATE ... RETURNING`, which Postgres
 /// serialises at the row level — no application-side lock or transaction
 /// needed. See nextOrderNumber() in orders.service.ts for why: an earlier

@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { extname, join, normalize, resolve, sep } from 'node:path';
 import { Injectable } from '@nestjs/common';
-import { slugify } from '@yaseen/shared';
+import { slugify } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
 

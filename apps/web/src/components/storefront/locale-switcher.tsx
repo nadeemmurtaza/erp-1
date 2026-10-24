@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
-import { LOCALES, type Locale } from '@yaseen/shared';
+import { LOCALES, type Locale } from '@newax/shared';
 import { usePathname, useRouter } from '@/i18n/navigation';
 
 const LABELS: Record<Locale, string> = {
@@ -41,7 +41,7 @@ export function LocaleSwitcher() {
       <label className="sr-only">{t('language')}</label>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-noir-500 hover:bg-noir-50 hover:text-noir-900 transition-colors duration-200"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200"
         aria-label={t('language')}
         disabled={isPending}
       >
@@ -52,15 +52,15 @@ export function LocaleSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-noir-200 bg-white overflow-hidden z-50 min-w-max">
+        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-neutral-100 bg-white overflow-hidden z-50 min-w-max">
           {LOCALES.map((option) => (
             <button
               key={option}
               onClick={() => onChange(option)}
               className={`block w-full text-start px-4 py-2 text-sm transition-colors duration-200 ${
                 locale === option
-                  ? 'text-noir-900 bg-noir-50'
-                  : 'text-noir-500 hover:text-noir-900 hover:bg-noir-50'
+                  ? 'text-neutral-900 bg-neutral-50'
+                  : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50'
               }`}
               disabled={isPending}
             >

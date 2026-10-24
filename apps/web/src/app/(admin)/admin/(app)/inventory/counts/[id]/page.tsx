@@ -1,10 +1,10 @@
 'use client';
 
-import { use, useEffect, useState, useRef } from 'react';
-import clsx from 'clsx';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
+import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/lib/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface CountLine {
   id: string;
@@ -40,19 +40,25 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   // For focusing the scanner input
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const load = () => {
+  // useCallback, so the effect can depend on it honestly. It was a plain
+  // function rebuilt every render, which meant listing it in the dependency
+  // array would have looped — so it was left out, and the lint warning that
+  // flagged that stood for months.
+  const load = useCallback(() => {
     adminFetch<{ data: StockCount }>(`/admin/inventory/counts/${id}`)
       .then((res) => setCount(res.data))
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(err instanceof Error ? err.message : 'Could not load the count'))
       .finally(() => setBusy(false));
-  };
+  }, [id]);
 
   useEffect(() => {
     load();
-  }, [id]);
+  }, [load]);
 
   if (!user?.permissions.includes('inventory.count')) {
-    return <p className="p-4 text-red-600">Permission denied: requires inventory.count</p>;
+    return <p role="alert" className="notice notice-error">
+        Permission denied: requires inventory.count
+      </p>;
   }
 
   const handleStart = async () => {
@@ -96,7 +102,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
     }
   };
 
-  if (busy) return <p className="p-4 text-ink/50">Loading count sheet...</p>;
+  if (busy) return <p className="p-4 text-neutral-900/60">Loading count sheet...</p>;
   if (!count) return <p className="p-4 text-red-600">Count not found.</p>;
 
   return (
@@ -104,26 +110,28 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
       {toasts.length > 0 && (
         <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
           {toasts.map((t) => (
-            <div 
+            <button 
               key={t.id} 
-              className={clsx(
-                "p-4 rounded-md shadow-md text-sm cursor-pointer",
+              className={cn(
+                "w-full p-4 rounded-md shadow-md text-sm text-start cursor-pointer",
                 t.type === 'error' ? "bg-red-50 text-red-800 border border-red-200" :
                 t.type === 'success' ? "bg-green-50 text-green-800 border border-green-200" :
                 "bg-blue-50 text-blue-800 border border-blue-200"
               )}
+              type="button"
               onClick={() => removeToast(t.id)}
+              aria-label={`Dismiss: ${t.message}`}
             >
               {t.message}
-            </div>
+            </button>
           ))}
         </div>
       )}
 
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-ink">Stock Count {count.countNumber}</h1>
-          <p className="text-sm text-ink/60">Status: {count.status.replace('_', ' ')}</p>
+          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Stock Count {count.countNumber}</h1>
+          <p className="text-sm text-neutral-900/60">Status: {count.status.replace('_', ' ')}</p>
         </div>
         <div className="flex gap-2">
           {count.status === 'DRAFT' && (
@@ -146,6 +154,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
           <form onSubmit={handleScan} className="flex gap-3 max-w-sm">
             <input
               ref={inputRef}
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- a stock count is a scan loop: the operator holds a scanner, not a mouse, and every scan must land in this field. ACT-1 / HEU-7.
               autoFocus
               type="text"
               className="field-input w-full"
@@ -157,25 +166,25 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
               Enter
             </button>
           </form>
-          <p className="mt-2 text-xs text-ink/50">USB barcode scanners automatically submit on scan.</p>
+          <p className="mt-2 text-xs text-neutral-900/60">USB barcode scanners automatically submit on scan.</p>
         </div>
       )}
 
       <div className="card overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-sand-200">
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">SKU</th>
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">Product</th>
-              <th className="px-4 py-2 text-right font-semibold text-ink/50 uppercase text-xs">Expected</th>
-              <th className="px-4 py-2 text-right font-semibold text-ink/50 uppercase text-xs">Counted</th>
-              <th className="px-4 py-2 text-right font-semibold text-ink/50 uppercase text-xs">Variance</th>
+            <tr className="border-b border-neutral-100">
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">SKU</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Product</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Expected</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Counted</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Variance</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-sand-200">
+          <tbody className="divide-y divide-neutral-100">
             {count.lines.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-ink/50">
+                <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/60">
                   {count.status === 'DRAFT' ? 'Lines will be generated when count is started.' : 'No items found.'}
                 </td>
               </tr>
@@ -186,20 +195,20 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
                 : null;
                 
               return (
-                <tr key={line.id} className="hover:bg-sand-50">
-                  <td className="px-4 py-3 font-medium text-ink">{line.variant.sku}</td>
-                  <td className="px-4 py-3 text-ink/70">
+                <tr key={line.id} className="hover:bg-neutral-50">
+                  <td className="px-4 py-3 font-medium text-neutral-900">{line.variant.sku}</td>
+                  <td className="px-4 py-3 text-neutral-900/70">
                     {line.variant.product.translations[0]?.name ?? 'Unknown'}
                   </td>
-                  <td className="px-4 py-3 text-right text-ink/70 tabular-nums">
+                  <td className="px-4 py-3 text-right text-neutral-900/70 tabular-nums">
                     {line.expected ?? '-'}
                   </td>
-                  <td className="px-4 py-3 text-right font-medium text-ink tabular-nums">
+                  <td className="px-4 py-3 text-right font-medium text-neutral-900 tabular-nums">
                     {line.counted ?? '-'}
                   </td>
-                  <td className={clsx(
+                  <td className={cn(
                     'px-4 py-3 text-right tabular-nums font-medium',
-                    variance === null || variance === 0 ? 'text-ink/50' : variance > 0 ? 'text-green-600' : 'text-red-600'
+                    variance === null || variance === 0 ? 'text-neutral-900/60' : variance > 0 ? 'text-green-600' : 'text-red-600'
                   )}>
                     {variance === null ? '-' : variance > 0 ? `+${variance}` : variance}
                   </td>

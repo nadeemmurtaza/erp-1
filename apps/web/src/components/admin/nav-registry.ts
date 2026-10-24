@@ -1,31 +1,28 @@
-import type { PermissionKey } from '@yaseen/shared';
+import type { PermissionKey } from '@newax/shared';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 import {
   LayoutDashboard,
   ShoppingCart,
-  Truck,
   Package,
   Boxes,
   Scissors,
   Users,
-  Megaphone,
-  Wallet,
   BarChart3,
   Settings,
+  Factory,
 } from 'lucide-react';
 
 export const ICON_MAP = {
   LayoutDashboard,
   ShoppingCart,
-  Truck,
   Package,
   Boxes,
   Scissors,
   Users,
-  Megaphone,
-  Wallet,
   BarChart3,
   Settings,
+  Factory,
 } as const;
 
 export interface AdminNavGroup {
@@ -35,19 +32,28 @@ export interface AdminNavGroup {
   icon: keyof typeof ICON_MAP;
 }
 
-/** Sidebar order is THIS ARRAY's order. Nothing else decides it. */
+/**
+ * Sidebar order is THIS ARRAY's order. Nothing else decides it.
+ *
+ * Named for the work, not for the tables behind it. The previous eleven
+ * groups tracked the API's module list — Sales, Fulfilment, Inventory &
+ * Supply, Marketing, Finance — and three of them ("fulfilment", "marketing",
+ * "finance") had no items at all, so the sidebar drew three headings over
+ * nothing. Eight groups, each one something somebody actually sits down to
+ * do: see what needs attention, take orders, make garments, talk to
+ * customers, decide what is sold, keep stock, understand the numbers, set
+ * the place up.
+ */
 export const NAV_GROUPS: readonly AdminNavGroup[] = [
-  { key: 'home',       label: 'Home',               icon: 'LayoutDashboard' },
-  { key: 'sales',      label: 'Sales',              icon: 'ShoppingCart' },
-  { key: 'fulfilment', label: 'Fulfilment',         icon: 'Truck' },
-  { key: 'catalogue',  label: 'Catalogue',          icon: 'Package' },
-  { key: 'inventory',  label: 'Inventory & Supply', icon: 'Boxes' },
-  { key: 'workshop',   label: 'Workshop',           icon: 'Scissors' },
-  { key: 'customers',  label: 'Customers',          icon: 'Users' },
-  { key: 'marketing',  label: 'Marketing',          icon: 'Megaphone' },
-  { key: 'finance',    label: 'Finance',            icon: 'Wallet' },
-  { key: 'insights',   label: 'Insights',           icon: 'BarChart3' },
-  { key: 'settings',   label: 'Settings',           icon: 'Settings' },
+  { key: 'overview',  label: 'Overview',  icon: 'LayoutDashboard' },
+  { key: 'orders',    label: 'Orders',    icon: 'ShoppingCart' },
+  { key: 'workshop',  label: 'Workshop',  icon: 'Scissors' },
+  { key: 'customers', label: 'Customers', icon: 'Users' },
+  { key: 'catalogue', label: 'Catalogue', icon: 'Package' },
+  { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
+  { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
+  { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
+  { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
 
 export interface AdminNavItem {
@@ -57,7 +63,16 @@ export interface AdminNavItem {
   href: string;
   /** Permissions that unlock this entry — any one is enough. Omit for everyone signed in. */
   permissions?: readonly PermissionKey[];
-  group: 'home' | 'sales' | 'fulfilment' | 'catalogue' | 'inventory' | 'workshop' | 'customers' | 'marketing' | 'finance' | 'insights' | 'settings';
+  group:
+    | 'overview'
+    | 'orders'
+    | 'workshop'
+    | 'customers'
+    | 'catalogue'
+    | 'stock'
+    | 'manufacturing'
+    | 'insights'
+    | 'settings';
   /** lucide-react icon name. */
   icon?: string;
   /** One level of nesting. Do not nest deeper. */
@@ -85,7 +100,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Dashboard',
     href: '/admin',
     permissions: ['analytics.view'],
-    group: 'home',
+    group: 'overview',
     module: 'analytics',
   },
 
@@ -121,7 +136,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Orders',
     href: '/admin/orders',
     permissions: ['orders.manage'],
-    group: 'sales',
+    group: 'orders',
     module: 'orders',
   },
   {
@@ -129,11 +144,31 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Payment approvals',
     href: '/admin/payments',
     permissions: ['payments.approve'],
-    group: 'sales',
+    group: 'orders',
     module: 'payments',
   },
 
+  // Group: Overview — the three-level admin shell (R19, WO-18.5). Invisible
+  // for every deployment today: `organization` module is off by default, so
+  // `moduleOn()` below drops this entry before permissions are even checked.
+  {
+    key: 'organization',
+    label: 'Organization',
+    href: '/admin/o',
+    permissions: ['organization.view'],
+    group: 'overview',
+    module: 'organization',
+  },
+
   // Group: Insights
+  {
+    key: 'insights',
+    label: 'Insights',
+    href: '/admin/insights',
+    permissions: ['reports.view'],
+    group: 'insights',
+    module: 'reports',
+  },
   {
     key: 'reports',
     label: 'Reports',
@@ -141,6 +176,30 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['reports.view'],
     group: 'insights',
     module: 'reports',
+  },
+  {
+    key: 'finance-expenses',
+    label: 'Expenses',
+    href: '/admin/finance/expenses',
+    permissions: ['finance.view'],
+    group: 'insights',
+    module: 'finance',
+    children: [
+      {
+        key: 'finance-expense-analytics',
+        label: 'Analytics',
+        href: '/admin/finance/expenses/analytics',
+        permissions: ['finance.view'],
+        group: 'insights',
+      },
+      {
+        key: 'finance-expense-categories',
+        label: 'Categories',
+        href: '/admin/finance/expenses/categories',
+        permissions: ['finance.manage'],
+        group: 'insights',
+      },
+    ],
   },
 
   // Group: Workshop
@@ -187,6 +246,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'catalog',
   },
   {
+    key: 'brands',
+    label: 'Brands',
+    href: '/admin/brands',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'catalog',
+  },
+  {
     key: 'garments',
     label: 'Garments & measurements',
     href: '/admin/garments',
@@ -209,7 +276,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Inventory',
     href: '/admin/inventory',
     permissions: ['inventory.manage'],
-    group: 'inventory',
+    group: 'stock',
     module: 'inventory',
     children: [
       {
@@ -217,21 +284,21 @@ export const ADMIN_NAV: AdminNavItem[] = [
         label: 'Reorder',
         href: '/admin/inventory/reorder',
         permissions: ['inventory.manage'],
-        group: 'inventory',
+        group: 'stock',
       },
       {
         key: 'inventory-slow-movers',
         label: 'Slow Movers',
         href: '/admin/inventory/slow-movers',
         permissions: ['inventory.manage'],
-        group: 'inventory',
+        group: 'stock',
       },
       {
         key: 'inventory-counts',
         label: 'Stock Counts',
         href: '/admin/inventory/counts',
         permissions: ['inventory.count'],
-        group: 'inventory',
+        group: 'stock',
       },
     ],
   },
@@ -240,7 +307,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Purchase orders',
     href: '/admin/purchase-orders',
     permissions: ['purchasing.manage'],
-    group: 'inventory',
+    group: 'stock',
     module: 'purchasing',
   },
   {
@@ -248,8 +315,50 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Suppliers',
     href: '/admin/suppliers',
     permissions: ['suppliers.manage'],
-    group: 'inventory',
+    group: 'stock',
     module: 'purchasing',
+  },
+  {
+    key: 'trading-partners',
+    label: 'Trading Partners',
+    href: '/admin/trading-partners',
+    permissions: ['purchasing.manage'],
+    group: 'stock',
+    module: 'tradingpartners',
+  },
+
+  // Group: Manufacturing
+  {
+    key: 'bom-recipes',
+    label: 'Recipes',
+    href: '/admin/bom',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-raw-materials',
+    label: 'Raw Materials',
+    href: '/admin/bom/raw-materials',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-production',
+    label: 'Production',
+    href: '/admin/bom/production',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-raw-usage',
+    label: 'Raw Usage',
+    href: '/admin/bom/raw-usage',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
   },
 
   // Group: Settings
@@ -294,7 +403,10 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Marketing',
     href: '/admin/marketing',
     permissions: ['marketing.manage'],
-    group: 'settings',
+    // Reaching customers is customer work, not setup. It sat under Settings,
+    // which is where things go when a nav is grouped by module rather than
+    // by what somebody came here to do.
+    group: 'customers',
     module: 'marketing',
   },
 ];
@@ -327,8 +439,7 @@ export function navFor(
   permissions = permissions || [];
   const hasPermission = (item: AdminNavItem) =>
     !item.permissions || item.permissions.some((key) => permissions.includes(key));
-  const moduleOn = (item: AdminNavItem) =>
-    !item.module || !enabledModules || enabledModules.includes(item.module);
+  const moduleOn = (item: AdminNavItem) => isModuleEnabled(item.module, enabledModules);
 
   return ADMIN_NAV.filter((item) => hasPermission(item) && moduleOn(item)).map((item) => {
     if (!item.children) return item;

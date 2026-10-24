@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { EmailTemplateCatalogEntry, RenderedEmailPreview } from '@/lib/api-types';
+import type { EmailTemplateCatalogEntry, RenderedEmailPreview } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const CATEGORIES: EmailTemplateCatalogEntry['category'][] = [
   'Orders',
@@ -69,13 +70,13 @@ export default function EmailTemplatesPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Email Templates</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Email Templates</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Every email the store can send, what triggers it, and what it actually looks like.
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
@@ -83,14 +84,14 @@ export default function EmailTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
         <div className="card max-h-[calc(100vh-14rem)] overflow-y-auto p-2">
           {!templates ? (
-            <p className="p-3 text-sm text-ink/50">Loading…</p>
+            <Loading className="p-3" />
           ) : (
             CATEGORIES.map((category) => {
               const items = byCategory.get(category);
               if (!items?.length) return null;
               return (
                 <div key={category} className="mb-2">
-                  <p className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-ink/50">
+                  <p className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                     {category}
                   </p>
                   {items.map((template) => (
@@ -100,8 +101,8 @@ export default function EmailTemplatesPage() {
                       onClick={() => setSelectedKey(template.key)}
                       className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-start text-sm ${
                         template.key === selectedKey
-                          ? 'bg-brand-50 text-brand-800'
-                          : 'text-ink hover:bg-sand-50'
+                          ? 'bg-neutral-50 text-accent-hover'
+                          : 'text-neutral-900 hover:bg-neutral-50'
                       }`}
                     >
                       <span>{template.label}</span>
@@ -120,17 +121,17 @@ export default function EmailTemplatesPage() {
               <div className="card mb-4 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-sm font-semibold text-ink">{selected.label}</h2>
-                    <p className="mt-1 font-mono text-xs text-ink/40">{selected.key}</p>
+                    <h2 className="text-sm font-semibold text-neutral-900">{selected.label}</h2>
+                    <p className="mt-1 font-mono text-xs text-neutral-900/60">{selected.key}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <TriggerBadge trigger={selected.trigger} />
-                    <div className="flex overflow-hidden rounded-md border border-sand-200">
+                    <div className="flex overflow-hidden rounded-md border border-neutral-100">
                       <button
                         type="button"
                         onClick={() => setLocale('en')}
                         className={`px-3 py-1.5 text-xs font-medium ${
-                          locale === 'en' ? 'bg-brand-600 text-white' : 'bg-white text-ink/70'
+                          locale === 'en' ? 'bg-accent-hover text-white' : 'bg-white text-neutral-900/70'
                         }`}
                       >
                         EN
@@ -139,7 +140,7 @@ export default function EmailTemplatesPage() {
                         type="button"
                         onClick={() => setLocale('ur')}
                         className={`px-3 py-1.5 text-xs font-medium ${
-                          locale === 'ur' ? 'bg-brand-600 text-white' : 'bg-white text-ink/70'
+                          locale === 'ur' ? 'bg-accent-hover text-white' : 'bg-white text-neutral-900/70'
                         }`}
                       >
                         UR
@@ -147,20 +148,20 @@ export default function EmailTemplatesPage() {
                     </div>
                   </div>
                 </div>
-                <p className="mt-3 text-sm text-ink/70">{selected.triggerDescription}</p>
+                <p className="mt-3 text-sm text-neutral-900/70">{selected.triggerDescription}</p>
               </div>
 
-              <div className="card overflow-hidden">
+              <div className="overflow-hidden">
                 {previewLoading ? (
-                  <p className="p-8 text-center text-sm text-ink/50">Rendering…</p>
+                  <p className="p-8 text-center text-sm text-neutral-900/60">Rendering…</p>
                 ) : previewError ? (
                   <p role="alert" className="p-8 text-center text-sm text-red-700">
                     {previewError}
                   </p>
                 ) : preview ? (
                   <>
-                    <div className="border-b border-sand-200 bg-sand-50 px-4 py-2 text-sm text-ink/70">
-                      <span className="font-semibold text-ink">Subject: </span>
+                    <div className="border-b border-neutral-100 bg-neutral-50 px-4 py-2 text-sm text-neutral-900/70">
+                      <span className="font-semibold text-neutral-900">Subject: </span>
                       {preview.subject}
                     </div>
                     <iframe
@@ -174,7 +175,7 @@ export default function EmailTemplatesPage() {
               </div>
             </>
           ) : (
-            <p className="p-8 text-center text-sm text-ink/50">Select a template to preview it.</p>
+            <p className="p-8 text-center text-sm text-neutral-900/60">Select a template to preview it.</p>
           )}
         </div>
       </div>
@@ -185,7 +186,7 @@ export default function EmailTemplatesPage() {
 function TriggerBadge({ trigger }: { trigger: EmailTemplateCatalogEntry['trigger'] }) {
   return (
     <span
-      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+      className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
         trigger === 'automatic' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
       }`}
     >

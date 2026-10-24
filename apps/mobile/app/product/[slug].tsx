@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
-import { computeStitchingFee, formatMoney } from '@yaseen/shared';
+import { computeStitchingFee, formatMoney } from '@newax/shared';
 import * as resources from '../../src/api/resources';
 import type {
   MeasurementProfile,

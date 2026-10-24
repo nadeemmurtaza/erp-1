@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { StatusBadge } from '@/components/common/status-badge';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import Link from 'next/link';
+import { formatDateTime } from '@newax/shared';
 
+import { Loading } from '@/components/ui';
 interface StockCount {
   id: string;
   countNumber: string;
@@ -49,8 +51,8 @@ export default function CountsListPage() {
     <>
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-ink">Stock Counts</h1>
-          <p className="text-sm text-ink/60">
+          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Stock Counts</h1>
+          <p className="text-sm text-neutral-900/60">
             Run physical inventory counts and resolve variances against the ledger.
           </p>
         </div>
@@ -64,49 +66,48 @@ export default function CountsListPage() {
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[600px] text-left text-sm">
           <thead>
-            <tr className="border-b border-sand-200">
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">Number</th>
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">Status</th>
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">Started</th>
-              <th className="px-4 py-2 font-semibold text-ink/50 uppercase text-xs">Creator</th>
+            <tr className="border-b border-neutral-100">
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Number</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Status</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Started</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Creator</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-sand-200">
+          <tbody className="divide-y divide-neutral-100">
             {busy && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
-                  Loading counts...
-                </td>
+                <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
               </tr>
             )}
             {!busy && counts?.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
+                <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                   No stock counts found.
                 </td>
               </tr>
             )}
             {counts?.map((c) => (
-              <tr key={c.id} className="hover:bg-sand-50">
+              <tr key={c.id} className="hover:bg-neutral-50">
                 <td className="px-4 py-3 font-medium">
-                  <Link href={`/admin/inventory/counts/${c.id}`} className="text-brand-600 hover:underline">
+                  <Link href={`/admin/inventory/counts/${c.id}`} className="text-accent-hover hover:underline">
                     {c.countNumber}
                   </Link>
                 </td>
                 <td className="px-4 py-3">
-                  <span className={clsx(
-                    'px-2 py-0.5 rounded text-xs font-medium',
-                    c.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                    c.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800'
-                  )}>
-                    {c.status.replace('_', ' ')}
-                  </span>
+                  {/*
+                    The seventh hand-rolled status pill, and the last place in
+                    the app still on Tailwind's stock `gray` rather than the
+                    neutral ramp. Tone belongs to the badge, which decides it
+                    by meaning rather than by each page picking a colour.
+                  */}
+                  <StatusBadge status={c.status} />
                 </td>
-                <td className="px-4 py-3 text-ink/70">
-                  {c.startedAt ? new Date(c.startedAt).toLocaleString() : '-'}
+                <td className="px-4 py-3 text-neutral-900/70">
+                  {c.startedAt ? formatDateTime(c.startedAt) : '-'}
                 </td>
-                <td className="px-4 py-3 text-ink/70">
+                <td className="px-4 py-3 text-neutral-900/70">
                   {c.creator ? `${c.creator.firstName || ''} ${c.creator.lastName || ''}`.trim() : '-'}
                 </td>
               </tr>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { businessProfile } from '@/config/business-profile';
-import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+import { alternateLanguages, canonicalUrl } from '@/config/seo';
 
 export async function generateMetadata({
   params,

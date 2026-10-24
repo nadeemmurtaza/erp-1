@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import clsx from 'clsx';
-import type { StitchingGarment } from '@/lib/cart-types';
-import type { Locale } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import type { StitchingGarment } from '@/types/cart';
+import type { Locale } from '@newax/shared';
 
 interface SizeChartModalProps {
   productName: string;
@@ -63,6 +63,13 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
 
   // Determine the primary unit to show. If all fields have the same unit, show it once.
   // Otherwise, we'll display it per row.
+  // Only the fields somebody has actually filled in. A row that reads "—" for
+  // every size is noise, and it made the chart twice as tall as its content:
+  // the seeded kameez carries twelve fields and figures for seven.
+  const chartedFields = activeGarment.fields.filter((field) =>
+    activeGarment.sizeChart.some((row) => typeof row.values[field.key] === 'number'),
+  );
+
   const units = new Set(activeGarment.fields.map(f => f.unit));
   const sameUnit = units.size === 1 ? Array.from(units)[0] : null;
 
@@ -72,7 +79,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 text-sm text-noir-500 hover:text-noir-900 transition-colors mt-2"
+        className="inline-flex shrink-0 items-center gap-1.5 text-sm text-neutral-500 underline underline-offset-2 transition-colors hover:text-neutral-900"
         aria-haspopup="dialog"
         aria-expanded={open}
       >
@@ -108,21 +115,20 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
           <div
             ref={modalRef}
             tabIndex={-1}
-            className="relative w-full max-w-2xl sf-card shadow-xl outline-none overflow-hidden"
-            style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
+            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden shadow-xl outline-none"
           >
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-noir-200 p-4 sm:p-6">
+            <div className="flex items-start justify-between border-b border-neutral-100 p-4 sm:p-6">
               <div>
-                <h2 id="size-chart-title" className="font-display text-lg font-medium text-noir-900">
+                <h2 id="size-chart-title" className="font-display text-lg font-medium text-neutral-900">
                   {productName}
                 </h2>
-                <p className="text-sm text-noir-500">{t('sizeCharts')}</p>
+                <p className="text-sm text-neutral-500">{t('sizeCharts')}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="text-noir-400 hover:text-noir-900 transition-colors"
+                className="text-neutral-400 hover:text-neutral-900 transition-colors"
                 aria-label={t('close')}
               >
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -142,11 +148,11 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGarmentIndex(idx)}
-                        className={clsx(
-                          'sf-chip',
+                        className={cn(
+                          'chip',
                           activeGarmentIndex === idx
-                            ? 'sf-chip-selected'
-                            : 'sf-chip-unselected'
+                            ? 'chip-selected'
+                            : 'chip-unselected'
                         )}
                       >
                         {label}
@@ -157,36 +163,43 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               )}
 
               {sameUnit && (
-                <p className="mb-2 text-sm text-noir-500">
+                <p className="mb-2 text-xs text-neutral-500">
                   {t('measurementsIn', { unit: t(sameUnit.toLowerCase()) })}
                 </p>
               )}
 
               <div className="overflow-x-auto">
-                <table className="w-full min-w-full text-left text-sm whitespace-nowrap">
+                <table className="w-full min-w-full whitespace-nowrap text-left text-xs">
                   <thead>
-                    <tr className="border-b border-noir-200">
-                      <th scope="col" className="py-3 px-4 font-semibold text-noir-900">
+                    <tr className="border-b border-neutral-100">
+                      <th
+                        scope="col"
+                        // Sticky to match the row labels below it. Without this the
+                        // corner cell scrolls away while they stay put, and every
+                        // size header ends up over the wrong column — the chart then
+                        // reads as if XS and S have no measurements at all.
+                        className="sticky start-0 bg-white px-2.5 py-1.5 font-semibold text-neutral-900"
+                      >
                         {/* Empty top-left cell */}
                       </th>
                       {activeGarment.sizeChart.map((col) => (
-                        <th key={col.sizeToken} scope="col" className="py-3 px-4 font-semibold text-noir-900 text-center">
+                        <th key={col.sizeToken} scope="col" className="px-2.5 py-1.5 text-center font-semibold text-neutral-900">
                           {t(`size${col.sizeToken}`)}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-noir-100">
-                    {activeGarment.fields.map((field) => (
-                      <tr key={field.key} className="hover:bg-noir-50 transition-colors">
-                        <th scope="row" className="py-3 px-4 font-medium text-noir-900 bg-white sticky start-0 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
+                  <tbody className="divide-y divide-neutral-100">
+                    {chartedFields.map((field) => (
+                      <tr key={field.key} className="hover:bg-neutral-50 transition-colors">
+                        <th scope="row" className="sticky start-0 bg-white px-2.5 py-1.5 font-medium text-neutral-900 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
                           {locale === 'ur' ? field.labelUr : field.labelEn}
-                          {!sameUnit && <span className="ms-1 text-noir-400 font-normal">({t(field.unit.toLowerCase())})</span>}
+                          {!sameUnit && <span className="ms-1 text-neutral-400 font-normal">({t(field.unit.toLowerCase())})</span>}
                         </th>
                         {activeGarment.sizeChart.map((col) => {
                           const val = col.values[field.key];
                           return (
-                            <td key={col.sizeToken} className="py-3 px-4 text-noir-700 text-center tabular-nums">
+                            <td key={col.sizeToken} className="px-2.5 py-1.5 text-center tabular-nums text-neutral-700">
                               {typeof val === 'number' ? val : '—'}
                             </td>
                           );

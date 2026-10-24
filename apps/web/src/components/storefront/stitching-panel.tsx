@@ -2,22 +2,22 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import {
   computeFabricEstimate,
   computeStitchingFee,
   formatMoney,
   validateMeasurements,
   type Locale,
-} from '@yaseen/shared';
-import { API_URL } from '@/lib/api';
-import type { StorefrontProduct } from '@/lib/api-types';
+} from '@newax/shared';
+import { request as apiRequest } from '@/lib/api-client';
+import type { StorefrontProduct } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import type {
   MeasurementProfileSummary,
   StitchingGarment,
   StitchingOptionGroup,
-} from '@/lib/cart-types';
+} from '@/types/cart';
 
 export interface StitchingSelection {
   /** The garment being made. Always sent: it is what makes the line a stitched one. */
@@ -138,20 +138,21 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
     const token = getCustomerToken();
 
-    void fetch(`${API_URL}/stitching/garments`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: StitchingGarment[]) => {
+    void apiRequest<StitchingGarment[]>('/stitching/garments')
+      .then((loaded) => {
         if (!cancelled) setGarments(loaded);
       })
+      // The panel still works with an empty list — it just cannot offer
+      // stitching — so a failure here stays quiet rather than blocking a
+      // product page.
       .catch(() => undefined);
 
     if (token) {
-      void fetch(`${API_URL}/measurements/profiles`, {
+      void apiRequest<MeasurementProfileSummary[]>('/measurements/profiles', {
         headers: { Authorization: `Bearer ${token}` },
         credentials: 'include',
       })
-        .then((response) => (response.ok ? response.json() : []))
-        .then((loaded: MeasurementProfileSummary[]) => {
+        .then((loaded) => {
           if (!cancelled) setProfiles(loaded);
         })
         .catch(() => undefined);
@@ -469,25 +470,25 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
   }
 
   return (
-    <section className="rounded-lg border border-noir-200 bg-noir-50 p-4">
+    <section className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
       <label className="flex cursor-pointer items-start gap-3">
         <input
           type="checkbox"
           checked={enabled}
           onChange={(event) => setEnabled(event.target.checked)}
-          className="mt-0.5 rounded border-noir-300 text-noir-900 focus:ring-noir-900"
+          className="mt-0.5 field-check"
         />
         <span>
-          <span className="block text-sm font-semibold text-noir-900">{t('getStitched')}</span>
-          <span className="block text-sm text-noir-500">{t('explainer')}</span>
+          <span className="block text-sm font-semibold text-neutral-900">{t('getStitched')}</span>
+          <span className="block text-sm text-neutral-500">{t('explainer')}</span>
         </span>
       </label>
 
-      <div className={clsx(
+      <div className={cn(
         'overflow-hidden transition-all duration-300',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
-        <div className="mt-4 space-y-4 border-t border-noir-200 pt-4">
+        <div className="mt-4 space-y-4 border-t border-neutral-100 pt-4">
           {offered.length > 1 ? (
             <Group label={t('garment')}>
               <div className="flex flex-wrap gap-2">
@@ -531,7 +532,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
           {areaSections.length > 0 ? (
             <div className="space-y-4">
-              <p className="text-sm font-semibold text-noir-900">{t('designAreas')}</p>
+              <p className="text-sm font-semibold text-neutral-900">{t('designAreas')}</p>
 
               {areaSections.map((section) => (
                 <Group key={section.area} label={t(section.labelKey)}>
@@ -589,7 +590,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
               {garment.sizeChart.length > 0 ? (
                 <div className="mt-2">
                   <p className="field-label">{t('useStandardSize')}</p>
-                  <p className="mt-0.5 text-xs text-noir-500">{t('standardSizeHint')}</p>
+                  <p className="mt-0.5 text-xs text-neutral-500">{t('standardSizeHint')}</p>
                   <div
                     role="group"
                     aria-label={t('useStandardSize')}
@@ -614,7 +615,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
                   return (
                     <label key={field.id} className="block text-sm">
-                      <span className="text-noir-500">
+                      <span className="text-neutral-500">
                         {locale === 'ur' ? field.labelUr : field.labelEn}
                         {field.required ? <span className="text-red-600"> *</span> : null}
                       </span>
@@ -639,9 +640,9 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                         className="field-input"
                       />
                       <span
-                        className={clsx(
+                        className={cn(
                           'block text-xs',
-                          error ? 'text-red-700' : 'text-noir-400',
+                          error ? 'text-red-700' : 'text-neutral-400',
                         )}
                       >
                         {error ??
@@ -658,12 +659,12 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
               {signedIn && (
                 <div className="mt-3 space-y-2">
-                  <label className="flex cursor-pointer items-center gap-2 text-sm text-noir-500">
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-500">
                     <input
                       type="checkbox"
                       checked={saveProfile}
                       onChange={(event) => setSaveProfile(event.target.checked)}
-                      className="rounded border-noir-300 text-noir-900 focus:ring-noir-900"
+                      className="field-check"
                     />
                     {t('saveAsProfile')}
                   </label>
@@ -684,16 +685,16 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           ) : null}
 
           {fabricEstimate ? (
-            <div className="rounded-md border border-noir-200 bg-white/60 p-3">
-              <p className="text-sm font-semibold text-noir-900">{t('fabricEstimate')}</p>
-              <p className="mt-0.5 text-xs text-noir-500">{t('fabricEstimateBody')}</p>
+            <div className="rounded-md bg-white/70 p-3">
+              <p className="text-sm font-semibold text-neutral-900">{t('fabricEstimate')}</p>
+              <p className="mt-0.5 text-xs text-neutral-500">{t('fabricEstimateBody')}</p>
 
-              <p className="mt-1.5 text-sm font-medium text-noir-900">
+              <p className="mt-1.5 text-sm font-medium text-neutral-900">
                 {t('fabricEstimateValue', { metres: fabricEstimate.estimatedMetres })}
               </p>
 
               {product.fabricMeters !== null ? (
-                <p className="mt-0.5 text-xs text-noir-500">
+                <p className="mt-0.5 text-xs text-neutral-500">
                   {t('fabricIncluded', { metres: product.fabricMeters })}
                 </p>
               ) : null}
@@ -704,21 +705,21 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                 </p>
               ) : null}
 
-              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-noir-600">
+              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-neutral-600">
                 <input
                   type="checkbox"
                   checked={wideWidth}
                   onChange={(event) => setWideWidth(event.target.checked)}
-                  className="rounded border-noir-300 text-noir-900 focus:ring-noir-900"
+                  className="field-check"
                 />
                 {t('fabricWideWidth')}
               </label>
 
               {showPlusSizeNote ? (
-                <p className="mt-1 text-xs text-noir-400">{t('fabricPlusSizeNote')}</p>
+                <p className="mt-1 text-xs text-neutral-400">{t('fabricPlusSizeNote')}</p>
               ) : null}
               {showShrinkNote ? (
-                <p className="mt-1 text-xs text-noir-400">{t('fabricShrinkNote')}</p>
+                <p className="mt-1 text-xs text-neutral-400">{t('fabricShrinkNote')}</p>
               ) : null}
             </div>
           ) : null}
@@ -735,16 +736,16 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           </Group>
 
           {garment ? (
-            <div className="space-y-1 border-t border-noir-200 pt-3 text-sm">
+            <div className="space-y-1 border-t border-neutral-100 pt-3 text-sm">
               <p className="flex items-baseline justify-between gap-3">
-                <span className="text-noir-500">{t('baseStitchingFee')}</span>
-                <span className="text-noir-900">{formatMoney(baseFee, locale)}</span>
+                <span className="text-neutral-500">{t('baseStitchingFee')}</span>
+                <span className="text-neutral-900">{formatMoney(baseFee, locale)}</span>
               </p>
 
               {optionsTotal !== 0 ? (
                 <p className="flex items-baseline justify-between gap-3">
-                  <span className="text-noir-500">{t('optionsTotal')}</span>
-                  <span className="text-noir-900">
+                  <span className="text-neutral-500">{t('optionsTotal')}</span>
+                  <span className="text-neutral-900">
                     {optionsTotal > 0 ? '+' : '−'}
                     {formatMoney(Math.abs(optionsTotal), locale)}
                   </span>
@@ -752,8 +753,8 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
               ) : null}
 
               <p className="flex items-baseline justify-between gap-3 pt-1">
-                <span className="font-medium text-noir-900">{t('garmentSubtotal')}</span>
-                <span className="text-base font-semibold text-noir-900">
+                <span className="font-medium text-neutral-900">{t('garmentSubtotal')}</span>
+                <span className="text-base font-semibold text-neutral-900">
                   {formatMoney(fee, locale)}
                 </span>
               </p>
@@ -780,15 +781,19 @@ export async function prepareStitching(
   const token = getCustomerToken();
 
   if (saveProfileAs && token && selection.measurementValues) {
-    await fetch(`${API_URL}/measurements/profiles`, {
+    // Saving the profile is a convenience on top of adding to cart; if it
+    // fails the customer still gets their item, so this swallows rather than
+    // surfacing.
+    await apiRequest('/measurements/profiles', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
       credentials: 'include',
-      body: JSON.stringify({
+      expect: 'none',
+      body: {
         label: saveProfileAs,
         garmentTypeId: selection.garmentTypeId,
         values: selection.measurementValues,
-      }),
+      },
     }).catch(() => undefined);
   }
 
@@ -836,12 +841,12 @@ function OptionGroupRow({
 
   return (
     <div>
-      <p className="text-sm font-medium text-noir-900">
+      <p className="text-sm font-medium text-neutral-900">
         {label}
         {group.required ? <span className="text-red-600"> *</span> : null}
       </p>
 
-      {help ? <p className="mt-0.5 text-xs text-noir-400">{help}</p> : null}
+      {help ? <p className="mt-0.5 text-xs text-neutral-400">{help}</p> : null}
 
       <div role="group" aria-label={label} className="mt-1.5 flex flex-wrap gap-2">
         {group.options.map((option) => (
@@ -863,7 +868,7 @@ function OptionGroupRow({
 
       {group.allowCustomText ? (
         <label className="mt-2 block">
-          <span className="text-xs text-noir-500">{customDesignLabel}</span>
+          <span className="text-xs text-neutral-500">{customDesignLabel}</span>
           <textarea
             value={customText}
             onChange={(event) => onCustomText(event.target.value)}
@@ -896,9 +901,9 @@ function ServiceChoice({
 }) {
   return (
     <label
-      className={clsx(
+      className={cn(
         'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
-        selected ? 'border-noir-900 bg-white' : 'border-noir-200 bg-white/60 hover:border-noir-400',
+        selected ? 'border-neutral-900 bg-white' : 'border-neutral-100 bg-white/60 hover:border-neutral-400',
       )}
     >
       <input
@@ -906,15 +911,15 @@ function ServiceChoice({
         name="stitching-service"
         checked={selected}
         onChange={onSelect}
-        className="mt-1 border-noir-300 text-noir-900 focus:ring-noir-900"
+        className="mt-1 field-check"
       />
       <span className="flex-1">
         <span className="flex justify-between gap-3">
-          <span className="text-sm font-medium text-noir-900">{name}</span>
-          <span className="text-sm font-medium text-noir-900">{formatMoney(price, locale)}</span>
+          <span className="text-sm font-medium text-neutral-900">{name}</span>
+          <span className="text-sm font-medium text-neutral-900">{formatMoney(price, locale)}</span>
         </span>
         {description ? (
-          <span className="mt-0.5 block text-xs text-noir-500">{description}</span>
+          <span className="mt-0.5 block text-xs text-neutral-500">{description}</span>
         ) : null}
       </span>
     </label>
@@ -932,7 +937,7 @@ function Group({
 }) {
   return (
     <fieldset>
-      <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-noir-400">
+      <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400">
         {label}
         {required ? <span className="text-red-600"> *</span> : null}
       </legend>
@@ -955,7 +960,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={clsx('sf-chip', selected ? 'sf-chip-selected' : 'sf-chip-unselected')}
+      className={cn('chip', selected ? 'chip-selected' : 'chip-unselected')}
     >
       {children}
     </button>

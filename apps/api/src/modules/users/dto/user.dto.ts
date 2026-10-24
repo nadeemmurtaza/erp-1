@@ -1,5 +1,6 @@
+import { BRAND } from '@newax/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PERMISSION_EFFECTS, PERMISSION_KEYS, type PermissionEffect, type PermissionKey } from '@yaseen/shared';
+import { PERMISSION_EFFECTS, PERMISSION_KEYS, type PermissionEffect, type PermissionKey } from '@newax/shared';
 import {
   IsArray,
   IsBoolean,
@@ -18,7 +19,7 @@ export const BACK_OFFICE_ROLES = ['STAFF', 'TAILOR', 'ADMIN'] as const;
 export type BackOfficeRole = (typeof BACK_OFFICE_ROLES)[number];
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'sana@yaseen.pk' })
+  @ApiProperty({ example: `sana@${BRAND.identity.domain}` })
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email!: string;
 
@@ -49,6 +50,13 @@ export class CreateUserDto {
   @ApiProperty({ enum: BACK_OFFICE_ROLES })
   @IsIn(BACK_OFFICE_ROLES)
   role!: BackOfficeRole;
+
+  /** Custom Role ids to assign on creation — separate from `role` above, which is the coarse account kind, not a permission set. A user may hold several. */
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roleIds?: string[];
 }
 
 export class UpdateUserDto {
@@ -64,7 +72,7 @@ export class UpdateUserDto {
   @MaxLength(80)
   lastName?: string;
 
-  @ApiPropertyOptional({ example: 'sana@yaseen.pk' })
+  @ApiPropertyOptional({ example: `sana@${BRAND.identity.domain}` })
   @IsOptional()
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email?: string;

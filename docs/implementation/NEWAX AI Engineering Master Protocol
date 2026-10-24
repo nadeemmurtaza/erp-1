@@ -1,0 +1,1189 @@
+# NEWAX AI ENGINEERING MASTER PROTOCOL
+
+## Status
+
+Mandatory.
+
+## Applies To
+
+Every NEWAX project, including:
+
+- New projects
+- Existing projects
+- Websites
+- Enterprise applications
+- APIs
+- Databases
+- Automation systems
+- IoT systems
+- AI applications
+- Internal tools
+- Client systems
+- Infrastructure repositories
+
+This protocol applies to all AI-assisted planning, coding, configuration, testing, deployment, optimization, refactoring, and documentation.
+
+---
+
+# 1. PRIMARY RULE
+
+DO NOT START CODING BEFORE THE PROJECT IS PROPERLY UNDERSTOOD.
+
+Every project must begin with planning, documentation, architecture understanding, and requirement definition.
+
+Do not discover the entire architecture through implementation errors.
+
+Before writing code, inspect what already exists.
+
+---
+
+# 2. PROJECT INITIATION REQUIREMENT
+
+Every new project must begin with a documented Project Foundation.
+
+Minimum required documents:
+
+docs/
+├── PROJECT.md
+├── REQUIREMENTS.md
+├── ARCHITECTURE.md
+├── DATA-ARCHITECTURE.md
+├── API-SPECIFICATION.md
+├── SECURITY.md
+├── PERFORMANCE.md
+├── TESTING.md
+├── DEPLOYMENT.md
+├── OPERATIONS.md
+├── DECISIONS.md
+└── CHANGELOG.md
+
+The exact documents may be simplified for very small projects, but the decision to simplify must be justified.
+
+Do not create documentation merely for appearance.
+
+Each document must serve a practical purpose.
+
+---
+
+# 3. REQUIRED PROJECT PLANNING PHASE
+
+Before implementation:
+
+## Step 1: Understand
+
+Inspect:
+
+- Repository structure
+- Existing source code
+- Framework versions
+- Dependencies
+- Database schema
+- Environment variables
+- Deployment configuration
+- Existing documentation
+- Current bugs
+- Known limitations
+- Existing architecture patterns
+
+Never assume the repository is empty or correctly structured.
+
+---
+
+## Step 2: Define
+
+Document:
+
+- Project purpose
+- Business problem
+- Users
+- User roles
+- Core workflows
+- Functional requirements
+- Non-functional requirements
+- Constraints
+- Assumptions
+- Risks
+- Success criteria
+- Out-of-scope features
+
+Every major feature must have a reason for existing.
+
+---
+
+## Step 3: Design
+
+Before coding, define:
+
+- System architecture
+- Module boundaries
+- Data ownership
+- API contracts
+- Authentication model
+- Authorization model
+- Error-handling model
+- Deployment model
+- Testing strategy
+- Performance strategy
+- Security strategy
+
+Do not implement architecture accidentally.
+
+---
+
+## Step 4: Create Acceptance Criteria
+
+Every feature must have measurable acceptance criteria.
+
+Example:
+
+Feature: Student Registration
+
+Acceptance criteria:
+
+- Valid student can register.
+- Invalid email is rejected.
+- Duplicate email is rejected.
+- Unauthorized users cannot create students.
+- Student belongs to correct organization.
+- Database transaction rolls back on failure.
+- API returns documented response.
+- Tests pass.
+- No console errors occur.
+
+A feature is not complete because its code exists.
+
+---
+
+# 4. DOCUMENTATION-FIRST RULE
+
+Documentation must be created or updated before implementation when:
+
+- A new module is introduced.
+- Database structure changes.
+- API behavior changes.
+- Authentication changes.
+- Permissions change.
+- Infrastructure changes.
+- Dependencies are added.
+- Deployment architecture changes.
+- Major performance behavior changes.
+
+Documentation must remain synchronized with implementation.
+
+Outdated documentation is a defect.
+
+---
+
+# 5. EXISTING PROJECT AUDIT
+
+For existing projects, do not immediately refactor.
+
+First perform a Live-State Audit.
+
+Inspect:
+
+- Current architecture
+- Existing modules
+- Duplicate logic
+- Unused dependencies
+- Database indexes
+- Slow queries
+- API behavior
+- Rendering performance
+- Network requests
+- Error logs
+- Build configuration
+- Security configuration
+- Deployment state
+
+Create:
+
+docs/AUDIT.md
+
+Record:
+
+- What exists
+- What works
+- What is broken
+- What is missing
+- What should remain unchanged
+- What should be improved
+- What should be removed
+
+Never rewrite functioning infrastructure without evidence.
+
+---
+
+# 6. PERFORMANCE ENGINEERING STANDARD
+
+Every project must be reviewed for applicable performance engineering practices.
+
+These practices must be implemented when technically justified.
+
+Do not blindly implement optimization techniques.
+
+---
+
+## 6.1 API Response Caching
+
+Inspect whether repeated API responses can safely be cached.
+
+Consider:
+
+- Cache-Control headers
+- Server-side caching
+- Application caching
+- Redis caching
+- CDN caching
+
+Do not cache:
+
+- User-specific sensitive data without proper isolation.
+- Frequently changing data without an invalidation strategy.
+- Authorization-sensitive responses incorrectly.
+
+Every cache must define:
+
+- What is cached?
+- For how long?
+- When is it invalidated?
+- What happens when stale?
+
+---
+
+## 6.2 Database Indexing
+
+Inspect database queries and access patterns.
+
+Identify:
+
+- Frequently filtered columns
+- Frequently sorted columns
+- Foreign keys
+- Unique constraints
+- Composite query patterns
+- Slow queries
+
+Add indexes only when justified by query patterns.
+
+Avoid unnecessary indexes that increase write cost and storage.
+
+Verify indexes using actual query plans where possible.
+
+---
+
+## 6.3 Image Optimization
+
+All images must be reviewed for:
+
+- Appropriate dimensions
+- Modern formats where supported
+- Compression
+- Responsive sizing
+- Lazy loading where appropriate
+- Avoiding oversized originals
+- Preventing layout shifts
+
+Do not load a 4000px image when a 600px image is sufficient.
+
+---
+
+## 6.4 Loading Skeletons
+
+Use loading skeletons only when they improve perceived usability.
+
+Skeletons must:
+
+- Represent actual content structure.
+- Not create unnecessary complexity.
+- Not replace meaningful error states.
+- Not delay content unnecessarily.
+
+---
+
+## 6.5 Expensive Query Caching
+
+Identify expensive operations that are repeated unnecessarily.
+
+Possible solutions:
+
+- Query caching
+- Materialized views
+- Precomputed aggregates
+- Background processing
+- Redis
+
+Do not cache expensive queries without understanding data freshness requirements.
+
+---
+
+## 6.6 N+1 Query Prevention
+
+Every database access pattern must be reviewed for N+1 queries.
+
+Example problem:
+
+```text
+Fetch 100 students
+Then query courses for each student
+Then query attendance for each student
+
+Prefer:
+
+Joins
+
+Batch queries
+
+Eager loading where appropriate
+
+Aggregated queries
+
+
+Verify query count where possible.
+
+N+1 queries are considered a scalability defect.
+
+
+---
+
+6.7 Input Debouncing
+
+Use debouncing where user input triggers expensive operations.
+
+Examples:
+
+Search requests
+
+Autosave
+
+Validation requests
+
+API filtering
+
+Suggestions
+
+
+Do not debounce actions where immediate response is required.
+
+
+---
+
+6.8 Code Splitting
+
+Review whether large frontend bundles can be divided into smaller chunks.
+
+Consider:
+
+Route-level code splitting
+
+Lazy loading
+
+Dynamic imports
+
+Component-level loading
+
+
+Do not split code excessively into meaningless fragments.
+
+
+---
+
+6.9 CDN Usage
+
+Evaluate whether static assets or public content benefit from CDN delivery.
+
+Consider:
+
+Geography
+
+Traffic volume
+
+Asset size
+
+Cacheability
+
+Security requirements
+
+
+Do not add CDN infrastructure automatically to small internal systems.
+
+
+---
+
+6.10 Server-Side Caching
+
+Evaluate server-side caching for:
+
+Public content
+
+Expensive computations
+
+Repeated database reads
+
+Frequently accessed configuration
+
+
+Ensure cache invalidation is documented.
+
+
+---
+
+6.11 Pagination
+
+All potentially large lists must be reviewed.
+
+Avoid unbounded queries.
+
+Pagination may use:
+
+Offset pagination
+
+Cursor pagination
+
+Keyset pagination
+
+
+Choose based on actual requirements.
+
+Never load thousands of records unnecessarily.
+
+
+---
+
+6.12 Lighthouse / Performance Auditing
+
+Web projects must include performance auditing where applicable.
+
+Review:
+
+Largest Contentful Paint
+
+Interaction to Next Paint
+
+Cumulative Layout Shift
+
+JavaScript bundle size
+
+Image transfer size
+
+Accessibility
+
+SEO
+
+
+Performance must be measured, not guessed.
+
+
+---
+
+6.13 API Payload Compression
+
+Review large API responses.
+
+Consider:
+
+Response compression
+
+Selective fields
+
+Pagination
+
+DTO optimization
+
+Removing unnecessary nested data
+
+
+Do not optimize payloads by destroying API clarity.
+
+
+---
+
+6.14 Avoid Unnecessary Re-renders
+
+Frontend projects must be reviewed for unnecessary rendering.
+
+Inspect:
+
+Component state placement
+
+Reactive dependencies
+
+Expensive computed values
+
+Unstable object references
+
+Unnecessary watchers
+
+Excessive global state
+
+
+Do not optimize blindly.
+
+Measure or identify the actual cause.
+
+
+---
+
+6.15 JavaScript and CSS Optimization
+
+Production builds must minimize unnecessary assets.
+
+Review:
+
+Dead code
+
+Unused CSS
+
+Duplicate dependencies
+
+Large libraries
+
+Unnecessary polyfills
+
+Bundle size
+
+
+Do not manually minify source code.
+
+Use the framework's production build system.
+
+
+---
+
+6.16 Lazy Loading
+
+Lazy load non-critical content where appropriate.
+
+Examples:
+
+Images below the fold
+
+Heavy components
+
+Secondary routes
+
+Optional dashboards
+
+
+Critical content must remain immediately available.
+
+
+---
+
+6.17 Defer Non-Critical Scripts
+
+Third-party and non-essential scripts must not block critical rendering.
+
+Examples:
+
+Analytics
+
+Chat widgets
+
+Tracking scripts
+
+Optional integrations
+
+
+Every third-party script must have a documented purpose.
+
+
+---
+
+6.18 Unused Dependencies
+
+Every dependency must be justified.
+
+Before adding a dependency:
+
+1. Check whether native language functionality exists.
+
+
+2. Check whether the framework already provides the capability.
+
+
+3. Check whether NEWAX already has an implementation.
+
+
+4. Check maintenance and security implications.
+
+
+5. Check bundle impact.
+
+
+6. Check compatibility.
+
+
+
+Remove unused dependencies.
+
+
+---
+
+6.19 Database Connection Pooling
+
+Review database connection management.
+
+Ensure:
+
+Connections are reused appropriately.
+
+Connections are closed safely.
+
+Pool size is appropriate.
+
+Serverless limitations are considered.
+
+Database exhaustion is prevented.
+
+
+Do not create new database connections unnecessarily.
+
+
+---
+
+7. ARCHITECTURAL SIMPLICITY RULE
+
+Before introducing:
+
+A new package
+
+A new abstraction
+
+A new service
+
+A new microservice
+
+A new database
+
+A new queue
+
+A new framework
+
+A new design pattern
+
+
+Ask:
+
+1. What requirement does this solve?
+
+
+2. Why can't existing capabilities solve it?
+
+
+3. What complexity does it introduce?
+
+
+4. What maintenance burden does it create?
+
+
+5. Is the benefit measurable?
+
+
+
+Prefer:
+
+Native language capability
+↓
+Existing project capability
+↓
+Framework capability
+↓
+Small internal implementation
+↓
+New dependency
+
+Architecture must earn its complexity.
+
+
+---
+
+8. SECURITY STANDARD
+
+Every project must review:
+
+Authentication
+
+Authorization
+
+Tenant isolation
+
+Input validation
+
+SQL injection prevention
+
+XSS prevention
+
+CSRF protection where applicable
+
+File upload security
+
+Secrets management
+
+Rate limiting
+
+Error exposure
+
+Logging privacy
+
+Dependency vulnerabilities
+
+
+Never trust client-side authorization.
+
+All sensitive authorization must occur server-side.
+
+
+---
+
+9. DATABASE STANDARD
+
+Before changing a database:
+
+Inspect current schema.
+
+Understand relationships.
+
+Identify ownership.
+
+Check migrations.
+
+Review indexes.
+
+Review constraints.
+
+Consider rollback.
+
+Update documentation.
+
+Update tests.
+
+
+Every database change must be deliberate.
+
+
+---
+
+10. TESTING STANDARD
+
+Every meaningful feature must be tested.
+
+Minimum testing categories where applicable:
+
+Unit tests
+
+Integration tests
+
+API tests
+
+End-to-end tests
+
+Permission tests
+
+Validation tests
+
+Error-path tests
+
+Regression tests
+
+
+Test:
+
+Normal case
+
+Invalid case
+
+Boundary case
+
+Unauthorized case
+
+Wrong tenant
+
+Duplicate request
+
+Concurrent request
+
+External failure
+
+Partial failure
+
+
+
+---
+
+11. VERIFICATION STANDARD
+
+Before declaring a task complete, run the actual verification sequence.
+
+Minimum applicable checks:
+
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+
+For projects using different tooling, use the equivalent commands.
+
+The verification must occur AFTER the latest code change.
+
+A test run from an older commit is not evidence for the new change.
+
+
+---
+
+12. EXACT COMPLETION RULE
+
+Use these status terms precisely.
+
+Proposed
+
+Designed but not implemented.
+
+Changed
+
+Source files were edited.
+
+No claim that the change works.
+
+Integrated
+
+All related files and systems have been updated consistently.
+
+Verified Locally
+
+Required local verification passed after the latest change.
+
+CI Green
+
+Complete CI pipeline passed against the exact latest commit.
+
+Complete
+
+Only when:
+
+Requirements are satisfied.
+
+Acceptance criteria pass.
+
+Relevant tests pass.
+
+Build succeeds.
+
+Security checks pass where applicable.
+
+Performance checks pass where applicable.
+
+Documentation is updated.
+
+No known unresolved release blocker remains.
+
+
+
+---
+
+13. NO FALSE COMPLETION CLAIMS
+
+Never say:
+
+"This should work."
+
+"Looks correct."
+
+"Implementation complete."
+
+
+unless the required evidence exists.
+
+If something is unverified, say:
+
+Status: Changed but not verified.
+
+If something is blocked:
+
+Status: Blocked.
+Reason:
+Required information/access/tool is unavailable.
+
+Never hide unresolved problems.
+
+
+---
+
+14. CODE NECESSITY AUDIT
+
+Before every pull request, complete:
+
+Requirement traced: Yes
+Existing implementation checked: Yes
+Standard-library alternative checked: Yes
+Framework-native alternative checked: Yes
+Duplicate logic checked: Yes
+Unused code checked: Yes
+Unused dependency checked: Yes
+Unnecessary abstraction checked: Yes
+Unreachable code checked: Yes
+Speculative functionality checked: Yes
+Simpler implementation considered: Yes
+Security implications reviewed: Yes
+Performance implications reviewed: Yes
+Documentation updated: Yes
+Tests updated: Yes
+
+
+---
+
+15. PROJECT DELIVERY WORKFLOW
+
+Every project must follow:
+
+Project Idea
+    ↓
+Project Foundation
+    ↓
+Requirements Definition
+    ↓
+Repository Audit
+    ↓
+Architecture Design
+    ↓
+Data Architecture
+    ↓
+API Contracts
+    ↓
+Security Design
+    ↓
+Performance Design
+    ↓
+Testing Strategy
+    ↓
+Implementation
+    ↓
+Preview / Development Environment
+    ↓
+Automated Verification
+    ↓
+Manual Review
+    ↓
+Integration
+    ↓
+Staging
+    ↓
+Regression Testing
+    ↓
+Production Verification
+    ↓
+Release
+    ↓
+Continuous Improvement
+
+
+---
+
+16. NEWAX PRINCIPLE
+
+The system should do the work.
+
+The client should not have to manage technical complexity.
+
+Every implementation decision must aim to:
+
+Simplify operations.
+
+Reduce unnecessary complexity.
+
+Improve reliability.
+
+Increase visibility.
+
+Strengthen ownership.
+
+Preserve long-term maintainability.
+
+
+Technology is a means.
+
+Operational capability is the objective.
+
+
+---
+
+17. FINAL RULE
+
+Do not optimize for writing code quickly.
+
+Optimize for building correct, maintainable, secure, performant, documented, and verifiable systems.
+
+A smaller correct system is better than a larger impressive-looking system.
+
+Every project should become easier to maintain than it was before.
+
+---
+
+# My stronger recommendation: Do not stop at CLAUDE.md
+
+[Likely] For NEWAX's long-term engineering maturity, I would implement a three-layer system.
+
+## Layer 1: Global NEWAX Master Protocol
+
+Stored privately by NEWAX.
+
+```text
+NEWAX-Master-Library/
+│
+├── Engineering/
+│   ├── AI Engineering Master Protocol.md
+│   ├── Verification Standard.md
+│   ├── Performance Standard.md
+│   ├── Security Standard.md
+│   └── Documentation Standard.md
+
+This is the permanent source of truth.
+
+Your existing accuracy protocol should become the foundation of this layer. 
+
+Layer 2: Project-Specific CLAUDE.md
+
+Every repository gets a customized version.
+
+project/
+├── CLAUDE.md
+├── docs/
+├── apps/
+├── packages/
+└── tests/
+
+This contains:
+
+Project architecture
+
+Framework rules
+
+Commands
+
+Deployment rules
+
+Project-specific security requirements
+
+Performance targets
+
+
+Layer 3: Automated Enforcement
+
+This is where most AI instructions fail.
+
+Do not rely only on Claude remembering instructions.
+
+The repository should enforce quality automatically through:
+
+Git Hooks
+    ↓
+CI Pipeline
+    ↓
+Tests
+    ↓
+Lint
+    ↓
+Typecheck
+    ↓
+Build
+    ↓
+Security Scan
+    ↓
+Performance Checks
+
+Claude can ignore a paragraph.
+
+It cannot merge a PR if CI blocks it.
+
+That distinction matters considerably.
+
+
+---
+
+The planning requirement I would make mandatory
+
+For every NEWAX project, Claude must create this before coding:
+
+docs/
+├── 00-PROJECT-CHARTER.md
+├── 01-REQUIREMENTS.md
+├── 02-USER-FLOWS.md
+├── 03-ARCHITECTURE.md
+├── 04-DATA-MODEL.md
+├── 05-API-CONTRACTS.md
+├── 06-SECURITY-MODEL.md
+├── 07-PERFORMANCE-PLAN.md
+├── 08-TEST-PLAN.md
+├── 09-DEPLOYMENT-PLAN.md
+├── 10-ACCEPTANCE-CRITERIA.md
+├── 11-DECISIONS.md
+└── 12-CHANGELOG.md
+
+Then Claude should produce a planning summary:
+
+PROJECT STATUS: PLANNING
+
+Requirements: Defined / Pending
+Architecture: Defined / Pending
+Database: Defined / Pending
+API Contracts: Defined / Pending
+Security: Defined / Pending
+Performance: Defined / Pending
+Testing: Defined / Pending
+Deployment: Defined / Pending
+
+IMPLEMENTATION AUTHORIZATION: NOT YET GRANTED
+
+Only after the planning gate passes:
+
+PROJECT STATUS: READY FOR IMPLEMENTATION
+
+
+---
+
+One important correction to your original idea
+
+[Certain] "Every project should start without proper full planning and documentation first" should be changed to:
+
+> Every project must begin with sufficient planning and documentation before implementation.
+
+
+
+Not necessarily "full documentation."
+
+There is a difference.
+
+A two-week planning process for a simple landing page is wasteful.
+
+A two-hour implementation of an enterprise healthcare system without architecture documentation is reckless.
+
+The correct rule is proportional planning, mandatory documentation, and no blind coding.
+
+That aligns with NEWAX's existing execution philosophy: structured, reliable, transparent, efficient, and adaptable. 
+
+Final Recommendation
+
+I would make this a permanent NEWAX standard called:
+
+NEWAX AI Engineering Operating System
+
+Its five mandatory principles:
+
+1. Plan Before Build
+
+
+2. Inspect Before Change
+
+
+3. Optimize With Evidence
+
+
+4. Verify Before Completion
+
+
+5. Document What You Build
+
+
+
+That is how NEWAX prevents every new project from becoming another isolated piece of code and instead builds toward a disciplined Business Infrastructure engineering capability.

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { formatMoney, toMajor } from '@yaseen/shared';
+import { THEME_COLORS, formatDateShort, formatMoney, toMajor } from '@newax/shared';
 
 /**
  * Daily revenue over the selected window.
@@ -11,13 +11,17 @@ import { formatMoney, toMajor } from '@yaseen/shared';
  * every day. Drawn as inline SVG rather than pulling in a charting library for a
  * single line.
  *
- * The mark colour is #0f8fa3: the brand teal snapped to the nearest step that
- * clears the chroma floor and 3:1 contrast against the white card. The nominal
- * brand teal reads as gray at data-mark size.
+ * The mark colour is THEME_COLORS.accent.DEFAULT (`#0e8294`) — this is in fact
+ * the origin of that exact value: chosen as the step of the brand teal that
+ * clears the chroma floor and 3:1 contrast against the white card, since the
+ * nominal Tailwind `accent` shade read as gray at data-mark size. (Darkened
+ * from #0f8fa3 in brand.ts when check-contrast.mjs found the original shade
+ * under the 4.5:1 text floor for the button it also colours — see brand.ts.) Every other
+ * chart in the app now uses the same constant for the same reason.
  */
-const SERIES = '#0f8fa3';
-const GRID = '#e9e0cd';
-const SURFACE = '#ffffff';
+const SERIES = THEME_COLORS.accent.DEFAULT;
+const GRID = THEME_COLORS.neutral[100];
+const SURFACE = THEME_COLORS.white;
 
 const WIDTH = 720;
 const HEIGHT = 220;
@@ -60,7 +64,7 @@ export function SalesChart({ series }: { series: Point[] }) {
   }, [series]);
 
   if (series.length === 0) {
-    return <p className="p-8 text-center text-sm text-ink/50">No sales yet.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/60">No sales yet.</p>;
   }
 
   const path = plot.points
@@ -107,7 +111,7 @@ export function SalesChart({ series }: { series: Point[] }) {
                 x={PADDING.left - 8}
                 y={ty + 4}
                 textAnchor="end"
-                className="fill-ink/50"
+                className="fill-neutral-900/50"
                 fontSize={11}
               >
                 {tick === 0 ? '0' : compactRupees(tick)}
@@ -141,7 +145,7 @@ export function SalesChart({ series }: { series: Point[] }) {
                   x={Math.min(point.cx, WIDTH - PADDING.right - 40)}
                   y={Math.max(point.cy - 12, PADDING.top + 10)}
                   textAnchor="middle"
-                  className="fill-ink"
+                  className="fill-neutral-900"
                   fontSize={11}
                   fontWeight={600}
                 >
@@ -160,7 +164,7 @@ export function SalesChart({ series }: { series: Point[] }) {
               x={plot.x(index)}
               y={HEIGHT - 8}
               textAnchor={index === 0 ? 'start' : index === lastIndex ? 'end' : 'middle'}
-              className="fill-ink/50"
+              className="fill-neutral-900/50"
               fontSize={11}
             >
               {shortDate(series[index]!.date)}
@@ -197,10 +201,10 @@ export function SalesChart({ series }: { series: Point[] }) {
         ))}
       </svg>
 
-      <figcaption className="mt-2 min-h-5 text-xs text-ink/60">
+      <figcaption className="mt-2 min-h-5 text-xs text-neutral-900/60">
         {active ? (
           <span>
-            <span className="font-medium text-ink">{longDate(active.date)}</span> ·{' '}
+            <span className="font-medium text-neutral-900">{longDate(active.date)}</span> ·{' '}
             {formatMoney(active.revenue)} · {active.orders}{' '}
             {active.orders === 1 ? 'order' : 'orders'}
           </span>
@@ -229,13 +233,9 @@ function compactRupees(rupees: number): string {
 }
 
 function shortDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-PK', { day: 'numeric', month: 'short' });
+  return formatDateShort(iso);
 }
 
 function longDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-PK', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  });
+  return formatDateShort(iso, 'en', { withWeekday: true });
 }

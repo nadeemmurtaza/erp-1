@@ -39,6 +39,41 @@ model Category {
   @@index([isActive])
 }
 
+/// A label a product is sold under. Managed from /admin/brands rather than
+/// typed per product: `Product.brand` used to be free text, so "Gul Ahmed",
+/// "gul ahmed" and "Gul  Ahmed" were three different brands as far as any
+/// filter or report was concerned.
+model Brand {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  /// Brand mark, shown on the storefront's brand listing.
+  logoUrl   String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  translations BrandTranslation[]
+  products     Product[]
+
+  @@index([isActive])
+}
+
+/// House Rule 6: a customer-facing name is a translation row, not a column.
+/// Most brand names are proper nouns that read the same in both languages,
+/// but a shop writing them in Urdu script has somewhere to put that.
+model BrandTranslation {
+  id          String  @id @default(cuid())
+  brandId     String
+  locale      String // "en" | "ur"
+  name        String
+  description String?
+
+  brand Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([brandId, locale])
+}
+
 model CategoryTranslation {
   id          String  @id @default(cuid())
   categoryId  String
@@ -63,10 +98,10 @@ model Product {
   /// Optional "was" price for showing a discount, in paisa.
   compareAtPrice Int?
 
-  brand  String?
-  fabric String? // lawn, chiffon, khaddar, linen…
-  season String? // summer, winter, festive
-  tags   String[] @default([])
+  brandId String?
+  fabric  String? // lawn, chiffon, khaddar, linen…
+  season  String? // summer, winter, festive
+  tags    String[] @default([])
 
   /// UNSTITCHED only: how many pieces the fabric contains (1/2/3-piece) and
   /// how many metres, both shown on the product page.
@@ -92,6 +127,7 @@ model Product {
   updatedAt    DateTime  @updatedAt
 
   category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brand               Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
   translations        ProductTranslation[]
   variants            ProductVariant[]
   options             ProductOption[]
@@ -152,6 +188,13 @@ model ProductVariant {
   lastReceivedAt      DateTime?
   barcode             String?   @unique
 
+  /// True when this variant is made in-house from a BillOfMaterial (production
+  /// module) rather than bought in from preferredSupplier. A variant is one or
+  /// the other, never both — enforced in service code, not the schema, since
+  /// the BillOfMaterial relation itself lives in the production module's own
+  /// schema file (production.prisma) and must not be typed here.
+  producedInHouse Boolean @default(false)
+
   /// Null = the store's default tax class (Setting `tax.default_class`).
   /// Most products never set this. Tax is core (MULTI-SECTOR.md), so this
   /// relation is a normal core-to-core reference, not a pack boundary.
@@ -159,6 +202,16 @@ model ProductVariant {
   taxClass   TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
 
   salesStat VariantSalesStat?
+
+  /// bom.prisma's RawMaterial (WO-C.1) — set only when this variant IS a raw
+  /// material, not one built from them.
+  rawMaterial RawMaterial?
+  /// bom.prisma's BomRecipe (WO-C.2) — set only when this variant IS BUILT
+  /// FROM raw materials. A variant is at most one of rawMaterial/bomRecipe,
+  /// enforced in recipe.service.ts (no nesting in v1).
+  bomRecipe   BomRecipe?
+  /// Every BomProductionRun that has credited this variant's stock (WO-C.3).
+  producedRuns BomProductionRun[] @relation("BomProducedVariant")
 
   order     Int      @default(0)
   createdAt DateTime @default(now())
@@ -173,9 +226,13 @@ model ProductVariant {
   stockAdjustments   StockAdjustment[]
   stockMovements     StockMovement[]
   locationStocks     VariantLocationStock[]
+  stockVariances     StockVariance[]
   purchaseOrderItems PurchaseOrderItem[]
   goodsReceiptItems  GoodsReceiptItem[]
   stockCountLines    StockCountLine[]
+  billOfMaterial     BillOfMaterial?
+  bomComponentOf     BillOfMaterialLine[]        @relation("BomComponent")
+  workOrders         WorkOrder[]
 
   @@index([productId])
   @@index([stock])

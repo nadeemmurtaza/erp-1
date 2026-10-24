@@ -40,7 +40,7 @@ export class RegisterDto {
 
 export class LoginDto {
   @ApiProperty({
-    description: 'Email address or Pakistani phone number',
+    description: 'Email address or phone number',
     example: '03001234567',
   })
   @IsString()

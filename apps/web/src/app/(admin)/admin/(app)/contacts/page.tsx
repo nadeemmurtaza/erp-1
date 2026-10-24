@@ -1,11 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney } from '@yaseen/shared';
-import { adminFetch, getAccessToken } from '@/lib/admin-client';
-import { API_URL, toSearchParams } from '@/lib/api';
-import type { PaginatedResponse } from '@/lib/api-types';
+import { cn } from '@/utils/cn';
+import { formatDate, formatMoney } from '@newax/shared';
+import { adminFetch } from '@/lib/admin-client';
+import { downloadCsv } from '@/lib/download-csv';
+import type { PaginatedResponse } from '@/types/api';
+import { Loading } from '@/components/ui';
+import { exportFilename } from '@/constants/downloads';
 
 const STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;
 
@@ -137,25 +139,10 @@ export default function AdminContactsPage() {
     await load();
   }
 
-  /**
-   * The export needs a bearer token, so it cannot be a plain link — fetch it and
-   * hand the browser a blob.
-   */
   async function exportCsv() {
     setBusy(true);
     try {
-      const response = await fetch(
-        `${API_URL}/admin/crm/contacts/export${toSearchParams(filters)}`,
-        { headers: { Authorization: `Bearer ${getAccessToken() ?? ''}` } },
-      );
-      if (!response.ok) throw new Error('Export failed');
-
-      const url = URL.createObjectURL(await response.blob());
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = 'yaseen-contacts.csv';
-      anchor.click();
-      URL.revokeObjectURL(url);
+      await downloadCsv('/admin/crm/contacts/export', exportFilename('contacts'), filters);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not export');
     } finally {
@@ -167,8 +154,8 @@ export default function AdminContactsPage() {
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-ink">Customers</h1>
-          <p className="mt-1 text-sm text-ink/60">
+          <h1 className="text-xl font-semibold text-neutral-900">Customers</h1>
+          <p className="mt-1 text-sm text-neutral-900/60">
             Built from orders and enquiries, matched on phone number.
           </p>
         </div>
@@ -177,7 +164,7 @@ export default function AdminContactsPage() {
         </button>
       </div>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Name, phone or email"
@@ -219,16 +206,16 @@ export default function AdminContactsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_24rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-sand-200 bg-sand-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>Customer</Th>
                   <Th className="text-end">Orders</Th>
@@ -236,16 +223,16 @@ export default function AdminContactsPage() {
                   <Th>Last order</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sand-100">
+              <tbody className="divide-y divide-neutral-100">
                 {!contacts ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : contacts.data.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       No customers match those filters.
                     </td>
                   </tr>
@@ -254,14 +241,14 @@ export default function AdminContactsPage() {
                     <tr
                       key={contact.id}
                       onClick={() => void open(contact.id)}
-                      className={clsx(
-                        'cursor-pointer hover:bg-sand-50',
-                        selected?.id === contact.id && 'bg-brand-50',
+                      className={cn(
+                        'cursor-pointer hover:bg-neutral-50',
+                        selected?.id === contact.id && 'bg-neutral-50',
                       )}
                     >
-                      <td className="px-4 py-3">
-                        <p className="font-medium text-ink">{contact.name}</p>
-                        <p className="text-xs text-ink/40">
+                      <td>
+                        <p className="font-medium text-neutral-900">{contact.name}</p>
+                        <p className="text-xs text-neutral-900/60">
                           {contact.phoneE164 ?? contact.email ?? '—'}
                           {contact.city ? ` · ${contact.city}` : ''}
                         </p>
@@ -270,7 +257,7 @@ export default function AdminContactsPage() {
                             {contact.tags.map((link) => (
                               <span
                                 key={link.tag.id}
-                                className="rounded bg-sand-100 px-1.5 py-0.5 text-[10px] text-ink/60"
+                                className="rounded bg-white px-1.5 py-0.5 text-[10px] text-neutral-900/60"
                               >
                                 {link.tag.name}
                               </span>
@@ -278,15 +265,15 @@ export default function AdminContactsPage() {
                           </p>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-ink/70">
+                      <td className="text-end tabular-nums text-neutral-900/70">
                         {contact.orderCount}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-ink">
+                      <td className="text-end tabular-nums text-neutral-900">
                         {formatMoney(contact.lifetimeValue)}
                       </td>
-                      <td className="px-4 py-3 text-ink/60">
+                      <td className="text-neutral-900/60">
                         {contact.lastOrderAt
-                          ? new Date(contact.lastOrderAt).toLocaleDateString('en-PK')
+                          ? formatDate(contact.lastOrderAt)
                           : '—'}
                       </td>
                     </tr>
@@ -297,7 +284,7 @@ export default function AdminContactsPage() {
           </div>
 
           {contacts && contacts.meta.totalPages > 1 ? (
-            <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm">
+            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
               <button
                 type="button"
                 className="btn-ghost"
@@ -306,7 +293,7 @@ export default function AdminContactsPage() {
               >
                 Previous
               </button>
-              <span className="text-ink/60">
+              <span className="text-neutral-900/60">
                 Page {contacts.meta.page} of {contacts.meta.totalPages} ·{' '}
                 {contacts.meta.total} customers
               </span>
@@ -324,7 +311,7 @@ export default function AdminContactsPage() {
 
         <aside className="card h-fit p-4 lg:sticky lg:top-4">
           {!selected ? (
-            <p className="py-8 text-center text-sm text-ink/50">
+            <p className="py-8 text-center text-sm text-neutral-900/60">
               Choose a customer to see their history.
             </p>
           ) : (
@@ -360,8 +347,8 @@ function ContactDetailPanel({
 
   return (
     <div>
-      <h2 className="text-base font-semibold text-ink">{contact.name}</h2>
-      <p className="text-sm text-ink/60">
+      <h2 className="text-base font-semibold text-neutral-900">{contact.name}</h2>
+      <p className="text-sm text-neutral-900/60">
         {contact.phoneE164 ?? contact.email ?? 'No contact details'}
       </p>
 
@@ -372,10 +359,7 @@ function ContactDetailPanel({
           label="Last"
           value={
             contact.lastOrderAt
-              ? new Date(contact.lastOrderAt).toLocaleDateString('en-PK', {
-                  day: 'numeric',
-                  month: 'short',
-                })
+              ? formatDate(contact.lastOrderAt)
               : '—'
           }
         />
@@ -397,9 +381,9 @@ function ContactDetailPanel({
           await onLog(contact.id, kind, body);
           setBody('');
         }}
-        className="mt-4 border-t border-sand-200 pt-4"
+        className="mt-4 border-t border-neutral-100 pt-4"
       >
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
           Log an interaction
         </h3>
         <select
@@ -426,18 +410,18 @@ function ContactDetailPanel({
       </form>
 
       {contact.followUps.filter((task) => !task.isDone).length > 0 ? (
-        <div className="mt-4 border-t border-sand-200 pt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">
+        <div className="mt-4 border-t border-neutral-100 pt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
             Open follow-ups
           </h3>
           <ul className="mt-2 space-y-1 text-sm">
             {contact.followUps
               .filter((task) => !task.isDone)
               .map((task) => (
-                <li key={task.id} className="text-ink/70">
+                <li key={task.id} className="text-neutral-900/70">
                   {task.note}
-                  <span className="ms-2 text-xs text-ink/40">
-                    {new Date(task.dueAt).toLocaleDateString('en-PK')}
+                  <span className="ms-2 text-xs text-neutral-900/60">
+                    {formatDate(task.dueAt)}
                   </span>
                 </li>
               ))}
@@ -445,34 +429,34 @@ function ContactDetailPanel({
         </div>
       ) : null}
 
-      <div className="mt-4 border-t border-sand-200 pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">Orders</h3>
+      <div className="mt-4 border-t border-neutral-100 pt-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Orders</h3>
         {contact.orders.length === 0 ? (
-          <p className="mt-2 text-sm text-ink/50">No orders yet.</p>
+          <p className="mt-2 text-sm text-neutral-900/60">No orders yet.</p>
         ) : (
           <ul className="mt-2 space-y-1 text-sm">
             {contact.orders.slice(0, 6).map((order) => (
               <li key={order.id} className="flex justify-between gap-2">
-                <span className="text-ink/70">{order.number}</span>
-                <span className="text-ink">{formatMoney(order.grandTotal)}</span>
+                <span className="text-neutral-900/70">{order.number}</span>
+                <span className="text-neutral-900">{formatMoney(order.grandTotal)}</span>
               </li>
             ))}
           </ul>
         )}
       </div>
 
-      <div className="mt-4 border-t border-sand-200 pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">Timeline</h3>
+      <div className="mt-4 border-t border-neutral-100 pt-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Timeline</h3>
         {contact.interactions.length === 0 ? (
-          <p className="mt-2 text-sm text-ink/50">Nothing logged yet.</p>
+          <p className="mt-2 text-sm text-neutral-900/60">Nothing logged yet.</p>
         ) : (
           <ol className="mt-2 space-y-2 text-sm">
             {contact.interactions.map((interaction) => (
               <li key={interaction.id}>
-                <p className="text-ink/80">{interaction.body}</p>
-                <p className="text-xs text-ink/40">
+                <p className="text-neutral-900/80">{interaction.body}</p>
+                <p className="text-xs text-neutral-900/60">
                   {interaction.kind.toLowerCase()} ·{' '}
-                  {new Date(interaction.occurredAt).toLocaleDateString('en-PK')}
+                  {formatDate(interaction.occurredAt)}
                   {interaction.actor?.firstName ? ` · ${interaction.actor.firstName}` : ''}
                 </p>
               </li>
@@ -486,19 +470,18 @@ function ContactDetailPanel({
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md bg-sand-50 p-2">
-      <dt className="text-[10px] uppercase tracking-wide text-ink/40">{label}</dt>
-      <dd className="text-sm font-semibold text-ink">{value}</dd>
+    <div className="rounded-md bg-neutral-50 p-2">
+      <dt className="text-[10px] uppercase tracking-wide text-neutral-900/60">{label}</dt>
+      <dd className="text-sm font-semibold text-neutral-900">{value}</dd>
     </div>
   );
 }
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
-      className={clsx(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50',
+    <th scope="col"
+      className={cn(
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
         className,
       )}
     >

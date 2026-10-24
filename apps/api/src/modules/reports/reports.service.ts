@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { getOrderCustomerName, getPersonFullName } from '@yaseen/shared';
+import { getOrderCustomerName, getPersonFullName } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';

@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { nextStage, previousStage } from '@yaseen/shared';
+import { nextStage, previousStage } from '@newax/shared';
 import * as resources from '../../src/api/resources';
 import type { WorkshopJob } from '../../src/api/types';
 import {

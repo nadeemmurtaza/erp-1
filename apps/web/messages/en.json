@@ -1,4 +1,56 @@
 {
+  "account": {
+    "signedInAs": "Signed in as {who}",
+    "nav": {
+      "label": "Account",
+      "profile": "Profile",
+      "addresses": "Addresses",
+      "measurements": "Measurements",
+      "orders": "Orders",
+      "wishlist": "Wishlist"
+    },
+    "profile": {
+      "title": "Profile",
+      "body": "Your name, and how we reach you about an order.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "save": "Save profile",
+      "saving": "Saving…",
+      "saved": "Profile updated.",
+      "failed": "Could not update your profile."
+    },
+    "password": {
+      "title": "Change password",
+      "body": "Changing it signs you out everywhere else.",
+      "current": "Current password",
+      "new": "New password",
+      "submit": "Change password",
+      "submitting": "Changing…",
+      "changed": "Password changed. You have been signed out of every other device.",
+      "failed": "Could not change your password."
+    },
+    "addresses": {
+      "title": "Addresses",
+      "body": "Where we deliver. The default one is filled in at checkout."
+    },
+    "measurements": {
+      "title": "Measurements",
+      "body": "Saved sizes, so stitched orders do not ask again."
+    },
+    "orders": {
+      "title": "Orders",
+      "body": "Every order placed with this account.",
+      "empty": "No orders yet",
+      "emptyBody": "Once you place an order it will appear here, with its progress.",
+      "startShopping": "Start shopping",
+      "pageOf": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next",
+      "failed": "Could not load your orders."
+    }
+  },
   "site": {
     "name": "Yaseen",
     "tagline": "Unstitched fabric, ready-to-wear, and stitching to your measurements",
@@ -116,12 +168,12 @@
     "quickShop": "Quick Shop",
     "addToFavourites": "Add to favourites",
     "removeFromFavourites": "Remove from favourites",
-    "sizeChart": "Size Chart",
-    "sizeCharts": "Size Charts",
-    "close": "Close",
-    "measurementsIn": "Measurements in {unit}",
-    "inch": "inches",
-    "cm": "cm"
+    "sizeXS": "XS",
+    "sizeS": "S",
+    "sizeM": "M",
+    "sizeL": "L",
+    "sizeXL": "XL",
+    "sizeXXL": "XXL"
   },
   "cart": {
     "title": "Cart",
@@ -342,5 +394,11 @@
       "CANCELLED": "Cancelled",
       "RETURNED": "Returned"
     }
+  },
+  "story": {
+    "welcome": "Welcome to {brand}.",
+    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
+    "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
+    "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
   }
 }

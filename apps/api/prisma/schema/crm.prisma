@@ -43,17 +43,17 @@ model Contact {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner        User?          @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
-  user         User?          @relation("ContactUser", fields: [userId], references: [id], onDelete: SetNull)
-  orders       Order[]
+  owner         User?          @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  user          User?          @relation("ContactUser", fields: [userId], references: [id], onDelete: SetNull)
+  orders        Order[]
   // No `stitchingOrders` relation field here on purpose (B7, MULTI-SECTOR.md)
   // — see the matching note on OrderItem in orders.prisma. StitchingOrder
   // (apparel) keeps a plain `contactId` scalar instead of a Prisma relation.
   // This field was unused in application code, so nothing else changes.
-  leads        Lead[]
-  interactions Interaction[]
-  followUps    FollowUpTask[]
-  tags         ContactTag[]
+  leads         Lead[]
+  interactions  Interaction[]
+  followUps     FollowUpTask[]
+  tags          ContactTag[]
   inboundEmails InboundEmail[]
 
   @@index([status])

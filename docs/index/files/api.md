@@ -887,7 +887,7 @@ All 1,306 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `anax-sensor.service.ts` | service | 159 |  |
-| `anax.controller.ts` | controller | 81 |  |
+| `anax.controller.ts` | controller | 87 |  |
 | `anax.module.ts` | nest module | 13 |  |
 | `anax.service.spec.ts` | unit test | 125 |  |
 | `anax.service.ts` | service | 565 |  |

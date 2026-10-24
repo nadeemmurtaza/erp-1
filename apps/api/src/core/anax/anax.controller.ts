@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { RequirePermission } from '../auth/decorators';
 import { AnaxService } from './anax.service';
 import type {
   BusinessValuationInsight,
@@ -15,6 +16,7 @@ export class AnaxController {
   constructor(private readonly anaxService: AnaxService) {}
 
   @Get('insights')
+  @RequirePermission('analytics.view')
   @ApiOperation({
     summary: 'Comprehensive ANAX Dragonfly Business Intelligence and Trajectory Report',
     description:
@@ -27,6 +29,7 @@ export class AnaxController {
   }
 
   @Get('flight-plan')
+  @RequirePermission('analytics.view')
   @ApiOperation({
     summary: '4-Wing Harmonic Flight Control Matrix',
     description:
@@ -40,6 +43,7 @@ export class AnaxController {
   }
 
   @Get('geopolitical-risk')
+  @RequirePermission('analytics.view')
   @ApiOperation({
     summary: 'Global War Risk, Maritime Chokepoint & Sanctions Analysis',
     description:
@@ -53,6 +57,7 @@ export class AnaxController {
   }
 
   @Get('valuation')
+  @RequirePermission('analytics.view')
   @ApiOperation({
     summary: 'Enterprise Business Valuation & Resilience Rating',
     description:
@@ -66,6 +71,7 @@ export class AnaxController {
   }
 
   @Post('evaluate')
+  @RequirePermission('analytics.view')
   @ApiOperation({
     summary: 'Simulate Trajectory Under Custom Macro Shocks',
     description:

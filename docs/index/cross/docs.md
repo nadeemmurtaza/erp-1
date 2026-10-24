@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**616** markdown documents. These explain **why**; this index only says **where**.
+**617** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2454,7 +2454,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>539 lines</sub>
+### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>521 lines</sub>
 
 _no second-level headings_
 
@@ -2490,6 +2490,10 @@ _no second-level headings_
 _no second-level headings_
 
 ### `Rules.md`  <sub>30 lines</sub>
+
+_no second-level headings_
+
+### `SECURITY.md`  <sub>22 lines</sub>
 
 _no second-level headings_
 

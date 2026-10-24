@@ -22,7 +22,7 @@ never authorization.
 
 ## Attention list
 
-- **Undecorated routes: 10**
+- **Undecorated routes: 5**
 
 | Method | Path | Handler | File |
 |---|---|---|---|
@@ -31,11 +31,6 @@ never authorization.
 | GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:38` |
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
-| POST | `/anax/evaluate` | `AnaxController.evaluateScenario` | `apps/api/src/core/anax/anax.controller.ts:74` |
-| GET | `/anax/flight-plan` | `AnaxController.getFlightPlan` | `apps/api/src/core/anax/anax.controller.ts:35` |
-| GET | `/anax/geopolitical-risk` | `AnaxController.getGeopoliticalRisk` | `apps/api/src/core/anax/anax.controller.ts:48` |
-| GET | `/anax/insights` | `AnaxController.getComprehensiveInsights` | `apps/api/src/core/anax/anax.controller.ts:23` |
-| GET | `/anax/valuation` | `AnaxController.getEnterpriseValuation` | `apps/api/src/core/anax/anax.controller.ts:61` |
 
 - **Public routes: 84** — every one is an intentional decision; changing one changes the product's attack surface.
 
@@ -450,11 +445,11 @@ never authorization.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| POST | `/anax/evaluate` | **⚠ undecorated** | `AnaxController.evaluateScenario` |  |
-| GET | `/anax/flight-plan` | **⚠ undecorated** | `AnaxController.getFlightPlan` |  |
-| GET | `/anax/geopolitical-risk` | **⚠ undecorated** | `AnaxController.getGeopoliticalRisk` |  |
-| GET | `/anax/insights` | **⚠ undecorated** | `AnaxController.getComprehensiveInsights` |  |
-| GET | `/anax/valuation` | **⚠ undecorated** | `AnaxController.getEnterpriseValuation` |  |
+| POST | `/anax/evaluate` | `analytics.view` | `AnaxController.evaluateScenario` |  |
+| GET | `/anax/flight-plan` | `analytics.view` | `AnaxController.getFlightPlan` |  |
+| GET | `/anax/geopolitical-risk` | `analytics.view` | `AnaxController.getGeopoliticalRisk` |  |
+| GET | `/anax/insights` | `analytics.view` | `AnaxController.getComprehensiveInsights` |  |
+| GET | `/anax/valuation` | `analytics.view` | `AnaxController.getEnterpriseValuation` |  |
 
 ### [`core/auth`](..\core\auth.md) (36)
 

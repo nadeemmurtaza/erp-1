@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2956,
-    "lines": 468743,
+    "files": 2958,
+    "lines": 468857,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1365,21 +1365,21 @@
   ],
   "areas": {
     "root": {
-      "files": 216,
-      "lines": 16397,
-      "bytes": 818917,
+      "files": 217,
+      "lines": 16419,
+      "bytes": 819648,
       "label": "repository root files"
     },
     "infra": {
-      "files": 66,
-      "lines": 33560,
-      "bytes": 1374110,
+      "files": 67,
+      "lines": 33664,
+      "bytes": 1379050,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 1306,
-      "lines": 180861,
-      "bytes": 7378028,
+      "lines": 180867,
+      "bytes": 7378178,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1402,14 +1402,14 @@
     },
     "docs": {
       "files": 580,
-      "lines": 109320,
-      "bytes": 7046193,
+      "lines": 109302,
+      "bytes": 7045256,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 117,
       "lines": 13772,
-      "bytes": 528277,
+      "bytes": 528105,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -15403,9 +15403,11 @@
       "controller": "AnaxController",
       "handler": "evaluateScenario",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 74,
-      "access": "UNDECORATED (authenticated, unrestricted)",
-      "permissions": [],
+      "line": 80,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
       "public": false,
       "authOnly": false,
       "summary": ""
@@ -15417,9 +15419,11 @@
       "controller": "AnaxController",
       "handler": "getFlightPlan",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 35,
-      "access": "UNDECORATED (authenticated, unrestricted)",
-      "permissions": [],
+      "line": 38,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
       "public": false,
       "authOnly": false,
       "summary": ""
@@ -15431,9 +15435,11 @@
       "controller": "AnaxController",
       "handler": "getGeopoliticalRisk",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 48,
-      "access": "UNDECORATED (authenticated, unrestricted)",
-      "permissions": [],
+      "line": 52,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
       "public": false,
       "authOnly": false,
       "summary": ""
@@ -15445,9 +15451,11 @@
       "controller": "AnaxController",
       "handler": "getComprehensiveInsights",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 23,
-      "access": "UNDECORATED (authenticated, unrestricted)",
-      "permissions": [],
+      "line": 25,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
       "public": false,
       "authOnly": false,
       "summary": ""
@@ -15459,9 +15467,11 @@
       "controller": "AnaxController",
       "handler": "getEnterpriseValuation",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 61,
-      "access": "UNDECORATED (authenticated, unrestricted)",
-      "permissions": [],
+      "line": 66,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
       "public": false,
       "authOnly": false,
       "summary": ""
@@ -17855,7 +17865,12 @@
         "POST /admin/embeds/:key/token",
         "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
-        "GET /admin/wishlist/out-of-stock-report"
+        "GET /admin/wishlist/out-of-stock-report",
+        "POST /anax/evaluate",
+        "GET /anax/flight-plan",
+        "GET /anax/geopolitical-risk",
+        "GET /anax/insights",
+        "GET /anax/valuation"
       ],
       "uiSites": 12,
       "roles": [
@@ -62904,6 +62919,15 @@
       "symbols": []
     },
     {
+      "path": ".github/workflows/codeql.yml",
+      "area": "infra",
+      "kind": "yaml",
+      "lines": 104,
+      "bytes": 4897,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".github/workflows/deploy-cloudflare.yml",
       "area": "infra",
       "kind": "yaml",
@@ -62917,7 +62941,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 44,
-      "bytes": 1334,
+      "bytes": 1377,
       "doc": "",
       "symbols": []
     },
@@ -62944,7 +62968,7 @@
       "area": "root",
       "kind": "toml",
       "lines": 92,
-      "bytes": 2686,
+      "bytes": 2777,
       "doc": "",
       "symbols": []
     },
@@ -63089,6 +63113,15 @@
       "kind": "doc",
       "lines": 30,
       "bytes": 1451,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "SECURITY.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 22,
+      "bytes": 640,
       "doc": "",
       "symbols": []
     },
@@ -63481,7 +63514,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 21,
-      "bytes": 742,
+      "bytes": 722,
       "doc": "",
       "symbols": []
     },
@@ -63490,7 +63523,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 13,
-      "bytes": 532,
+      "bytes": 520,
       "doc": "",
       "symbols": []
     },
@@ -63499,7 +63532,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 33,
-      "bytes": 1214,
+      "bytes": 1182,
       "doc": "",
       "symbols": []
     },
@@ -63508,7 +63541,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 23,
-      "bytes": 877,
+      "bytes": 855,
       "doc": "",
       "symbols": []
     },
@@ -63517,7 +63550,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 19,
-      "bytes": 575,
+      "bytes": 557,
       "doc": "",
       "symbols": []
     },
@@ -64570,7 +64603,7 @@
       "area": "api",
       "kind": "toml",
       "lines": 4,
-      "bytes": 131,
+      "bytes": 128,
       "doc": "",
       "symbols": []
     },
@@ -65097,14 +65130,14 @@
       "path": "apps/api/src/core/anax/anax.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 81,
-      "bytes": 3300,
+      "lines": 87,
+      "bytes": 3557,
       "doc": "",
       "symbols": [
         {
           "name": "AnaxController",
           "kind": "class",
-          "line": 14
+          "line": 15
         }
       ]
     },
@@ -104480,8 +104513,8 @@
       "path": "docs/implementation/WO-22-lens-workflow-results.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 539,
-      "bytes": 107381,
+      "lines": 521,
+      "bytes": 106444,
       "doc": "",
       "symbols": []
     },
@@ -109388,7 +109421,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 79,
-      "bytes": 3186,
+      "bytes": 3108,
       "doc": "((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833...",
       "symbols": []
     },
@@ -109397,7 +109430,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 95,
-      "bytes": 3758,
+      "bytes": 3664,
       "doc": "Fabric yardage estimator, per the tailor's Tech-Pack benchmarks.",
       "symbols": [
         {

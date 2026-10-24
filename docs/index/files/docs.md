@@ -575,7 +575,7 @@ All 580 tracked files in `docs/*`, by directory.
 | `RETAIL-ERP.md` | doc | 1108 |  |
 | `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
-| `WO-22-lens-workflow-results.md` | doc | 539 |  |
+| `WO-22-lens-workflow-results.md` | doc | 521 |  |
 
 ### `docs/implementation/access-control-identity` (9)
 

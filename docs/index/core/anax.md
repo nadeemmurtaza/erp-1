@@ -13,14 +13,14 @@ Source: `apps/api/src/core/anax/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 1,164 lines)
+## Files (6 · 1,170 lines)
 
 All paths relative to `apps/api/src/core/anax`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `anax-sensor.service.ts` | service | 159 | 1 | AnaxSensorService: The 30,000-Ommatidia Compound Sensing Layer in ERP-1. |
-| `anax.controller.ts` | controller | 81 | 1 |  |
+| `anax.controller.ts` | controller | 87 | 1 |  |
 | `anax.module.ts` | nest module | 13 | 1 |  |
 | `anax.service.spec.ts` | unit test | 125 | — |  |
 | `anax.service.ts` | service | 565 | 1 | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
@@ -31,11 +31,11 @@ All paths relative to `apps/api/src/core/anax`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| POST | `/anax/evaluate` | **⚠ undecorated** | `AnaxController.evaluateScenario` :74 |  |
-| GET | `/anax/flight-plan` | **⚠ undecorated** | `AnaxController.getFlightPlan` :35 |  |
-| GET | `/anax/geopolitical-risk` | **⚠ undecorated** | `AnaxController.getGeopoliticalRisk` :48 |  |
-| GET | `/anax/insights` | **⚠ undecorated** | `AnaxController.getComprehensiveInsights` :23 |  |
-| GET | `/anax/valuation` | **⚠ undecorated** | `AnaxController.getEnterpriseValuation` :61 |  |
+| POST | `/anax/evaluate` | `analytics.view` | `AnaxController.evaluateScenario` :80 |  |
+| GET | `/anax/flight-plan` | `analytics.view` | `AnaxController.getFlightPlan` :38 |  |
+| GET | `/anax/geopolitical-risk` | `analytics.view` | `AnaxController.getGeopoliticalRisk` :52 |  |
+| GET | `/anax/insights` | `analytics.view` | `AnaxController.getComprehensiveInsights` :25 |  |
+| GET | `/anax/valuation` | `analytics.view` | `AnaxController.getEnterpriseValuation` :66 |  |
 
 
 ## Domain events
@@ -77,7 +77,7 @@ _none_
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `AnaxSensorService` | class | `anax-sensor.service.ts:19` | AnaxSensorService: The 30,000-Ommatidia Compound Sensing Layer in ERP-1. |
-| `AnaxController` | class | `anax.controller.ts:14` |  |
+| `AnaxController` | class | `anax.controller.ts:15` |  |
 | `AnaxModule` | class | `anax.module.ts:12` |  |
 | `AnaxService` | class | `anax.service.ts:27` | AnaxService: The Central Biomimetic Dragonfly Intercept Intelligence Kernel in ERP-1. |
 | `InternalTelemetrySignal` | interface | `anax.types.ts:8` | ANAX Dragonfly Predictive Intercept Architecture - ERP Types Implements Sandia National Labs-inspired biologi… |

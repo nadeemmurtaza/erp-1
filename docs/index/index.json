@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2958,
-    "lines": 468857,
+    "lines": 468856,
     "routes": 924,
     "controllers": 170,
     "models": 325,
@@ -1378,8 +1378,8 @@
     },
     "api": {
       "files": 1306,
-      "lines": 180867,
-      "bytes": 7378178,
+      "lines": 180866,
+      "bytes": 7378303,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -15419,7 +15419,7 @@
       "controller": "AnaxController",
       "handler": "getFlightPlan",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 38,
+      "line": 44,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -15435,7 +15435,7 @@
       "controller": "AnaxController",
       "handler": "getGeopoliticalRisk",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 52,
+      "line": 56,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -15451,7 +15451,7 @@
       "controller": "AnaxController",
       "handler": "getComprehensiveInsights",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 25,
+      "line": 33,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -15467,7 +15467,7 @@
       "controller": "AnaxController",
       "handler": "getEnterpriseValuation",
       "file": "apps/api/src/core/anax/anax.controller.ts",
-      "line": 66,
+      "line": 68,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -65130,14 +65130,14 @@
       "path": "apps/api/src/core/anax/anax.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 87,
-      "bytes": 3557,
+      "lines": 86,
+      "bytes": 3682,
       "doc": "",
       "symbols": [
         {
           "name": "AnaxController",
           "kind": "class",
-          "line": 15
+          "line": 23
         }
       ]
     },
